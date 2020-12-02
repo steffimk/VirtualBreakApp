@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">VirtualBreak</string>
+    <string name="title_activity_single_group">SingleGroupActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_break_room">BreakRoomActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_signin">SigninActivity</string>
 </resources>

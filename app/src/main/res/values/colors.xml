@@ -5,7 +5,28 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <color name="dark_grey">#545454</color>
+
+
+    <!-- ColorPallette-->
+    <color name="light_green">#F6F4D2</color>
+
+    <color name="tea_green">#CBDFBD</color>
+    <color name="yellow_green">#D4E09B</color>
+    <color name="mandarin">#EC7846</color>
+    <color name="sinopia">#C9532C</color>
+    <color name="brow_sugar">#AF6B46</color>
+    <color name="coffee">#764D35</color>
+    <color name="very_dark_brown">#2e1e15</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_grey">#545454</color>
+
+
+    <color name="dark_brown">#634532</color>
+    <color name="cafe">#B4816A</color>
+
+
+
 </resources>

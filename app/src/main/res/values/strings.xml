@@ -7,6 +7,30 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_break_room">BreakRoomActivity</string>
+
+    <!-- LogIn -->
     <string name="title_activity_login">LoginActivity</string>
+    <string name="login">LogIn</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_1_hint">Enter password</string>
+    <string name="login_submit">Log In</string>
+    <string name="login_signin">Not a member? Sign Up!</string>
+    <string name="signin_login">Already a member? Log in!</string>
+    <string name="toast_loginFailed">LogIn failed. Try again</string>
+    <string name="error_wrongPassword">Wrong password. Try again</string>
+
+    <!-- Singin -->
+    <string name="signin">SignUp</string>
+    <string name="signin_name_hint">Name</string>
+    <string name="signin_email_hint">Email</string>
+    <string name="signin_phone_number_hint">Phone number</string>
+    <string name="signin_password_1_hint">Enter password</string>
+    <string name="signin_password_2_hint">Confirm password</string>
+    <string name="signin_submit">Sign up</string>
+
+
     <string name="title_activity_signin">SigninActivity</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

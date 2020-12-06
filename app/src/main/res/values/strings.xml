@@ -32,5 +32,8 @@
     <string name="title_activity_signin">SigninActivity</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_virtualbreak">Welcome to VirtualBreak</string>
+    <string name="log_in">Log in</string>
+    <string name="create_an_account">Create an account</string>
 
 </resources>

@@ -6,13 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".view.view_activitys.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="30dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_to_virtualbreak"
+            android:textSize="50sp"
+            android:gravity="center"
+            android:padding="10dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"
+            android:id="@+id/loginButton"
+            android:padding="10dp"
+            android:backgroundTint="@color/mandarin"
+            android:textAllCaps="false"
+            android:textColor="@color/light_green"
+            android:textSize="20sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_an_account"
+            android:id="@+id/signupButton"
+            android:padding="10dp"
+            android:backgroundTint="@color/mandarin"
+            android:textAllCaps="false"
+            android:textColor="@color/light_green" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

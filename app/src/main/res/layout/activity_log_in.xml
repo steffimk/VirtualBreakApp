@@ -82,6 +82,20 @@
         app:layout_constraintTop_toBottomOf="@+id/login_input"
         app:layout_constraintVertical_bias="0.060000002" />
 
+<!--    <com.google.android.gms.common.SignInButton-->
+<!--        android:id="@+id/google_signIn_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:textColor="@color/light_green"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/login_submit"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
+
     <TextView
         android:id="@+id/login_signUp"
         android:layout_width="match_parent"

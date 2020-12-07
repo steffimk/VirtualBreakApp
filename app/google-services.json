@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "735853934431",
+    "firebase_url": "https://virtualbreak-6a283.firebaseio.com",
+    "project_id": "virtualbreak-6a283",
+    "storage_bucket": "virtualbreak-6a283.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735853934431:android:c42238b5c5a556919568ea",
+        "android_client_info": {
+          "package_name": "com.example.virtualbreak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735853934431-ai8ehdh9dg4i03l1i6vin2vnta35crru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.virtualbreak",
+            "certificate_hash": "4b586e38221533f6062409a85cdceff8433646e1"
+          }
+        },
+        {
+          "client_id": "735853934431-7buec55ghcp7afkpk9udcqtb4kbnhosa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTcody7qdZMvxMf-LXPqn6KpQUL6MfBuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735853934431-7buec55ghcp7afkpk9udcqtb4kbnhosa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

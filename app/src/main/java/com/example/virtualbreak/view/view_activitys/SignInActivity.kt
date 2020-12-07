@@ -8,6 +8,8 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
@@ -59,6 +61,11 @@ class SignInActivity : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success")
                         val user = auth.currentUser
+
+                        var database: DatabaseReference = Firebase.database.reference
+                        if (user != null) {
+                            database.child("users").child(user.uid).child("username").setValue(name)
+                        }
                         // TODO: updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.

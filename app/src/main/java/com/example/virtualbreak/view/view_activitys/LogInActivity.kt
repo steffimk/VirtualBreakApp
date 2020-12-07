@@ -3,6 +3,7 @@ package com.example.virtualbreak.view.view_activitys
 //import com.google.android.gms.auth.api.signin.GoogleSignIn
 //import com.google.android.gms.auth.api.signin.GoogleSignInClient
 //import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -40,8 +41,8 @@ class LogInActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        //TODO: updateUI(currentUser) --> currentUser is null if no sign in yet
+        if ( auth.currentUser != null)
+            startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun tryAndLogIn(email: String, password: String) {
@@ -64,8 +65,7 @@ class LogInActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    // TODO: updateUI(user)
+                    startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -73,8 +73,6 @@ class LogInActivity : AppCompatActivity() {
                         baseContext, R.string.toast_loginFailed,
                         Toast.LENGTH_SHORT
                     ).show()
-                    // TODO: updateUI(user)
-                    // ...
                 }
             }
     }

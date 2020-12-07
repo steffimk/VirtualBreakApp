@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_activitys
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -36,8 +37,8 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        //TODO: updateUI(currentUser) --> currentUser is null if no sign in yet
+        if ( auth.currentUser != null)
+            startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun tryAndSignUp(name: String, email: String, password1: String, password2: String) {
@@ -66,7 +67,7 @@ class SignInActivity : AppCompatActivity() {
                         if (user != null) {
                             database.child("users").child(user.uid).child("username").setValue(name)
                         }
-                        // TODO: updateUI(user)
+                        startActivity(Intent(this, MainActivity::class.java))
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -74,7 +75,6 @@ class SignInActivity : AppCompatActivity() {
                                 baseContext, R.string.toast_signIn_Failed,
                                 Toast.LENGTH_SHORT
                         ).show()
-                        // TODO: updateUI(null)
                     }
 
                     // ...

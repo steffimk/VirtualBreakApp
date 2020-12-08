@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
 import com.example.virtualbreak.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -71,8 +72,9 @@ class SignInActivity : AppCompatActivity() {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                        val message: String = getGermanErrorMessage((task.exception as FirebaseAuthException?)!!.errorCode, R.string.toast_signIn_Failed.toString())
                         Toast.makeText(
-                                baseContext, R.string.toast_signIn_Failed,
+                                baseContext, message,
                                 Toast.LENGTH_SHORT
                         ).show()
                     }

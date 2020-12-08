@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.virtualbreak.R
 
 class HomeFragment : Fragment() {
@@ -28,10 +29,10 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
 
-        /*root.findViewById<Button>(R.id.goToSingleGroupBtn).setOnClickListener {
-            nav
+        root.findViewById<Button>(R.id.goToSingleGroupBtn).setOnClickListener {
+            NavHostFragment.findNavController(this).navigate(R.id.action_nav_home_to_singleGroupFragment)
         }
-*/
+
         return root
     }
 }

@@ -10,6 +10,10 @@
         android:name="com.example.virtualbreak.view.view_activitys.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_singleGroupFragment"
+            app:destination="@id/singleGroupFragment"
+            app:enterAnim="@anim/fragment_open_enter" />
     </fragment>
 
     <fragment
@@ -21,7 +25,7 @@
     <fragment
         android:id="@+id/singleGroupFragment"
         android:name="com.example.virtualbreak.view.view_activitys.ui.singlegroup.SingleGroupFragment"
-        android:label="fragment_singlegroup"
+        android:label="Deine Gruppe"
         tools:layout="@layout/fragment_singlegroup" />
 
 </navigation>

@@ -43,6 +43,16 @@
             android:textAllCaps="false"
             android:textColor="@color/light_green" />
 
+        <Button
+            android:id="@+id/go_to_groups_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:backgroundTint="@color/mandarin"
+            android:text="Go to GroupListActivity"
+            android:textColor="@color/light_green"/>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

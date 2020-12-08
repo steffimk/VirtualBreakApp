@@ -1,4 +1,4 @@
-package com.example.virtualbreak.model
+package com.example.virtualbreak.view.viewmodels
 
 import androidx.lifecycle.ViewModel
 

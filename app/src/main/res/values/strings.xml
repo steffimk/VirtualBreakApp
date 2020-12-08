@@ -12,28 +12,28 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">LogIn</string>
     <string name="login_email_hint">Email</string>
-    <string name="login_password_1_hint">Enter password</string>
+    <string name="login_password_1_hint">Passwort</string>
     <string name="login_submit">Log In</string>
-    <string name="login_signin">Not a member? Sign Up!</string>
-    <string name="signin_login">Already a member? Log in!</string>
-    <string name="toast_loginFailed">LogIn failed. Try again</string>
-    <string name="error_wrongPassword">Wrong password. Try again</string>
+    <string name="login_signin">Noch kein Account? Sign Up!</string>
+    <string name="signin_login">Du hast bereits einen Account? Log in!</string>
+    <string name="toast_loginFailed">LogIn nicht geklappt. Versuch es nochmal.</string>
+    <string name="error_wrongPassword">Falsches Passwort. Versuche es nochmal.</string>
 
     <!-- Singin -->
     <string name="signin">SignUp</string>
     <string name="signin_name_hint">Name</string>
     <string name="signin_email_hint">Email</string>
-    <string name="signin_phone_number_hint">Phone number</string>
-    <string name="signin_password_1_hint">Enter password</string>
-    <string name="signin_password_2_hint">Confirm password</string>
+    <string name="signin_phone_number_hint">Telefon Nummer</string>
+    <string name="signin_password_1_hint">Passwort</string>
+    <string name="signin_password_2_hint">Passwort wiederholen</string>
     <string name="signin_submit">Sign up</string>
 
 
     <string name="title_activity_signin">SigninActivity</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="welcome_to_virtualbreak">Welcome to VirtualBreak</string>
+    <string name="welcome_to_virtualbreak">Wilkommen to VirtualBreak</string>
     <string name="log_in">Log in</string>
-    <string name="create_an_account">Create an account</string>
+    <string name="create_an_account">Erstelle einen Account</string>
 
 </resources>

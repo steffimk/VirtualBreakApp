@@ -29,11 +29,15 @@
     <string name="signin_submit">Sign up</string>
 
 
+    <!-- MainActivity -->
     <string name="title_activity_signin">SigninActivity</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_to_virtualbreak">Wilkommen to VirtualBreak</string>
     <string name="log_in">Log in</string>
     <string name="create_an_account">Erstelle einen Account</string>
+
+    <!-- GroupsActivity-->
+    <string name="friend_name">Freundes Name</string>
+    <string name="group_name">Gruppen Name</string>
 
 </resources>

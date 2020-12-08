@@ -1,4 +1,4 @@
-package com.example.virtualbreak.controller
+package com.example.virtualbreak.controller.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

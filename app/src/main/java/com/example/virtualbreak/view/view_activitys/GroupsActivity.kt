@@ -2,9 +2,8 @@ package com.example.virtualbreak.view.view_activitys
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.viewpager2.widget.ViewPager2
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.GroupsStateAdapter
+import com.example.virtualbreak.controller.adapters.GroupsStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_groups.*
 

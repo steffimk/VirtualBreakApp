@@ -45,6 +45,10 @@ class Groups_grouplist_fragment : Fragment() {
 
         groups_recyler_list_view.layoutManager = LinearLayoutManager(activity)
         groups_recyler_list_view.adapter = GroupsListAdapter()
+
+        groups_add_group_button.setOnClickListener{
+            //TODO Add Groups
+        }
     }
 
 

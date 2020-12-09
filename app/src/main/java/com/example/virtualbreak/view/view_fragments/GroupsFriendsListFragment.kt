@@ -45,9 +45,6 @@ class GroupsFriendsListFragment : Fragment() {
             tab.text = tabNames[position]
         }.attach()
 
-        groupsfr_add_group_button.setOnClickListener{
-            //TODO Go to create Group Fragment
-        }
 
     }
 

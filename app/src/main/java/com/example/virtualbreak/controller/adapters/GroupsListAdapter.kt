@@ -11,7 +11,9 @@ import kotlinx.android.synthetic.main.group_list_item.*
 
 class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
-    private val testNames = arrayOf("Uni", "Arbeit","Sport")
+
+    //TODO fetch data from firebase
+    private val testNames = arrayOf("Arbeit", "Uni","Sport")
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

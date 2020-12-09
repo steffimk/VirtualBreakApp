@@ -41,5 +41,6 @@
     <string name="group_name">Gruppen Name</string>
     <string name="tab_group">Gruppen</string>
     <string name="tab_friends">Freunde</string>
+    <string name="add_friends">Freunde hinzufügen</string>
 
 </resources>

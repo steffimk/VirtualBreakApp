@@ -1,7 +1,6 @@
 package com.example.virtualbreak.view.view_fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,8 +24,6 @@ class GroupsFriendsListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        //initViewPager2WithFragments()
 
         return inflater.inflate(R.layout.fragment_groups_friends_list, container, false)
     }
@@ -42,11 +39,15 @@ class GroupsFriendsListFragment : Fragment() {
 
         groupsfr_view_Pager.adapter = ViewPagerAdapter(activity)
 
-        val tabNames:Array<String> = arrayOf("Groups", "Friends")
+        val tabNames:Array<String> = arrayOf(getString(R.string.tab_group), getString(R.string.tab_friends))
 
         TabLayoutMediator(groupsfr_tab_layout, groupsfr_view_Pager){tab, position ->
             tab.text = tabNames[position]
         }.attach()
+
+        groupsfr_add_group_button.setOnClickListener{
+            //TODO Go to create Group Fragment
+        }
 
     }
 

@@ -39,5 +39,7 @@
     <!-- GroupsActivity-->
     <string name="friend_name">Freundes Name</string>
     <string name="group_name">Gruppen Name</string>
+    <string name="tab_group">Gruppen</string>
+    <string name="tab_friends">Freunde</string>
 
 </resources>

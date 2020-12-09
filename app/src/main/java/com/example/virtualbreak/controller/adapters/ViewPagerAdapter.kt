@@ -18,9 +18,6 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity?) :
        return fragments.size
     }
 
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-    }
 
     override fun createFragment(position: Int): Fragment {
         return fragments[position]
@@ -28,27 +25,3 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity?) :
 
 
 }
-
-/*
-class GroupsStateAdapter(fragmentManager: FragmentManager?, lifecycle: Lifecycle):
-    FragmentStateAdapter(fragmentManager!!, lifecycle) {
-
-    private val fragments:ArrayList<Fragment> = arrayListOf(
-        Groups_grouplist_fragment(),
-        Groups_friendlist_fragment()
-    )
-
-    override fun getItemCount(): Int {
-        Log.i("M_FragmentitemCount", fragments.size.toString())
-        return  fragments.size
-    }
-
-    override fun createFragment(position: Int): Fragment {
-        Log.i("M_FragmentitemCount", fragments[position].toString())
-        return fragments[position]
-    }
-
-
-}
-
- */

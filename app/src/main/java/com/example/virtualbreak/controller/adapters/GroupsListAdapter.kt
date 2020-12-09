@@ -4,19 +4,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import kotlinx.android.synthetic.main.group_list_item.*
 
 class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
+    private val testNames = arrayOf("Uni", "Arbeit","Sport")
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
 
         init{
-            textView = view.findViewById(R.id.group_list_name)
-            //define click listener for viewholders view?
+            textView = itemView.findViewById(R.id.group_list_name)
+
+            //define click listener for viewholders view
+            itemView.setOnClickListener{
+                var position: Int = adapterPosition
+                var context = itemView.context
+                //TODO GO TO selectet GROUP
+            }
+
+
         }
     }
 
@@ -29,12 +40,12 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         //TODO get groupnames form content at position, replace contents in view with new
-        //holder.textView.text = dataSet[position]
+        holder.textView.text = testNames[position]
     }
 
     override fun getItemCount(): Int {
         //TODO size = dataSet.size
-        return 1
+        return testNames.size
     }
 
 

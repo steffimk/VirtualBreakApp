@@ -14,10 +14,14 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_1_hint">Passwort</string>
     <string name="login_submit">Log In</string>
+
+    <string name="login_with_google">Log In with Google</string>
     <string name="login_signin">Noch kein Account? Sign Up!</string>
     <string name="signin_login">Du hast bereits einen Account? Log in!</string>
     <string name="toast_loginFailed">LogIn nicht geklappt. Versuch es nochmal.</string>
     <string name="error_wrongPassword">Falsches Passwort. Versuche es nochmal.</string>
+    <string name="toast_enter_mail">Bitte gebe deine Mailadresse ein.</string>
+    <string name="toast_enter_pw">Bitte gebe dein Passwort ein.</string>
 
     <!-- Singin -->
     <string name="signin">SignUp</string>
@@ -27,6 +31,9 @@
     <string name="signin_password_1_hint">Passwort</string>
     <string name="signin_password_2_hint">Passwort wiederholen</string>
     <string name="signin_submit">Sign up</string>
+    <string name="toast_signIn_Failed">Sign Up fehlgeschlagen. Versuche es nochmal.</string>
+    <string name="toast_enter_data">Bitte fülle alle Felder aus.</string>
+    <string name="toast_pw_different">Die Passwörter stimmen nicht überein.</string>
 
 
     <!-- MainActivity -->

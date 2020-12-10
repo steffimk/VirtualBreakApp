@@ -8,6 +8,7 @@ import android.widget.Button
 import com.example.virtualbreak.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var signupBtn: Button
@@ -46,5 +47,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, LogInActivity::class.java))
             }
         }
+
     }
 }

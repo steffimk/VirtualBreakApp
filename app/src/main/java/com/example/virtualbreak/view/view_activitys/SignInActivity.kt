@@ -8,11 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
 import com.example.virtualbreak.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-
+import com.example.virtualbreak.controller.isOnline
 
 class SignInActivity : AppCompatActivity() {
 
@@ -38,7 +39,7 @@ class SignInActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if ( auth.currentUser != null)
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java)) //TODO
     }
 
     private fun tryAndSignUp(name: String, email: String, password1: String, password2: String) {
@@ -56,29 +57,36 @@ class SignInActivity : AppCompatActivity() {
             ).show()
             return
         }
-        auth.createUserWithEmailAndPassword(email, password1)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success")
-                        val user = auth.currentUser
+        if (isOnline(this.applicationContext)) {
+            auth.createUserWithEmailAndPassword(email, password1)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success")
+                            val user = auth.currentUser
 
-                        var database: DatabaseReference = Firebase.database.reference
-                        if (user != null) {
-                            database.child("users").child(user.uid).child("username").setValue(name)
+                            var database: DatabaseReference = Firebase.database.reference
+                            if (user != null) {
+                                database.child("users").child(user.uid).child("username").setValue(name)
+                            }
+                            startActivity(Intent(this, MainActivity::class.java)) //TODO
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                            val message: String = getGermanErrorMessage((task.exception as FirebaseAuthException?)!!.errorCode, R.string.toast_signIn_Failed.toString())
+                            Toast.makeText(
+                                    baseContext, message,
+                                    Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        startActivity(Intent(this, MainActivity::class.java))
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(
-                                baseContext, R.string.toast_signIn_Failed,
-                                Toast.LENGTH_SHORT
-                        ).show()
                     }
+        } else {
+            Toast.makeText(
+                    baseContext, R.string.internet_access_required,
+                    Toast.LENGTH_SHORT
+            ).show()
+        }
 
-                    // ...
-                }
     }
 
 

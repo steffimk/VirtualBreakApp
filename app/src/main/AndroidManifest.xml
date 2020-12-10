@@ -3,14 +3,13 @@
     package="com.example.virtualbreak">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:screenOrientation="portrait"
         android:theme="@style/Theme.VirtualBreak">
         <activity android:name=".view.view_activitys.LogInActivity"/>
@@ -20,10 +19,10 @@
             android:label="@string/title_activity_break_room">
         </activity>
         <activity
-            android:name=".view.view_activitys.SingleGroupActivity"
-            android:label="@string/title_activity_single_group">
+            android:name=".view.view_activitys.NavigationDrawerActivity"
+            android:label="@string/title_activity_single_group"
+            android:theme="@style/Theme.VirtualBreak.NoActionBar">
         </activity>
-
         <activity android:name=".view.view_activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

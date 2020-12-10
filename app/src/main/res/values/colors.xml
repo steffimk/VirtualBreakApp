@@ -27,6 +27,12 @@
     <color name="dark_brown">#634532</color>
     <color name="cafe">#B4816A</color>
 
+    <color name = "ocker">#F9BD25</color>
+    <color name = "forest">#388E3C</color>
+    <color name = "lagune">#009ca3</color>
+    <color name ="blue">#5da2d5</color>
+    <color name="pale_blue">#b4dfe5</color>
+    <color name="pale_yellow">#fbe8a6</color>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.example.virtualbreak.view.view_activitys.ui.singlegroup
+package com.example.virtualbreak.view.ui.singlegroup
 
 import android.os.Bundle
 import android.view.LayoutInflater

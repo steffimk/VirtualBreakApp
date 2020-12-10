@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.virtualbreak.view.view_activitys.ui.home.HomeFragment"
+        android:name="com.example.virtualbreak.view.view_fragments.GroupsFriendsFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_groups_friends_list" >
         <action
             android:id="@+id/action_nav_home_to_singleGroupFragment"
             app:destination="@id/singleGroupFragment"
@@ -18,14 +18,20 @@
 
     <fragment
         android:id="@+id/nav_myprofile"
-        android:name="com.example.virtualbreak.view.view_activitys.ui.myprofile.MyProfileFragment"
+        android:name="com.example.virtualbreak.view.ui.myprofile.MyProfileFragment"
         android:label="@string/menu_myprofile"
         tools:layout="@layout/fragment_myprofile" />
 
     <fragment
         android:id="@+id/singleGroupFragment"
-        android:name="com.example.virtualbreak.view.view_activitys.ui.singlegroup.SingleGroupFragment"
+        android:name="com.example.virtualbreak.view.ui.singlegroup.SingleGroupFragment"
         android:label="Deine Gruppe"
         tools:layout="@layout/fragment_singlegroup" />
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.virtualbreak.view.ui.logout.LoggedOutFragment"
+        android:label="Logged out"
+        tools:layout="@layout/fragment_loggedout" />
 
 </navigation>

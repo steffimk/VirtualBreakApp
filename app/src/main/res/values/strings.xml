@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">VirtualBreak</string>
-    <string name="title_activity_single_group">SingleGroupActivity</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
@@ -39,7 +38,7 @@
     <!-- MainActivity -->
     <string name="title_activity_signin">SigninActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="welcome_to_virtualbreak">Wilkommen to VirtualBreak</string>
+    <string name="welcome_to_virtualbreak">Wilkommen bei VirtualBreak</string>
     <string name="log_in">Log in</string>
     <string name="create_an_account">Erstelle einen Account</string>
 
@@ -60,5 +59,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_myprofile">Profil</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
+    <string name="new_group">Neue Gruppe</string>
+    <string name="neuer_pausenraum">Neuer Pausenraum</string>
 
 </resources>

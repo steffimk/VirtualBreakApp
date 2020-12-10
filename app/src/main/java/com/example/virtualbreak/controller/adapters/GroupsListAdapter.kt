@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import kotlinx.android.synthetic.main.group_list_item.*
@@ -26,7 +26,9 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
             itemView.setOnClickListener{
                 var position: Int = adapterPosition
                 var context = itemView.context
-                //TODO GO TO selectet GROUP
+
+                //TODO GO TO selectet GROUP - pass group data
+                itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
             }
 
 
@@ -49,6 +51,7 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
         //TODO size = dataSet.size
         return testNames.size
     }
+
 
 
 

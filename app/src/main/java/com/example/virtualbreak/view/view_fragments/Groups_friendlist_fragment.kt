@@ -11,6 +11,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.adapters.GroupsListAdapter
 import com.example.virtualbreak.view.view_models.GroupsViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
 
@@ -49,6 +50,8 @@ class Groups_friendlist_fragment : Fragment() {
 
         friends_add_friends_button.setOnClickListener{
             //TODO Add Friends
+            Snackbar.make(view, "Füge Freunde hinzu", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         }
     }
 

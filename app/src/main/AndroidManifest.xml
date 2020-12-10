@@ -2,31 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.virtualbreak">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:screenOrientation="portrait"
+        android:supportsRtl="true"
         android:theme="@style/Theme.VirtualBreak">
-        <activity android:name=".view.view_activitys.LogInActivity"/>
+
+        <activity android:name=".view.view_activitys.LogInActivity" />
         <activity android:name=".view.view_activitys.SignInActivity" />
         <activity
             android:name=".view.view_activitys.BreakRoomActivity"
-            android:label="@string/title_activity_break_room">
-        </activity>
+            android:label="@string/title_activity_break_room" />
         <activity
             android:name=".view.view_activitys.SingleGroupActivity"
-            android:label="@string/title_activity_single_group">
-        </activity>
-
+            android:label="@string/title_activity_single_group" />
         <activity android:name=".view.view_activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

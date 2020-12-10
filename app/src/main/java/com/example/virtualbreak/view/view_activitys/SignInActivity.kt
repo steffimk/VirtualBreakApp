@@ -39,7 +39,7 @@ class SignInActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if ( auth.currentUser != null)
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java)) //TODO
     }
 
     private fun tryAndSignUp(name: String, email: String, password1: String, password2: String) {
@@ -69,7 +69,7 @@ class SignInActivity : AppCompatActivity() {
                             if (user != null) {
                                 database.child("users").child(user.uid).child("username").setValue(name)
                             }
-                            startActivity(Intent(this, MainActivity::class.java))
+                            startActivity(Intent(this, MainActivity::class.java)) //TODO
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)

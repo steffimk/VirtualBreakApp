@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.view_activitys.ui.singlegroup.SingleGroupFragment">
+    tools:context=".view.ui.singlegroup.SingleGroupFragment">
 
     <TextView
         android:id="@+id/text_singlegroup"
@@ -37,6 +37,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_singlegroup"
+        android:contentDescription="@string/neuer_pausenraum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

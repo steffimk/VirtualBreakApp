@@ -19,14 +19,18 @@
         </activity>
         <activity
             android:name=".view.view_activitys.NavigationDrawerActivity"
-            android:label="@string/title_activity_single_group"
+            android:label="@string/home"
             android:theme="@style/Theme.VirtualBreak.NoActionBar">
-        </activity>
-        <activity android:name=".view.view_activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".view.view_activitys.MainActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
     </application>
 

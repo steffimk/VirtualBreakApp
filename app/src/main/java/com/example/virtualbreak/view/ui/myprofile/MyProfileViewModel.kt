@@ -1,4 +1,4 @@
-package com.example.virtualbreak.view.view_activitys.ui.myprofile
+package com.example.virtualbreak.view.ui.myprofile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

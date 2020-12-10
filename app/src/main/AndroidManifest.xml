@@ -16,11 +16,6 @@
             android:name=".view.view_activitys.NavigationDrawerActivity"
             android:label="@string/title_activity_single_group"
             android:theme="@style/Theme.VirtualBreak.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".view.view_activitys.LogInActivity" />
         <activity android:name=".view.view_activitys.SignInActivity" />
@@ -28,11 +23,11 @@
             android:name=".view.view_activitys.BreakRoomActivity"
             android:label="@string/title_activity_break_room"></activity>
         <activity android:name=".view.view_activitys.MainActivity">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
     </application>
 

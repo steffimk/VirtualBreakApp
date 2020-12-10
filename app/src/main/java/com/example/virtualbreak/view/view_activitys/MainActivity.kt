@@ -48,9 +48,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        go_to_groups_button.setOnClickListener{
-            startActivity(Intent(this, GroupsActivity::class.java))
-        }
-
     }
 }

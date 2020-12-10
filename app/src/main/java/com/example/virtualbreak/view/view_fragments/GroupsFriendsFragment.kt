@@ -12,7 +12,7 @@ import com.example.virtualbreak.view.view_models.GroupsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_groups_friends_list.*
 
-class GroupsFriendsListFragment : Fragment() {
+class GroupsFriendsFragment : Fragment() {
 
     private lateinit var viewModel: GroupsViewModel
 

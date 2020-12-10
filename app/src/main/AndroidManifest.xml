@@ -10,21 +10,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
-        android:supportsRtl="true"
         android:theme="@style/Theme.VirtualBreak">
-
-        <activity android:name=".view.view_activitys.LogInActivity" />
+        <activity android:name=".view.view_activitys.LogInActivity"/>
         <activity android:name=".view.view_activitys.SignInActivity" />
         <activity
             android:name=".view.view_activitys.BreakRoomActivity"
-            android:label="@string/title_activity_break_room" />
+            android:label="@string/title_activity_break_room">
+        </activity>
         <activity
-            android:name=".view.view_activitys.SingleGroupActivity"
-            android:label="@string/title_activity_single_group" />
+            android:name=".view.view_activitys.NavigationDrawerActivity"
+            android:label="@string/title_activity_single_group"
+            android:theme="@style/Theme.VirtualBreak.NoActionBar">
+        </activity>
         <activity android:name=".view.view_activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

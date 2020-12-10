@@ -45,7 +45,7 @@ class LogInActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null)
-            startActivity(Intent(this, MainActivity::class.java)) // TODO
+            startActivity(Intent(this, NavigationDrawerActivity::class.java))
     }
 
     private fun tryAndLogIn(email: String, password: String) {
@@ -69,7 +69,7 @@ class LogInActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success")
-                            startActivity(Intent(this, MainActivity::class.java)) //TODO
+                            startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.exception)

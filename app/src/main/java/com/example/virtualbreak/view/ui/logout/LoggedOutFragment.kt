@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment
 import com.example.virtualbreak.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoggedOutFragment : Fragment() {
 
@@ -29,7 +29,7 @@ class LoggedOutFragment : Fragment() {
             textView.text = it
         })
 
-        //TODO really log out user + evtl not as Fragment but new Activity
+        Firebase.auth.signOut()
 
         return root
     }

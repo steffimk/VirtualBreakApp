@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.model.Status
 
 class NavigationDrawerActivity : AppCompatActivity() {
 
@@ -23,7 +26,18 @@ class NavigationDrawerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PullData.attachListenerToCurrentUser() // TODO
+        //The following is for testing the data base --------------------------------
+//        PullData.attachListenerToCurrentUser()
+//        val groupId = PushData.saveGroup("Neue Gruppe")
+//        if (groupId != null) {
+//            PullData.attachListenerToGroup(groupId)
+//            val roomId = PushData.saveRoom(groupId, Roomtype.GAME)
+//            if (roomId != null) {
+//                PullData.attachListenerToRoom(roomId)
+//            }
+//        }
+//        PushData.setStatus(Status.AVAILABLE)
+        //--------------------------------------------------------------------------
 
         setContentView(R.layout.activity_navigationdrawer)
         val toolbar: Toolbar = findViewById(R.id.toolbar)

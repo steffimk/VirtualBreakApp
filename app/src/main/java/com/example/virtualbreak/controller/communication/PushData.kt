@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.communication
 
 import com.example.virtualbreak.model.Status
+import com.example.virtualbreak.model.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -10,12 +11,13 @@ class PushData {
 
     companion object {
 
+        private val database : DatabaseReference = Firebase.database.reference
+
         fun saveUser(user: FirebaseUser, name: String) {
 
-            var database: DatabaseReference = Firebase.database.reference
+            val userData = User(name, Status.BUSY)
             if (user != null) {
-                database.child("users").child(user.uid).child("username").setValue(name)
-                database.child("users").child(user.uid).child("status").setValue(Status.BUSY.dbStr)
+                  database.child("users").child(user.uid).setValue(userData)
             }
 
         }

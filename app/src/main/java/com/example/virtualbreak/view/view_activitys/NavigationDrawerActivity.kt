@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
 
 class NavigationDrawerActivity : AppCompatActivity() {
 
@@ -21,6 +22,9 @@ class NavigationDrawerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        PullData.attachListenerToCurrentUser() // TODO
+
         setContentView(R.layout.activity_navigationdrawer)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)

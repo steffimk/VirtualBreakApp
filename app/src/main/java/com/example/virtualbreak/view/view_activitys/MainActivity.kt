@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
             // TODO: Der User ist angemeldet. Hier Startbildschirm der App nach Authentication laden
             setContentView(R.layout.activity_main)
 
+            test_button.setOnClickListener{
+                startActivity(Intent(this, NavigationDrawerActivity::class.java))
+            }
+
             signupBtn = findViewById(R.id.signupButton)
             signupBtn.text = "Sign Out"
             signupBtn.setOnClickListener{

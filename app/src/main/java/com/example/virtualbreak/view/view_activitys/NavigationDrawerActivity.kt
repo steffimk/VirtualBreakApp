@@ -18,6 +18,7 @@ import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.model.Status
+import com.example.virtualbreak.model.User
 
 class NavigationDrawerActivity : AppCompatActivity() {
 

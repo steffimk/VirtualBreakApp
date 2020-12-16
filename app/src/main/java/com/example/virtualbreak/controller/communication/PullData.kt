@@ -19,12 +19,16 @@ class PullData {
         private val database : DatabaseReference = Firebase.database.reference
         private const val TAG: String = "PullData"
         var currentUser: User? = null
+        var groups: HashMap<String,Group> = HashMap()
+        var currentRoom: Room? = null
+        var friends: HashMap<String,User> = HashMap()
 
         fun attachListenerToCurrentUser() {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     currentUser = dataSnapshot.getValue(User::class.java)
+
                     Log.d(TAG, "Pulled User: $currentUser");
                 }
 
@@ -44,6 +48,9 @@ class PullData {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val group = dataSnapshot.getValue(Group::class.java)
+                    if (group != null){
+                        groups[groupId] = group
+                    }
                     Log.d(TAG, "Pulled Group: $group");
                 }
 
@@ -59,6 +66,9 @@ class PullData {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val room = dataSnapshot.getValue(Room::class.java)
+                    if (room != null) {
+                        currentRoom = room
+                    }
                     Log.d(TAG, "Pulled Room: $room");
                 }
 
@@ -67,6 +77,24 @@ class PullData {
                 }
             }
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
+        }
+
+        fun getUser(userId: String) {
+            val valueEventListener = object : ValueEventListener {
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val user = dataSnapshot.getValue(User::class.java)
+                    if (user != null) {
+                        friends.put(userId, user)
+                    }
+                    Log.d(TAG, "Pulled User: $user");
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d(TAG, databaseError.message)
+                }
+            }
+            database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
         }
     }
 }

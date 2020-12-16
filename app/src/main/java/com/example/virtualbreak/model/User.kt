@@ -2,6 +2,7 @@ package com.example.virtualbreak.model
 
 data class User(var uid: String = "",
                 var username: String = "",
+                var email: String = "",
                 var status: Status? = null,
                 var profilePicture: String? = null,
                 var groups: HashMap<String, String>? = null,

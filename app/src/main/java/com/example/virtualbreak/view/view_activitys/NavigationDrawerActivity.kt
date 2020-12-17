@@ -2,25 +2,31 @@ package com.example.virtualbreak.view.view_activitys
 
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
+import com.google.android.material.navigation.NavigationView
 
-class NavigationDrawerActivity : AppCompatActivity() {
+/**
+ * Activity with a navigation drawer on the left to navigate to other app fragments
+ * uses Navigation component to switch between fragments
+ * 1) add existing fragment as destination to (res/navigation/mobile_navigation) in Design view and
+ * 2) In menu/activity_main_drawer add item with same ID as fragment in 1)
+ * 3) NavController automatically handles switching the fragments when menu item are clicked
+ *
+ */
+class NavigationDrawerActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 

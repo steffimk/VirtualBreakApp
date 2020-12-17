@@ -1,18 +1,17 @@
-package com.example.virtualbreak.view.view_fragments
+package com.example.virtualbreak.view.view_fragments.groupsfriends
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.GroupsListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
-import com.example.virtualbreak.view.view_models.GroupsViewModel as GroupsViewModel
+import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewModel as GroupsViewModel
 
 
 class Groups_grouplist_fragment : Fragment() {

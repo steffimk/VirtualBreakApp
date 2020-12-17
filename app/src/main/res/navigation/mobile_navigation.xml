@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.virtualbreak.view.view_fragments.logout.LogoutFragment"
-        android:label="Logged out"
+        android:label="Logout"
         tools:layout="@layout/fragment_logout" />
 
 </navigation>

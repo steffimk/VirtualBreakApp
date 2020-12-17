@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-<<<<<<< HEAD
         if (Firebase.auth.currentUser != null) {
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
         }

@@ -36,17 +36,17 @@ class SingleGroupFragment : Fragment() {
         val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
         fabOptionNormal.setOnClickListener {
             //TODO Save Intent of Break: CoffeeBreak
-            // (Make Popup, invite friends?), Send notificaitons, open Breakroom, go to Breakroom
+            // (Make Popup, invite friends?), Send notificaitons, open instance of Breakroom, go to Breakroom
         }
         val fabOptionSport: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
         fabOptionSport.setOnClickListener {
             //TODO Save Intent of Break: SportBreak
-            // (Make Popup, invite friends?), Send notificaitons, open Breakroom, go to Breakroom
+            // (Make Popup, invite friends?), Send notificaitons, open instance of Breakroom, go to Breakroom
         }
         val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
         fabOptionGame.setOnClickListener {
             //TODO Save Intent of Break: GameBreak
-            // (Make Popup, invite friends?), Send notificaitons, open Breakroom, go to Breakroom
+            // (Make Popup, invite friends?), Send notificaitons, open instance of Breakroom, go to Breakroom
         }
 
         return root

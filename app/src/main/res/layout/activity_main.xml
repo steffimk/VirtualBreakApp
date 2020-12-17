@@ -31,7 +31,7 @@
             android:padding="10dp"
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:textColor="@color/light_green"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <Button
@@ -42,7 +42,7 @@
             android:padding="10dp"
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:textColor="@color/light_green" />
+            android:textColor="@color/white" />
 
         <Button
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:padding="10dp"
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:textColor="@color/light_green" />
+            android:textColor="@color/white" />
 
 
 

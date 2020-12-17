@@ -74,7 +74,7 @@
         android:backgroundTint="@color/mandarin"
         android:text="@string/login_submit"
         android:textAllCaps="false"
-        android:textColor="@color/light_green"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

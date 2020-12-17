@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-
-    <color name="dark_grey">#545454</color>
-
 
     <!-- ColorPallette-->
-    <color name="light_green">#F6F4D2</color>
-
-    <color name="tea_green">#CBDFBD</color>
-    <color name="yellow_green">#D4E09B</color>
+    <color name="blue_pale">#D2FDFF</color>
+    <color name="blue_columbia">#B4D5E5</color>
+    <color name="blue_Dark_cornflower">#303C6C</color>
+    <color name="blue_dark_night">#191f38</color>
     <color name="mandarin">#EC7846</color>
     <color name="sinopia">#C9532C</color>
     <color name="brow_sugar">#AF6B46</color>
@@ -21,18 +13,13 @@
     <color name="very_dark_brown">#2e1e15</color>
 
     <color name="black">#FF000000</color>
+    <color name="dark_grey">#545454</color>
     <color name="white">#FFFFFFFF</color>
 
 
     <color name="dark_brown">#634532</color>
     <color name="cafe">#B4816A</color>
 
-    <color name = "ocker">#F9BD25</color>
-    <color name = "forest">#388E3C</color>
-    <color name = "lagune">#009ca3</color>
-    <color name ="blue">#5da2d5</color>
-    <color name="pale_blue">#b4dfe5</color>
-    <color name="pale_yellow">#fbe8a6</color>
 
 
 </resources>

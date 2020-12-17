@@ -26,7 +26,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:layout_marginBottom="8dp"
-
         android:contentDescription="@string/add_friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

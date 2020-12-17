@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.nambimobile.widgets.efab.FabOption
 
 class SingleGroupFragment : Fragment() {
 
@@ -31,9 +32,21 @@ class SingleGroupFragment : Fragment() {
         })
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
-        fab.setOnClickListener { view ->
-             //Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-             //    .setAction("Action", null).show()
+
+        val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
+        fabOptionNormal.setOnClickListener {
+            //TODO Save Intent of Break: CoffeeBreak
+            // (Make Popup, invite friends?), Send notificaitons, open Breakroom, go to Breakroom
+        }
+        val fabOptionSport: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
+        fabOptionSport.setOnClickListener {
+            //TODO Save Intent of Break: SportBreak
+            // (Make Popup, invite friends?), Send notificaitons, open Breakroom, go to Breakroom
+        }
+        val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
+        fabOptionGame.setOnClickListener {
+            //TODO Save Intent of Break: GameBreak
+            // (Make Popup, invite friends?), Send notificaitons, open Breakroom, go to Breakroom
         }
 
         return root

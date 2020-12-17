@@ -98,6 +98,7 @@
             android:layout_height="wrap_content"
             app:fab_color="@color/mandarin"
             app:label_text="Game" />
+
     </com.nambimobile.widgets.efab.ExpandableFabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

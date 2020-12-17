@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class SingleGroupViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is SingleGroup Fragment"
+        value = "Offene Pausenräume:"
     }
     val text: LiveData<String> = _text
 }

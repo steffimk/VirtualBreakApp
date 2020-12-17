@@ -63,30 +63,41 @@
 
         <com.nambimobile.widgets.efab.ExpandableFab
             android:id="@+id/fab_singlegroup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_marginEnd="@dimen/efab_ui_margin_medium"
+            android:layout_marginStart="@dimen/efab_ui_margin_medium"
             android:layout_marginBottom="@dimen/efab_ui_margin_medium"
-            app:efab_closingAnticipateTension="0"
-            app:label_text="+"
-            app:efab_color="@color/mandarin"
-            app:efab_iconAnimationRotationDeg="-180"
-            app:efab_openingAnimationDurationMs="500" />
+            app:efab_icon="@drawable/ic_plus_white_24dp"
+            app:efab_color="@color/mandarin"/>
+           <!-- app:efab_iconAnimationRotationDeg="-180"
+            app:efab_openingAnimationDurationMs="500"
+            app:efab_closingAnticipateTension="0"-->
+
 
         <com.nambimobile.widgets.efab.FabOption
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/fab_singlegroup_option1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:fab_color="@color/mandarin"
             app:fab_icon="@drawable/addfriend"
             android:layout_gravity="center"
             app:label_text="Coffee" />
 
         <com.nambimobile.widgets.efab.FabOption
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:fab_color="@color/coffee"
+            android:id="@+id/fab_singlegroup_option2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="@color/mandarin"
             app:label_text="Sport" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_singlegroup_option3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="@color/mandarin"
+            app:label_text="Game" />
     </com.nambimobile.widgets.efab.ExpandableFabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

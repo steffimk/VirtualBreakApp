@@ -32,8 +32,8 @@ class SingleGroupFragment : Fragment() {
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
         fab.setOnClickListener { view ->
-             Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-                 .setAction("Action", null).show()
+             //Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+             //    .setAction("Action", null).show()
         }
 
         return root

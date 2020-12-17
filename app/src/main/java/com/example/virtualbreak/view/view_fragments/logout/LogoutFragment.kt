@@ -12,7 +12,7 @@ import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class LoggedOutFragment : Fragment() {
+class LogoutFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,7 +20,7 @@ class LoggedOutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_loggedout, container, false)
+        val root = inflater.inflate(R.layout.fragment_logout, container, false)
 
         root.findViewById<Button>(R.id.logoutBtn).setOnClickListener {
             //Sign out

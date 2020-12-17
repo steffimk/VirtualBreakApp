@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         if (Firebase.auth.currentUser != null){
 
             // TODO: Der User ist angemeldet. Hier Startbildschirm der App nach Authentication laden
-            setContentView(R.layout.activity_main)
+            /*setContentView(R.layout.activity_main)
 
             signupBtn = findViewById(R.id.signupButton)
             signupBtn.text = "Sign Out"
@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             loginBtn = findViewById(R.id.loginButton)
-            loginBtn.visibility = View.INVISIBLE
-
+            loginBtn.visibility = View.INVISIBLE*/
+            startActivity(Intent(this, NavigationDrawerActivity::class.java))
         }
 
         else {

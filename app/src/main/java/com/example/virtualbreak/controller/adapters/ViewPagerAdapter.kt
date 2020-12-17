@@ -2,8 +2,8 @@ package com.example.virtualbreak.controller.adapters
 
 import androidx.fragment.app.*
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.virtualbreak.view.view_fragments.Groups_friendlist_fragment
-import com.example.virtualbreak.view.view_fragments.Groups_grouplist_fragment
+import com.example.virtualbreak.view.view_fragments.groupsfriends.Groups_friendlist_fragment
+import com.example.virtualbreak.view.view_fragments.groupsfriends.Groups_grouplist_fragment
 
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity?) :

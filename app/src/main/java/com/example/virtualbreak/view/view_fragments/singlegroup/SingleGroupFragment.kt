@@ -1,4 +1,4 @@
-package com.example.virtualbreak.view.ui.singlegroup
+package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.os.Bundle
 import android.view.LayoutInflater

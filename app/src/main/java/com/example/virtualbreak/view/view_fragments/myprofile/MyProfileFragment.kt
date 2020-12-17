@@ -1,4 +1,4 @@
-package com.example.virtualbreak.view.ui.myprofile
+package com.example.virtualbreak.view.view_fragments.myprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater

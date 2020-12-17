@@ -1,4 +1,4 @@
-package com.example.virtualbreak.view.ui.logout
+package com.example.virtualbreak.view.view_fragments.logout
 
 import android.content.Intent
 import android.os.Bundle

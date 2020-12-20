@@ -14,6 +14,11 @@
             android:id="@+id/action_nav_home_to_singleGroupFragment"
             app:destination="@id/singleGroupFragment"
             app:enterAnim="@anim/fragment_open_enter" />
+        <action
+            android:id="@+id/action_nav_home_to_addFriendsFragment"
+            app:destination="@id/addFriendsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
 
     <fragment
@@ -33,5 +38,10 @@
         android:name="com.example.virtualbreak.view.view_fragments.logout.LogoutFragment"
         android:label="Logout"
         tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/addFriendsFragment"
+        android:name="com.example.virtualbreak.view.view_fragments.AddFriendsFragment"
+        android:label="Freund hinzufügen"
+        tools:layout="@layout/fragment_add_friends" />
 
 </navigation>

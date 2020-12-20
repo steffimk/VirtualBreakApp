@@ -40,27 +40,33 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val spinner = root.findViewById<Spinner>(R.id.status_spinner)
         spinner.setOnItemSelectedListener(this)
 
-        // Create an ArrayAdapter using a simple spinner layout and languages array
+        // Create an ArrayAdapter using a simple spinner layout and status array
         context?.let {
             val aa = ArrayAdapter(
                 it,
                 android.R.layout.simple_spinner_item,
                 status_array
             )
-            // Set layout to use when the list of choices appear
+            // Set layout to use when the list of choices (for different status) appear
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Set Adapter to Spinner
+            // Set array Adapter to Spinner
             spinner.setAdapter(aa)
         }
 
         return root
     }
 
+    /**
+     * when new status spinner item is selected, update status
+     */
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
         //TODO set new status
         currentStatus = status_array[position]
     }
 
+    /**
+     * also for status spinner
+     */
     override fun onNothingSelected(arg0: AdapterView<*>) {
 
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendListAdapter
@@ -46,9 +47,9 @@ class Groups_friendlist_fragment : Fragment() {
         friends_recyler_list_view.adapter = FriendListAdapter()
 
         friends_add_friends_button.setOnClickListener{
-            //TODO Add Friends
-            Snackbar.make(view, "Füge Freunde hinzu", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //navigate to add friends fragment
+            view.findNavController().navigate(R.id.action_nav_home_to_addFriendsFragment)
+
         }
     }
 

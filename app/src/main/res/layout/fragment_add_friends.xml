@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.view_fragments.AddFriendsFragment"
+    android:orientation="vertical"
+    android:layout_margin="15dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Freund hinzufügen"
+        android:textAllCaps="true"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Du kannst Freunde mithilfe ihrer E-Mail-Adresse hinzufügen:"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"/>
+
+
+    <EditText
+        android:id="@+id/friend_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="10dp"
+        android:hint="@string/login_email_hint"
+        android:includeFontPadding="true"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:layout_marginTop="10dp"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"/>
+
+    <Button
+        android:id="@+id/login_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/mandarin"
+        android:text="Suche"
+        android:textAllCaps="false"
+        android:textColor="@color/light_green"
+        android:textSize="20sp" />
+</LinearLayout>

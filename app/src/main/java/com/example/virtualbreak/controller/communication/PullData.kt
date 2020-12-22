@@ -24,11 +24,15 @@ class PullData {
         var friends: HashMap<String,User> = HashMap()
 
         fun attachListenerToCurrentUser() {
+            if (currentUser != null) {
+                return // Listener already attached
+            }
+
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     currentUser = dataSnapshot.getValue(User::class.java)
-
+                    updateGroups()
                     Log.d(TAG, "Pulled User: $currentUser");
                 }
 
@@ -43,7 +47,25 @@ class PullData {
             }
         }
 
-        fun attachListenerToGroup(groupId: String) {
+        private fun updateGroups() {
+            val pulledGroupIds = currentUser?.groups
+            pulledGroupIds?.forEach{
+                if (!groups.containsKey(it.key)){
+                    attachListenerToGroup(it.value)     // Attach Listeners to new groups
+                }
+            }
+            groups.forEach{
+                if (pulledGroupIds != null) {
+                    if (!pulledGroupIds.containsKey(it.key)) {  // Remove groups the user is not in anymore
+                        groups.remove(it.key)
+                    }
+                } else {
+                    groups = HashMap() // No group ids are pulled => empty HashMap
+                }
+            }
+        }
+
+        private fun attachListenerToGroup(groupId: String) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -96,6 +118,7 @@ class PullData {
             }
             database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
         }
+
     }
 }
 

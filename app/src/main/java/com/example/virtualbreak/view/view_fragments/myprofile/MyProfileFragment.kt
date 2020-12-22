@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -21,8 +23,8 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var myProfileViewModel: MyProfileViewModel
 
-    private var status_array = arrayOf(Status.STUDYING.dbStr, Status.BUSY.dbStr, Status.AVAILABLE.dbStr)
-    private lateinit var currentStatus: String
+    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE)
+    private lateinit var currentStatus: Status
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +49,15 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val aa = ArrayAdapter(
                 it,
                 android.R.layout.simple_spinner_item,
-                status_array
+                status_array.map{ status -> status.dbStr}
             )
             // Set layout to use when the list of choices (for different status) appear
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Set array Adapter to Spinner
             spinner.setAdapter(aa)
+            // Set position of spinner to current status
+            val spinnerPosition = aa.getPosition(PullData.currentUser?.status?.dbStr)
+            spinner.setSelection(spinnerPosition)
         }
 
         //button to edit own profile picture
@@ -69,8 +74,8 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
      * when new status spinner item is selected, update status
      */
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-        //TODO set new status
         currentStatus = status_array[position]
+        PushData.setStatus(currentStatus)
     }
 
     /**

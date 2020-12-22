@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -68,6 +69,7 @@ class SignInActivity : AppCompatActivity() {
                             if (user != null) {
                                 PushData.saveUser(user, name)
                             }
+                            PullData.attachListenerToCurrentUser()
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.

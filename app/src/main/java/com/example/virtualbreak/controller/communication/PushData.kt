@@ -1,14 +1,18 @@
 package com.example.virtualbreak.controller.communication
 
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.util.Log
+import com.example.virtualbreak.R
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
-import kotlin.collections.HashMap
+import java.io.ByteArrayOutputStream
 
 class PushData {
 
@@ -27,7 +31,7 @@ class PushData {
             }
         }
 
-        fun saveGroup(description: String) : String? {
+        fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 val groupId = database.child("groups").push().key
@@ -35,6 +39,9 @@ class PushData {
                     val newGroup = Group(groupId, hashMapOf(currentUserId to currentUserId), description)
                     database.child("groups").child(groupId).setValue(newGroup)
                     database.child("users").child(currentUserId).child("groups").child(groupId).setValue(groupId)
+                    userIds?.forEach{
+                        joinGroup(groupId, it)
+                    }
                     Log.d(TAG, "Saved new group")
                 }
                 return groupId
@@ -44,15 +51,10 @@ class PushData {
             }
         }
 
-        fun joinGroup(groupId: String) {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            if (currentUserId != null) {
-                database.child("groups").child(groupId).child("users").child(currentUserId).setValue(currentUserId)
-                database.child("users").child(currentUserId).child("groups").child(groupId).setValue(groupId)
-                Log.d(TAG, "User joined group")
-            } else {
-                Log.d(TAG, "No user logged in. Cannot join group.")
-            }
+        fun joinGroup(groupId: String, userId: String) {
+            database.child("groups").child(groupId).child("users").child(userId).setValue(userId)
+            database.child("users").child(userId).child("groups").child(groupId).setValue(groupId)
+            Log.d(TAG, "User $userId joined group $groupId")
         }
 
         fun leaveGroup(group: Group){
@@ -136,6 +138,13 @@ class PushData {
         }
 
         fun setProfilPicture(picture: String) {
+            // TODO: encode picture with Base64
+//            val byteArrayOutputStream = ByteArrayOutputStream()
+//            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.user)
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+//            val imageInBytes: ByteArray = byteArrayOutputStream.toByteArray()
+//            val imageAsString: String = Base64.encodeToString(imageInBytes, Base64.DEFAULT)
+
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 database.child("users").child(currentUserId).child("profilePicture").setValue(picture)

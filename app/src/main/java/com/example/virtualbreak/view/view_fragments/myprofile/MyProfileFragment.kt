@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
 import com.example.virtualbreak.model.Status
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_myprofile.*
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -51,6 +53,13 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Set array Adapter to Spinner
             spinner.setAdapter(aa)
+        }
+
+        //button to edit own profile picture
+        root.findViewById<FloatingActionButton>(R.id.fab_editPic).setOnClickListener {
+            //TODO choose and save new profile picture (Firebase Storage)
+            Snackbar.make(root, "Neues Profilbild", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         }
 
         return root

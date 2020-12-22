@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.virtualbreak.R
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 
@@ -43,6 +44,13 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: List<Sin
             val item: SingleGroupRoom = items_list[position]
             imageView.setImageResource(item.image_id)
             textView.setText(item.text)
+
+            v.setOnClickListener {
+                Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+
+
             return v
         }
         else{

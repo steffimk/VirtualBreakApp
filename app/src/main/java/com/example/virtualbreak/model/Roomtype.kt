@@ -1,5 +1,5 @@
 package com.example.virtualbreak.model
 
-enum class Roomtype {
-    COFFEE, QUESTION, GAME
+enum class Roomtype (val dbStr : String) {
+    COFFEE("coffee"), QUESTION("question"), GAME ("gamse")
 }

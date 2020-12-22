@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -39,7 +40,7 @@ class SignInActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if ( auth.currentUser != null)
-            startActivity(Intent(this, MainActivity::class.java)) //TODO
+            startActivity(Intent(this, NavigationDrawerActivity::class.java))
     }
 
     private fun tryAndSignUp(name: String, email: String, password1: String, password2: String) {
@@ -64,12 +65,10 @@ class SignInActivity : AppCompatActivity() {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success")
                             val user = auth.currentUser
-
-                            var database: DatabaseReference = Firebase.database.reference
                             if (user != null) {
-                                database.child("users").child(user.uid).child("username").setValue(name)
+                                PushData.saveUser(user, name)
                             }
-                            startActivity(Intent(this, MainActivity::class.java)) //TODO
+                            startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)

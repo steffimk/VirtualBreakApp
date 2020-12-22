@@ -1,4 +1,4 @@
-package com.example.virtualbreak.view.view_fragments
+package com.example.virtualbreak.view.view_fragments.groupsfriends
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.ViewPagerAdapter
-import com.example.virtualbreak.view.view_models.GroupsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_groups_friends_list.*
 

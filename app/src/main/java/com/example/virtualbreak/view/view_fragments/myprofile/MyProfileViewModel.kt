@@ -1,13 +1,13 @@
-package com.example.virtualbreak.view.ui.logout
+package com.example.virtualbreak.view.view_fragments.myprofile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class LoggedOutViewModel : ViewModel() {
+class MyProfileViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Augelogged"
+        value = "This is MyProfile Fragment"
     }
     val text: LiveData<String> = _text
 }

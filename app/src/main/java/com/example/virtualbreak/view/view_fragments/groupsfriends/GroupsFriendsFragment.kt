@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.ViewPagerAdapter
+import com.example.virtualbreak.controller.adapters.groupsfriends.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_groups_friends_list.*
 

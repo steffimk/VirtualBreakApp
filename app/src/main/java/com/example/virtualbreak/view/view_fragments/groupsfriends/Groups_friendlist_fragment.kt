@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.FriendListAdapter
-import com.google.android.material.snackbar.Snackbar
+import com.example.virtualbreak.controller.adapters.groupsfriends.FriendListAdapter
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
 

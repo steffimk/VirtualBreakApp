@@ -1,4 +1,4 @@
-package com.example.virtualbreak.controller.adapters
+package com.example.virtualbreak.controller.adapters.groupsfriends
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 
+
+/**
+ * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
+ */
 class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
     //TODO fetch data from firebase
@@ -23,7 +27,8 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFrien
             itemView.setOnClickListener{
                 var position: Int = adapterPosition
                 var context = itemView.context
-                //TODO GO TO selectet GROUP
+                //TODO Got to Friend profile?
+                //Do Nothing
             }
 
 

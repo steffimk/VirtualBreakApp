@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.GroupsListAdapter
+import com.example.virtualbreak.controller.adapters.groupsfriends.GroupsListAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewModel as GroupsViewModel

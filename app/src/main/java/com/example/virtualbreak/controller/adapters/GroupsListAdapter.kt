@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
+        private val TAG: String = "GroupsListAdapter_ViewHolder"
 
         init{
             textView = itemView.findViewById(R.id.group_list_name)
@@ -27,7 +29,9 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
                 val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
                 // TODO: potentially not working correctly if new group was added and positions in PullData.groups changed
                 // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
-                prefs.edit().putString("com.example.virtualbreak.groupId", ArrayList(PullData.groups.values)[position].uid).apply()
+                val groupId = ArrayList(PullData.groups.values)[position].uid
+                prefs.edit().putString("com.example.virtualbreak.groupId", groupId).apply()
+                Log.d(TAG, "GroupId $groupId added to shared preferences")
                 itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
             }
 

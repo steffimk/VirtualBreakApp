@@ -2,6 +2,7 @@ package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 class SingleGroupFragment : Fragment() {
 
     private lateinit var singleGroupViewModel: SingleGroupViewModel
+    private val TAG: String = "SingleGroupFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +41,7 @@ class SingleGroupFragment : Fragment() {
 
         val prefs = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
         val groupId = prefs?.getString("com.example.virtualbreak.groupId", "")
-        println("Got groupId from shared preferences: $groupId")
+        Log.d(TAG, "Got groupId from shared preferences: $groupId")
         val rooms = groupId?.let { PullData.getRoomsOfGroup(it) }
 
         val itemsList: MutableList<SingleGroupRoom> = ArrayList()

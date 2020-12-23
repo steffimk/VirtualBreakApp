@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters.singlegroup
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,7 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: List<Sin
                 val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
                 // save roomId of clicked room in shared preferences
                 prefs.edit().putString("com.example.virtualbreak.roomId", item.roomId).apply()
+                Log.d(TAG, "RoomId " + item.roomId + " added to shared preferences")
                 // TODO: go to breakroom view. In breakroom: get roomId from shared preferences and pull room from PullData
                 Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()

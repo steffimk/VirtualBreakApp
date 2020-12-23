@@ -29,7 +29,7 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
                 val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
                 // TODO: potentially not working correctly if new group was added and positions in PullData.groups changed
                 // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
-                val groupId = ArrayList(PullData.groups.values)[position].uid
+                val groupId = ArrayList(PullData.groups.keys)[position]
                 prefs.edit().putString("com.example.virtualbreak.groupId", groupId).apply()
                 Log.d(TAG, "GroupId $groupId added to shared preferences")
                 itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)

@@ -42,7 +42,11 @@ class PullData {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val isFirstPull = currentUser == null
                     currentUser = dataSnapshot.getValue(User::class.java)
+                    if (isFirstPull) {
+                        getFriends()
+                    }
                     updateGroups()
                     Log.d(TAG, "Pulled User: $currentUser");
                 }
@@ -131,7 +135,16 @@ class PullData {
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
         }
 
-        fun getUser(userId: String) {
+        fun getFriends() {
+            var friendIds = currentUser?.friends
+            if (friendIds != null){
+                friendIds.forEach{
+                    attachSingleEventListenerToUser(it.key)
+                }
+            }
+        }
+
+        private fun attachSingleEventListenerToUser(userId: String) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

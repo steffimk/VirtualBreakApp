@@ -44,7 +44,7 @@ class SingleGroupFragment : Fragment() {
 
         val itemsList: MutableList<SingleGroupRoom> = ArrayList()
         rooms?.forEach{ room ->
-            itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr))
+            itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr, room.uid))
         }
 
         val gridView: GridView = root.findViewById(R.id.grid_view)

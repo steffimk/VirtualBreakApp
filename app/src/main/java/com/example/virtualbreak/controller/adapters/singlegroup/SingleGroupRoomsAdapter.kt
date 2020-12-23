@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -46,6 +47,11 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: List<Sin
             textView.setText(item.text)
 
             v.setOnClickListener {
+                var context = imageView.context
+                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+                // save roomId of clicked room in shared preferences
+                prefs.edit().putString("com.example.virtualbreak.roomId", item.roomId).apply()
+                // TODO: go to breakroom view. In breakroom: get roomId from shared preferences and pull room from PullData
                 Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }

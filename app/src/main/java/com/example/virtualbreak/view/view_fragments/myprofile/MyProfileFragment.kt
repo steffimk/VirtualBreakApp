@@ -35,11 +35,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ViewModelProvider(this).get(MyProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_myprofile, container, false)
 
-        /*
-        val textView: TextView = root.findViewById(R.id.text_gallery)
-        myProfileViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })*/
+        //set username text of curent user
+        PullData.currentUser?.username?.let{
+            root.findViewById<TextView>(R.id.username).text = it
+        }
 
         val spinner = root.findViewById<Spinner>(R.id.status_spinner)
         spinner.setOnItemSelectedListener(this)

@@ -20,8 +20,16 @@ class PullData {
         private const val TAG: String = "PullData"
         var currentUser: User? = null
         var groups: HashMap<String,Group> = HashMap()
-        var currentRoom: Room? = null
+        var rooms: HashMap<String,Room> = HashMap()
         var friends: HashMap<String,User> = HashMap()
+
+        fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
+            val roomIds = ArrayList(groups.get(groupId)?.rooms?.values)
+            if (roomIds != null) {
+                return ArrayList(rooms.filter{ roomIds.contains(it.key)}.values)
+            }
+            return ArrayList()
+        }
 
         fun attachListenerToCurrentUser() {
             if (currentUser != null) {
@@ -51,7 +59,7 @@ class PullData {
             val pulledGroupIds = currentUser?.groups
             pulledGroupIds?.forEach{
                 if (!groups.containsKey(it.key)){
-                    attachListenerToGroup(it.value)     // Attach Listeners to new groups
+                    attachListenerToGroup(it.key)     // Attach Listeners to new groups
                 }
             }
             groups.forEach{
@@ -72,6 +80,7 @@ class PullData {
                     val group = dataSnapshot.getValue(Group::class.java)
                     if (group != null){
                         groups[groupId] = group
+                        updateRoomsOfGroup(groupId)
                     }
                     Log.d(TAG, "Pulled Group: $group");
                 }
@@ -83,13 +92,31 @@ class PullData {
             database.child("groups").child(groupId).addValueEventListener(valueEventListener)
         }
 
-        fun attachListenerToRoom(roomId: String) {
+        private fun updateRoomsOfGroup(groupId: String) {
+            val pulledRoomIds = groups.get(groupId)?.rooms
+            pulledRoomIds?.forEach{
+                if (!rooms.containsKey(it.key)){
+                    attachListenerToRoom(it.key)     // Attach Listeners to new rooms
+                }
+            }
+            rooms.forEach{
+                if (pulledRoomIds != null) {
+                    if (!pulledRoomIds.containsKey(it.key)) {  // Remove closed
+                        rooms.remove(it.key)
+                    }
+                } else {
+                    rooms = HashMap() // No group ids are pulled => empty HashMap
+                }
+            }
+        }
+
+        private fun attachListenerToRoom(roomId: String) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val room = dataSnapshot.getValue(Room::class.java)
                     if (room != null) {
-                        currentRoom = room
+                        rooms[roomId] = room
                     }
                     Log.d(TAG, "Pulled Room: $room");
                 }

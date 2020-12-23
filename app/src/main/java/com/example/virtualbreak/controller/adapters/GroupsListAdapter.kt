@@ -1,5 +1,6 @@
 package com.example.virtualbreak.controller.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,6 @@ import kotlinx.android.synthetic.main.group_list_item.*
 
 class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
-
-    //TODO fetch data from firebase
-    private val testNames = arrayOf("Arbeit", "Uni","Sport")
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
 
@@ -27,9 +24,9 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
             itemView.setOnClickListener{
                 var position: Int = adapterPosition
                 var context = itemView.context
+                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
 
-                //TODO GO TO selectet GROUP - pass group data
-                //Pass on ID of group ArrayList(PullData.groups.values)[position].uid
+                prefs.edit().putString("com.example.virtualbreak.groupId", ArrayList(PullData.groups.values)[position].uid).apply()
                 itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
             }
 

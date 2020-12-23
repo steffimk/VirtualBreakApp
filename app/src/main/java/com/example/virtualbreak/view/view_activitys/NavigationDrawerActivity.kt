@@ -37,9 +37,6 @@ class NavigationDrawerActivity : AppCompatActivity(){
         val groupId = PushData.saveGroup("Neue Gruppe", null)
         if (groupId != null) {
             val roomId = PushData.saveRoom(groupId, Roomtype.GAME)
-            if (roomId != null) {
-                PullData.attachListenerToRoom(roomId)
-            }
         }
         //--------------------------------------------------------------------------
 

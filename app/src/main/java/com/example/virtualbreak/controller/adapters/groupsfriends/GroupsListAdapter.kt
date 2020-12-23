@@ -58,9 +58,9 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         //TODO get groupnames form content at position, replace contents in view with new
-        //holder.textView.text = testNames[position]
-        allGroups.forEach { (key, value) -> println("$key = $value") }
-        holder.textView.text = allGroups[position].description
+        holder.textView.text = testNames[position]
+        //allGroups.forEach { (key, value) -> println("$key = $value") }
+        //holder.textView.text = allGroups[position].description
     }
 
     override fun getItemCount(): Int {

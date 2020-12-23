@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.groupsfriends.GroupsListAdapter
@@ -48,8 +49,10 @@ class Groups_grouplist_fragment : Fragment() {
 
         groups_add_group_button.setOnClickListener{
             //TODO Add Groups
-            Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+            //   .setAction("Action", null).show()
+            //itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
+            view.findNavController().navigate(R.id.action_nav_home_to_addGroupFragment)
         }
     }
 

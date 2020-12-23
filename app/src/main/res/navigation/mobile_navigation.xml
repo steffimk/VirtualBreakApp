@@ -19,6 +19,11 @@
             app:destination="@id/addFriendsFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/action_nav_home_to_addGroupFragment"
+            app:destination="@+id/add_group_fragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"/>
     </fragment>
 
     <fragment
@@ -44,4 +49,9 @@
         android:label="Freund hinzufügen"
         tools:layout="@layout/fragment_add_friends" />
 
+    <fragment
+        android:id="@+id/add_group_fragment"
+        android:name="com.example.virtualbreak.view.view_fragments.AddGroupFragment"
+        android:label="Gruppe erstellen"
+        tools:layout="@layout/fragment_add_group"/>
 </navigation>

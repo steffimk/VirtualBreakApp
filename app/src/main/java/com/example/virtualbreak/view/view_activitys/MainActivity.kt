@@ -15,15 +15,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     lateinit var signupBtn: Button
     lateinit var loginBtn: Button
+    lateinit var test_button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (Firebase.auth.currentUser != null) {
-            startActivity(Intent(this, NavigationDrawerActivity::class.java))
-        }
-
-        test_button.setOnClickListener{
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
         }
 

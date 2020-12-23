@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    //navigation
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
@@ -69,7 +70,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //Cardview
     implementation "androidx.cardview:cardview:1.0.0"
+
+    //Receyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
+
+    //Rounded ImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 }

@@ -10,7 +10,7 @@
         android:id="@+id/textViewGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="20dp"
         android:gravity="center"
         android:text="@string/make_group"
         android:textSize="30sp"
@@ -22,17 +22,17 @@
         android:id="@+id/et_group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="2dp"
         android:drawablePadding="10dp"
         android:hint="@string/hint_group_name"
         android:includeFontPadding="true"
         android:inputType="text"
         android:maxLines="1"
         android:paddingStart="20dp"
-        android:paddingTop="10dp"
+        android:paddingTop="8dp"
         android:paddingEnd="20dp"
-        android:paddingBottom="20dp"
+        android:paddingBottom="8dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
             android:id="@+id/textViewGroup2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="16dp"
             android:gravity="start"
             android:text="@string/select_friends"
             android:textSize="22sp" />
@@ -91,20 +91,21 @@
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/select_friends_recylerlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="5dp"
             android:layout_marginHorizontal="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_group_name"
             app:layout_constraintVertical_bias="0.22000003" />
-        </ScrollView>
 
     </LinearLayout>
 

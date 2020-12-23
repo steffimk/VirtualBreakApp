@@ -14,6 +14,8 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoom
 import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Roomtype
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -53,8 +55,12 @@ class SingleGroupFragment : Fragment() {
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
         fab.setOnClickListener { view ->
-             Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-                 .setAction("Action", null).show()
+            val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
+            if (groupId != null && groupId != "") {
+                PushData.saveRoom(groupId, Roomtype.COFFEE) // TODO: Let user decide on RoomType
+                Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
         }
 
         return root

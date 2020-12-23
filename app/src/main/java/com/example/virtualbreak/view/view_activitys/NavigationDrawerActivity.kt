@@ -34,10 +34,10 @@ class NavigationDrawerActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         //The following is for testing the data base --------------------------------
-        val groupId = PushData.saveGroup("Neue Gruppe", null)
-        if (groupId != null) {
-            val roomId = PushData.saveRoom(groupId, Roomtype.GAME)
-        }
+//        val groupId = PushData.saveGroup("Neue Gruppe", null)
+//        if (groupId != null) {
+//            val roomId = PushData.saveRoom(groupId, Roomtype.GAME)
+//        }
         //--------------------------------------------------------------------------
 
         setContentView(R.layout.activity_navigationdrawer)

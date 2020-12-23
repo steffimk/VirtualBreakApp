@@ -24,6 +24,9 @@ class PullData {
         var friends: HashMap<String,User> = HashMap()
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
+            if (groups.get(groupId)?.rooms == null){
+                return ArrayList()
+            }
             val roomIds = ArrayList(groups.get(groupId)?.rooms?.values)
             if (roomIds != null) {
                 return ArrayList(rooms.filter{ roomIds.contains(it.key)}.values)

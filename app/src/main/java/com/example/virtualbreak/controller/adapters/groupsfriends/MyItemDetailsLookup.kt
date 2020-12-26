@@ -16,5 +16,5 @@ class MyItemDetailsLookup(private val recyclerView: RecyclerView) :
         }*/
         return null
 
-    } 
+    }
 }

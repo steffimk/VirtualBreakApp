@@ -16,6 +16,16 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
+                <CheckBox
+                    android:id="@+id/friends_select_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="gone"
+                    android:focusableInTouchMode="false"
+                    />
+
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/friend_list_image"
                     android:layout_width="@dimen/group_list_height"

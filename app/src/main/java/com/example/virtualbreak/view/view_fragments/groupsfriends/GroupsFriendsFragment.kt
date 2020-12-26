@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_groups_friends_list.*
 
 class GroupsFriendsFragment : Fragment() {
 
-    private lateinit var viewModel: GroupsViewModel
+    private lateinit var groupsViewModel: GroupsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class GroupsFriendsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
+        groupsViewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
 
     }
 

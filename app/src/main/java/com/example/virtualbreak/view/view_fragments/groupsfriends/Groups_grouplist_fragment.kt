@@ -21,7 +21,7 @@ class Groups_grouplist_fragment : Fragment() {
         fun newInstance() = Groups_grouplist_fragment()
     }
 
-    private lateinit var viewModel: GroupsViewModel
+    private lateinit var groupsViewModel: GroupsViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class Groups_grouplist_fragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
+        groupsViewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
 
     }
 

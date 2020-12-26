@@ -1,5 +1,6 @@
 package com.example.virtualbreak.controller.adapters.groupsfriends
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +21,6 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
     private val testNames = arrayOf("Arbeit", "Uni","Sport")
     var allGroups = arrayListOf<Group>()
 
-    fun getGroups(){
-        PullData.groups.forEach {
-                (key, group) -> allGroups.add(group)
-        }
-
-    }
 
 
 
@@ -58,15 +53,27 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         //TODO get groupnames form content at position, replace contents in view with new
+        getGroups()
+
         holder.textView.text = testNames[position]
-        //allGroups.forEach { (key, value) -> println("$key = $value") }
         //holder.textView.text = allGroups[position].description
     }
 
     override fun getItemCount(): Int {
-        //TODO size = dataSet.size
+        //TODO
         return testNames.size
+        //allGroups.size
     }
+
+    fun getGroups(){
+        Log.d("Groups","groups" + PullData.groups)
+        PullData.groups.forEach {
+                (key, group) -> allGroups.add(group)
+        }
+        Log.d("Groups","allGroups" + allGroups)
+
+    }
+
 
 
 

@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/add_group_fragment"
-        android:name="com.example.virtualbreak.view.view_fragments.AddGroupFragment"
+        android:name="com.example.virtualbreak.view.view_fragments.groupsfriends.AddGroupFragment"
         android:label="Gruppe erstellen"
         tools:layout="@layout/fragment_add_group"/>
 </navigation>

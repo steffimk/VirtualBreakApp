@@ -53,7 +53,7 @@ class SingleGroupFragment : Fragment() {
 
         val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
         fabOptionNormal.setOnClickListener {
-            //TODO (Make Popup, invite friends?), Send notificaitons, open instance of Breakroom, go to Breakroom
+            //TODO Send notificaitons, go to created Breakroom
 
             //Save the Breakroom with intent coffee
             val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
@@ -63,9 +63,12 @@ class SingleGroupFragment : Fragment() {
                     .setAction("Action", null).show()
             }
 
+
         }
         val fabOptionQuestion: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
         fabOptionQuestion.setOnClickListener {
+            //TODO Send notificaitons, go to created Breakroom
+
             //Save the BreakRoom with Intent Sport
             val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
             if (groupId != null && groupId != "") {
@@ -76,6 +79,8 @@ class SingleGroupFragment : Fragment() {
         }
         val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
         fabOptionGame.setOnClickListener {
+            //TODO Send notificaitons, go to created Breakroom
+
             // save the Breakroom with intent Game
             val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
             if (groupId != null && groupId != "") {

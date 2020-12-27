@@ -65,5 +65,7 @@
     <string name="neuer_pausenraum">Neuer Pausenraum</string>
     <string name="willst_du_dich_wirklich_ausloggen">Willst du dich wirklich ausloggen?</string>
     <string name="ja">Ja</string>
+    <string name="status">Status</string>
+    <string name="username">Username</string>
 
 </resources>

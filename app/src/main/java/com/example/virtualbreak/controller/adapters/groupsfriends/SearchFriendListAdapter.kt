@@ -23,9 +23,8 @@ import kotlinx.android.synthetic.main.friend_list_item.view.*
 
 class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
 
-    //TODO fetch freindlist from firebase, map to arraylist?
     private var testNames: HashMap<String,User> = HashMap()
-    //Hashmapp <Userid, User>
+
     var allFriends = arrayListOf<Friend>()
     var onClick: OnItemClickListener? = null
 
@@ -40,23 +39,6 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
         val selectBox = itemView.findViewById<CheckBox>(R.id.friends_select_box)
         val status = itemView.findViewById<TextView>(R.id.friend_list_status)
 
-//        init {
-//            //Make the Checkbox visible
-//            seletBox.visibility = View.VISIBLE
-//            //define click listener for viewholders view
-//            itemView.setOnClickListener {
-//                var position: Int = adapterPosition
-//                var context = itemView.context
-//                //TODO Got to Friend profile?
-//                //Do Nothing
-//            }
-//        }
-
-//        fun bind(value: Int, isActivated: Boolean = false){
-//            textView.text = value.toString()
-//            //itemView.isActivated = isActivated
-//        }
-
 
     }
 
@@ -69,7 +51,6 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
     }
 
     override fun getItemCount(): Int {
-        //TODO size = dataSet.size
         return allFriends.size
     }
 
@@ -91,14 +72,14 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
         if (onClick != null) viewHolder.itemView.setOnClickListener{
             Log.d("Groups","onClick")
             friend.isSelectet = !friend.isSelectet
-
             viewHolder.selectBox.isChecked = friend.isSelectet
-            //viewHolder.status.text = friend.isSelectet.toString()
-            notifyDataSetChanged()
-            Log.d("Groups","onClick $position ${friend.isSelectet} ${viewHolder.selectBox.isChecked}")
-            notifyDataSetChanged()
+
+            //notifyDataSetChanged()
+            notifyItemChanged(position);
+            Log.d("Groups","onClick $position ${friend.isSelectet}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}")
+            //notifyDataSetChanged()
             onClick!!.onItemClick(friend)
-            //TODO show user that this is selectet? change background of item
+
         }
 
     }
@@ -118,6 +99,9 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
     }
 
     fun testFriends(){
+
+        //TODO lösche methode und ersetze dummy daten durch echte
+
         testNames.put("Hannes", User("12356","Hannes", "test@mails.de",Status.BUSY))
         testNames.put("Gerda", User("12456","Gerda", "test@mails.de",Status.BUSY))
         testNames.put("Sui", User("14566","Susi", "test@mails.de",Status.BUSY))

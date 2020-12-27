@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StableIdKeyProvider
@@ -33,7 +35,6 @@ class AddGroupFragment : Fragment() {
 
     private val adapter: SearchFriendListAdapter = SearchFriendListAdapter()
     val selectFriendsIds = mutableListOf<String>()
-    //private var tracker: SelectionTracker<String>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +60,7 @@ class AddGroupFragment : Fragment() {
         select_friends_recylerlist.adapter = adapter
         adapter.testFriends()
         adapter.getFriends()
-        //adapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
 
         adapter!!.setOnItemClickListener(object : SearchFriendListAdapter.OnItemClickListener{
             override fun onItemClick(friend: Friend) {
@@ -78,8 +79,18 @@ class AddGroupFragment : Fragment() {
         val createGroupButton: FloatingActionButton = view.findViewById(R.id.make_group_button)
         createGroupButton.setOnClickListener{
             //TODO change with freindlist, need to pull updated function, check if groupname is added, check if at least one friend is selected, go to overview again
-            //Save the created Group with freindlist selectedfriends, convert friends to Users again?
-            //PushData.saveGroup(groupName.text.toString(), selectedFriendsIds)
+
+            if (groupName.text.toString() != ""){
+                if(selectFriendsIds.isNotEmpty()){
+                    //TODO PushData.saveGroup(groupName.text.toString(), selectedFriendsIds)
+                    //PushData.saveGroup(groupName.text.toString())
+                    view.findNavController().navigate(R.id.action_addGroupFragment_to_navHome)
+                }else{
+                    Toast.makeText(activity, getString(R.string.Error_no_friends), Toast.LENGTH_SHORT).show()
+                }
+            } else{
+                Toast.makeText(activity, getString(R.string.Error_no_groupname), Toast.LENGTH_SHORT).show()
+            }
         }
 
     }

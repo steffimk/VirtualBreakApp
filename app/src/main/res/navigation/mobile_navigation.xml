@@ -53,5 +53,13 @@
         android:id="@+id/add_group_fragment"
         android:name="com.example.virtualbreak.view.view_fragments.groupsfriends.AddGroupFragment"
         android:label="Gruppe erstellen"
-        tools:layout="@layout/fragment_add_group"/>
+        tools:layout="@layout/fragment_add_group">
+
+        <action
+            android:id="@+id/action_addGroupFragment_to_navHome"
+            app:destination="@+id/nav_home"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"/>
+
+    </fragment>
 </navigation>

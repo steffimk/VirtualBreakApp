@@ -1,5 +1,6 @@
-package com.example.virtualbreak.controller.adapters.groupsfriends
+package com.example.virtualbreak.controller.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
-import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.User
 import com.makeramen.roundedimageview.RoundedImageView
 
@@ -18,13 +18,13 @@ import com.makeramen.roundedimageview.RoundedImageView
  */
 class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
-    //TODO fetch data from firebase
     private val testNames = arrayOf("Friend1", "Friend2","Friend3")
     var allFriends = arrayListOf<User>()
 
 
     class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
+        private val TAG: String = "FriendListAdapter_ViewHolder"
         val profilPicture: RoundedImageView
 
         init{
@@ -35,8 +35,13 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFrien
             itemView.setOnClickListener{
                 var position: Int = adapterPosition
                 var context = itemView.context
-                //TODO Got to Friend profile?
-                //Do Nothing
+                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+                // TODO: potentially not working correctly if new friend was added and positions in PullData.friends changed
+                // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
+                val friendId = ArrayList(PullData.friends.keys)[position]
+                prefs.edit().putString("com.example.virtualbreak.friendId", friendId).apply()
+                Log.d(TAG, "FriendId $friendId added to shared preferences")
+                //TODO GO TO selected Friend
             }
 
 
@@ -50,28 +55,12 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFrien
     }
 
     override fun getItemCount(): Int {
-        //TODO size = dataSet.size
-        return testNames.size
-        //return allFriends.size
+        return PullData.friends.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolderFriends, position: Int) {
-        //TODO get groupnames form content at position, replace contents in view with new
-        holder.textView.text = testNames[position]
-        getFriends()
-        //holder.textView.text = allFriends[position].username
-        //TODO holder.profilPicture.setImageResource()
-        // Set status
-    }
-
-    fun getFriends(){
-        Log.d("Groups","friends" + PullData.friends)
-        PullData.friends.forEach {
-                (key, friend) -> allFriends.add(friend)
-        }
-        Log.d("Groups","allFriends" + allFriends)
-
+        holder.textView.text = ArrayList(PullData.friends.values)[position].username
     }
 
 

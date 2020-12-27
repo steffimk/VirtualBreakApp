@@ -2,6 +2,7 @@ package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoom
 import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoomsAdapter
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Roomtype
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,6 +24,7 @@ import com.nambimobile.widgets.efab.FabOption
 class SingleGroupFragment : Fragment() {
 
     private lateinit var singleGroupViewModel: SingleGroupViewModel
+    private val TAG: String = "SingleGroupFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +40,15 @@ class SingleGroupFragment : Fragment() {
             textView.text = it
         })
 
-        //TODO get room data from database + show users in room
+        val prefs = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+        val groupId = prefs?.getString("com.example.virtualbreak.groupId", "")
+        Log.d(TAG, "Got groupId from shared preferences: $groupId")
+        val rooms = groupId?.let { PullData.getRoomsOfGroup(it) }
+
         val itemsList: MutableList<SingleGroupRoom> = ArrayList()
-        itemsList.add(SingleGroupRoom(R.drawable.home, "Mensa"))
-        itemsList.add(SingleGroupRoom(R.drawable.addfriend, "Stucafe"))
-        itemsList.add(SingleGroupRoom(R.drawable.exit, "Games"))
+        rooms?.forEach{ room ->
+            itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr, room.uid))
+        }
 
         val gridView: GridView = root.findViewById(R.id.grid_view)
         val customAdapter =

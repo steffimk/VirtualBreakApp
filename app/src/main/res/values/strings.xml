@@ -7,6 +7,8 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_break_room">BreakRoomActivity</string>
     <string name="internet_access_required">Internetverbindung benötigt.</string>
+    <string name="something_wrong">Es liegt ein Fehler vor...</string>
+
     <!-- LogIn -->
     <string name="title_activity_login">LoginActivity</string>
     <string name="login">LogIn</string>
@@ -73,5 +75,10 @@
     <string name="willst_du_dich_wirklich_ausloggen">Willst du dich wirklich ausloggen?</string>
     <string name="ja">Ja</string>
     <string name="status">Status</string>
+    <string name="username">Username</string>
+
+    <!-- -->
+    <string name="send_message">Senden</string>
+    <string name="leave_room">Austreten</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters.groupsfriends
 
 import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,21 +12,15 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
 
+
 /**
  * This Adapter manages the Receyler View of the Groups in the groups_grouplist_fragment
  */
 class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
-
-    //TODO fetch data from firebase
-    private val testNames = arrayOf("Arbeit", "Uni","Sport")
-    var allGroups = arrayListOf<Group>()
-
-
-
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
+        private val TAG: String = "GroupsListAdapter_ViewHolder"
 
         init{
             textView = itemView.findViewById(R.id.group_list_name)
@@ -34,12 +29,14 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
             itemView.setOnClickListener{
                 var position: Int = adapterPosition
                 var context = itemView.context
-
-                //TODO  pass group data? Save current group?
-                //Go to the selected Group
+                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+                // TODO: potentially not working correctly if new group was added and positions in PullData.groups changed
+                // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
+                val groupId = ArrayList(PullData.groups.keys)[position]
+                prefs.edit().putString("com.example.virtualbreak.groupId", groupId).apply()
+                Log.d(TAG, "GroupId $groupId added to shared preferences")
                 itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
             }
-
 
         }
     }
@@ -52,27 +49,15 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        //TODO get groupnames form content at position, replace contents in view with new
-        getGroups()
-
-        holder.textView.text = testNames[position]
         //holder.textView.text = allGroups[position].description
+        // Get pulled groups, transform HashMap in ArrayList, get group description
+        holder.textView.text = ArrayList(PullData.groups.values)[position].description
     }
 
     override fun getItemCount(): Int {
-        //TODO
-        return testNames.size
-        //allGroups.size
+        return PullData.groups.size
     }
 
-    fun getGroups(){
-        Log.d("Groups","groups" + PullData.groups)
-        PullData.groups.forEach {
-                (key, group) -> allGroups.add(group)
-        }
-        Log.d("Groups","allGroups" + allGroups)
-
-    }
 
 
 

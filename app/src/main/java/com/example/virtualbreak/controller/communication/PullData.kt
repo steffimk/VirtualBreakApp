@@ -22,7 +22,7 @@ class PullData {
         var currentUser: MutableLiveData<User?> = MutableLiveData(null)
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
-        var friends: HashMap<String,User> = HashMap()
+        var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
             if (groups.value?.get(groupId)?.rooms == null){
@@ -46,7 +46,7 @@ class PullData {
                     val isFirstPull = currentUser.value == null
                     currentUser.value = dataSnapshot.getValue(User::class.java)
                     if (isFirstPull) {
-                        getFriends()
+                        reloadFriends()
                     }
                     updateGroups()
                     Log.d(TAG, "Pulled User: $currentUser");
@@ -88,7 +88,7 @@ class PullData {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val group = dataSnapshot.getValue(Group::class.java)
                     if (group != null){
-                        groups.value?.set(groupId, group)
+                        groups.value?.put(groupId, group)
                         groups.value = groups.value // Set value so that observers are notified of change
                         updateRoomsOfGroup(groupId)
                     }
@@ -127,7 +127,7 @@ class PullData {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val room = dataSnapshot.getValue(Room::class.java)
                     if (room != null) {
-                        rooms.value?.set(roomId, room)
+                        rooms.value?.put(roomId, room)
                         rooms.value = rooms.value // Set value so that observers are notified of change
                     }
                     Log.d(TAG, "Pulled Room: $room");
@@ -140,12 +140,11 @@ class PullData {
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
         }
 
-        fun getFriends() {
+        fun reloadFriends() {
             var friendIds = currentUser.value?.friends
-            if (friendIds != null){
-                friendIds.forEach{
-                    attachSingleEventListenerToUser(it.key)
-                }
+            friends.value?.clear()  // Empty hashmap and reload friends
+            friendIds?.forEach{
+                attachSingleEventListenerToUser(it.key)
             }
         }
 
@@ -155,7 +154,8 @@ class PullData {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val user = dataSnapshot.getValue(User::class.java)
                     if (user != null) {
-                        friends.put(userId, user)
+                        friends.value?.put(userId, user)
+                        friends.value = friends.value // Set value so that observers are notified of change
                     }
                     Log.d(TAG, "Pulled User: $user");
                 }

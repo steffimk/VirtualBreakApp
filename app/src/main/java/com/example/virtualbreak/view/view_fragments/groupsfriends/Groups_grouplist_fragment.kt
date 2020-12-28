@@ -1,14 +1,19 @@
 package com.example.virtualbreak.view.view_fragments.groupsfriends
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.GroupsListAdapter
+import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Group
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewModel as GroupsViewModel
@@ -21,7 +26,7 @@ class Groups_grouplist_fragment : Fragment() {
     }
 
     private lateinit var viewModel: GroupsViewModel
-
+    private val TAG = "Group_GroupList_Fragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +51,16 @@ class Groups_grouplist_fragment : Fragment() {
         groups_recyler_list_view.layoutManager = LinearLayoutManager(activity)
         groups_recyler_list_view.adapter = GroupsListAdapter()
 
+        PullData.groups.observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groupsMap ->
+            Log.d(TAG, "Observing Group");
+            if (groupsMap != null) {
+                groups_recyler_list_view.adapter = GroupsListAdapter() // Completely new adapter (TODO: Maybe reuse and adapt previous one)
+            }
+        })
+
         groups_add_group_button.setOnClickListener{
-            //TODO Add Groups
-            Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+            PushData.saveGroup("Neue Gruppe", null) // TODO: let user set name and add friends
+            Snackbar.make(view, "Erstelle neue Gruppe", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
     }

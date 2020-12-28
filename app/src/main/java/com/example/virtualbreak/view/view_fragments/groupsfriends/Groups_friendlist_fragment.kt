@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendListAdapter
+import com.example.virtualbreak.controller.communication.PullData
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
@@ -45,10 +48,14 @@ class Groups_friendlist_fragment : Fragment() {
         friends_recyler_list_view.layoutManager = LinearLayoutManager(activity)
         friends_recyler_list_view.adapter = FriendListAdapter()
 
+        PullData.friends.observe(viewLifecycleOwner, {
+            friends_recyler_list_view.adapter = FriendListAdapter() // TODO: Maybe reuse old adapter
+        })
+
         friends_add_friends_button.setOnClickListener{
-            //TODO Add Friends
-            Snackbar.make(view, "Füge Freunde hinzu", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //navigate to add friends fragment
+            view.findNavController().navigate(R.id.action_nav_home_to_addFriendsFragment)
+
         }
     }
 

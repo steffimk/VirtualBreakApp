@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (Firebase.auth.currentUser != null) {
+            PullData.attachListenerToCurrentUser()
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
         }
 

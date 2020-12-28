@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.communication
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
@@ -18,17 +19,36 @@ class PullData {
 
         private val database : DatabaseReference = Firebase.database.reference
         private const val TAG: String = "PullData"
-        var currentUser: User? = null
-        var groups: HashMap<String,Group> = HashMap()
-        var currentRoom: Room? = null
-        var friends: HashMap<String,User> = HashMap()
+        var currentUser: MutableLiveData<User?> = MutableLiveData(null)
+        var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
+        var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
+        var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
+
+        fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
+            if (groups.value?.get(groupId)?.rooms == null){
+                return ArrayList()
+            }
+            val roomIds = ArrayList(groups.value?.get(groupId)?.rooms?.values)
+            if (roomIds != null) {
+                return ArrayList(rooms.value?.filter{ roomIds.contains(it.key)}?.values)
+            }
+            return ArrayList()
+        }
 
         fun attachListenerToCurrentUser() {
+            if (currentUser.value != null) {
+                return // Listener already attached
+            }
+
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    currentUser = dataSnapshot.getValue(User::class.java)
-
+                    val isFirstPull = currentUser.value == null
+                    currentUser.value = dataSnapshot.getValue(User::class.java)
+                    if (isFirstPull) {
+                        reloadFriends()
+                    }
+                    updateGroups()
                     Log.d(TAG, "Pulled User: $currentUser");
                 }
 
@@ -43,13 +63,34 @@ class PullData {
             }
         }
 
-        fun attachListenerToGroup(groupId: String) {
+        private fun updateGroups() {
+            val pulledGroupIds = currentUser.value?.groups
+            pulledGroupIds?.forEach{
+                if (!groups.value?.containsKey(it.key)!!){
+                    attachListenerToGroup(it.key)     // Attach Listeners to new groups
+                }
+            }
+            groups.value?.forEach{
+                if (pulledGroupIds != null) {
+                    if (!pulledGroupIds.containsKey(it.key)) {  // Remove groups the user is not in anymore
+                        groups.value?.remove(it.key)
+                        groups.value = groups.value // Set value so that observers are notified of change
+                    }
+                } else {
+                    groups.value = HashMap() // No group ids are pulled => empty HashMap
+                }
+            }
+        }
+
+        private fun attachListenerToGroup(groupId: String) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val group = dataSnapshot.getValue(Group::class.java)
                     if (group != null){
-                        groups[groupId] = group
+                        groups.value?.put(groupId, group)
+                        groups.value = groups.value // Set value so that observers are notified of change
+                        updateRoomsOfGroup(groupId)
                     }
                     Log.d(TAG, "Pulled Group: $group");
                 }
@@ -61,13 +102,33 @@ class PullData {
             database.child("groups").child(groupId).addValueEventListener(valueEventListener)
         }
 
-        fun attachListenerToRoom(roomId: String) {
+        private fun updateRoomsOfGroup(groupId: String) {
+            val pulledRoomIds = groups.value?.get(groupId)?.rooms
+            pulledRoomIds?.forEach{
+                if (!rooms.value?.containsKey(it.key)!!){
+                    attachListenerToRoom(it.key)     // Attach Listeners to new rooms
+                }
+            }
+            rooms.value?.forEach{
+                if (pulledRoomIds != null) {
+                    if (!pulledRoomIds.containsKey(it.key)) {  // Remove closed
+                        rooms.value?.remove(it.key)
+                        rooms.value = rooms.value // Set value so that observers are notified of change
+                    }
+                } else {
+                    rooms.value = HashMap() // No group ids are pulled => empty HashMap
+                }
+            }
+        }
+
+        private fun attachListenerToRoom(roomId: String) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val room = dataSnapshot.getValue(Room::class.java)
                     if (room != null) {
-                        currentRoom = room
+                        rooms.value?.put(roomId, room)
+                        rooms.value = rooms.value // Set value so that observers are notified of change
                     }
                     Log.d(TAG, "Pulled Room: $room");
                 }
@@ -79,13 +140,22 @@ class PullData {
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
         }
 
-        fun getUser(userId: String) {
+        fun reloadFriends() {
+            var friendIds = currentUser.value?.friends
+            friends.value?.clear()  // Empty hashmap and reload friends
+            friendIds?.forEach{
+                attachSingleEventListenerToUser(it.key)
+            }
+        }
+
+        private fun attachSingleEventListenerToUser(userId: String) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val user = dataSnapshot.getValue(User::class.java)
                     if (user != null) {
-                        friends.put(userId, user)
+                        friends.value?.put(userId, user)
+                        friends.value = friends.value // Set value so that observers are notified of change
                     }
                     Log.d(TAG, "Pulled User: $user");
                 }
@@ -96,6 +166,7 @@ class PullData {
             }
             database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
         }
+
     }
 }
 

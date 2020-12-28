@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.databinding.ActivityLogInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -69,6 +70,7 @@ class LogInActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success")
+                            PullData.attachListenerToCurrentUser()
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.

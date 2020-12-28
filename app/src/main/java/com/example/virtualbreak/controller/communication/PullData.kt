@@ -21,7 +21,7 @@ class PullData {
         private const val TAG: String = "PullData"
         var currentUser: MutableLiveData<User?> = MutableLiveData(null)
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
-        var rooms: HashMap<String,Room> = HashMap()
+        var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
         var friends: HashMap<String,User> = HashMap()
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
@@ -30,7 +30,7 @@ class PullData {
             }
             val roomIds = ArrayList(groups.value?.get(groupId)?.rooms?.values)
             if (roomIds != null) {
-                return ArrayList(rooms.filter{ roomIds.contains(it.key)}.values)
+                return ArrayList(rooms.value?.filter{ roomIds.contains(it.key)}?.values)
             }
             return ArrayList()
         }
@@ -90,6 +90,7 @@ class PullData {
                     if (group != null){
                         groups.value?.set(groupId, group)
                         groups.value = groups.value // Set value so that observers are notified of change
+                        updateRoomsOfGroup(groupId)
                     }
                     Log.d(TAG, "Pulled Group: $group");
                 }
@@ -104,17 +105,18 @@ class PullData {
         private fun updateRoomsOfGroup(groupId: String) {
             val pulledRoomIds = groups.value?.get(groupId)?.rooms
             pulledRoomIds?.forEach{
-                if (!rooms.containsKey(it.key)){
+                if (!rooms.value?.containsKey(it.key)!!){
                     attachListenerToRoom(it.key)     // Attach Listeners to new rooms
                 }
             }
-            rooms.forEach{
+            rooms.value?.forEach{
                 if (pulledRoomIds != null) {
                     if (!pulledRoomIds.containsKey(it.key)) {  // Remove closed
-                        rooms.remove(it.key)
+                        rooms.value?.remove(it.key)
+                        rooms.value = rooms.value // Set value so that observers are notified of change
                     }
                 } else {
-                    rooms = HashMap() // No group ids are pulled => empty HashMap
+                    rooms.value = HashMap() // No group ids are pulled => empty HashMap
                 }
             }
         }
@@ -125,7 +127,8 @@ class PullData {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val room = dataSnapshot.getValue(Room::class.java)
                     if (room != null) {
-                        rooms[roomId] = room
+                        rooms.value?.set(roomId, room)
+                        rooms.value = rooms.value // Set value so that observers are notified of change
                     }
                     Log.d(TAG, "Pulled Room: $room");
                 }

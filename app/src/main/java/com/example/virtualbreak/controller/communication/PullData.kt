@@ -137,7 +137,7 @@ class PullData {
             val friendIds = currentUser.value?.friends
             friends.value?.clear()  // Empty hashmap and reload friends
             friendIds?.forEach{
-                user -> attachSingleEventListenerToUser(user.key)
+                user -> attachSingleEventListenerToUser(user.key, true)
             }
         }
 
@@ -146,18 +146,27 @@ class PullData {
                 currentUser.value?.friendRequests?.filterValues { isIncoming -> isIncoming }
             incomingFriendRequests.value?.clear() // Empty hashmap before reloading friend requests
             idsOfIncomingFriendRequests?.forEach {
-                user -> attachSingleEventListenerToUser(user.key)
+                user -> attachSingleEventListenerToUser(user.key, false)
             }
         }
 
-        private fun attachSingleEventListenerToUser(userId: String) {
+        /**
+         * Reloads users from database. Set 'isFriend' true if you want to pull a friend
+         * and false if you want to pull a user that sent a friend request
+         */
+        private fun attachSingleEventListenerToUser(userId: String, isFriend: Boolean) {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val user = dataSnapshot.getValue(User::class.java)
                     if (user != null) {
-                        friends.value?.put(userId, user)
-                        friends.value = friends.value // Set value so that observers are notified of change
+                        if (isFriend) {
+                            friends.value?.put(userId, user)
+                            friends.value = friends.value // Set value so that observers are notified of change
+                        } else {
+                            incomingFriendRequests.value?.put(userId, user)
+                            incomingFriendRequests.value = incomingFriendRequests.value // Set value so that observers are notified of change
+                        }
                     }
                     Log.d(TAG, "Pulled User: $user")
                 }

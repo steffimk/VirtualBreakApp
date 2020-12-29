@@ -7,11 +7,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Room
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
+
+    private var room: Room? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
@@ -28,10 +33,9 @@ class BreakRoomActivity : AppCompatActivity() {
         }
         */
 
-
         if (roomId != null) {
-            // TODO: pull room from PullData (check for right function)
-            //PullData.attachListenerToRoom(roomId)
+            PushData.joinRoom(roomId)
+            room = PullData.rooms.value?.get(roomId)
 
             Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
         } else {
@@ -53,8 +57,8 @@ class BreakRoomActivity : AppCompatActivity() {
 
         // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
         leave_room_button.setOnClickListener {
+            PushData.leaveRoom(room)
             prefs.edit().remove("com.example.virtualbreak.roomId").apply()
-            // TODO: do we have to stop listener?
             finish()
         }
     }

@@ -112,7 +112,9 @@ class PushData {
             }
         }
 
-        fun leaveRoom(room: Room) {
+        fun leaveRoom(room: Room?) {
+            if (room == null) return
+
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {

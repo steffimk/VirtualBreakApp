@@ -60,8 +60,10 @@ class SingleGroupFragment : Fragment() {
         // Observe whether rooms changed
         PullData.rooms.observe(viewLifecycleOwner, {
             val newRooms = groupId?.let { PullData.getRoomsOfGroup(it) }
+            Log.d(TAG, "Former rooms: $rooms")
+            Log.d(TAG, "New rooms: $newRooms")
             if (newRooms?.equals(rooms) == false) {
-                Log.d(TAG, "Observed new rooms")
+                Log.d(TAG, "Observed change in rooms of group")
                 rooms = newRooms
                 itemsList.clear()
                 newRooms?.forEach{ room ->
@@ -84,5 +86,10 @@ class SingleGroupFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        PullData.rooms.value = PullData.rooms.value // Notify observers
     }
 }

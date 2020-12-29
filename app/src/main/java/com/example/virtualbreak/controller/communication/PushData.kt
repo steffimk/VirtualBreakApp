@@ -90,7 +90,7 @@ class PushData {
             if (currentUserId != null) {
                 val roomId = database.child("rooms").push().key
                 if (roomId != null) {
-                    val newRoom = Room(roomId, hashMapOf(currentUserId to currentUserId), roomType?: Roomtype.COFFEE)
+                    val newRoom = Room(roomId, groupId, hashMapOf(currentUserId to currentUserId), roomType?: Roomtype.COFFEE)
                     database.child("rooms").child(roomId).setValue(newRoom)
                     database.child("groups").child(groupId).child("rooms").child(roomId).setValue(roomId)
                     Log.d(TAG, "Saved new room")
@@ -118,6 +118,7 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
+                    database.child("groups").child(room.groupId).child("rooms").child(room.uid).removeValue()
                     database.child("rooms").child(room.uid).removeValue()
                     Log.d(TAG, "Deleted empty room.")
                 } else {

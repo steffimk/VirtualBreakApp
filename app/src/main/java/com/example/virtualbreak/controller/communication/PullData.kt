@@ -26,10 +26,10 @@ class PullData {
         var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
         var incomingFriendRequests: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
 
-        fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
-            val roomIdsMap = groups.value?.get(groupId)?.rooms ?: return ArrayList()
-            val roomIdsOfGroup = ArrayList(roomIdsMap.values)
-            val roomsOfGroupMap = rooms.value?.filterKeys { key -> roomIdsOfGroup.contains(key) } ?: return ArrayList()
+        fun getRoomsOfGroup(groupId: String) : ArrayList<Room> {
+            val roomIdsOfGroup = groups.value?.get(groupId)?.rooms ?: return ArrayList()
+            val roomsOfGroupMap =
+                rooms.value?.filterKeys { roomId -> roomIdsOfGroup.containsKey(roomId) } ?: return ArrayList()
             return ArrayList(roomsOfGroupMap.values)
         }
 
@@ -111,7 +111,15 @@ class PullData {
                 }
             }
 
-            rooms.value = rooms.value // Set value so that observers are notified of change
+            // Remove rooms that got deleted from the database
+            val iterator = rooms.value!!.iterator()
+            while (iterator.hasNext()) {
+                val room = iterator.next().value
+                if (room.groupId == groupId && !pulledRoomIds.containsKey(room.uid)) {
+                    iterator.remove()
+                    // TODO: Remove listener!!
+                }
+            }
         }
 
         private fun attachListenerToRoom(roomId: String) {

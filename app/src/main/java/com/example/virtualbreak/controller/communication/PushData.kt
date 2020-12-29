@@ -153,12 +153,11 @@ class PushData {
             }
         }
 
-        fun addFriends(vararg friendId: String) {
+        fun sendFriendRequest(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                for (id in friendId) {
-                    database.child("users").child(currentUserId).child("friends").child(id).setValue(id)
-                }
+                database.child("users").child(currentUserId).child("friendRequests").child(friendId).setValue(false)
+                database.child("users").child(friendId).child("friendRequests").child(currentUserId).setValue(true)
             } else {
                 Log.d(TAG, "No user logged in. Cannot save add friends.")
             }

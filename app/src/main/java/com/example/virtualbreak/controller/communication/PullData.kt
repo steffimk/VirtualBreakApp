@@ -17,22 +17,19 @@ class PullData {
 
     companion object {
 
-        private val database : DatabaseReference = Firebase.database.reference
         private const val TAG: String = "PullData"
+
+        private val database : DatabaseReference = Firebase.database.reference
         var currentUser: MutableLiveData<User?> = MutableLiveData(null)
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
         var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
-            if (groups.value?.get(groupId)?.rooms == null){
-                return ArrayList()
-            }
-            val roomIds = ArrayList(groups.value?.get(groupId)?.rooms?.values)
-            if (roomIds != null) {
-                return ArrayList(rooms.value?.filter{ roomIds.contains(it.key)}?.values)
-            }
-            return ArrayList()
+            val roomIdsMap = groups.value?.get(groupId)?.rooms ?: return ArrayList()
+            val roomIdsOfGroup = ArrayList(roomIdsMap.values)
+            val roomsOfGroupMap = rooms.value?.filterKeys { key -> roomIdsOfGroup.contains(key) } ?: return ArrayList()
+            return ArrayList(roomsOfGroupMap.values)
         }
 
         fun attachListenerToCurrentUser() {
@@ -49,7 +46,7 @@ class PullData {
                         reloadFriends()
                     }
                     updateGroups()
-                    Log.d(TAG, "Pulled User: $currentUser");
+                    Log.d(TAG, "Pulled User: " + currentUser.value)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -92,7 +89,7 @@ class PullData {
                         groups.value = groups.value // Set value so that observers are notified of change
                         updateRoomsOfGroup(groupId)
                     }
-                    Log.d(TAG, "Pulled Group: $group");
+                    Log.d(TAG, "Pulled Group: $group")
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -103,22 +100,16 @@ class PullData {
         }
 
         private fun updateRoomsOfGroup(groupId: String) {
-            val pulledRoomIds = groups.value?.get(groupId)?.rooms
-            pulledRoomIds?.forEach{
+            val pulledRoomIds = groups.value?.get(groupId)?.rooms ?: return
+
+            // Attach listener to each newly pulled room
+            pulledRoomIds.forEach{
                 if (!rooms.value?.containsKey(it.key)!!){
                     attachListenerToRoom(it.key)     // Attach Listeners to new rooms
                 }
             }
-            rooms.value?.forEach{
-                if (pulledRoomIds != null) {
-                    if (!pulledRoomIds.containsKey(it.key)) {  // Remove closed
-                        rooms.value?.remove(it.key)
-                        rooms.value = rooms.value // Set value so that observers are notified of change
-                    }
-                } else {
-                    rooms.value = HashMap() // No group ids are pulled => empty HashMap
-                }
-            }
+
+            rooms.value = rooms.value // Set value so that observers are notified of change
         }
 
         private fun attachListenerToRoom(roomId: String) {
@@ -130,7 +121,7 @@ class PullData {
                         rooms.value?.put(roomId, room)
                         rooms.value = rooms.value // Set value so that observers are notified of change
                     }
-                    Log.d(TAG, "Pulled Room: $room");
+                    Log.d(TAG, "Pulled Room: $room")
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -141,7 +132,7 @@ class PullData {
         }
 
         fun reloadFriends() {
-            var friendIds = currentUser.value?.friends
+            val friendIds = currentUser.value?.friends
             friends.value?.clear()  // Empty hashmap and reload friends
             friendIds?.forEach{
                 attachSingleEventListenerToUser(it.key)
@@ -157,7 +148,7 @@ class PullData {
                         friends.value?.put(userId, user)
                         friends.value = friends.value // Set value so that observers are notified of change
                     }
-                    Log.d(TAG, "Pulled User: $user");
+                    Log.d(TAG, "Pulled User: $user")
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

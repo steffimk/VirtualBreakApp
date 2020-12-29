@@ -159,7 +159,24 @@ class PushData {
                 database.child("users").child(currentUserId).child("friendRequests").child(friendId).setValue(false)
                 database.child("users").child(friendId).child("friendRequests").child(currentUserId).setValue(true)
             } else {
-                Log.d(TAG, "No user logged in. Cannot save add friends.")
+                Log.d(TAG, "No user logged in. Cannot send friend request.")
+            }
+        }
+
+        /**
+         * Before calling this function, check whether user really got friend request of user with passed on id
+         */
+        fun confirmFriendRequest(friendId: String) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                // add users to each others friends
+                database.child("users").child(currentUserId).child("friends").child(friendId).setValue(friendId)
+                database.child("users").child(friendId).child("friends").child(currentUserId).setValue(currentUserId)
+                // Remove users from each others friend requests
+                database.child("users").child(currentUserId).child("friendRequests").child(friendId).removeValue()
+                database.child("users").child(friendId).child("friendRequests").child(currentUserId).removeValue()
+            } else {
+                Log.d(TAG, "No user logged in. Cannot confirm friend request.")
             }
         }
 

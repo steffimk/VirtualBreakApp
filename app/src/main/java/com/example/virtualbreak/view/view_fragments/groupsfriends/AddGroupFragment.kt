@@ -34,7 +34,7 @@ class AddGroupFragment : Fragment() {
 
 
     private val adapter: SearchFriendListAdapter = SearchFriendListAdapter()
-    val selectFriendsIds = mutableListOf<String>()
+    val selectFriendsIds = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class AddGroupFragment : Fragment() {
 
         adapter!!.setOnItemClickListener(object : SearchFriendListAdapter.OnItemClickListener{
             override fun onItemClick(friend: Friend) {
-                if (friend.isSelectet){
+                if (friend.isSelectet && !selectFriendsIds.contains(friend.uid)){
                     selectFriendsIds.add(friend.uid)
                 }else{
                     selectFriendsIds.remove(friend.uid)
@@ -82,8 +82,8 @@ class AddGroupFragment : Fragment() {
 
             if (groupName.text.toString() != ""){
                 if(selectFriendsIds.isNotEmpty()){
-                    //TODO PushData.saveGroup(groupName.text.toString(), selectedFriendsIds)
-                    //PushData.saveGroup(groupName.text.toString())
+                    //TODO PushData.saveGroup(groupName.text.toString(), selectedFriendsIds), convert mutable list to array?
+                    PushData.saveGroup(groupName.text.toString(), selectFriendsIds.toTypedArray())
                     view.findNavController().navigate(R.id.action_addGroupFragment_to_navHome)
                 }else{
                     Toast.makeText(activity, getString(R.string.Error_no_friends), Toast.LENGTH_SHORT).show()

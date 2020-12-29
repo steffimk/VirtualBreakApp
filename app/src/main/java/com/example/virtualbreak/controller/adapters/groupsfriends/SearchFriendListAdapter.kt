@@ -4,14 +4,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.view.isVisible
-import androidx.recyclerview.selection.ItemDetailsLookup
-import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
@@ -19,11 +14,11 @@ import com.example.virtualbreak.model.Friend
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.makeramen.roundedimageview.RoundedImageView
-import kotlinx.android.synthetic.main.friend_list_item.view.*
+
 
 class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
 
-    private var testNames: HashMap<String,User> = HashMap()
+    private var testNames: HashMap<String, User> = HashMap()
 
     var allFriends = arrayListOf<Friend>()
     var onClick: OnItemClickListener? = null
@@ -64,23 +59,36 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
         val friend = allFriends[position]
 
         viewHolder.selectBox.visibility = View.VISIBLE
+        viewHolder.selectBox.isChecked = friend.isSelectet
+
         viewHolder.username.text = friend.username
         //ToDo set the profilpicture
         //Todo set status?
         //viewHolder.status.visibility = View.GONE
 
         if (onClick != null) viewHolder.itemView.setOnClickListener{
-            Log.d("Groups","onClick")
+            Log.d("Groups", "onClick")
             friend.isSelectet = !friend.isSelectet
             viewHolder.selectBox.isChecked = friend.isSelectet
 
             //notifyDataSetChanged()
             notifyItemChanged(position);
-            Log.d("Groups","onClick $position ${friend.isSelectet}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}")
+            Log.d(
+                "Groups",
+                "onClick $position ${friend.isSelectet}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}"
+            )
             //notifyDataSetChanged()
             onClick!!.onItemClick(friend)
 
         }
+
+        viewHolder.selectBox.setOnCheckedChangeListener{
+                buttonView, isChecked -> friend.isSelectet = isChecked
+                //notifyDataSetChanged()
+            //Update corresponding object in array to, so whenever new view is shown, it reads the neweset statue of object
+            Log.d("Groups", "ChangeListener ${friend.isSelectet} $position")
+        }
+
 
     }
 
@@ -89,12 +97,19 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
     }
 
     fun getFriends(){
-        Log.d("Groups","friends" + PullData.friends)
+        Log.d("Groups", "friends" + PullData.friends)
         //PullData.friends.forEach {
-        testNames.forEach{
-                (key, user) -> allFriends.add(Friend(user.uid, user.username, user.profilePicture, user.status, false))
+        testNames.forEach{ (key, user) -> allFriends.add(
+            Friend(
+                user.uid,
+                user.username,
+                user.profilePicture,
+                user.status,
+                false
+            )
+        )
         }
-        Log.d("Groups","allFriends" + allFriends)
+        Log.d("Groups", "allFriends" + allFriends)
 
     }
 
@@ -102,16 +117,16 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
 
         //TODO lösche methode und ersetze dummy daten durch echte
 
-        testNames.put("Hannes", User("12356","Hannes", "test@mails.de",Status.BUSY))
-        testNames.put("Gerda", User("12456","Gerda", "test@mails.de",Status.BUSY))
-        testNames.put("Sui", User("14566","Susi", "test@mails.de",Status.BUSY))
-        testNames.put("Manfred", User("167856","Manfred", "test@mails.de",Status.BUSY))
-        testNames.put("Ulli", User("12356","Ulli", "test@mails.de",Status.BUSY))
-        testNames.put("Bernd", User("12asd6","Bernd", "test@mails.de",Status.BUSY))
-        testNames.put("Henning", User("1w453456","Hennig", "test@mails.de",Status.BUSY))
-        testNames.put("Klara", User("1erted6","Klara", "test@mails.de",Status.BUSY))
+        testNames.put("Hannes", User("Han", "Hannes", "test@mails.de", Status.BUSY))
+        testNames.put("Gerda", User("Gerd", "Gerda", "test@mails.de", Status.BUSY))
+        testNames.put("Sui", User("susi", "Susi", "test@mails.de", Status.BUSY))
+        testNames.put("Manfred", User("Man", "Manfred", "test@mails.de", Status.BUSY))
+        testNames.put("Ulli", User("Ulli", "Ulli", "test@mails.de", Status.BUSY))
+        testNames.put("Bernd", User("Bernd", "Bernd", "test@mails.de", Status.BUSY))
+        testNames.put("Henning", User("Henn", "Hennig", "test@mails.de", Status.BUSY))
+        testNames.put("Klara", User("Klar", "Klara", "test@mails.de", Status.BUSY))
 
-        Log.d("Groups", "testFriends "+testNames)
+        Log.d("Groups", "testFriends " + testNames)
     }
 
 

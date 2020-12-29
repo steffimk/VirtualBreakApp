@@ -59,6 +59,7 @@ class SingleGroupFragment : Fragment() {
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
 
         val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
+
         fabOptionNormal.setOnClickListener {
             //TODO Send notificaitons, go to created Breakroom
 

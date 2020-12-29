@@ -24,6 +24,7 @@ class PullData {
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
         var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
+        var incomingFriendRequests: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room>{
             val roomIdsMap = groups.value?.get(groupId)?.rooms ?: return ArrayList()
@@ -44,6 +45,7 @@ class PullData {
                     currentUser.value = dataSnapshot.getValue(User::class.java)
                     if (isFirstPull) {
                         reloadFriends()
+                        reloadIncomingFriendRequests()
                     }
                     updateGroups()
                     Log.d(TAG, "Pulled User: " + currentUser.value)
@@ -135,7 +137,16 @@ class PullData {
             val friendIds = currentUser.value?.friends
             friends.value?.clear()  // Empty hashmap and reload friends
             friendIds?.forEach{
-                attachSingleEventListenerToUser(it.key)
+                user -> attachSingleEventListenerToUser(user.key)
+            }
+        }
+
+        fun reloadIncomingFriendRequests() {
+            val idsOfIncomingFriendRequests =
+                currentUser.value?.friendRequests?.filterValues { isIncoming -> isIncoming }
+            incomingFriendRequests.value?.clear() // Empty hashmap before reloading friend requests
+            idsOfIncomingFriendRequests?.forEach {
+                user -> attachSingleEventListenerToUser(user.key)
             }
         }
 

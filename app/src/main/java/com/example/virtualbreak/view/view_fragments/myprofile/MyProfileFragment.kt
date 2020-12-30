@@ -1,6 +1,7 @@
 package com.example.virtualbreak.view.view_fragments.myprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,15 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
+import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_myprofile.*
+
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var myProfileViewModel: MyProfileViewModel
+    private val TAG = "MyProfileFragment"
 
     private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE)
     private lateinit var currentStatus: Status
@@ -35,9 +38,9 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ViewModelProvider(this).get(MyProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_myprofile, container, false)
 
-        //set username text of curent user
-        PullData.currentUser?.username?.let{
-            root.findViewById<TextView>(R.id.username).text = it
+        //set username text of current user
+        PullData.currentUser.value?.let{
+            root.findViewById<TextView>(R.id.username).text = it.username
         }
 
         val spinner = root.findViewById<Spinner>(R.id.status_spinner)
@@ -55,9 +58,23 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             // Set array Adapter to Spinner
             spinner.setAdapter(aa)
             // Set position of spinner to current status
-            val spinnerPosition = aa.getPosition(PullData.currentUser?.status?.dbStr)
+            val spinnerPosition = aa.getPosition(PullData.currentUser.value?.status?.dbStr)
             spinner.setSelection(spinnerPosition)
         }
+
+        root.findViewById<TextView>(R.id.username).text = PullData.currentUser.value?.username
+
+        // Connect with and observe LiveData
+        PullData.currentUser.observe(viewLifecycleOwner, Observer<User?> { user ->
+            Log.d(TAG, "Observing CurrentUser");
+            if (user != null) {
+                //set username text of current user
+                root.findViewById<TextView>(R.id.username).text = user.username
+                // Set position of spinner to current status
+                val aa = spinner.adapter as ArrayAdapter<String>
+                spinner.setSelection(aa.getPosition(user.status?.dbStr))
+            }
+        })
 
         //button to edit own profile picture
         root.findViewById<FloatingActionButton>(R.id.fab_editPic).setOnClickListener {

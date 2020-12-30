@@ -90,7 +90,7 @@ class PushData {
             if (currentUserId != null) {
                 val roomId = database.child("rooms").push().key
                 if (roomId != null) {
-                    val newRoom = Room(roomId, hashMapOf(currentUserId to currentUserId), roomType?: Roomtype.COFFEE)
+                    val newRoom = Room(roomId, groupId, hashMapOf(currentUserId to currentUserId), roomType?: Roomtype.COFFEE)
                     database.child("rooms").child(roomId).setValue(newRoom)
                     database.child("groups").child(groupId).child("rooms").child(roomId).setValue(roomId)
                     Log.d(TAG, "Saved new room")
@@ -112,10 +112,13 @@ class PushData {
             }
         }
 
-        fun leaveRoom(room: Room) {
+        fun leaveRoom(room: Room?) {
+            if (room == null) return
+
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
+                    database.child("groups").child(room.groupId).child("rooms").child(room.uid).removeValue()
                     database.child("rooms").child(room.uid).removeValue()
                     Log.d(TAG, "Deleted empty room.")
                 } else {
@@ -153,14 +156,30 @@ class PushData {
             }
         }
 
-        fun addFriends(vararg friendId: String) {
+        fun sendFriendRequest(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                for (id in friendId) {
-                    database.child("users").child(currentUserId).child("friends").child(id).setValue(id)
-                }
+                database.child("users").child(currentUserId).child("friendRequests").child(friendId).setValue(false)
+                database.child("users").child(friendId).child("friendRequests").child(currentUserId).setValue(true)
             } else {
-                Log.d(TAG, "No user logged in. Cannot save add friends.")
+                Log.d(TAG, "No user logged in. Cannot send friend request.")
+            }
+        }
+
+        /**
+         * Before calling this function, check whether user really got friend request of user with passed on id
+         */
+        fun confirmFriendRequest(friendId: String) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                // add users to each others friends
+                database.child("users").child(currentUserId).child("friends").child(friendId).setValue(friendId)
+                database.child("users").child(friendId).child("friends").child(currentUserId).setValue(currentUserId)
+                // Remove users from each others friend requests
+                database.child("users").child(currentUserId).child("friendRequests").child(friendId).removeValue()
+                database.child("users").child(friendId).child("friendRequests").child(currentUserId).removeValue()
+            } else {
+                Log.d(TAG, "No user logged in. Cannot confirm friend request.")
             }
         }
 

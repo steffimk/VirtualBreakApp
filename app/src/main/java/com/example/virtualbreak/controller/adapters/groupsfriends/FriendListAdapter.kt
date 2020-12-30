@@ -38,7 +38,7 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFrien
                 val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
                 // TODO: potentially not working correctly if new friend was added and positions in PullData.friends changed
                 // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
-                val friendId = ArrayList(PullData.friends.keys)[position]
+                val friendId = ArrayList(PullData.friends.value?.keys)[position]
                 prefs.edit().putString("com.example.virtualbreak.friendId", friendId).apply()
                 Log.d(TAG, "FriendId $friendId added to shared preferences")
                 //TODO GO TO selected Friend
@@ -55,12 +55,12 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFrien
     }
 
     override fun getItemCount(): Int {
-        return PullData.friends.size
+        return PullData.friends.value?.size!!
     }
 
 
     override fun onBindViewHolder(holder: ViewHolderFriends, position: Int) {
-        holder.textView.text = ArrayList(PullData.friends.values)[position].username
+        holder.textView.text = ArrayList(PullData.friends.value?.values)[position].username
     }
 
 

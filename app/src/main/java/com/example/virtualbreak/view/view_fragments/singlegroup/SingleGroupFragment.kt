@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
@@ -38,9 +39,7 @@ class SingleGroupFragment : Fragment() {
             textView.text = it
         })
 
-        val prefs = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-        val groupId = prefs?.getString("com.example.virtualbreak.groupId", "")
-        Log.d(TAG, "Got groupId from shared preferences: $groupId")
+        val groupId = SharedPrefManager.instance.getGroupId()
 
         var rooms = groupId?.let { PullData.getRoomsOfGroup(it) }
 /*
@@ -77,7 +76,7 @@ class SingleGroupFragment : Fragment() {
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
         fab.setOnClickListener { view ->
-            val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
+            val groupId = SharedPrefManager.instance.getGroupId()
             if (groupId != null && groupId != "") {
                 PushData.saveRoom(groupId, Roomtype.COFFEE) // TODO: Let user decide on RoomType
                 Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)

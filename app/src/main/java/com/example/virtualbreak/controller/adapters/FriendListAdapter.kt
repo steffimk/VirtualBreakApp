@@ -26,13 +26,15 @@ class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFrien
             itemView.setOnClickListener{
                 var position: Int = adapterPosition
                 var context = itemView.context
-                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-                // TODO: potentially not working correctly if new friend was added and positions in PullData.friends changed
-                // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
+
+                // TODO: refactor use List of User objects from model
+                // potentially not working correctly if new friend was added and positions in PullData.friends changed
                 val friendId = ArrayList(PullData.friends.value?.keys)[position]
-                prefs.edit().putString("com.example.virtualbreak.friendId", friendId).apply()
-                Log.d(TAG, "FriendId $friendId added to shared preferences")
-                //TODO GO TO selected Friend
+
+                //TODO no need for sharedPreferences, use navigation component arguments to pass data between fragments
+               //go to selected friend (evtl no need, if status shown in list)
+                Log.d(TAG, "FriendId $friendId was clicked on")
+
             }
 
 

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.view.view_activitys.BreakRoomActivity
 import com.google.android.material.snackbar.Snackbar
@@ -50,13 +51,10 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayLis
 
             v.setOnClickListener {
                 var context = imageView.context
-                val prefs =
-                    context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-                // save roomId of clicked room in shared preferences
-                prefs.edit().putString("com.example.virtualbreak.roomId", item.uid).apply()
-                Log.d(TAG, "RoomId " + item.uid + " added to shared preferences")
-                Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+
+                SharedPrefManager.instance.saveRoomId(item.uid)
+
+                //Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
                 val intent = Intent(context, BreakRoomActivity::class.java)
                 /*

@@ -131,6 +131,16 @@ class PushData {
             }
         }
 
+        fun sendMessage(roomId: String, message: String){
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if(currentUserId != null){
+                val newChatMessage = Message(currentUserId, message)
+                database.child("rooms").child(roomId).child("messages").push().setValue(newChatMessage)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot send message.")
+            }
+        }
+
         fun setStatus(status: Status) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {

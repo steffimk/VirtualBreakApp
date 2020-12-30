@@ -70,8 +70,9 @@
     <string name="status">Status</string>
     <string name="username">Username</string>
 
-    <!-- -->
+    <!-- BreakRoomActivity -->
     <string name="send_message">Senden</string>
     <string name="leave_room">Austreten</string>
+    <string name="message">Nachricht</string>
 
 </resources>

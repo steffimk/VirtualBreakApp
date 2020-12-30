@@ -45,12 +45,18 @@ class BreakRoomActivity : AppCompatActivity() {
         }
 
         // makes textview scrollable
-        chat_messages_view.setMovementMethod(ScrollingMovementMethod())
+        //chat_messages_view.setMovementMethod(ScrollingMovementMethod())
 
         send_message_button.setOnClickListener {
             // TODO: save entered message
 
             val input = chat_message_input.text
+            val message = input.toString()
+            if(!input.equals("")){
+                if (roomId != null) {
+                    PushData.sendMessage(roomId, message)
+                }
+            }
             input.clear()
         }
 

@@ -78,7 +78,7 @@ class SingleGroupFragment : Fragment() {
         fab.setOnClickListener { view ->
             val groupId = SharedPrefManager.instance.getGroupId()
             if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.COFFEE) // TODO: Let user decide on RoomType
+                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffee trinken") // TODO: Let user decide on RoomType
                 Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }

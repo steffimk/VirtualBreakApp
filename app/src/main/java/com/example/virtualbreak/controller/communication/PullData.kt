@@ -1,5 +1,8 @@
 package com.example.virtualbreak.controller.communication
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.model.Group
@@ -13,6 +16,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+
 
 class PullData {
 
@@ -61,6 +66,45 @@ class PullData {
             val userUid = Firebase.auth.currentUser?.uid
             if (userUid != null) {
                 database.child("users").child(userUid).addValueEventListener(valueEventListener)
+            }
+        }
+
+        fun loadUsersOfRoom(roomId: String, context: Context){
+            val currentRoom = rooms.value?.get(roomId)
+            val users = currentRoom?.users
+
+            var usersOfRoom : HashMap<String,String> = HashMap()
+
+            val prefs =
+                context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+            prefs.edit().remove("com.example.virtualbreak.roomUser").apply()
+
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val user = dataSnapshot.getValue(User::class.java)
+                    val name = user!!.username
+                    usersOfRoom.put(dataSnapshot.key.toString(), name)
+
+                    //convert to string using gson
+                    val gson = Gson()
+                    val hashMapString = gson.toJson(usersOfRoom)
+
+                    //save hashmap in shared prefs
+                    val prefs =
+                        context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+                    prefs.edit().putString("com.example.virtualbreak.roomUser", hashMapString).apply()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d(TAG, databaseError.message)
+                }
+            }
+
+            if (users != null) {
+                for(u in users){
+                    database.child("users").child(u.key).addListenerForSingleValueEvent(valueEventListener)
+                }
             }
         }
 

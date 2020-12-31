@@ -44,6 +44,7 @@ class BreakRoomActivity : AppCompatActivity() {
             Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
 
             PullData.loadMessages(roomId)
+            PullData.loadUsersOfRoom(roomId,this)
 
             var defaultMessages : MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht")

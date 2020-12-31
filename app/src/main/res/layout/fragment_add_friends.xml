@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.view_fragments.AddFriendsFragment"
+    tools:context=".view.view_fragments.addfriends.AddFriendsFragment"
     android:orientation="vertical"
     android:layout_margin="15dp">
 
@@ -40,7 +40,7 @@
         android:imeOptions="actionSearch"/>
 
     <Button
-        android:id="@+id/login_submit"
+        android:id="@+id/search_submit"
         android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:layout_margin="20dp"
@@ -50,4 +50,10 @@
         android:textAllCaps="false"
         android:textColor="@color/light_green"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/nameOfFoundUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="" />
 </LinearLayout>

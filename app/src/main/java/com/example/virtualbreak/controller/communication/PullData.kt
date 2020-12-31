@@ -19,7 +19,7 @@ class PullData {
 
         private const val TAG: String = "PullData"
 
-        private val database : DatabaseReference = Firebase.database.reference
+        val database : DatabaseReference = Firebase.database.reference
         var currentUser: MutableLiveData<User?> = MutableLiveData(null)
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())

@@ -40,7 +40,7 @@
         tools:layout="@layout/fragment_logout" />
     <fragment
         android:id="@+id/addFriendsFragment"
-        android:name="com.example.virtualbreak.view.view_fragments.AddFriendsFragment"
+        android:name="com.example.virtualbreak.view.view_fragments.addfriends.AddFriendsFragment"
         android:label="Freund hinzufügen"
         tools:layout="@layout/fragment_add_friends" />
 

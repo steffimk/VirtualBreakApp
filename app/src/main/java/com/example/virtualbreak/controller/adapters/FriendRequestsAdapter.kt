@@ -54,8 +54,8 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         holder.acceptRequestBtn.setOnClickListener{
 
         //TODO accept friend request database logic
-        Snackbar.make(view, "Add friend "+friendRequests[position].username+" uid: "+friendRequests[position].uid, Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show()
+            Snackbar.make(view, "Add friend "+friendRequests[position].username+" uid: "+friendRequests[position].uid, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         }
         //TODO get images from firebase storage
         //holder.profile_imageView =

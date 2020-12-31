@@ -3,6 +3,7 @@ package com.example.virtualbreak.controller.communication
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.model.Group
+import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.google.firebase.auth.ktx.auth
@@ -25,6 +26,7 @@ class PullData {
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
         var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
         var incomingFriendRequests: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
+        var messages = MutableLiveData<MutableList<Message>>()
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room> {
             val roomIdsOfGroup = groups.value?.get(groupId)?.rooms ?: return ArrayList()
@@ -139,6 +141,27 @@ class PullData {
                 }
             }
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
+        }
+
+        fun loadMessages(roomId:String) {
+            messages.value = ArrayList()
+            val valueEventListener = object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    messages.value?.clear()
+                    messages.value = messages.value
+                    for (child in snapshot.getChildren()) {
+                        var value: Message = child.getValue(Message::class.java)!!
+
+                        messages.value?.add(value)
+                        messages.value = messages.value
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
+                }
+            }
+            database.child("rooms").child(roomId).child("messages").addValueEventListener(valueEventListener)
         }
 
         fun reloadFriends() {

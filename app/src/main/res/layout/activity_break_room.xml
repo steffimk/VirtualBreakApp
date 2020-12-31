@@ -7,7 +7,7 @@
     tools:context=".view.view_activitys.BreakRoomActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_messages_view"
+        android:id="@+id/chat_messages_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/user_input"/>
@@ -16,7 +16,7 @@
         android:id="@+id/user_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/chat_messages_view"
+        app:layout_constraintBottom_toBottomOf="@id/chat_messages_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="vertical">

@@ -2,20 +2,24 @@ package com.example.virtualbreak.view.view_activitys
 
 import android.content.Context
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
 
     private var room: Room? = null
+    private val TAG: String = "BreakRoomActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +42,23 @@ class BreakRoomActivity : AppCompatActivity() {
             room = PullData.rooms.value?.get(roomId)
 
             Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
+
+            PullData.loadMessages(roomId)
+
+            var defaultMessages : MutableList<Message> = ArrayList()
+            var defaultM = Message("default", "Keine Nachricht")
+            defaultMessages.add(defaultM)
+
+            chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)
+            chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
+
+
+            PullData.messages.observe(this, Observer { messagesList ->
+                if(messagesList != null){
+                    Log.i(TAG, "messagesList: " + messagesList)
+                    chat_messages_recycler_view.adapter = ChatAdapter(this, messagesList)
+                }
+            })
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous
@@ -48,8 +69,6 @@ class BreakRoomActivity : AppCompatActivity() {
         //chat_messages_view.setMovementMethod(ScrollingMovementMethod())
 
         send_message_button.setOnClickListener {
-            // TODO: save entered message
-
             val input = chat_message_input.text
             val message = input.toString()
             if(!input.equals("")){

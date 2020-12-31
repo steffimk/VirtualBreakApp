@@ -54,7 +54,7 @@
     <!-- Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_subtitle">Nav header subtitle</string>
+    <string name="nav_header_subtitle">Für gemeinsame Pausen</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -73,5 +73,10 @@
     <!-- -->
     <string name="send_message">Senden</string>
     <string name="leave_room">Austreten</string>
+    <string name="annehmen">Annehmen</string>
+    <string name="friend_request_intro_string">Hier kannst du offene Freundschaftsanfragen sehen und annehmen:</string>
+    <string name="freundschaftsanfragen">Freundschaftsanfragen</string>
+    <string name="addfriends_intro">Du kannst Freunde mithilfe ihrer E-Mail-Adresse hinzufügen:</string>
+    <string name="suche">Suche</string>
 
 </resources>

@@ -22,6 +22,7 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lightgray">#F4F4F4</color>
 
 
     <color name="dark_brown">#634532</color>

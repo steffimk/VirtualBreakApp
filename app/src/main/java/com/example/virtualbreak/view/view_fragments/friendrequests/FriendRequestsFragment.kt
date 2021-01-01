@@ -11,7 +11,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.adapters.FriendRequestsAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Status
@@ -44,18 +43,18 @@ class FriendRequestsFragment() : Fragment() {
 
         friendrequests_recyler_list_view.layoutManager = LinearLayoutManager(context)
 
-        friendrequestsTest.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
+        /*friendrequestsTest.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
         friendrequestsTest.add(User("b", "Freund2", "email2", Status.AVAILABLE, null, null, null, null))
 
-        friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(friendrequestsTest)
+        friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(friendrequestsTest)*/
         //TODO replace with real data from db, uncomment following:
 
-        /*PullData.incomingFriendRequests.observe(viewLifecycleOwner, {
+        PullData.incomingFriendRequests.observe(viewLifecycleOwner, {
             //pull incoming friend requests from db
             friendRequests = it
             //pass list of users who sent you a friend request
             friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(ArrayList(friendRequests.values))
-        })*/
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

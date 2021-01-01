@@ -31,7 +31,11 @@
         android:id="@+id/singleGroupFragment"
         android:name="com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupFragment"
         android:label="Deine Gruppe"
-        tools:layout="@layout/fragment_singlegroup" />
+        tools:layout="@layout/fragment_singlegroup" >
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_logout"

@@ -12,6 +12,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
+import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsFriendsFragmentDirections
 import kotlinx.android.synthetic.main.group_list_item.*
 
 class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
@@ -40,9 +41,10 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
 
         view.setOnClickListener{
             val groupId = groups[position].uid
-            SharedPrefManager.instance.saveGroupId(groupId)
+            //SharedPrefManager.instance.saveGroupId(groupId)
             Log.d(TAG, "clicked on group "+groupId)
-            view.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
+            val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
+            view.findNavController().navigate(action)
         }
 
     }

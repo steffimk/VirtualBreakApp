@@ -43,18 +43,18 @@ class FriendRequestsFragment() : Fragment() {
 
         friendrequests_recyler_list_view.layoutManager = LinearLayoutManager(context)
 
-        friendrequestsTest.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
+        /*friendrequestsTest.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
         friendrequestsTest.add(User("b", "Freund2", "email2", Status.AVAILABLE, null, null, null, null))
 
-        friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(friendrequestsTest)
+        friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(friendrequestsTest)*/
         //TODO replace with real data from db, uncomment following:
 
-        /*PullData.incomingFriendRequests.observe(viewLifecycleOwner, {
+        PullData.incomingFriendRequests.observe(viewLifecycleOwner, {
             //pull incoming friend requests from db
             friendRequests = it
             //pass list of users who sent you a friend request
             friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(ArrayList(friendRequests.values))
-        })*/
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

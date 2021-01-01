@@ -9,8 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
 import com.example.virtualbreak.model.User
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.processNextEventInCurrentThread
 
 
 /**
@@ -40,12 +44,15 @@ class AddFriendsFragment : Fragment() {
 
         binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
+            binding.tvWasSearchSuccessful.text = getString(R.string.searching_for_friend)
             binding.tvWasSearchSuccessful.visibility = View.VISIBLE
         }
 
-        return binding.root
+        binding.btnSendfriendrequest.setOnClickListener {
+            sendFriendRequestToUser(viewModel.getSearchedUser().value)
+        }
 
-        //TODO implement logic to search for friends (by email?) and sending a friend request
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,6 +78,55 @@ class AddFriendsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun sendFriendRequestToUser(user : User?) {
+        val currentUser = PullData.currentUser.value
+        var snackbarText = ""
+        var isValidFriendRequest = false
+
+        if (user == null) {
+            snackbarText = "Kein User gefunden"
+        }
+        // User tries to send himself a friend request
+        else if (user.uid == currentUser?.uid) {
+            snackbarText = "Du kannst dir selbst keine Freundschaftsanfrage schicken."
+        }
+        // User is already friends with found user
+        else if (currentUser?.friends?.get(user.uid) != null) {
+            snackbarText = "Du bist bereits mit "+ user.username + " befreundet."
+        }
+        // Check whether user has outgoing or incoming friend requests (if not: send friend request)
+        else if (currentUser?.friendRequests == null) {
+            snackbarText = "Die Freundschaftsanfrage wird verschickt"
+            isValidFriendRequest = true
+        }
+        else {
+            // Checking status of found user in friend requests
+            when(currentUser?.friendRequests?.get(user.uid)){
+                // friend request of found user isIncoming
+                true -> snackbarText = "Du hast bereits eine Freundschaftsanfrage von " +
+                        user.username + " erhalten."
+                // friend request of found user is outgoing
+                false -> snackbarText = "Du hast " +
+                        user.username + " bereits eine Freundschaftsanfrage gesendet."
+                // user not found in friend requests -> send friend request
+                else  -> {
+                    snackbarText = "Die Freundschaftsanfrage wird verschickt"
+                    isValidFriendRequest = true
+                }
+            }
+        }
+
+        if (isValidFriendRequest) {
+            PushData.sendFriendRequest(user!!.uid)
+        }
+
+        view?.let {
+            Snackbar.make(it, snackbarText, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
     }
 
 }

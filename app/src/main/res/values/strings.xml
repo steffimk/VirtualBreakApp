@@ -79,4 +79,9 @@
     <string name="addfriends_intro">Du kannst Freunde mithilfe ihrer E-Mail-Adresse hinzufügen:</string>
     <string name="suche">Suche</string>
 
+    <!-- Search Friends -->
+    <string name="search_friend_successful">Gefunden:</string>
+    <string name="search_friend_not_successful">Es wurde kein User mit dieser Mail gefunden.</string>
+    <string name="searching_for_friend">User wird gesucht...</string>
+
 </resources>

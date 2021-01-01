@@ -32,11 +32,12 @@ class AddFriendsViewModel : ViewModel() {
 
                 val userList = dataSnapshot.getValue(dataType)
                 val user = userList?.get(userList.keys.firstOrNull())
+                searchedUser.value = user
                 if (user != null){
-                    searchedUser.value = user
                     Log.d(TAG, "Pulled User With Mail: $user")
+                } else {
+                    Log.d(TAG, "No User With Matching Mail")
                 }
-                Log.d(TAG, "No User With Matching Mail")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

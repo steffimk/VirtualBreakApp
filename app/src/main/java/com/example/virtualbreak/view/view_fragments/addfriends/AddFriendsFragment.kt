@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.example.virtualbreak.R
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
 import com.example.virtualbreak.model.User
 
@@ -39,6 +40,7 @@ class AddFriendsFragment : Fragment() {
 
         binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
+            binding.tvWasSearchSuccessful.visibility = View.VISIBLE
         }
 
         return binding.root
@@ -51,7 +53,7 @@ class AddFriendsFragment : Fragment() {
 
         viewModel.getSearchedUser().observe(viewLifecycleOwner, Observer<User?>{ searchedUser ->
             if (searchedUser != null) {
-                binding.tvWaSerachSuccessful.text = "Gefunden:"
+                binding.tvWasSearchSuccessful.text = getString(R.string.search_friend_successful)
                 binding.foundfriendCardview.visibility = View.VISIBLE
                 binding.foundfriendUsername.text = searchedUser.username
                 binding.foundfriendEmail.text = searchedUser.email
@@ -59,7 +61,7 @@ class AddFriendsFragment : Fragment() {
                 Log.d(TAG, "Found user " + searchedUser.username)
             }
             if (searchedUser == null) {
-                binding.tvWaSerachSuccessful.text = "Es wurde kein User mit dieser Mail gefunden."
+                binding.tvWasSearchSuccessful.text = getString(R.string.search_friend_not_successful)
                 binding.foundfriendCardview.visibility = View.INVISIBLE
                 Log.d(TAG, "Found no user with that mail")
             }

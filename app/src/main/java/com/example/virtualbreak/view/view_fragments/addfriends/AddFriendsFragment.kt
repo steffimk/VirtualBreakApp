@@ -37,7 +37,7 @@ class AddFriendsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddFriendsBinding.inflate(inflater, container, false)
 
-        binding.searchSubmit.setOnClickListener {
+        binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
         }
 
@@ -51,8 +51,17 @@ class AddFriendsFragment : Fragment() {
 
         viewModel.getSearchedUser().observe(viewLifecycleOwner, Observer<User?>{ searchedUser ->
             if (searchedUser != null) {
-                binding.nameOfFoundUser.text = searchedUser.username
+                binding.tvWaSerachSuccessful.text = "Gefunden:"
+                binding.foundfriendCardview.visibility = View.VISIBLE
+                binding.foundfriendUsername.text = searchedUser.username
+                binding.foundfriendEmail.text = searchedUser.email
+                // binding.foundfriendImg.setImageDrawable(searchedUser.profilePicture) TODO: Show profile picture
                 Log.d(TAG, "Found user " + searchedUser.username)
+            }
+            if (searchedUser == null) {
+                binding.tvWaSerachSuccessful.text = "Es wurde kein User mit dieser Mail gefunden."
+                binding.foundfriendCardview.visibility = View.INVISIBLE
+                Log.d(TAG, "Found no user with that mail")
             }
         })
     }

@@ -12,13 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoom
-import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoomsAdapter
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
-import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -41,21 +39,22 @@ class SingleGroupFragment : Fragment() {
             textView.text = it
         })
 
-        val prefs = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-        val groupId = prefs?.getString("com.example.virtualbreak.groupId", "")
-        Log.d(TAG, "Got groupId from shared preferences: $groupId")
+        val groupId = SharedPrefManager.instance.getGroupId()
 
         var rooms = groupId?.let { PullData.getRoomsOfGroup(it) }
-
+/*
         var itemsList: MutableList<SingleGroupRoom> = ArrayList()
         rooms?.forEach{ room ->
             itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr, room.uid))
-        }
+        }*/
 
         val gridView: GridView = root.findViewById(R.id.grid_view)
-        val customAdapter =
-            context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, itemsList) }
-        gridView.adapter = customAdapter
+        rooms?.let {
+            val customAdapter =
+                context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, rooms!!) }
+            gridView.adapter = customAdapter
+        }
+
 
         // Observe whether rooms changed
         PullData.rooms.observe(viewLifecycleOwner, {
@@ -65,11 +64,11 @@ class SingleGroupFragment : Fragment() {
             if (newRooms?.equals(rooms) == false) {
                 Log.d(TAG, "Observed change in rooms of group")
                 rooms = newRooms
-                itemsList.clear()
+                /*itemsList.clear()
                 newRooms?.forEach{ room ->
                     itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr, room.uid))
-                }
-                gridView.adapter = context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, itemsList) } // TODO: Change adapter instead of creating new one?
+                }*/
+                gridView.adapter = context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, newRooms) } // TODO: Change adapter instead of creating new one?
             } else {
                 Log.d(TAG, "Observed no new rooms")
             }
@@ -77,9 +76,9 @@ class SingleGroupFragment : Fragment() {
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
         fab.setOnClickListener { view ->
-            val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
+            val groupId = SharedPrefManager.instance.getGroupId()
             if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.COFFEE, "Mein Pausenraum") // TODO: Let user set RoomDescription
+                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffee trinken") // TODO: Let user set RoomDescription
                 Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }

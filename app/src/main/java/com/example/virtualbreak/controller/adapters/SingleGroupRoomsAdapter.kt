@@ -1,4 +1,4 @@
-package com.example.virtualbreak.controller.adapters.singlegroup
+package com.example.virtualbreak.controller.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -10,15 +10,16 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.view.view_activitys.BreakRoomActivity
 import com.google.android.material.snackbar.Snackbar
-import java.util.*
 
 
-class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: List<SingleGroupRoom>) :
-    ArrayAdapter<SingleGroupRoom?>(context, resource, objects) {
+class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayList<Room>) :
+    ArrayAdapter<Room>(context, resource, objects) {
 
-    var items_list: List<SingleGroupRoom> = ArrayList<SingleGroupRoom>()
+    var items_list: ArrayList<Room> = ArrayList<Room>()
     var custom_layout_id: Int
     val TAG: String = "SingleGroupRoomsAdapter"
 
@@ -44,19 +45,16 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: List<Sin
             val textView = v.findViewById<TextView>(R.id.room_text)
 
             // get the item using the  position param
-            val item: SingleGroupRoom = items_list[position]
-            imageView.setImageResource(item.image_id)
-            textView.setText(item.text)
+            val item: Room = items_list[position]
+            imageView.setImageResource(item.type.symbol)
+            textView.setText(item.type.dbStr)
 
             v.setOnClickListener {
                 var context = imageView.context
-                val prefs =
-                    context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-                // save roomId of clicked room in shared preferences
-                prefs.edit().putString("com.example.virtualbreak.roomId", item.roomId).apply()
-                Log.d(TAG, "RoomId " + item.roomId + " added to shared preferences")
-                Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+
+                SharedPrefManager.instance.saveRoomId(item.uid)
+
+                //Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
                 val intent = Intent(context, BreakRoomActivity::class.java)
                 /*

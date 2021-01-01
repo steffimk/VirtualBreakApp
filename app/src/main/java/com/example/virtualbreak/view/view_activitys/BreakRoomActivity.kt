@@ -6,6 +6,7 @@ import android.text.method.ScrollingMovementMethod
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
@@ -21,8 +22,7 @@ class BreakRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
 
-        val prefs = this.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-        val roomId = prefs.getString("com.example.virtualbreak.roomId", null)
+        val roomId = SharedPrefManager.instance.getRoomId()
 
         /*
         val bundle: Bundle? = intent.extras
@@ -58,7 +58,7 @@ class BreakRoomActivity : AppCompatActivity() {
         // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
         leave_room_button.setOnClickListener {
             PushData.leaveRoom(room)
-            prefs.edit().remove("com.example.virtualbreak.roomId").apply()
+            SharedPrefManager.instance.removeRoomId()
             finish()
         }
     }

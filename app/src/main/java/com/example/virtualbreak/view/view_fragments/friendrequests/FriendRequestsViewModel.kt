@@ -15,8 +15,52 @@ class FriendRequestsViewModel : ViewModel() {
 
     private val TAG = "FriendRequestsViewModel"
 
+    private val valueEventListener = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val friendRequests = dataSnapshot.getValue<HashMap<String,Boolean>>()
+
+            if (friendRequests == null) {
+                Log.d(TAG, "Pulled FriendRequests are null")
+                return
+            }
+
+            Log.d(TAG, "Pulled FriendRequests $friendRequests")
+            // TODO: Maybe check which friendRequests got removed instead of clearing HashMaps
+            incomingFriendRequests.value?.clear()
+            incomingFriendRequests.value = incomingFriendRequests.value
+            outgoingFriendRequests.value?.clear()
+            outgoingFriendRequests.value = outgoingFriendRequests.value
+
+            friendRequests.forEach {
+                    (userId, isIncoming) -> pullUserWithId(userId, isIncoming)
+            }
+
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+    }
+
     private val incomingFriendRequests: MutableLiveData<HashMap<String,User>> =
-        MutableLiveData<HashMap<String,User>>(HashMap()).also { pullFriends() }
+        object : MutableLiveData<HashMap<String,User>>(HashMap()) {
+            override fun onActive() {
+                super.onActive()
+                val userId = PullData.currentUser.value?.uid
+                if (userId != null) {
+                    PullData.database.child("users").child(userId).child("friendRequests").addValueEventListener(valueEventListener)
+                }
+            }
+
+            override fun onInactive() {
+                super.onInactive()
+                val userId = PullData.currentUser.value?.uid
+                if (userId != null) {
+                    PullData.database.child("users").child(userId).child("friendRequests").removeEventListener(valueEventListener)
+                }
+            }
+        }
 
     private val outgoingFriendRequests: MutableLiveData<HashMap<String,User>> =
         MutableLiveData<HashMap<String,User>>(HashMap())
@@ -27,44 +71,6 @@ class FriendRequestsViewModel : ViewModel() {
 
     fun getOutGoingFriendRequests(): LiveData<HashMap<String,User>> {
         return outgoingFriendRequests
-    }
-
-    private fun pullFriends() {
-
-        val valueEventListener = object : ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val friendRequests = dataSnapshot.getValue<HashMap<String,Boolean>>()
-
-                if (friendRequests == null) {
-                    Log.d(TAG, "Pulled FriendRequests are null")
-                    return
-                }
-
-                Log.d(TAG, "Pulled FriendRequests $friendRequests")
-                // TODO: Maybe check which friendRequests got removed instead of clearing HashMaps
-                incomingFriendRequests.value?.clear()
-                incomingFriendRequests.value = incomingFriendRequests.value
-                outgoingFriendRequests.value?.clear()
-                outgoingFriendRequests.value = outgoingFriendRequests.value
-
-                friendRequests.forEach {
-                    (userId, isIncoming) -> pullUserWithId(userId, isIncoming)
-                }
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d(TAG, databaseError.message)
-            }
-        }
-
-        val userId = PullData.currentUser.value?.uid
-        if (userId != null) {
-            PullData.database.child("users").child(userId).child("friendRequests").addValueEventListener(valueEventListener)
-        }
-
-
     }
 
     private fun pullUserWithId(userId: String, isIncoming: Boolean) {

@@ -1,6 +1,5 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +10,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype

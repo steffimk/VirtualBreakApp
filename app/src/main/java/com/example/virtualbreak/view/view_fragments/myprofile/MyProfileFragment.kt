@@ -10,10 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
@@ -23,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
-    private lateinit var myProfileViewModel: MyProfileViewModel
+    private val myProfileViewModel: MyProfileViewModel by viewModels()
     private val TAG = "MyProfileFragment"
 
     private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE)
@@ -34,17 +33,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        myProfileViewModel =
-            ViewModelProvider(this).get(MyProfileViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_myprofile, container, false)
 
-        //set username text of current user
-        PullData.currentUser.value?.let{
-            root.findViewById<TextView>(R.id.username).text = it.username
-        }
-
         val spinner = root.findViewById<Spinner>(R.id.status_spinner)
-        spinner.setOnItemSelectedListener(this)
 
         // Create an ArrayAdapter using a simple spinner layout and status array
         context?.let {
@@ -57,22 +49,21 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Set array Adapter to Spinner
             spinner.setAdapter(aa)
-            // Set position of spinner to current status
-            val spinnerPosition = aa.getPosition(PullData.currentUser.value?.status?.dbStr)
-            spinner.setSelection(spinnerPosition)
         }
 
-        root.findViewById<TextView>(R.id.username).text = PullData.currentUser.value?.username
-
         // Connect with and observe LiveData
-        PullData.currentUser.observe(viewLifecycleOwner, Observer<User?> { user ->
-            Log.d(TAG, "Observing CurrentUser");
-            if (user != null) {
+        myProfileViewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
+            if(spinner.onItemSelectedListener == null) {
+                // Set only now - otherwise default value gets saved in database
+                spinner.onItemSelectedListener = this
+            }
+            Log.d(TAG, "Observed User: $observedUser");
+            if (observedUser != null) {
                 //set username text of current user
-                root.findViewById<TextView>(R.id.username).text = user.username
+                root.findViewById<TextView>(R.id.username).text = observedUser.username
                 // Set position of spinner to current status
                 val aa = spinner.adapter as ArrayAdapter<String>
-                spinner.setSelection(aa.getPosition(user.status?.dbStr))
+                spinner.setSelection(aa.getPosition(observedUser.status?.dbStr))
             }
         })
 

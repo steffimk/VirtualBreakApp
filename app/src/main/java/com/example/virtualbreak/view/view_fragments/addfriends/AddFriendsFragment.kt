@@ -9,12 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.processNextEventInCurrentThread
 
 
 /**
@@ -81,7 +79,7 @@ class AddFriendsFragment : Fragment() {
     }
 
     private fun sendFriendRequestToUser(user : User?) {
-        val currentUser = PullData.currentUser.value
+        val currentUser = viewModel.getCurrentUser().value
         var snackbarText = ""
         var isValidFriendRequest = false
 

@@ -3,11 +3,9 @@ package com.example.virtualbreak.view.view_activitys
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.communication.PullData
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -21,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         SharedPrefManager.instance.init(applicationContext)
 
         if (Firebase.auth.currentUser != null) {
-            PullData.attachListenerToCurrentUser()
+            // Save userId in shared preferences
             SharedPrefManager.instance.saveUserId(Firebase.auth.currentUser!!.uid)
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
         }

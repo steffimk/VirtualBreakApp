@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
@@ -46,7 +47,7 @@ class FriendRequestsViewModel : ViewModel() {
     private val incomingFriendRequests: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
 
-            private val queryFriendRequests = PullData.database.child("users").child(PullData.currentUser.value?.uid ?: "").child("friendRequests")
+            private val queryFriendRequests = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "").child("friendRequests")
 
             override fun onActive() {
                 super.onActive()

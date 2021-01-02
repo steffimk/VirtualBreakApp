@@ -7,17 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendListAdapter
-import com.example.virtualbreak.controller.communication.PullData
-import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
 
@@ -33,7 +28,6 @@ class Groups_friendlist_fragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

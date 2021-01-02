@@ -4,22 +4,32 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 
 
 class AddFriendsViewModel : ViewModel() {
 
     private val TAG = "AddFriendsViewModel"
 
+    private val currentUser: MutableLiveData<User> = MutableLiveData<User>().also {
+        PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+            .addValueEventListener(userValueEventListener)
+    }
     private val searchedUser: MutableLiveData<User?> = MutableLiveData(null)
 
     fun getSearchedUser(): LiveData<User?> {
         return searchedUser
+    }
+
+    fun getCurrentUser(): LiveData<User> {
+        return currentUser
     }
 
     fun searchForUserWithFullEmail(email: String) {
@@ -49,5 +59,26 @@ class AddFriendsViewModel : ViewModel() {
         PullData.database.child("users").orderByChild("email").equalTo(email).limitToFirst(1).addListenerForSingleValueEvent(
             valueEventListener
         )
+    }
+
+    private val userValueEventListener = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val pulledUser = dataSnapshot.getValue<User>()
+            Log.d(TAG, "Pulled User $pulledUser")
+
+            currentUser.value = pulledUser
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+            .removeEventListener(userValueEventListener)
     }
 }

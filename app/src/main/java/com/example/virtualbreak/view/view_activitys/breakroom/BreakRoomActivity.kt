@@ -1,20 +1,16 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
-import android.content.Context
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 

@@ -1,12 +1,9 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener

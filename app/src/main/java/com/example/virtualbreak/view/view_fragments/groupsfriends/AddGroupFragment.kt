@@ -15,9 +15,12 @@ import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.adapters.groupsfriends.SearchFriendListAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_group.*
+import kotlinx.android.synthetic.main.fragment_add_group.select_friends_recylerlist
+import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
 
 class AddGroupFragment : Fragment() {
@@ -54,8 +57,15 @@ class AddGroupFragment : Fragment() {
         var friends: ArrayList<User>
         var adapter: SearchFriendListAdapter
 
+        //for test
+        friends = ArrayList()
+        friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, false, null, null, null))
+        friends.add(User("b", "Freund2", "email2", Status.BUSY, null, false, null, null, null))
+        select_friends_recylerlist.adapter = SearchFriendListAdapter(friends, context)
+        adapter = SearchFriendListAdapter(friends, context)
+
         //get current friends from PullData and pass to recycler view adapter for friends list
-        PullData.friends.value?.values.let{
+        /*PullData.friends.value?.values.let{
             friends = ArrayList(PullData.friends.value?.values)
             adapter = SearchFriendListAdapter(friends, context)
         }
@@ -64,7 +74,7 @@ class AddGroupFragment : Fragment() {
         //adapt friend list at changes
         PullData.friends.observe(viewLifecycleOwner, {
             select_friends_recylerlist.adapter = FriendListAdapter(ArrayList(PullData.friends.value?.values), context) // TODO: Maybe reuse old adapter
-        })
+        })*/
 
         //Set the clicklistner to select friends and recive selected friends ids
         adapter.setOnItemClickListener(object : SearchFriendListAdapter.OnItemClickListener{

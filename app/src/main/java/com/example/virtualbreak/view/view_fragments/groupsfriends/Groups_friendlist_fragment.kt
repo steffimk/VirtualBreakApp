@@ -51,8 +51,8 @@ class Groups_friendlist_fragment : Fragment() {
 
          //for test
         /*var friends: ArrayList<User> = ArrayList()
-        friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
-        friends.add(User("b", "Freund2", "email2", Status.BUSY, null, null, null, null))
+        friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, false, null, null, null))
+        friends.add(User("b", "Freund2", "email2", Status.BUSY, null, false, null, null, null))
         friends_recyler_list_view.adapter = FriendListAdapter(friends, context)*/
 
         //get current friends from PullData and pass to recycler view adapter for friends list

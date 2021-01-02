@@ -85,7 +85,7 @@ class SingleGroupFragment : Fragment() {
             //Save the Breakroom with intent coffee
             val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
             if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.COFFEE)
+                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffe trinken")
                 Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
@@ -99,7 +99,7 @@ class SingleGroupFragment : Fragment() {
             //Save the BreakRoom with Intent Sport
             val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
             if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.QUESTION)
+                PushData.saveRoom(groupId, Roomtype.QUESTION, "Kaffee trinken")
                 Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
@@ -111,7 +111,7 @@ class SingleGroupFragment : Fragment() {
             // save the Breakroom with intent Game
             val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
             if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.GAME)
+                PushData.saveRoom(groupId, Roomtype.GAME, "Games")
                 Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }

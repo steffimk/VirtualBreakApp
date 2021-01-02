@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.makeramen.roundedimageview.RoundedImageView
 
@@ -30,8 +33,7 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
         val username: TextView = itemView.findViewById(R.id.friend_list_name)
         val profilPicture = itemView.findViewById<RoundedImageView>(R.id.friend_list_image)
         val selectBox = itemView.findViewById<CheckBox>(R.id.friends_select_box)
-        val status = itemView.findViewById<TextView>(R.id.friend_list_status)
-
+        val statusCircleImg: ImageView = itemView.findViewById(R.id.status_circle_img)
 
     }
 
@@ -58,7 +60,15 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
 
         viewHolder.username.text = friend.username
         //ToDo set the profilpicture
-        //Todo set status?
+
+        context?.let{
+            when(friends[position].status){
+                Status.AVAILABLE -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_available))
+                Status.BUSY -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_busy))
+                Status.STUDYING -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_studying))
+                else -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
+            }
+        }
         //viewHolder.status.visibility = View.GONE
 
         if (onClick != null) viewHolder.itemView.setOnClickListener{

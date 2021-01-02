@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.GroupsListAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.adapters.groupsfriends.GroupsListAdapter
 

@@ -2,11 +2,14 @@ package com.example.virtualbreak.view.view_fragments.friendrequests
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,15 +22,15 @@ import kotlinx.android.synthetic.main.friend_requests_fragment.*
 
 class FriendRequestsFragment() : Fragment() {
 
-    lateinit var friendRequests: HashMap<String, User>
-    var friendrequestsTest: ArrayList<User> = ArrayList()
+    private val TAG = "FriendRequestsFragment"
+
+//    var friendrequestsTest: ArrayList<User> = ArrayList()
 
     companion object {
         fun newInstance() = FriendRequestsFragment()
     }
 
-    //evtl delete
-    private lateinit var viewModel: FriendRequestsViewModel
+    private val viewModel: FriendRequestsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,20 +50,17 @@ class FriendRequestsFragment() : Fragment() {
         friendrequestsTest.add(User("b", "Freund2", "email2", Status.AVAILABLE, null, null, null, null))
 
         friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(friendrequestsTest)*/
-        //TODO replace with real data from db, uncomment following:
 
-        PullData.incomingFriendRequests.observe(viewLifecycleOwner, {
-            //pull incoming friend requests from db
-            friendRequests = it
+        viewModel.getIncomingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ incomingFriendRequests ->
+            Log.d(TAG, "Observed the following incomingFriendRequests: $incomingFriendRequests")
             //pass list of users who sent you a friend request
-            friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(ArrayList(friendRequests.values))
+            friendrequests_recyler_list_view.adapter =
+                FriendRequestsAdapter(ArrayList(incomingFriendRequests.values))
         })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FriendRequestsViewModel::class.java)
-        // TODO: evtl delete viewmodel
 
     }
 

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 
@@ -53,7 +54,7 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         //define click listener for viewholders view
         holder.acceptRequestBtn.setOnClickListener{
 
-        //TODO accept friend request database logic
+            PushData.confirmFriendRequest(friendRequests[position].uid)
             Snackbar.make(view, "Add friend "+friendRequests[position].username+" uid: "+friendRequests[position].uid, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }

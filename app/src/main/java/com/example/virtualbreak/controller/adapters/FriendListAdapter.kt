@@ -5,53 +5,65 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.model.Status
+import com.example.virtualbreak.model.User
 
-class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
+class FriendListAdapter(private val friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
     private val testNames = arrayOf("Friend1", "Friend2","Friend3")
-
+    lateinit var view: View
+    val TAG = "FriendListAdapter"
 
     class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
+        val statusCircleImg: ImageView
         private val TAG: String = "FriendListAdapter_ViewHolder"
 
         init{
             textView = itemView.findViewById(R.id.friend_list_name)
-
-            //define click listener for viewholders view
-            itemView.setOnClickListener{
-                var position: Int = adapterPosition
-                var context = itemView.context
-                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-                // TODO: potentially not working correctly if new friend was added and positions in PullData.friends changed
-                // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
-                val friendId = ArrayList(PullData.friends.value?.keys)[position]
-                prefs.edit().putString("com.example.virtualbreak.friendId", friendId).apply()
-                Log.d(TAG, "FriendId $friendId added to shared preferences")
-                //TODO GO TO selected Friend
-            }
-
-
+            statusCircleImg = itemView.findViewById(R.id.status_circle_img)
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolderFriends {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.friend_list_item, viewGroup, false)
+        view = LayoutInflater.from(viewGroup.context).inflate(R.layout.friend_list_item, viewGroup, false)
 
         return ViewHolderFriends(view)
     }
 
     override fun getItemCount(): Int {
-        return PullData.friends.value?.size!!
+        if (friends == null)
+            return 0
+        else
+            return friends.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolderFriends, position: Int) {
-        holder.textView.text = ArrayList(PullData.friends.value?.values)[position].username
+        //holder.textView.text = ArrayList(PullData.friends.value?.values)[position].username
+        holder.textView.text = friends[position].username
+
+        context?.let{
+            when(friends[position].status){
+                Status.AVAILABLE -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_available))
+                Status.BUSY -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_busy))
+                Status.STUDYING -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_studying))
+                else -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
+            }
+        }
+
+        view.setOnClickListener {
+            val friendId = friends[position].uid
+            //evtl go to selected friend (evtl no need, if status shown in list) or show popup
+            Log.d(TAG, "FriendId $friendId was clicked on")
+        }
+
     }
 
 

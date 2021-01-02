@@ -35,6 +35,11 @@ class SignInActivity : AppCompatActivity() {
                     binding.signinPassword1.text.toString(), binding.signinPassword2.text.toString())
         }
 
+        binding.signUpLogin.setOnClickListener {
+            //Navigate to LogInActivity
+            startActivity(Intent(this, LogInActivity::class.java))
+        }
+
         auth = Firebase.auth
     }
 

@@ -35,6 +35,11 @@ class LogInActivity : AppCompatActivity() {
         binding.loginSubmit.setOnClickListener {
             tryAndLogIn(binding.loginEmail.text.toString(), binding.loginPassword.text.toString())
         }
+
+        binding.loginSignUp.setOnClickListener {
+            //navigate to SignInActivity
+            startActivity(Intent(this, SignInActivity::class.java))
+        }
 //        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //            .requestEmail()
 //            .build()

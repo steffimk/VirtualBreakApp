@@ -43,9 +43,9 @@
             android:padding="10dp"
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:textColor="@color/light_green"
-            android:textSize="20sp"
-            android:layout_marginTop="200dp"/>
+            android:layout_marginTop="200dp"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="match_parent"
@@ -55,7 +55,18 @@
             android:padding="10dp"
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:textColor="@color/light_green" />
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:id="@+id/test_button"
+            android:padding="10dp"
+            android:backgroundTint="@color/mandarin"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
 
 
     </LinearLayout>

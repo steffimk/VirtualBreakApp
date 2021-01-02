@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.GroupsListAdapter
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.adapters.groupsfriends.GroupsListAdapter
+
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Group
 import com.google.android.material.snackbar.Snackbar
@@ -49,10 +52,7 @@ class Groups_grouplist_fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         groups_recyler_list_view.layoutManager = LinearLayoutManager(activity)
-
-        PullData.groups.value?.values.let{
-            groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(it))
-        }
+        //groups_recyler_list_view.adapter = GroupsListAdapter()
 
         PullData.groups.observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groupsMap ->
             Log.d(TAG, "Observing Group")
@@ -62,9 +62,11 @@ class Groups_grouplist_fragment : Fragment() {
         })
 
         groups_add_group_button.setOnClickListener{
-            PushData.saveGroup("Neue Gruppe", null) // TODO: let user set name and add friends
-            Snackbar.make(view, "Erstelle neue Gruppe", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //TODO Add Groups
+            //Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+            //   .setAction("Action", null).show()
+            //itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
+            view.findNavController().navigate(R.id.action_nav_home_to_addGroupFragment)
         }
     }
 

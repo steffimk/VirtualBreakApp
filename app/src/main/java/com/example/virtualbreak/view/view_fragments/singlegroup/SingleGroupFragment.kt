@@ -18,8 +18,10 @@ import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.view.view_activitys.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.nambimobile.widgets.efab.FabOption
 
 class SingleGroupFragment : Fragment() {
 
@@ -49,7 +51,7 @@ class SingleGroupFragment : Fragment() {
         var rooms = PullData.getRoomsOfGroup(groupId)
 
         val gridView: GridView = root.findViewById(R.id.grid_view)
-        if(!rooms.isEmpty()) {
+        if (!rooms.isEmpty()) {
             val customAdapter =
                 context?.let {
                     SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, rooms)
@@ -72,14 +74,49 @@ class SingleGroupFragment : Fragment() {
             }
         })
 
-        val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
-        fab.setOnClickListener { view ->
-            if (groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffee trinken") // TODO: Let user decide on RoomType
 
-                Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+        val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
+
+        val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
+
+        fabOptionNormal.setOnClickListener {
+            //TODO Send notificaitons, go to created Breakroom
+
+            //Save the Breakroom with intent coffee
+            val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
+            if (groupId != null && groupId != "") {
+                PushData.saveRoom(groupId, Roomtype.COFFEE)
+                Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
+
+
+        }
+        val fabOptionQuestion: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
+        fabOptionQuestion.setOnClickListener {
+            //TODO Send notificaitons, go to created Breakroom
+
+            //Save the BreakRoom with Intent Sport
+            val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
+            if (groupId != null && groupId != "") {
+                PushData.saveRoom(groupId, Roomtype.QUESTION)
+                Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+        }
+        val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
+        fabOptionGame.setOnClickListener {
+            //TODO Send notificaitons, go to created Breakroom
+
+            // save the Breakroom with intent Game
+            val groupId = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)?.getString("com.example.virtualbreak.groupId", "")
+            if (groupId != null && groupId != "") {
+                PushData.saveRoom(groupId, Roomtype.GAME)
+                Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+
+            //TODO Make another Button for Sport?
         }
 
         return root

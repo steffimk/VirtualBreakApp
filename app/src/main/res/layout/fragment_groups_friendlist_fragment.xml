@@ -18,29 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--
-    <Button
-        android:id="@+id/friends_add_friends_button"
-        android:layout_width="140dp"
-        android:layout_height="70dp"
-        android:backgroundTint="@color/mandarin"
-        android:text="@string/add_friends"
-        android:textColor="@color/light_green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/friends_add_friends_button"
-        android:contentDescription="@string/add_friends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/add_friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/addfriend" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

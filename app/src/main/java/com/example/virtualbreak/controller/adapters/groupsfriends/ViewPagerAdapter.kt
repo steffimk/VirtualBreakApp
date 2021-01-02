@@ -1,4 +1,4 @@
-package com.example.virtualbreak.controller.adapters
+package com.example.virtualbreak.controller.adapters.groupsfriends
 
 import androidx.fragment.app.*
 import androidx.viewpager2.adapter.FragmentStateAdapter

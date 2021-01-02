@@ -1,16 +1,20 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import com.google.gson.Gson
 
 class BreakRoomViewModel(private val roomId: String): ViewModel() {
 
@@ -46,7 +50,47 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
             Log.d(TAG, databaseError.message)
         }
     }
+
+    fun loadUsersOfRoom(context: Context){
+        val currentRoom = room.value
+        val users = currentRoom?.users
+
+        var usersOfRoom : HashMap<String,String> = HashMap()
+
+        val prefs =
+            context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+        prefs.edit().remove("com.example.virtualbreak.roomUser").apply()
+
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val user = dataSnapshot.getValue(User::class.java)
+                val name = user!!.username
+                usersOfRoom.put(dataSnapshot.key.toString(), name)
+
+                //convert to string using gson
+                val gson = Gson()
+                val hashMapString = gson.toJson(usersOfRoom)
+
+                //save hashmap in shared prefs
+                val prefs =
+                    context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+                prefs.edit().putString("com.example.virtualbreak.roomUser", hashMapString).apply()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
+
+        if (users != null) {
+            for(u in users){
+                PullData.database.child("users").child(u.key).addListenerForSingleValueEvent(valueEventListener)
+            }
+        }
+    }
 }
+
 
 class BreakRoomViewModelFactory(private val roomId: String) :
     ViewModelProvider.Factory {

@@ -1,8 +1,12 @@
 package com.example.virtualbreak.controller.communication
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.model.Group
+import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.google.firebase.auth.ktx.auth
@@ -12,6 +16,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+
 
 class PullData {
 
@@ -21,7 +27,7 @@ class PullData {
 
         val database : DatabaseReference = Firebase.database.reference
 //        var currentUser: MutableLiveData<User?> = MutableLiveData(null)
-
+        
 //        fun attachListenerToCurrentUser() {
 //            if (currentUser.value != null) {
 //                return // Listener already attached

@@ -1,15 +1,17 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import kotlinx.android.synthetic.main.activity_break_room.*
 
@@ -37,13 +39,29 @@ class BreakRoomActivity : AppCompatActivity() {
         */
 
         if (roomId != null) {
-            viewModel.getRoom().observe(this, Observer<Room>{ observedRoom ->
-                Log.d(TAG, "Observed room: $observedRoom")
-                room = observedRoom
-                //TODO: update view here
-            })
+            PushData.joinRoom(roomId)
+//            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
 
-            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
+            var defaultMessages : MutableList<Message> = ArrayList()
+            var defaultM = Message("default", "Keine Nachricht")
+            defaultMessages.add(defaultM)
+
+            chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)
+            chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
+
+            viewModel.getRoom().observe(this, Observer<Room>{ observedRoom ->
+                if (room?.users ?: HashMap() != observedRoom.users) {
+                    viewModel.loadUsersOfRoom(this)
+                }
+                viewModel.loadUsersOfRoom(this)
+                Log.d(TAG, "Observed room: $observedRoom")
+                if(observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()){
+                    room = observedRoom
+                    val messages = observedRoom.messages
+                    Log.i(TAG, "messagesList: $messages")
+                    chat_messages_recycler_view.adapter = ChatAdapter(this, ArrayList(messages.values))
+                }
+            })
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous
@@ -51,12 +69,16 @@ class BreakRoomActivity : AppCompatActivity() {
         }
 
         // makes textview scrollable
-        chat_messages_view.setMovementMethod(ScrollingMovementMethod())
+        //chat_messages_view.setMovementMethod(ScrollingMovementMethod())
 
         send_message_button.setOnClickListener {
-            // TODO: save entered message
-
             val input = chat_message_input.text
+            val message = input.toString()
+            if(!input.equals("")){
+                if (roomId != null) {
+                    PushData.sendMessage(roomId, message)
+                }
+            }
             input.clear()
         }
 

@@ -10,10 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.GroupsListAdapter
-import com.example.virtualbreak.controller.communication.PushData
+import androidx.navigation.findNavController
+import com.example.virtualbreak.controller.adapters.groupsfriends.GroupsListAdapter
 import com.example.virtualbreak.model.Group
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewModel as GroupsViewModel
 
@@ -54,12 +53,12 @@ class Groups_grouplist_fragment : Fragment() {
         })
 
         groups_add_group_button.setOnClickListener{
-            PushData.saveGroup("Neue Gruppe", null) // TODO: let user set name and add friends
-            Snackbar.make(view, "Erstelle neue Gruppe", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //TODO Add Groups
+            //Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+            //   .setAction("Action", null).show()
+            //itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
+            view.findNavController().navigate(R.id.action_nav_home_to_addGroupFragment)
         }
     }
-
-
 
 }

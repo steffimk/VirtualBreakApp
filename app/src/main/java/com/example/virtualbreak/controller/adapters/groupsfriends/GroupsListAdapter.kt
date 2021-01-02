@@ -1,7 +1,7 @@
-package com.example.virtualbreak.controller.adapters
+package com.example.virtualbreak.controller.adapters.groupsfriends
 
-import android.content.Context
 import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +15,10 @@ import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsFriendsFragmentDirections
 import kotlinx.android.synthetic.main.group_list_item.*
 
+
+/**
+ * This Adapter manages the Receyler View of the Groups in the groups_grouplist_fragment
+ */
 class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
     lateinit var view: View

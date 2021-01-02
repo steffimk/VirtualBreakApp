@@ -131,7 +131,7 @@
         android:backgroundTint="@color/mandarin"
         android:text="@string/signin_submit"
         android:textAllCaps="false"
-        android:textColor="@color/light_green"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"

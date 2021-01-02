@@ -11,12 +11,17 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PullData
-import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
+import com.makeramen.roundedimageview.RoundedImageView
+import com.example.virtualbreak.model.Status
+
+
+/**
+ * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
+ */
 
 class FriendListAdapter(private val friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
-    private val testNames = arrayOf("Friend1", "Friend2","Friend3")
     lateinit var view: View
     val TAG = "FriendListAdapter"
 

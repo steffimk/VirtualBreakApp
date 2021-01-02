@@ -90,7 +90,7 @@ class PushData {
             if (currentUserId != null) {
                 val roomId = database.child("rooms").push().key
                 if (roomId != null) {
-                    val newRoom = Room(roomId, groupId, roomDescription, hashMapOf(currentUserId to currentUserId), roomType?: Roomtype.COFFEE)
+                    val newRoom = Room(roomId, groupId, roomDescription, hashMapOf(currentUserId to currentUserId), HashMap(), roomType?: Roomtype.COFFEE)
                     database.child("rooms").child(roomId).setValue(newRoom)
                     database.child("groups").child(groupId).child("rooms").child(roomId).setValue(roomId)
                     Log.d(TAG, "Saved new room")
@@ -128,6 +128,16 @@ class PushData {
                 }
             } else {
                 Log.d(TAG, "No user logged in. Cannot leave room.")
+            }
+        }
+
+        fun sendMessage(roomId: String, message: String){
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if(currentUserId != null){
+                val newChatMessage = Message(currentUserId, message)
+                database.child("rooms").child(roomId).child("messages").push().setValue(newChatMessage)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot send message.")
             }
         }
 

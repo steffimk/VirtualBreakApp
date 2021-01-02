@@ -2,6 +2,9 @@
 <resources>
 
     <!-- ColorPallette-->
+    <color name="darkblue">#303c6c</color>
+    <color name ="blue">#b4d5e5</color>
+    <color name="lightblue">#d2fdff</color>
     <color name="blue_pale">#D2FDFF</color>
     <color name="blue_columbia">#B4D5E5</color>
     <color name="blue_Dark_cornflower">#303C6C</color>
@@ -9,16 +12,23 @@
     <color name="mandarin">#EC7846</color>
     <color name="sinopia">#C9532C</color>
     <color name="brow_sugar">#AF6B46</color>
-    <color name="coffee">#764D35</color>
-    <color name="very_dark_brown">#2e1e15</color>
+    <color name="coffee">#7f5239</color>
 
+
+    <color name="light_green">#F6F4D2</color>
+    <color name="tea_green">#CBDFBD</color>
+    <color name="yellow_green">#D4E09B</color>
+
+    <color name="very_dark_brown">#2e1e15</color>
     <color name="black">#FF000000</color>
     <color name="dark_grey">#545454</color>
     <color name="white">#FFFFFFFF</color>
-
+    <color name="lightgray">#F4F4F4</color>
 
     <color name="dark_brown">#634532</color>
     <color name="cafe">#B4816A</color>
+    <color name = "ocker">#F9BD25</color>
+    <color name="pale_yellow">#fbe8a6</color>
 
 
 

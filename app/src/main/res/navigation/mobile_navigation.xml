@@ -36,18 +36,29 @@
         android:id="@+id/singleGroupFragment"
         android:name="com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupFragment"
         android:label="Deine Gruppe"
-        tools:layout="@layout/fragment_singlegroup" />
+        tools:layout="@layout/fragment_singlegroup" >
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.virtualbreak.view.view_fragments.logout.LogoutFragment"
         android:label="Logout"
         tools:layout="@layout/fragment_logout" />
+
     <fragment
         android:id="@+id/addFriendsFragment"
-        android:name="com.example.virtualbreak.view.view_fragments.AddFriendsFragment"
+        android:name="com.example.virtualbreak.view.view_fragments.addfriends.AddFriendsFragment"
         android:label="Freund hinzufügen"
         tools:layout="@layout/fragment_add_friends" />
+
+    <fragment
+        android:id="@+id/nav_friendrequests"
+        android:name="com.example.virtualbreak.view.view_fragments.friendrequests.FriendRequestsFragment"
+        android:label="Freundschaftsanfragen"
+        tools:layout="@layout/friend_requests_fragment" />
 
     <fragment
         android:id="@+id/add_group_fragment"

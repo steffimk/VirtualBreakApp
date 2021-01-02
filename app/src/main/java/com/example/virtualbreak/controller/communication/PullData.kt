@@ -1,8 +1,12 @@
 package com.example.virtualbreak.controller.communication
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.model.Group
+import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.google.firebase.auth.ktx.auth
@@ -12,6 +16,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+
 
 class PullData {
 
@@ -19,12 +25,13 @@ class PullData {
 
         private const val TAG: String = "PullData"
 
-        private val database : DatabaseReference = Firebase.database.reference
+        val database : DatabaseReference = Firebase.database.reference
         var currentUser: MutableLiveData<User?> = MutableLiveData(null)
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
         var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
         var incomingFriendRequests: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
+        var messages = MutableLiveData<MutableList<Message>>()
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room> {
             val roomIdsOfGroup = groups.value?.get(groupId)?.rooms ?: return ArrayList()
@@ -59,6 +66,45 @@ class PullData {
             val userUid = Firebase.auth.currentUser?.uid
             if (userUid != null) {
                 database.child("users").child(userUid).addValueEventListener(valueEventListener)
+            }
+        }
+
+        fun loadUsersOfRoom(roomId: String, context: Context){
+            val currentRoom = rooms.value?.get(roomId)
+            val users = currentRoom?.users
+
+            var usersOfRoom : HashMap<String,String> = HashMap()
+
+            val prefs =
+                context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+            prefs.edit().remove("com.example.virtualbreak.roomUser").apply()
+
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val user = dataSnapshot.getValue(User::class.java)
+                    val name = user!!.username
+                    usersOfRoom.put(dataSnapshot.key.toString(), name)
+
+                    //convert to string using gson
+                    val gson = Gson()
+                    val hashMapString = gson.toJson(usersOfRoom)
+
+                    //save hashmap in shared prefs
+                    val prefs =
+                        context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
+                    prefs.edit().putString("com.example.virtualbreak.roomUser", hashMapString).apply()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d(TAG, databaseError.message)
+                }
+            }
+
+            if (users != null) {
+                for(u in users){
+                    database.child("users").child(u.key).addListenerForSingleValueEvent(valueEventListener)
+                }
             }
         }
 
@@ -139,6 +185,27 @@ class PullData {
                 }
             }
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
+        }
+
+        fun loadMessages(roomId:String) {
+            messages.value = ArrayList()
+            val valueEventListener = object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    messages.value?.clear()
+                    messages.value = messages.value
+                    for (child in snapshot.getChildren()) {
+                        var value: Message = child.getValue(Message::class.java)!!
+
+                        messages.value?.add(value)
+                        messages.value = messages.value
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
+                }
+            }
+            database.child("rooms").child(roomId).child("messages").addValueEventListener(valueEventListener)
         }
 
         fun reloadFriends() {

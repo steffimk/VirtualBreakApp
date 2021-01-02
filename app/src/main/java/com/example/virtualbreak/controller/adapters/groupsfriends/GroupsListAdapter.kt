@@ -9,14 +9,20 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
+import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsFriendsFragmentDirections
+import kotlinx.android.synthetic.main.group_list_item.*
 
 
 /**
  * This Adapter manages the Receyler View of the Groups in the groups_grouplist_fragment
  */
-class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
+class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
+
+    lateinit var view: View
+    val TAG = "GroupsListAdapter"
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
@@ -24,41 +30,35 @@ class GroupsListAdapter : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
         init{
             textView = itemView.findViewById(R.id.group_list_name)
-
-            //define click listener for viewholders view
-            itemView.setOnClickListener{
-                var position: Int = adapterPosition
-                var context = itemView.context
-                val prefs = context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-                // TODO: potentially not working correctly if new group was added and positions in PullData.groups changed
-                // Possible solution: Better to use ids instead of position -> save ids in items like SingleGroupRoom
-                val groupId = ArrayList(PullData.groups.value?.keys)[position]
-                prefs.edit().putString("com.example.virtualbreak.groupId", groupId).apply()
-                Log.d(TAG, "GroupId $groupId added to shared preferences")
-                itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
-            }
-
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.group_list_item, viewGroup, false)
+        view = LayoutInflater.from(viewGroup.context).inflate(R.layout.group_list_item, viewGroup, false)
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        //holder.textView.text = allGroups[position].description
         // Get pulled groups, transform HashMap in ArrayList, get group description
-        holder.textView.text = ArrayList(PullData.groups.value?.values)[position].description
+        holder.textView.text = groups[position].description
+
+        view.setOnClickListener{
+            val groupId = groups[position].uid
+            //SharedPrefManager.instance.saveGroupId(groupId)
+            Log.d(TAG, "clicked on group "+groupId)
+            val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
+            view.findNavController().navigate(action)
+        }
+
     }
 
     override fun getItemCount(): Int {
-        return PullData.groups.value?.size!!
+        if (groups == null)
+            return 0
+        else
+            return groups.size
     }
-
-
 
 
 

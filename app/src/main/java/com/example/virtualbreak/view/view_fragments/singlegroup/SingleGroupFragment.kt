@@ -11,14 +11,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoom
-import com.example.virtualbreak.controller.adapters.singlegroup.SingleGroupRoomsAdapter
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
-import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.nambimobile.widgets.efab.FabOption
@@ -27,6 +26,10 @@ class SingleGroupFragment : Fragment() {
 
     private lateinit var singleGroupViewModel: SingleGroupViewModel
     private val TAG: String = "SingleGroupFragment"
+
+    //Navigation argument to pass selected group id from GroupsFriendsFragment (GroupsListAdapter) to SingleGroupFragment
+    val args: SingleGroupFragmentArgs by navArgs()
+    private lateinit var groupId: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,41 +45,40 @@ class SingleGroupFragment : Fragment() {
             textView.text = it
         })
 
-        val prefs = this.context?.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-        val groupId = prefs?.getString("com.example.virtualbreak.groupId", "")
-        Log.d(TAG, "Got groupId from shared preferences: $groupId")
+        groupId = args.groupId
 
-        var rooms = groupId?.let { PullData.getRoomsOfGroup(it) }
-
-        var itemsList: MutableList<SingleGroupRoom> = ArrayList()
-        rooms?.forEach{ room ->
-            itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr, room.uid))
-        }
+        var rooms = PullData.getRoomsOfGroup(groupId)
 
         val gridView: GridView = root.findViewById(R.id.grid_view)
-        val customAdapter =
-            context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, itemsList) }
-        gridView.adapter = customAdapter
+        if(!rooms.isEmpty()) {
+            val customAdapter =
+                context?.let {
+                    SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, rooms)
+                }
+            gridView.adapter = customAdapter
+        }
+
 
         // Observe whether rooms changed
         PullData.rooms.observe(viewLifecycleOwner, {
-            val newRooms = groupId?.let { PullData.getRoomsOfGroup(it) }
+            val newRooms = PullData.getRoomsOfGroup(groupId)
             Log.d(TAG, "Former rooms: $rooms")
             Log.d(TAG, "New rooms: $newRooms")
-            if (newRooms?.equals(rooms) == false) {
+            if (newRooms.equals(rooms) == false) {
                 Log.d(TAG, "Observed change in rooms of group")
                 rooms = newRooms
-                itemsList.clear()
-                newRooms?.forEach{ room ->
-                    itemsList.add(SingleGroupRoom(room.type.symbol, room.type.dbStr, room.uid))
-                }
-                gridView.adapter = context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, itemsList) } // TODO: Change adapter instead of creating new one?
+                gridView.adapter = context?.let { SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, newRooms) } // TODO: Change adapter instead of creating new one?
             } else {
                 Log.d(TAG, "Observed no new rooms")
             }
         })
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
+        fab.setOnClickListener { view ->
+            if (groupId != "") {
+                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffee trinken") // TODO: Let user decide on RoomType
+
+                Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
 
         val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
 

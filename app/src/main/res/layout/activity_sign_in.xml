@@ -29,76 +29,96 @@
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:text="@string/signin"
-            android:textSize="50sp"
-            app:layout_constraintBottom_toTopOf="@+id/signin_input"
-            app:layout_constraintEnd_toStartOf="@+id/signin_input"
-            app:layout_constraintStart_toEndOf="@+id/signin_input"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="50sp"/>
 
 
-        <EditText
-            android:id="@+id/singin_name"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="@string/signin_name_hint"
-            android:autofillHints="@string/signin_name_hint"
-            android:includeFontPadding="true"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp"
-            android:singleLine="true" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
-        <EditText
-            android:id="@+id/signin_email"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/singin_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/signin_name_hint"
+                android:autofillHints="@string/signin_name_hint"
+                android:includeFontPadding="true"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="@string/signin_email_hint"
-            android:autofillHints="@string/signin_email_hint"
-            android:includeFontPadding="true"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp"
-            android:singleLine="true" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
-        <EditText
-            android:id="@+id/signin_password_1"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signin_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/signin_email_hint"
+                android:autofillHints="@string/signin_email_hint"
+                android:includeFontPadding="true"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="@string/signin_password_1_hint"
-            android:autofillHints="@string/signin_password_1_hint"
-            android:includeFontPadding="true"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp"
-            android:singleLine="true" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
-        <EditText
-            android:id="@+id/signin_password_2"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signin_password_1"
+                android:layout_width="match_parent"
+                android:hint="@string/signin_password_1_hint"
+                android:autofillHints="@string/signin_password_1_hint"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="true"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="@string/signin_password_2_hint"
-            android:autofillHints="@string/signin_password_2_hint"
-            android:includeFontPadding="true"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp"
-            android:singleLine="true" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signin_password_2"
+                android:layout_width="match_parent"
+                android:hint="@string/signin_password_2_hint"
+                android:autofillHints="@string/signin_password_2_hint"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="true"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 
@@ -125,11 +145,13 @@
         android:layout_margin="8dp"
         android:gravity="center"
         android:text="@string/signin_login"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signin_submit"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

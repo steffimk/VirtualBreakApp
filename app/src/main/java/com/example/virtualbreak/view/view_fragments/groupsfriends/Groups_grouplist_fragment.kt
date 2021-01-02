@@ -52,12 +52,15 @@ class Groups_grouplist_fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         groups_recyler_list_view.layoutManager = LinearLayoutManager(activity)
-        groups_recyler_list_view.adapter = GroupsListAdapter()
+
+        PullData.groups.value?.values.let{
+            groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(it))
+        }
 
         PullData.groups.observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groupsMap ->
-            Log.d(TAG, "Observing Group");
+            Log.d(TAG, "Observing Group")
             if (groupsMap != null) {
-                groups_recyler_list_view.adapter = GroupsListAdapter() // Completely new adapter (TODO: Maybe reuse and adapt previous one)
+                groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(PullData.groups.value?.values)) // Completely new adapter (TODO: Maybe reuse and adapt previous one)
             }
         })
 

@@ -14,13 +14,26 @@
         >
 
         <TextView
-            android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_to_virtualbreak"
+            android:text="Willkommen bei"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VirtualBreak"
             android:textSize="40sp"
             android:gravity="center"
             android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Starte gemeinsame virtuelle Pausen!"
+            android:textSize="20sp"
+            android:gravity="center"/>
 
         <Button
             android:layout_width="match_parent"
@@ -31,7 +44,8 @@
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
             android:textColor="@color/light_green"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginTop="200dp"/>
 
         <Button
             android:layout_width="match_parent"

@@ -15,7 +15,7 @@
         <activity android:name=".view.view_activitys.LogInActivity"/>
         <activity android:name=".view.view_activitys.SignInActivity" />
         <activity
-            android:name=".view.view_activitys.BreakRoomActivity"
+            android:name=".view.view_activitys.breakroom.BreakRoomActivity"
             android:label="@string/title_activity_break_room">
         </activity>
         <activity

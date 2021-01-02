@@ -1,10 +1,14 @@
-package com.example.virtualbreak.view.view_activitys
+package com.example.virtualbreak.view.view_activitys.breakroom
 
 import android.content.Context
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
@@ -16,6 +20,9 @@ import kotlinx.android.synthetic.main.activity_break_room.*
 
 class BreakRoomActivity : AppCompatActivity() {
 
+    private val TAG = "BreakRoomActivity"
+
+    private val viewModel: BreakRoomViewModel by viewModels { BreakRoomViewModelFactory(SharedPrefManager.instance.getRoomId()?:"") }
     private var room: Room? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +41,11 @@ class BreakRoomActivity : AppCompatActivity() {
         */
 
         if (roomId != null) {
-            PushData.joinRoom(roomId)
-            room = PullData.rooms.value?.get(roomId)
+            viewModel.getRoom().observe(this, Observer<Room>{ observedRoom ->
+                Log.d(TAG, "Observed room: $observedRoom")
+                room = observedRoom
+                //TODO: update view here
+            })
 
             Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
         } else {

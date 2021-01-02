@@ -2,7 +2,6 @@ package com.example.virtualbreak.controller.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,7 @@ import android.widget.TextView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.view.view_activitys.BreakRoomActivity
-import com.google.android.material.snackbar.Snackbar
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 
 
 class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayList<Room>) :

@@ -45,20 +45,17 @@ class FriendRequestsViewModel : ViewModel() {
 
     private val incomingFriendRequests: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
+
+            private val queryFriendRequests = PullData.database.child("users").child(PullData.currentUser.value?.uid!!).child("friendRequests")
+
             override fun onActive() {
                 super.onActive()
-                val userId = PullData.currentUser.value?.uid
-                if (userId != null) {
-                    PullData.database.child("users").child(userId).child("friendRequests").addValueEventListener(valueEventListener)
-                }
+                queryFriendRequests.addValueEventListener(valueEventListener)
             }
 
             override fun onInactive() {
                 super.onInactive()
-                val userId = PullData.currentUser.value?.uid
-                if (userId != null) {
-                    PullData.database.child("users").child(userId).child("friendRequests").removeEventListener(valueEventListener)
-                }
+                queryFriendRequests.removeEventListener(valueEventListener)
             }
         }
 

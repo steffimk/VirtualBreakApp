@@ -22,9 +22,6 @@ import com.example.virtualbreak.model.Status
 
 class FriendListAdapter(private val friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
-    private val testNames = arrayOf("Friend1", "Friend2","Friend3")
-    var allFriends = arrayListOf<User>()
-
     lateinit var view: View
     val TAG = "FriendListAdapter"
 

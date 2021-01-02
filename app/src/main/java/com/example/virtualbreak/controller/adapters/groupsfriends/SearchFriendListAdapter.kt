@@ -1,26 +1,24 @@
 package com.example.virtualbreak.controller.adapters.groupsfriends
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.communication.PullData
-import com.example.virtualbreak.model.Friend
-import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.makeramen.roundedimageview.RoundedImageView
 
 
-class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
+class SearchFriendListAdapter (private val friends: ArrayList<User>, private val context: Context?): RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
 
-    private var testNames: HashMap<String, User> = HashMap()
+    private val TAG = "SearchFriendListAdapter"
 
-    var allFriends = arrayListOf<Friend>()
+    //private var testNames: HashMap<String, User> = HashMap()
+
     var onClick: OnItemClickListener? = null
 
     fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener?){
@@ -46,20 +44,17 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
     }
 
     override fun getItemCount(): Int {
-        return allFriends.size
+        return friends.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolderFriends, position: Int) {
        // set all the contents in a view
-        //holder.textView.text = testNames[position]
-        //Convert friends Hashmap to Friendlist
-
         val viewHolder: ViewHolderFriends = holder
-        val friend = allFriends[position]
+        val friend = friends[position]
 
         viewHolder.selectBox.visibility = View.VISIBLE
-        viewHolder.selectBox.isChecked = friend.isSelectet
+        viewHolder.selectBox.isChecked = friend.isSelected
 
         viewHolder.username.text = friend.username
         //ToDo set the profilpicture
@@ -67,15 +62,13 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
         //viewHolder.status.visibility = View.GONE
 
         if (onClick != null) viewHolder.itemView.setOnClickListener{
-            Log.d("Groups", "onClick")
-            friend.isSelectet = !friend.isSelectet
-            viewHolder.selectBox.isChecked = friend.isSelectet
+            friend.isSelected = !friend.isSelected
+            viewHolder.selectBox.isChecked = friend.isSelected
 
-            //notifyDataSetChanged()
             notifyItemChanged(position);
             Log.d(
-                "Groups",
-                "onClick $position ${friend.isSelectet}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}"
+                TAG,
+                "onClick $position ${friend.isSelected}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}"
             )
             //notifyDataSetChanged()
             onClick!!.onItemClick(friend)
@@ -83,51 +76,22 @@ class SearchFriendListAdapter: RecyclerView.Adapter<SearchFriendListAdapter.View
         }
 
         viewHolder.selectBox.setOnCheckedChangeListener{
-                buttonView, isChecked -> friend.isSelectet = isChecked
+                buttonView, isChecked -> friend.isSelected = isChecked
                 //notifyDataSetChanged()
             //Update corresponding object in array to, so whenever new view is shown, it reads the neweset statue of object
-            Log.d("Groups", "ChangeListener ${friend.isSelectet} $position")
+            Log.d("TAG", "ChangeListener ${friend.isSelected} $position")
         }
 
 
     }
 
     interface OnItemClickListener {
-        fun onItemClick(friend: Friend)
+        fun onItemClick(friend: User)
     }
 
-    fun getFriends(){
-        Log.d("Groups", "friends" + PullData.friends)
-        //PullData.friends.forEach {
-        testNames.forEach{ (key, user) -> allFriends.add(
-            Friend(
-                user.uid,
-                user.username,
-                user.profilePicture,
-                user.status,
-                false
-            )
-        )
-        }
-        Log.d("Groups", "allFriends" + allFriends)
 
-    }
 
-    fun testFriends(){
 
-        //TODO lösche methode und ersetze dummy daten durch echte
-
-        testNames.put("Hannes", User("Han", "Hannes", "test@mails.de", Status.BUSY))
-        testNames.put("Gerda", User("Gerd", "Gerda", "test@mails.de", Status.BUSY))
-        testNames.put("Sui", User("susi", "Susi", "test@mails.de", Status.BUSY))
-        testNames.put("Manfred", User("Man", "Manfred", "test@mails.de", Status.BUSY))
-        testNames.put("Ulli", User("Ulli", "Ulli", "test@mails.de", Status.BUSY))
-        testNames.put("Bernd", User("Bernd", "Bernd", "test@mails.de", Status.BUSY))
-        testNames.put("Henning", User("Henn", "Hennig", "test@mails.de", Status.BUSY))
-        testNames.put("Klara", User("Klar", "Klara", "test@mails.de", Status.BUSY))
-
-        Log.d("Groups", "testFriends " + testNames)
-    }
 
 
 }

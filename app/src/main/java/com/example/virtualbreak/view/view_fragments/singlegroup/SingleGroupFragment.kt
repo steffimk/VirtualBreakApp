@@ -18,6 +18,7 @@ import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.view.view_activitys.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.nambimobile.widgets.efab.FabOption
@@ -50,7 +51,7 @@ class SingleGroupFragment : Fragment() {
         var rooms = PullData.getRoomsOfGroup(groupId)
 
         val gridView: GridView = root.findViewById(R.id.grid_view)
-        if(!rooms.isEmpty()) {
+        if (!rooms.isEmpty()) {
             val customAdapter =
                 context?.let {
                     SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, rooms)
@@ -73,12 +74,8 @@ class SingleGroupFragment : Fragment() {
             }
         })
 
-        val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
-        fab.setOnClickListener { view ->
-            if (groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffee trinken") // TODO: Let user decide on RoomType
 
-                Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
+        val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
 
         val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
 

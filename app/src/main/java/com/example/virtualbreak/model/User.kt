@@ -5,6 +5,7 @@ data class User(var uid: String = "",
                 var email: String = "",
                 var status: Status? = null,
                 var profilePicture: String? = null,
+                var isSelected: Boolean = false,
                 var groups: HashMap<String, String>? = null,
                 var friends: HashMap<String, String>? = null,
                 // HashMap<userId,isIncoming> -> Value is true if friendRequest is incoming and false if it is outgoing

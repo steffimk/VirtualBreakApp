@@ -1,6 +1,7 @@
 package com.example.virtualbreak.view.view_fragments.groupsfriends
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,8 @@ class Groups_friendlist_fragment : Fragment() {
     companion object {
         fun newInstance() = Groups_friendlist_fragment()
     }
+
+    private val TAG = "Groups_Friendlist_Fragment"
 
     private val viewModel: GroupsViewModel by viewModels()
 
@@ -56,6 +59,7 @@ class Groups_friendlist_fragment : Fragment() {
 
         viewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ friends ->
             friends_recyler_list_view.adapter = FriendListAdapter(ArrayList(friends.values), context) // TODO: Maybe reuse old adapter
+            Log.d(TAG, "Observed friends: $friends")
         })
 
         friends_add_friends_button.setOnClickListener{

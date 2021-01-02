@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,7 +17,8 @@ class GroupsViewModel : ViewModel() {
 
     private val TAG = "GroupsViewModel"
 
-    private val valueEventListener = object : ValueEventListener {
+    // ---------------------------------- FRIENDS ----------------------------------------
+    private val friendsValueEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             val pulledFriends = dataSnapshot.getValue<HashMap<String,String>>()
@@ -43,16 +46,16 @@ class GroupsViewModel : ViewModel() {
     private val friends: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
 
-            private val queryFriends = PullData.database.child("users").child(PullData.currentUser.value?.uid ?: "").child("friends")
+            private val queryFriends = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "").child("friends")
 
             override fun onActive() {
                 super.onActive()
-                queryFriends.addValueEventListener(valueEventListener)
+                queryFriends.addValueEventListener(friendsValueEventListener)
             }
 
             override fun onInactive() {
                 super.onInactive()
-                queryFriends.removeEventListener(valueEventListener)
+                queryFriends.removeEventListener(friendsValueEventListener)
             }
         }
 
@@ -78,4 +81,70 @@ class GroupsViewModel : ViewModel() {
         }
         PullData.database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
     }
+
+    // ---------------------------------- Groups ----------------------------------------
+
+    private val groupsValueEventListener = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val pulledGroups = dataSnapshot.getValue<HashMap<String,String>>()
+
+            if (pulledGroups == null) {
+                Log.d(TAG, "Pulled Groups are null")
+                return
+            }
+
+            Log.d(TAG, "Pulled Friends $pulledGroups")
+            groups.value?.clear()
+            groups.value = groups.value
+
+            pulledGroups.forEach() {
+                    (key, groupId) -> pullGroupWithId(groupId)
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+    }
+
+    private val groups: MutableLiveData<HashMap<String,Group>> =
+        object : MutableLiveData<HashMap<String,Group>>(HashMap()) {
+
+            private val queryGroups = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "").child("groups")
+
+            override fun onActive() {
+                super.onActive()
+                queryGroups.addValueEventListener(groupsValueEventListener)
+            }
+
+            override fun onInactive() {
+                super.onInactive()
+                queryGroups.removeEventListener(groupsValueEventListener)
+            }
+        }
+
+    fun getGroups(): LiveData<HashMap<String,Group>> {
+        return groups
+    }
+
+    private fun pullGroupWithId(groupId: String) {
+        val valueEventListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group = dataSnapshot.getValue(Group::class.java)
+                if (group != null) {
+                    groups.value?.put(groupId, group)
+                    groups.value = groups.value // Set value so that observers are notified of change
+                }
+                Log.d(TAG, "Pulled Group: $group")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
+        PullData.database.child("groups").child(groupId).addListenerForSingleValueEvent(valueEventListener)
+    }
+
 }

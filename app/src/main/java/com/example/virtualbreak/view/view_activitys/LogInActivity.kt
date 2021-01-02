@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.databinding.ActivityLogInBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -51,6 +52,7 @@ class LogInActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null)
+            SharedPrefManager.instance.saveUserId(auth.currentUser!!.uid)
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
     }
 
@@ -76,6 +78,7 @@ class LogInActivity : AppCompatActivity() {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success")
                             PullData.attachListenerToCurrentUser()
+                            SharedPrefManager.instance.saveUserId(auth.currentUser!!.uid)
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.

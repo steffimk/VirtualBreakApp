@@ -19,6 +19,7 @@ private constructor() {
 
     val GROUP_ID: String = "groupId"
     val ROOM_ID: String = "roomId"
+    val USER_ID: String = "userId"
 
 
     /**
@@ -64,6 +65,28 @@ private constructor() {
     fun removeRoomId(){
         sharedPrefs?.let{
             it.edit().remove("com.example.virtualbreak.roomId").apply()
+        }
+        if(sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun saveUserId(userId: String) {
+
+        sharedPrefs?.let{
+            it.edit().putString(USER_ID, userId).apply()
+            Log.d(TAG, "UserId " + userId + " added to shared preferences")
+        }
+        if(sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun getUserId(): String?{
+        return sharedPrefs?.getString(USER_ID, null)
+    }
+
+    fun removeUserId(){
+        sharedPrefs?.let{
+            it.edit().remove("com.example.virtualbreak.userId").apply()
         }
         if(sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")

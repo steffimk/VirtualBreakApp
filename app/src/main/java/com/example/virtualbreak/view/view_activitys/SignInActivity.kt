@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.ActivitySignInBinding
@@ -73,6 +74,7 @@ class SignInActivity : AppCompatActivity() {
                             val user = auth.currentUser
                             if (user != null) {
                                 PushData.saveUser(user, name)
+                                SharedPrefManager.instance.saveUserId(user.uid)
                             }
                             PullData.attachListenerToCurrentUser()
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))

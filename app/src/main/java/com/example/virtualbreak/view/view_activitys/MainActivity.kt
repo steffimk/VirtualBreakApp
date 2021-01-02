@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         if (Firebase.auth.currentUser != null) {
             PullData.attachListenerToCurrentUser()
+            SharedPrefManager.instance.saveUserId(Firebase.auth.currentUser!!.uid)
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
         }
 

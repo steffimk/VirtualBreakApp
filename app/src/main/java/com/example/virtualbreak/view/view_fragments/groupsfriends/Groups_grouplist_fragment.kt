@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +22,13 @@ import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewMode
 
 class Groups_grouplist_fragment : Fragment() {
 
+    private val TAG = "Group_GroupList_Fragment"
+
     companion object {
         fun newInstance() = Groups_grouplist_fragment()
     }
 
-    private lateinit var viewModel: GroupsViewModel
-    private val TAG = "Group_GroupList_Fragment"
+    private val viewModel: GroupsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +43,6 @@ class Groups_grouplist_fragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,15 +50,9 @@ class Groups_grouplist_fragment : Fragment() {
 
         groups_recyler_list_view.layoutManager = LinearLayoutManager(activity)
 
-        PullData.groups.value?.values.let{
-            groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(it))
-        }
-
-        PullData.groups.observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groupsMap ->
-            Log.d(TAG, "Observing Group")
-            if (groupsMap != null) {
-                groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(PullData.groups.value?.values)) // Completely new adapter (TODO: Maybe reuse and adapt previous one)
-            }
+        viewModel.getGroups().observe(viewLifecycleOwner, Observer<HashMap<String,Group>>{ groups ->
+            groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(groups.values))
+            Log.d(TAG, "Observed groups: $groups")
         })
 
         groups_add_group_button.setOnClickListener{

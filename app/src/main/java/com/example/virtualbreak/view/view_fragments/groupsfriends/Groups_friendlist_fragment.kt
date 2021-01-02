@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +26,7 @@ class Groups_friendlist_fragment : Fragment() {
         fun newInstance() = Groups_friendlist_fragment()
     }
 
-    private lateinit var viewModel: GroupsViewModel
-
+    private val viewModel: GroupsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +41,6 @@ class Groups_friendlist_fragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,15 +54,8 @@ class Groups_friendlist_fragment : Fragment() {
         friends.add(User("b", "Freund2", "email2", Status.BUSY, null, null, null, null))
         friends_recyler_list_view.adapter = FriendListAdapter(friends, context)*/
 
-        //get current friends from PullData and pass to recycler view adapter for friends list
-        PullData.friends.value?.values.let{
-            var friends: ArrayList<User> = ArrayList(PullData.friends.value?.values)
-            friends_recyler_list_view.adapter = FriendListAdapter(friends, context)
-        }
-
-        //adapt friend list at changes
-        PullData.friends.observe(viewLifecycleOwner, {
-            friends_recyler_list_view.adapter = FriendListAdapter(ArrayList(PullData.friends.value?.values), context) // TODO: Maybe reuse old adapter
+        viewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ friends ->
+            friends_recyler_list_view.adapter = FriendListAdapter(ArrayList(friends.values), context) // TODO: Maybe reuse old adapter
         })
 
         friends_add_friends_button.setOnClickListener{

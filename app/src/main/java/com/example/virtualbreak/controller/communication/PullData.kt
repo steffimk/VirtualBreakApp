@@ -23,8 +23,6 @@ class PullData {
         var currentUser: MutableLiveData<User?> = MutableLiveData(null)
         var groups: MutableLiveData<HashMap<String,Group>> = MutableLiveData(HashMap())
         var rooms: MutableLiveData<HashMap<String,Room>> = MutableLiveData(HashMap())
-        var friends: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
-        var incomingFriendRequests: MutableLiveData<HashMap<String,User>> = MutableLiveData(HashMap())
 
         fun getRoomsOfGroup(groupId: String) : ArrayList<Room> {
             val roomIdsOfGroup = groups.value?.get(groupId)?.rooms ?: return ArrayList()
@@ -41,12 +39,7 @@ class PullData {
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val isFirstPull = currentUser.value == null
                     currentUser.value = dataSnapshot.getValue(User::class.java)
-                    if (isFirstPull) {
-                        reloadFriends()
-                        reloadIncomingFriendRequests()
-                    }
                     updateGroups()
                     Log.d(TAG, "Pulled User: " + currentUser.value)
                 }
@@ -139,51 +132,6 @@ class PullData {
                 }
             }
             database.child("rooms").child(roomId).addValueEventListener(valueEventListener)
-        }
-
-        fun reloadFriends() {
-            val friendIds = currentUser.value?.friends
-            friends.value?.clear()  // Empty hashmap and reload friends
-            friendIds?.forEach{
-                user -> attachSingleEventListenerToUser(user.key, true)
-            }
-        }
-
-        fun reloadIncomingFriendRequests() {
-            val idsOfIncomingFriendRequests =
-                currentUser.value?.friendRequests?.filterValues { isIncoming -> isIncoming }
-            incomingFriendRequests.value?.clear() // Empty hashmap before reloading friend requests
-            idsOfIncomingFriendRequests?.forEach {
-                user -> attachSingleEventListenerToUser(user.key, false)
-            }
-        }
-
-        /**
-         * Reloads users from database. Set 'isFriend' true if you want to pull a friend
-         * and false if you want to pull a user that sent a friend request
-         */
-        private fun attachSingleEventListenerToUser(userId: String, isFriend: Boolean) {
-            val valueEventListener = object : ValueEventListener {
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val user = dataSnapshot.getValue(User::class.java)
-                    if (user != null) {
-                        if (isFriend) {
-                            friends.value?.put(userId, user)
-                            friends.value = friends.value // Set value so that observers are notified of change
-                        } else {
-                            incomingFriendRequests.value?.put(userId, user)
-                            incomingFriendRequests.value = incomingFriendRequests.value // Set value so that observers are notified of change
-                        }
-                    }
-                    Log.d(TAG, "Pulled User: $user")
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.d(TAG, databaseError.message)
-                }
-            }
-            database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
         }
 
     }

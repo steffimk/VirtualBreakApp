@@ -29,7 +29,7 @@ class FriendRequestsViewModel : ViewModel() {
         return outgoingFriendRequests
     }
 
-    fun pullFriends() {
+    private fun pullFriends() {
 
         val valueEventListener = object : ValueEventListener {
 

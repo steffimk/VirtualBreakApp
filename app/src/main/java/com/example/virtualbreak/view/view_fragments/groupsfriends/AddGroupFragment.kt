@@ -28,7 +28,8 @@ class AddGroupFragment : Fragment() {
     private val TAG = "AddGroupFragment"
 
     private lateinit var groupsFriendsViewModel: GroupsViewModel
-
+    lateinit var adapter: SearchFriendListAdapter
+    lateinit var friends: ArrayList<User>
 
     val selectFriendsIds = ArrayList<String>()
 
@@ -54,15 +55,15 @@ class AddGroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //select_friends_recylerlist.setHasFixedSize(true)
-        var friends: ArrayList<User>
-        var adapter: SearchFriendListAdapter
 
         //for test
-        friends = ArrayList()
+        friends = arrayListOf<User>()
         friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, false, null, null, null))
         friends.add(User("b", "Freund2", "email2", Status.BUSY, null, false, null, null, null))
-        select_friends_recylerlist.adapter = SearchFriendListAdapter(friends, context)
+
         adapter = SearchFriendListAdapter(friends, context)
+        //select_friends_recylerlist.adapter = SearchFriendListAdapter(friends, context)
+        select_friends_recylerlist.adapter = adapter
 
         //get current friends from PullData and pass to recycler view adapter for friends list
         /*PullData.friends.value?.values.let{

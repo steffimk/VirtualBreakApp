@@ -58,6 +58,8 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
         viewHolder.selectBox.visibility = View.VISIBLE
         viewHolder.selectBox.isChecked = friend.isSelected
 
+        Log.d(TAG, "Friends ${friends}")
+
         viewHolder.username.text = friend.username
         //ToDo set the profilpicture
 

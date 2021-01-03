@@ -64,7 +64,7 @@ private constructor() {
 
     fun removeRoomId(){
         sharedPrefs?.let{
-            it.edit().remove("com.example.virtualbreak.roomId").apply()
+            it.edit().remove(ROOM_ID).apply()
         }
         if(sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
@@ -86,7 +86,7 @@ private constructor() {
 
     fun removeUserId(){
         sharedPrefs?.let{
-            it.edit().remove("com.example.virtualbreak.userId").apply()
+            it.edit().remove(USER_ID).apply()
         }
         if(sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")

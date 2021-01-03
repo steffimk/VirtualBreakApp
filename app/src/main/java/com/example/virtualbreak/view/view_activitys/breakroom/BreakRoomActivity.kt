@@ -53,10 +53,9 @@ class BreakRoomActivity : AppCompatActivity() {
                 if (room != null && (room!!.users != observedRoom.users)) {
                     viewModel.loadUsersOfRoom(this)
                 }
-                viewModel.loadUsersOfRoom(this)
+                room = observedRoom
                 Log.d(TAG, "Observed room: $observedRoom")
                 if(observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()){
-                    room = observedRoom
                     val messages = observedRoom.messages
                     Log.i(TAG, "messagesList: $messages")
                     chat_messages_recycler_view.adapter = ChatAdapter(this, ArrayList(messages.values))
@@ -85,8 +84,10 @@ class BreakRoomActivity : AppCompatActivity() {
 
         // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
         leave_room_button.setOnClickListener {
+            viewModel.getRoom().removeObservers(this)
             PushData.leaveRoom(room)
             SharedPrefManager.instance.removeRoomId()
+            Log.d(TAG, "Left room $roomId")
             finish()
         }
     }

@@ -2,6 +2,7 @@ package com.example.virtualbreak.view.view_activitys
 
 import android.os.Bundle
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
@@ -15,20 +16,23 @@ class VideoCallActivity : JitsiMeetActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // room info
         var roomId = ""
+        var currentName = "user"
+
+        // room & user info
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
-            roomId = bundle.getString("room_id")!!
+            roomId = bundle.getString(Constants.ROOM_ID)!!
+            val userName = bundle.getString(Constants.USER_NAME)
+            if (userName != null) {
+                currentName = userName
+            }
         }
         val roomName: String = getString(R.string.app_name) + roomId
 
         // user info
-        // TODO: get own username
-        val currentName = "user name"
-
         var userInfoBundle = Bundle()
-        userInfoBundle.putCharSequence("displayName", currentName)
+        userInfoBundle.putString(Constants.DISPLAY_NAME, currentName)
         val userInfo = JitsiMeetUserInfo(userInfoBundle)
 
         // how to start jitsi conference

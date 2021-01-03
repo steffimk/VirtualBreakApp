@@ -14,6 +14,9 @@ import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.User
 import com.makeramen.roundedimageview.RoundedImageView
 import com.example.virtualbreak.model.Status
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_myprofile.*
 
 
 /**
@@ -26,13 +29,14 @@ class FriendListAdapter(private val friends: ArrayList<User>, private val contex
     val TAG = "FriendListAdapter"
 
     class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val  textView: TextView
-        val statusCircleImg: ImageView
+        val  textView: TextView = itemView.findViewById(R.id.friend_list_name)
+        val statusCircleImg: ImageView = itemView.findViewById(R.id.status_circle_img)
+        val profilePic: ImageView = itemView.findViewById(R.id.friend_list_image)
+
         private val TAG: String = "FriendListAdapter_ViewHolder"
 
         init{
-            textView = itemView.findViewById(R.id.friend_list_name)
-            statusCircleImg = itemView.findViewById(R.id.status_circle_img)
+
         }
     }
 
@@ -51,8 +55,9 @@ class FriendListAdapter(private val friends: ArrayList<User>, private val contex
 
 
     override fun onBindViewHolder(holder: ViewHolderFriends, position: Int) {
-        //holder.textView.text = ArrayList(PullData.friends.value?.values)[position].username
         holder.textView.text = friends[position].username
+
+        loadProfilePicture(holder, friends[position].uid)
 
         context?.let{
             when(friends[position].status){
@@ -69,6 +74,18 @@ class FriendListAdapter(private val friends: ArrayList<User>, private val contex
             Log.d(TAG, "FriendId $friendId was clicked on")
         }
 
+    }
+
+    private fun loadProfilePicture(holder: ViewHolderFriends, userId: String) {
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Picasso.get().load(task.result).into(holder.profilePic)
+            } else {
+                Log.w(TAG, "getProfilePictureURI unsuccessful")
+            }
+
+        }
     }
 
 

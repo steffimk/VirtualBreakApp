@@ -6,13 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 
 
 /**
@@ -62,6 +66,8 @@ class AddFriendsFragment : Fragment() {
                 binding.foundfriendCardview.visibility = View.VISIBLE
                 binding.foundfriendUsername.text = searchedUser.username
                 binding.foundfriendEmail.text = searchedUser.email
+
+                loadProfilePicture(binding.foundfriendImg, searchedUser.uid)
                 // binding.foundfriendImg.setImageDrawable(searchedUser.profilePicture) TODO: Show profile picture
                 Log.d(TAG, "Found user " + searchedUser.username)
             }
@@ -71,6 +77,18 @@ class AddFriendsFragment : Fragment() {
                 Log.d(TAG, "Found no user with that mail")
             }
         })
+    }
+
+    private fun loadProfilePicture(imageView: ImageView, userId: String) {
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Picasso.get().load(task.result).into(imageView)
+            } else {
+                Log.w(TAG, "getProfilePictureURI unsuccessful")
+            }
+
+        }
     }
 
     override fun onDestroyView() {

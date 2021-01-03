@@ -11,9 +11,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
+import com.google.firebase.storage.FirebaseStorage
 import com.makeramen.roundedimageview.RoundedImageView
+import com.squareup.picasso.Picasso
 
 
 class SearchFriendListAdapter (private val friends: ArrayList<User>, private val context: Context?): RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
@@ -31,7 +34,7 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
 
     inner class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val username: TextView = itemView.findViewById(R.id.friend_list_name)
-        val profilPicture = itemView.findViewById<RoundedImageView>(R.id.friend_list_image)
+        val profilePicture = itemView.findViewById<RoundedImageView>(R.id.friend_list_image)
         val selectBox = itemView.findViewById<CheckBox>(R.id.friends_select_box)
         val statusCircleImg: ImageView = itemView.findViewById(R.id.status_circle_img)
 
@@ -55,6 +58,8 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
         val viewHolder: ViewHolderFriends = holder
         val friend = friends[position]
 
+        loadProfilePicture(holder, friend.uid)
+
         viewHolder.selectBox.visibility = View.VISIBLE
         viewHolder.selectBox.isChecked = friend.isSelected
 
@@ -77,7 +82,7 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
             friend.isSelected = !friend.isSelected
             viewHolder.selectBox.isChecked = friend.isSelected
 
-            notifyItemChanged(position);
+            notifyItemChanged(position)
             Log.d(
                 TAG,
                 "onClick $position ${friend.isSelected}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}"
@@ -101,7 +106,17 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
         fun onItemClick(friend: User)
     }
 
+    private fun loadProfilePicture(holder: SearchFriendListAdapter.ViewHolderFriends, userId: String) {
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Picasso.get().load(task.result).into(holder.profilePicture)
+            } else {
+                Log.w(TAG, "getProfilePictureURI unsuccessful")
+            }
 
+        }
+    }
 
 
 

@@ -1,32 +1,51 @@
 package com.example.virtualbreak.view.view_fragments.myprofile
 
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_myprofile.*
 
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private val myProfileViewModel: MyProfileViewModel by viewModels()
+    private val mStorageRef = FirebaseStorage.getInstance().getReference()
     private val TAG = "MyProfileFragment"
 
     private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE)
     private lateinit var currentStatus: Status
+
+    private var currentUserID: String? = null
+
+
+    private val PICK_FROM_GALLERY = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,27 +56,20 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val root = inflater.inflate(R.layout.fragment_myprofile, container, false)
 
         val spinner = root.findViewById<Spinner>(R.id.status_spinner)
+        currentUserID = SharedPrefManager.instance.getUserId()
+
+        initProfilePicture()
 
         // Create an ArrayAdapter using a simple spinner layout and status array
-        context?.let {
-            val aa = ArrayAdapter(
-                it,
-                android.R.layout.simple_spinner_item,
-                status_array.map{ status -> status.dbStr}
-            )
-            // Set layout to use when the list of choices (for different status) appear
-            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Set array Adapter to Spinner
-            spinner.setAdapter(aa)
-        }
+        initStatusSpinner(spinner)
 
         // Connect with and observe LiveData
         myProfileViewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
-            if(spinner.onItemSelectedListener == null) {
+            if (spinner.onItemSelectedListener == null) {
                 // Set only now - otherwise default value gets saved in database
                 spinner.onItemSelectedListener = this
             }
-            Log.d(TAG, "Observed User: $observedUser");
+            Log.d(TAG, "Observed User: $observedUser")
             if (observedUser != null) {
                 //set username text of current user
                 root.findViewById<TextView>(R.id.username).text = observedUser.username
@@ -69,12 +81,43 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         //button to edit own profile picture
         root.findViewById<FloatingActionButton>(R.id.fab_editPic).setOnClickListener {
-            //TODO choose and save new profile picture (Firebase Storage)
-            Snackbar.make(root, "Neues Profilbild", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //Snackbar.make(root, "Neues Profilbild", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            chooseProfileImg()
+
         }
 
         return root
+    }
+
+    private fun initStatusSpinner(spinner: Spinner) {
+        context?.let {
+            val aa = ArrayAdapter(
+                it,
+                android.R.layout.simple_spinner_item,
+                status_array.map { status -> status.dbStr }
+            )
+            // Set layout to use when the list of choices (for different status) appear
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Set array Adapter to Spinner
+            spinner.setAdapter(aa)
+        }
+    }
+
+    private fun initProfilePicture() {
+        Log.d(TAG, "initProfilePicture")
+
+        Log.d(TAG, "current user "+currentUserID)
+        currentUserID?.let {
+            mStorageRef.child("img/profilePics/$currentUserID").downloadUrl.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Picasso.get().load(task.result).into(profileImg)
+                } else {
+                    Log.w(TAG, "getProfilePictureURI unsuccessful")
+                }
+
+            }
+
+        }
     }
 
     /**
@@ -84,6 +127,105 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         currentStatus = status_array[position]
         PushData.setStatus(currentStatus)
     }
+
+    /**
+     * function to pick a profile img
+     * first checks if required permission to access storage is granted, then opens gallery and saves image to firebase storage
+     */
+    fun chooseProfileImg() {
+        try {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    PICK_FROM_GALLERY
+                )
+            } else {
+                openGallery()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+
+        /*
+        val intentLoadImage = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.INTERNAL_CONTENT_URI
+        )
+        startActivityForResult(intentLoadImage, RESULT_LOAD_IMAGE)*/
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PICK_FROM_GALLERY ->                 // If request is cancelled, the result arrays are empty.
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openGallery()
+                } else {
+                    showWarningPermissionNotGranted()
+                }
+        }
+    }
+
+    fun openGallery(){
+        val galleryIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+        }
+        this.startActivityForResult(galleryIntent, PICK_FROM_GALLERY)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PICK_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            val fullPhotoUri: Uri? = data?.data
+            // Do work with photo saved at fullPhotoUri
+            Log.d(TAG, "onActivityResult")
+            Picasso.get().load(fullPhotoUri).into(profileImg)
+            //profileImg.setImageURI(fullPhotoUri)
+            uploadProfilePicture(fullPhotoUri, context)
+
+        }
+    }
+
+
+    fun showWarningPermissionNotGranted(){
+        //do something like displaying a message that he didn`t allow the app to access gallery and you wont be able to let him select from gallery
+        AlertDialog.Builder(context)
+            .setMessage(
+                "Um ein Profilbild auswählen zu können, benötigen die App den Zugriff auf Medien auf deinem Gerät. " +
+                        "Bitte gewähre der App den Zugriff auf Medien, um die Profilbildfunktion nutzen zu können."
+            )
+            .setCancelable(true)
+            .show()
+    }
+
+    fun uploadProfilePicture(fullPhotoUri: Uri?, context: Context?) {
+        Log.d(TAG, "uploadProfilePicture")
+        fullPhotoUri?.let{
+
+            val currentUserID: String?= SharedPrefManager.instance.getUserId()
+            currentUserID?.let{
+                val ref: StorageReference = mStorageRef.child("img/profilePics/$currentUserID")
+
+                ref.putFile(fullPhotoUri)
+                    .addOnSuccessListener(OnSuccessListener<Any?> {Log.d(TAG, "uploadProfilePicture success") })
+                    .addOnFailureListener(OnFailureListener {
+                        Toast.makeText(context, "Upload failed", Toast.LENGTH_SHORT).show()
+                    })
+            }
+        }
+    }
+
 
     /**
      * also for status spinner

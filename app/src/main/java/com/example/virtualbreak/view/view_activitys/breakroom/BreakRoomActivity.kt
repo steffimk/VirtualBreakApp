@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -13,6 +14,7 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
@@ -79,6 +81,12 @@ class BreakRoomActivity : AppCompatActivity() {
                 }
             }
             input.clear()
+        }
+
+        start_video_call.setOnClickListener {
+            val intent = Intent(this, VideoCallActivity::class.java)
+            intent.putExtra("room_id", roomId)
+            this.startActivity(intent)
         }
 
 

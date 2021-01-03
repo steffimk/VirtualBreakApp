@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.virtualbreak.R
@@ -27,9 +29,8 @@ class AddGroupFragment : Fragment() {
 
     private val TAG = "AddGroupFragment"
 
-    private lateinit var groupsFriendsViewModel: GroupsViewModel
+    private val groupsFriendsViewModel: GroupsViewModel by viewModels()
     lateinit var adapter: SearchFriendListAdapter
-    lateinit var friends: ArrayList<User>
 
     val selectFriendsIds = ArrayList<String>()
 
@@ -49,21 +50,36 @@ class AddGroupFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        groupsFriendsViewModel = ViewModelProvider(this).get(GroupsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //select_friends_recylerlist.setHasFixedSize(true)
 
-        //for test
-        friends = arrayListOf<User>()
-        friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, false, null, null, null))
-        friends.add(User("b", "Freund2", "email2", Status.BUSY, null, false, null, null, null))
-
-        adapter = SearchFriendListAdapter(friends, context)
+        adapter = SearchFriendListAdapter(ArrayList(), context)
         //select_friends_recylerlist.adapter = SearchFriendListAdapter(friends, context)
         select_friends_recylerlist.adapter = adapter
+
+        groupsFriendsViewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>> { friendsMap ->
+            Log.d(TAG, "Observed Friends $friendsMap")
+            if (friendsMap != null){
+                adapter = SearchFriendListAdapter(ArrayList(friendsMap.values), context)
+                select_friends_recylerlist.adapter = adapter
+
+                //Set the clicklistner to select friends and recive selected friends ids
+                adapter.setOnItemClickListener(object : SearchFriendListAdapter.OnItemClickListener{
+                    override fun onItemClick(friend: User) {
+                        if (friend.isSelected && !selectFriendsIds.contains(friend.uid)){
+                            selectFriendsIds.add(friend.uid)
+                        }else{
+                            selectFriendsIds.remove(friend.uid)
+                        }
+                        //adapter.notifyDataSetChanged()
+                        Log.d(TAG, "selectedFriends $selectFriendsIds")
+                    }
+                })
+            }
+        })
 
         //get current friends from PullData and pass to recycler view adapter for friends list
         /*PullData.friends.value?.values.let{
@@ -76,19 +92,6 @@ class AddGroupFragment : Fragment() {
         PullData.friends.observe(viewLifecycleOwner, {
             select_friends_recylerlist.adapter = FriendListAdapter(ArrayList(PullData.friends.value?.values), context) // TODO: Maybe reuse old adapter
         })*/
-
-        //Set the clicklistner to select friends and recive selected friends ids
-        adapter.setOnItemClickListener(object : SearchFriendListAdapter.OnItemClickListener{
-            override fun onItemClick(friend: User) {
-                if (friend.isSelected && !selectFriendsIds.contains(friend.uid)){
-                    selectFriendsIds.add(friend.uid)
-                }else{
-                    selectFriendsIds.remove(friend.uid)
-                }
-                //adapter.notifyDataSetChanged()
-                Log.d(TAG, "selectedFriends $selectFriendsIds")
-            }
-        })
 
         val groupName : EditText = view.findViewById(R.id.et_group_name)
 

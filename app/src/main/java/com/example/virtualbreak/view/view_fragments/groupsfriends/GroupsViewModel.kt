@@ -1,9 +1,7 @@
 package com.example.virtualbreak.view.view_fragments.groupsfriends
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
@@ -57,6 +55,7 @@ class GroupsViewModel : ViewModel() {
                 super.onInactive()
                 queryFriends.removeEventListener(friendsValueEventListener)
             }
+
         }
 
     fun getFriends(): LiveData<HashMap<String,User>> {

@@ -55,6 +55,9 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
     }
 
     override fun onBindViewHolder(holder: ChatAdapter.ViewHolder, position: Int) {
+
+        Log.d(TAG, "ChatAdapter onBindViewHolder")
+
         val message = messagesList.get(position)
         val messageSenderId = message.sender
 
@@ -77,7 +80,9 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
 
         // don't show the sender name again, when previous message is from the same sender
         if (!sameSender) {
-            val prefs =
+
+            val roomUsers: HashMap<String, String>? = SharedPrefManager.instance.getRoomUsersHashmap()
+            /*val prefs =
                 context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
 
             val gson = Gson()
@@ -86,7 +91,9 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
             val type: Type =
                 object : TypeToken<HashMap<String?, String?>?>() {}.getType()
             val roomUsers: HashMap<String, String>? =
-                gson.fromJson(storedHashMapString, type)
+                gson.fromJson(storedHashMapString, type)*/
+
+
             if (roomUsers != null) {
                 val sender = roomUsers.get(messageSenderId)
                 Log.i(TAG, "senderName: " + sender)
@@ -96,6 +103,7 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
             }
         }
     }
+
 
 
     private fun setMessage(

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
@@ -57,25 +58,22 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
 
         var usersOfRoom : HashMap<String,String> = HashMap()
 
-        val prefs =
-            context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-        prefs.edit().remove("com.example.virtualbreak.roomUser").apply()
-
+        Log.d(TAG, "loadUsersOfRoom")
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val user = dataSnapshot.getValue(User::class.java)
                 val name = user!!.username
+                Log.d(TAG, "User added: "+name)
                 usersOfRoom.put(dataSnapshot.key.toString(), name)
 
                 //convert to string using gson
                 val gson = Gson()
                 val hashMapString = gson.toJson(usersOfRoom)
 
+                SharedPrefManager.instance.removeRoomUsers()
+                SharedPrefManager.instance.saveRoomUsers(hashMapString)
                 //save hashmap in shared prefs
-                val prefs =
-                    context.getSharedPreferences("com.example.virtualbreak", Context.MODE_PRIVATE)
-                prefs.edit().putString("com.example.virtualbreak.roomUser", hashMapString).apply()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

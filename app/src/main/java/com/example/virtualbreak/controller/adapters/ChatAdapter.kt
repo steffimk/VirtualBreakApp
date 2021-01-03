@@ -55,6 +55,9 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
     }
 
     override fun onBindViewHolder(holder: ChatAdapter.ViewHolder, position: Int) {
+
+        Log.d(TAG, "ChatAdapter onBindViewHolder")
+
         val message = messagesList.get(position)
         val messageSenderId = message.sender
 

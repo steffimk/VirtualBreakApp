@@ -96,6 +96,8 @@ private constructor() {
      * for saving hashmap with user ids and usernames
      */
     fun getRoomUsersHashmap(): HashMap<String, String>? {
+        Log.d(TAG, "getRoomUsersHashmap")
+
         val gson = Gson()
         //get hashmap from shared prefs
         val storedHashMapString = sharedPrefs?.getString(ROOM_USER, null)

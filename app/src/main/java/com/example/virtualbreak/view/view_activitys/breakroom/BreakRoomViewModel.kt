@@ -58,10 +58,13 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
 
         var usersOfRoom : HashMap<String,String> = HashMap()
 
+        Log.d(TAG, "loadUsersOfRoom")
+
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val user = dataSnapshot.getValue(User::class.java)
                 val name = user!!.username
+                Log.d(TAG, "User added: "+name)
                 usersOfRoom.put(dataSnapshot.key.toString(), name)
 
                 //convert to string using gson

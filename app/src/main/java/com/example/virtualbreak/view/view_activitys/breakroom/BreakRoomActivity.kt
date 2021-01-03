@@ -50,10 +50,12 @@ class BreakRoomActivity : AppCompatActivity() {
             chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
 
             viewModel.getRoom().observe(this, Observer<Room>{ observedRoom ->
-                if (room != null && (room!!.users != observedRoom.users)) {
-                    viewModel.loadUsersOfRoom(this)
-                }
+
                 room = observedRoom
+                viewModel.loadUsersOfRoom(this)
+                /*if (room != null && (room!!.users != observedRoom.users)) {
+                    viewModel.loadUsersOfRoom(this)
+                }*/
                 Log.d(TAG, "Observed room: $observedRoom")
                 if(observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()){
                     val messages = observedRoom.messages

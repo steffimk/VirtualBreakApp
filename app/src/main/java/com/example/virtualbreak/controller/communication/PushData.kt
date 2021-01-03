@@ -7,6 +7,7 @@ import android.util.Base64
 import android.util.Log
 import com.example.virtualbreak.R
 import com.example.virtualbreak.model.*
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -134,7 +135,7 @@ class PushData {
         fun sendMessage(roomId: String, message: String){
             val currentUserId = Firebase.auth.currentUser?.uid
             if(currentUserId != null){
-                val newChatMessage = Message(currentUserId, message)
+                val newChatMessage = Message(currentUserId, message, Timestamp.now())
                 database.child("rooms").child(roomId).child("messages").push().setValue(newChatMessage)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send message.")

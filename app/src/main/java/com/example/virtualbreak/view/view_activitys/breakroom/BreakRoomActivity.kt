@@ -3,8 +3,6 @@ package com.example.virtualbreak.view.view_activitys.breakroom
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +17,10 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.activity_break_room.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -51,7 +52,8 @@ class BreakRoomActivity : AppCompatActivity() {
 //            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
 
             var defaultMessages : MutableList<Message> = ArrayList()
-            var defaultM = Message("default", "Keine Nachricht")
+            //var defaultM = Message("default", "Keine Nachricht", Timestamp(Constants.DEFAULT_TIMESTAMP_SEC,Constants.DEFAULT_TIMESTAMP_NANOSEC))
+            var defaultM = Message("default", "Keine Nachricht", Timestamp(Constants.DEFAULT_TIMESTAMP_SEC,Constants.DEFAULT_TIMESTAMP_NANOSEC))
             defaultMessages.add(defaultM)
 
             chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)
@@ -75,8 +77,10 @@ class BreakRoomActivity : AppCompatActivity() {
                 Log.d(TAG, "Observed room: $observedRoom")
                 if(observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()){
                     val messages = observedRoom.messages
+                    var messagesList = ArrayList(messages.values)
+                    messagesList.sortBy { it.timestamp }
                     Log.i(TAG, "messagesList: $messages")
-                    chat_messages_recycler_view.adapter = ChatAdapter(this, ArrayList(messages.values))
+                    chat_messages_recycler_view.adapter = ChatAdapter(this, messagesList)
                 }
             })
         } else {

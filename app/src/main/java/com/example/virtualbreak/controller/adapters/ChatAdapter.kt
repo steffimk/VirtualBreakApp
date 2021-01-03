@@ -1,7 +1,6 @@
 package com.example.virtualbreak.controller.adapters
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Message
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class ChatAdapter(context: Context, messages: MutableList<Message>) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
@@ -34,12 +32,14 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
         val messageView: TextView
         val senderView: TextView
         val chatItem: RelativeLayout
+        val timestampView: TextView
         private val TAG: String = "ChatAdapter_ViewHolder"
 
         init {
             messageView = itemView.findViewById(R.id.show_chat_message)
             senderView = itemView.findViewById(R.id.show_chat_sender)
             chatItem = itemView.findViewById(R.id.chat_message)
+            timestampView = itemView.findViewById(R.id.show_message_timestamp)
         }
     }
 
@@ -64,6 +64,7 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
         // TODO: format viewMessage and viewSender
         val viewMessage = holder.messageView
         val viewSender = holder.senderView
+        val viewTimestamp = holder.timestampView
         val layout = holder.chatItem
 
         var sameSender = false
@@ -76,7 +77,7 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
             }
         }
 
-        setMessage(viewMessage, message, messageSenderId, viewSender, layout)
+        setMessage(viewMessage, message, viewTimestamp, layout)
 
         // don't show the sender name again, when previous message is from the same sender
         if (!sameSender) {
@@ -109,11 +110,18 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
     private fun setMessage(
         viewMessage: TextView,
         message: Message,
-        messageSenderId: String,
-        viewSender: TextView,
+        viewTimestamp: TextView,
         layout: RelativeLayout
     ) {
         viewMessage.setText(message.message)
+        val date = message.timestamp?.toDate()
+
+        val sfd = SimpleDateFormat(
+            "dd-MM-yyyy HH:mm:ss",
+            Locale.getDefault()
+        )
+        val text: String = sfd.format(date)
+        viewTimestamp.setText(text)
 
         // highlight own sended messages
         val ownId = SharedPrefManager.instance.getUserId() ?: ""

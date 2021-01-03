@@ -50,7 +50,7 @@ class BreakRoomActivity : AppCompatActivity() {
             chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
 
             viewModel.getRoom().observe(this, Observer<Room>{ observedRoom ->
-                if (room?.users ?: HashMap() != observedRoom.users) {
+                if (room != null && (room!!.users != observedRoom.users)) {
                     viewModel.loadUsersOfRoom(this)
                 }
                 viewModel.loadUsersOfRoom(this)

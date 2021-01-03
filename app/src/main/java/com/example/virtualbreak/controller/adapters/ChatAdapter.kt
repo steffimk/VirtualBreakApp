@@ -85,13 +85,15 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
             val storedHashMapString = prefs.getString("com.example.virtualbreak.roomUser", null)
             val type: Type =
                 object : TypeToken<HashMap<String?, String?>?>() {}.getType()
-            val roomUsers: HashMap<String, String> =
+            val roomUsers: HashMap<String, String>? =
                 gson.fromJson(storedHashMapString, type)
-
-            val sender = roomUsers.get(messageSenderId)
-
-            Log.i(TAG, "senderName: " + sender)
-            viewSender.setText(sender)
+            if (roomUsers != null) {
+                val sender = roomUsers.get(messageSenderId)
+                Log.i(TAG, "senderName: " + sender)
+                if (sender != null) {
+                    viewSender.setText(sender)
+                }
+            }
         }
     }
 

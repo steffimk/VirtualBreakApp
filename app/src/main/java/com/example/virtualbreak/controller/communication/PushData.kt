@@ -83,7 +83,7 @@ class PushData {
         }
 
         fun setGroupDescription(groupId: String, description: String) {
-            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child("description").setValue(description)
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }
 
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {
@@ -136,7 +136,7 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if(currentUserId != null){
                 val newChatMessage = Message(currentUserId, message)
-                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child("messages").push().setValue(newChatMessage)
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send message.")
             }
@@ -145,7 +145,7 @@ class PushData {
         fun setStatus(status: Status) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("status").setValue(status)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
             } else {
                 Log.d(TAG, "No user logged in. Cannot change status.")
             }
@@ -161,7 +161,7 @@ class PushData {
 
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("profilePicture").setValue(picture)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_PROFILE_PICTURE).setValue(picture)
             } else {
                 Log.d(TAG, "No user logged in. Cannot save profile picture.")
             }

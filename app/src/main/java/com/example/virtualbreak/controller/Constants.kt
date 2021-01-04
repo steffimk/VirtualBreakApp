@@ -9,5 +9,9 @@ class Constants {
         const val DATABASE_CHILD_GROUPS = "groups"
         const val DATABASE_CHILD_ROOMS = "rooms"
         const val DATABASE_CHILD_FRIENDS = "friends"
+        const val DATABASE_CHILD_DESCRIPTION = "description"
+        const val DATABASE_CHILD_MESSAGES = "messages"
+        const val DATABASE_CHILD_STATUS = "status"
+        const val DATABASE_CHILD_PROFILE_PICTURE = "profilePicture"
     }
 }

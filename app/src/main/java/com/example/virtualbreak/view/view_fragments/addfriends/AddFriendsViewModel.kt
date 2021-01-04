@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.User
@@ -19,7 +20,7 @@ class AddFriendsViewModel : ViewModel() {
     private val TAG = "AddFriendsViewModel"
 
     private val currentUser: MutableLiveData<User> = MutableLiveData<User>().also {
-        PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
             .addValueEventListener(userValueEventListener)
     }
     private val searchedUser: MutableLiveData<User?> = MutableLiveData(null)
@@ -56,7 +57,7 @@ class AddFriendsViewModel : ViewModel() {
         }
 
         searchedUser.value = null
-        PullData.database.child("users").orderByChild("email").equalTo(email).limitToFirst(1).addListenerForSingleValueEvent(
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).orderByChild("email").equalTo(email).limitToFirst(1).addListenerForSingleValueEvent(
             valueEventListener
         )
     }
@@ -78,7 +79,7 @@ class AddFriendsViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
             .removeEventListener(userValueEventListener)
     }
 }

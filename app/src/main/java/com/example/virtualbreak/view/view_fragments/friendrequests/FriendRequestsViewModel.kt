@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.User
@@ -47,7 +48,7 @@ class FriendRequestsViewModel : ViewModel() {
     private val incomingFriendRequests: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
 
-            private val queryFriendRequests = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "").child("friendRequests")
+            private val queryFriendRequests = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child("friendRequests")
 
             override fun onActive() {
                 super.onActive()
@@ -92,6 +93,6 @@ class FriendRequestsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(userId).addListenerForSingleValueEvent(valueEventListener)
     }
 }

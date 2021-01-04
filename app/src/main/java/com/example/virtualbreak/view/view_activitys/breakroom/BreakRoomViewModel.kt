@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Message
@@ -83,13 +84,13 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
 
         if (users != null) {
             for(u in users){
-                PullData.database.child("users").child(u.key).addListenerForSingleValueEvent(valueEventListener)
+                PullData.database.child(Constants.DATABASE_CHILD_USERS).child(u.key).addListenerForSingleValueEvent(valueEventListener)
             }
         }
     }
 
     private val user: MutableLiveData<User> = object : MutableLiveData<User>() {
-        private val userQuery = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+        private val userQuery = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
 
         override fun onActive() {
             super.onActive()

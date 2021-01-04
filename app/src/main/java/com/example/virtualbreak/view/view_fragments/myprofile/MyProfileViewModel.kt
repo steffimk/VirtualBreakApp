@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Room
@@ -23,7 +24,7 @@ class MyProfileViewModel : ViewModel() {
     val text: LiveData<String> = _text
 
     private val user: MutableLiveData<User> = object : MutableLiveData<User>() {
-        private val userQuery = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+        private val userQuery = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
 
         override fun onActive() {
             super.onActive()

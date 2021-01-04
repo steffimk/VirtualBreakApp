@@ -2,6 +2,7 @@ package com.example.virtualbreak.view.view_fragments.groupsfriends
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
@@ -44,7 +45,7 @@ class GroupsViewModel : ViewModel() {
     private val friends: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
 
-            private val queryFriends = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "").child("friends")
+            private val queryFriends = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_FRIENDS)
 
             override fun onActive() {
                 super.onActive()
@@ -78,7 +79,7 @@ class GroupsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child("users").child(userId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(userId).addListenerForSingleValueEvent(valueEventListener)
     }
 
     // ---------------------------------- Groups ----------------------------------------
@@ -110,7 +111,7 @@ class GroupsViewModel : ViewModel() {
     private val groups: MutableLiveData<HashMap<String,Group>> =
         object : MutableLiveData<HashMap<String,Group>>(HashMap()) {
 
-            private val queryGroups = PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "").child("groups")
+            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_GROUPS)
 
             override fun onActive() {
                 super.onActive()
@@ -143,7 +144,7 @@ class GroupsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child("groups").child(groupId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addListenerForSingleValueEvent(valueEventListener)
     }
 
 }

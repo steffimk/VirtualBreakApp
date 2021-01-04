@@ -33,7 +33,7 @@ class PullData {
 //
 //            val userUid = Firebase.auth.currentUser?.uid
 //            if (userUid != null) {
-//                database.child("users").child(userUid).addValueEventListener(valueEventListener)
+//                database.child(Constants.DATABASE_CHILD_USERS).child(userUid).addValueEventListener(valueEventListener)
 //            }
 //        }
 //

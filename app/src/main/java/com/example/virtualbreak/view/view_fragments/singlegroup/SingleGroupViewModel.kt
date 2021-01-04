@@ -2,6 +2,7 @@ package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Room
 import com.google.firebase.database.DataSnapshot
@@ -20,7 +21,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
     private val rooms : MutableLiveData<HashMap<String,Room>> =
         object : MutableLiveData<HashMap<String,Room>>(HashMap()) {
-            private val queryRooms = PullData.database.child("groups")
+            private val queryRooms = PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
                 .child(groupId).child("rooms")
 
             override fun onActive() {

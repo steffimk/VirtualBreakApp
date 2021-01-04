@@ -111,7 +111,7 @@ class GroupsViewModel : ViewModel() {
     private val groups: MutableLiveData<HashMap<String,Group>> =
         object : MutableLiveData<HashMap<String,Group>>(HashMap()) {
 
-            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child("groups")
+            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_GROUPS)
 
             override fun onActive() {
                 super.onActive()
@@ -144,7 +144,7 @@ class GroupsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child("groups").child(groupId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addListenerForSingleValueEvent(valueEventListener)
     }
 
 }

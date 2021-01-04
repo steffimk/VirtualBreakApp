@@ -35,11 +35,11 @@ class PushData {
         fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                val groupId = database.child("groups").push().key
+                val groupId = database.child(Constants.DATABASE_CHILD_GROUPS).push().key
                 if (groupId != null) {
                     val newGroup = Group(groupId, hashMapOf(currentUserId to currentUserId), description)
-                    database.child("groups").child(groupId).setValue(newGroup)
-                    database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("groups").child(groupId).setValue(groupId)
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(newGroup)
+                    database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(groupId)
                     userIds?.forEach{
                         joinGroup(groupId, it)
                     }
@@ -53,16 +53,16 @@ class PushData {
         }
 
         fun joinGroup(groupId: String, userId: String) {
-            database.child("groups").child(groupId).child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
-            database.child(Constants.DATABASE_CHILD_USERS).child(userId).child("groups").child(groupId).setValue(groupId)
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
+            database.child(Constants.DATABASE_CHILD_USERS).child(userId).child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(groupId)
             Log.d(TAG, "User $userId joined group $groupId")
         }
 
         fun leaveGroup(group: Group){
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child("groups").child(group.uid).removeValue()
-                database.child("groups").child(group.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
+                database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
+                database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                     .removeValue()
                 group.rooms?.forEach {
                     database.child("rooms").child(it.value).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
@@ -73,9 +73,9 @@ class PushData {
         }
 
         fun deleteGroup(group: Group) {
-            database.child("groups").child(group.uid).removeValue()
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             for (user in group.users) {
-                database.child(Constants.DATABASE_CHILD_USERS).child("groups").child(group.uid).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             }
             group.rooms?.forEach {
                 database.child("rooms").child(it.value).removeValue()
@@ -83,7 +83,7 @@ class PushData {
         }
 
         fun setGroupDescription(groupId: String, description: String) {
-            database.child("groups").child(groupId).child("description").setValue(description)
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child("description").setValue(description)
         }
 
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {
@@ -93,7 +93,7 @@ class PushData {
                 if (roomId != null) {
                     val newRoom = Room(roomId, groupId, roomDescription, hashMapOf(currentUserId to currentUserId), HashMap(), roomType?: Roomtype.COFFEE)
                     database.child("rooms").child(roomId).setValue(newRoom)
-                    database.child("groups").child(groupId).child("rooms").child(roomId).setValue(roomId)
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child("rooms").child(roomId).setValue(roomId)
                     Log.d(TAG, "Saved new room")
                 }
                 return roomId
@@ -119,7 +119,7 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
-                    database.child("groups").child(room.groupId).child("rooms").child(room.uid).removeValue()
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child("rooms").child(room.uid).removeValue()
                     database.child("rooms").child(room.uid).removeValue()
                     Log.d(TAG, "Deleted empty room.")
                 } else {

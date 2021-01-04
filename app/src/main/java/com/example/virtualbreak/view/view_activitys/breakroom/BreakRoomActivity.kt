@@ -1,18 +1,24 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
@@ -28,6 +34,8 @@ class BreakRoomActivity : AppCompatActivity() {
         setContentView(R.layout.activity_break_room)
 
         val roomId = SharedPrefManager.instance.getRoomId()
+
+        var userName : String? = null
 
         /*
         val bundle: Bundle? = intent.extras
@@ -48,6 +56,14 @@ class BreakRoomActivity : AppCompatActivity() {
 
             chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)
             chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
+
+            viewModel.getUser().observe(this, Observer<User> { observedUser ->
+                if (observedUser != null) {
+                    userName = observedUser.username
+                }
+            })
+
+
 
             viewModel.getRoom().observe(this, Observer<Room>{ observedRoom ->
 
@@ -81,6 +97,16 @@ class BreakRoomActivity : AppCompatActivity() {
                 }
             }
             input.clear()
+        }
+
+        start_video_call.setOnClickListener {
+            val args = Bundle()
+            args.putString(Constants.ROOM_ID, roomId)
+            args.putString(Constants.USER_NAME, userName)
+
+            val intent = Intent(this, VideoCallActivity::class.java)
+            intent.putExtras(args)
+            this.startActivity(intent)
         }
 
 

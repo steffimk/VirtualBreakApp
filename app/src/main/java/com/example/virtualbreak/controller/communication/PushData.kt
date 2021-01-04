@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -24,7 +25,7 @@ class PushData {
         fun saveUser(user: FirebaseUser, name: String) {
             if (user?.email != null) {
                   val userData = User(user.uid, name, user.email!!, Status.BUSY)
-                  database.child("users").child(user.uid).setValue(userData)
+                  database.child(Constants.DATABASE_CHILD_USERS).child(user.uid).setValue(userData)
                 Log.d(TAG, "Saved user to realtime database")
             } else {
                 Log.d(TAG, "No user logged in. Cannot save user.")
@@ -34,11 +35,11 @@ class PushData {
         fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                val groupId = database.child("groups").push().key
+                val groupId = database.child(Constants.DATABASE_CHILD_GROUPS).push().key
                 if (groupId != null) {
                     val newGroup = Group(groupId, hashMapOf(currentUserId to currentUserId), description)
-                    database.child("groups").child(groupId).setValue(newGroup)
-                    database.child("users").child(currentUserId).child("groups").child(groupId).setValue(groupId)
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(newGroup)
+                    database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(groupId)
                     userIds?.forEach{
                         joinGroup(groupId, it)
                     }
@@ -52,19 +53,19 @@ class PushData {
         }
 
         fun joinGroup(groupId: String, userId: String) {
-            database.child("groups").child(groupId).child("users").child(userId).setValue(userId)
-            database.child("users").child(userId).child("groups").child(groupId).setValue(groupId)
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
+            database.child(Constants.DATABASE_CHILD_USERS).child(userId).child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(groupId)
             Log.d(TAG, "User $userId joined group $groupId")
         }
 
         fun leaveGroup(group: Group){
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("users").child("groups").child(group.uid).removeValue()
-                database.child("groups").child(group.uid).child("users").child(currentUserId)
+                database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
+                database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                     .removeValue()
                 group.rooms?.forEach {
-                    database.child("rooms").child(it.value).child("users").child(currentUserId).removeValue()
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
                 }
             } else {
                 Log.d(TAG, "No user logged in. Cannot leave group.")
@@ -72,27 +73,27 @@ class PushData {
         }
 
         fun deleteGroup(group: Group) {
-            database.child("groups").child(group.uid).removeValue()
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             for (user in group.users) {
-                database.child("users").child("groups").child(group.uid).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             }
             group.rooms?.forEach {
-                database.child("rooms").child(it.value).removeValue()
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value).removeValue()
             }
         }
 
         fun setGroupDescription(groupId: String, description: String) {
-            database.child("groups").child(groupId).child("description").setValue(description)
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }
 
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                val roomId = database.child("rooms").push().key
+                val roomId = database.child(Constants.DATABASE_CHILD_ROOMS).push().key
                 if (roomId != null) {
                     val newRoom = Room(roomId, groupId, roomDescription, hashMapOf(currentUserId to currentUserId), HashMap(), roomType?: Roomtype.COFFEE)
-                    database.child("rooms").child(roomId).setValue(newRoom)
-                    database.child("groups").child(groupId).child("rooms").child(roomId).setValue(roomId)
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).setValue(newRoom)
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_ROOMS).child(roomId).setValue(roomId)
                     Log.d(TAG, "Saved new room")
                 }
                 return roomId
@@ -105,7 +106,7 @@ class PushData {
         fun joinRoom(roomId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("rooms").child(roomId).child("users").child(currentUserId).setValue(currentUserId)
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).setValue(currentUserId)
                 Log.d(TAG, "User joined room")
             } else {
                 Log.d(TAG, "No user logged in. Cannot join room.")
@@ -118,11 +119,11 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
-                    database.child("groups").child(room.groupId).child("rooms").child(room.uid).removeValue()
-                    database.child("rooms").child(room.uid).removeValue()
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
                     Log.d(TAG, "Deleted empty room.")
                 } else {
-                    database.child("rooms").child(room.uid).child("users").child(currentUserId)
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                         .removeValue()
                     Log.d(TAG, "Removed user from room")
                 }
@@ -135,7 +136,7 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if(currentUserId != null){
                 val newChatMessage = Message(currentUserId, message)
-                database.child("rooms").child(roomId).child("messages").push().setValue(newChatMessage)
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send message.")
             }
@@ -144,7 +145,7 @@ class PushData {
         fun setStatus(status: Status) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("users").child(currentUserId).child("status").setValue(status)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
             } else {
                 Log.d(TAG, "No user logged in. Cannot change status.")
             }
@@ -160,7 +161,7 @@ class PushData {
 
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("users").child(currentUserId).child("profilePicture").setValue(picture)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_PROFILE_PICTURE).setValue(picture)
             } else {
                 Log.d(TAG, "No user logged in. Cannot save profile picture.")
             }
@@ -169,8 +170,8 @@ class PushData {
         fun sendFriendRequest(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("users").child(currentUserId).child("friendRequests").child(friendId).setValue(false)
-                database.child("users").child(friendId).child("friendRequests").child(currentUserId).setValue(true)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(friendId).setValue(false)
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(currentUserId).setValue(true)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send friend request.")
             }
@@ -183,11 +184,11 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 // add users to each others friends
-                database.child("users").child(currentUserId).child("friends").child(friendId).setValue(friendId)
-                database.child("users").child(friendId).child("friends").child(currentUserId).setValue(currentUserId)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIENDS).child(friendId).setValue(friendId)
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIENDS).child(currentUserId).setValue(currentUserId)
                 // Remove users from each others friend requests
-                database.child("users").child(currentUserId).child("friendRequests").child(friendId).removeValue()
-                database.child("users").child(friendId).child("friendRequests").child(currentUserId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(friendId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(currentUserId).removeValue()
             } else {
                 Log.d(TAG, "No user logged in. Cannot confirm friend request.")
             }
@@ -196,7 +197,7 @@ class PushData {
         fun removeFriend(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("users").child(currentUserId).child("friends").child(friendId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIENDS).child(friendId).removeValue()
             } else {
                 Log.d(TAG, "No user logged in. Cannot save remove friend.")
             }

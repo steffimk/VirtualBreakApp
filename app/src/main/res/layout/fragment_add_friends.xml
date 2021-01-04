@@ -24,14 +24,15 @@
         android:layout_marginBottom="16dp"
         >
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp">
 
             <EditText
                 android:id="@+id/friend_email"
-                android:layout_width="250dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
                 android:autofillHints="Email"
@@ -45,7 +46,6 @@
                 android:paddingEnd="20dp"
                 android:paddingBottom="20dp"
                 android:singleLine="true"
-                android:layout_alignParentStart="true"
                 android:imeOptions="actionSearch"/>
 
             <Button
@@ -56,10 +56,9 @@
                 android:text="@string/suche"
                 android:textAllCaps="true"
                 android:textColor="@color/light_green"
-                android:layout_alignParentEnd="true"
                />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

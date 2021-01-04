@@ -8,5 +8,6 @@ class Constants {
         const val DATABASE_CHILD_USERS = "users"
         const val DATABASE_CHILD_GROUPS = "groups"
         const val DATABASE_CHILD_ROOMS = "rooms"
+        const val DATABASE_CHILD_FRIENDS = "friends"
     }
 }

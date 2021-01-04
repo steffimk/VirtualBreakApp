@@ -184,8 +184,8 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 // add users to each others friends
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("friends").child(friendId).setValue(friendId)
-                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child("friends").child(currentUserId).setValue(currentUserId)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIENDS).child(friendId).setValue(friendId)
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIENDS).child(currentUserId).setValue(currentUserId)
                 // Remove users from each others friend requests
                 database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("friendRequests").child(friendId).removeValue()
                 database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child("friendRequests").child(currentUserId).removeValue()
@@ -197,7 +197,7 @@ class PushData {
         fun removeFriend(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("friends").child(friendId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIENDS).child(friendId).removeValue()
             } else {
                 Log.d(TAG, "No user logged in. Cannot save remove friend.")
             }

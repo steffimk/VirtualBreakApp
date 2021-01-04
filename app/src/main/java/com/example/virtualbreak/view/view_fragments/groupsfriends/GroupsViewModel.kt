@@ -45,7 +45,7 @@ class GroupsViewModel : ViewModel() {
     private val friends: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
 
-            private val queryFriends = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child("friends")
+            private val queryFriends = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_FRIENDS)
 
             override fun onActive() {
                 super.onActive()

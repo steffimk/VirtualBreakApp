@@ -23,7 +23,7 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
     private val TAG = "BreakRoomViewModel"
 
     private val room : MutableLiveData<Room> = object : MutableLiveData<Room>() {
-        private val queryRoom = PullData.database.child("rooms").child(roomId)
+        private val queryRoom = PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
 
         override fun onActive() {
             super.onActive()

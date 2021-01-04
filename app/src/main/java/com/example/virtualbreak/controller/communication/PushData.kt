@@ -65,7 +65,7 @@ class PushData {
                 database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                     .removeValue()
                 group.rooms?.forEach {
-                    database.child("rooms").child(it.value).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
                 }
             } else {
                 Log.d(TAG, "No user logged in. Cannot leave group.")
@@ -78,7 +78,7 @@ class PushData {
                 database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             }
             group.rooms?.forEach {
-                database.child("rooms").child(it.value).removeValue()
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value).removeValue()
             }
         }
 
@@ -89,11 +89,11 @@ class PushData {
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                val roomId = database.child("rooms").push().key
+                val roomId = database.child(Constants.DATABASE_CHILD_ROOMS).push().key
                 if (roomId != null) {
                     val newRoom = Room(roomId, groupId, roomDescription, hashMapOf(currentUserId to currentUserId), HashMap(), roomType?: Roomtype.COFFEE)
-                    database.child("rooms").child(roomId).setValue(newRoom)
-                    database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child("rooms").child(roomId).setValue(roomId)
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).setValue(newRoom)
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_ROOMS).child(roomId).setValue(roomId)
                     Log.d(TAG, "Saved new room")
                 }
                 return roomId
@@ -106,7 +106,7 @@ class PushData {
         fun joinRoom(roomId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child("rooms").child(roomId).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).setValue(currentUserId)
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).setValue(currentUserId)
                 Log.d(TAG, "User joined room")
             } else {
                 Log.d(TAG, "No user logged in. Cannot join room.")
@@ -119,11 +119,11 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
-                    database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child("rooms").child(room.uid).removeValue()
-                    database.child("rooms").child(room.uid).removeValue()
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
                     Log.d(TAG, "Deleted empty room.")
                 } else {
-                    database.child("rooms").child(room.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                         .removeValue()
                     Log.d(TAG, "Removed user from room")
                 }
@@ -136,7 +136,7 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if(currentUserId != null){
                 val newChatMessage = Message(currentUserId, message)
-                database.child("rooms").child(roomId).child("messages").push().setValue(newChatMessage)
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child("messages").push().setValue(newChatMessage)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send message.")
             }

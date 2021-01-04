@@ -22,7 +22,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
     private val rooms : MutableLiveData<HashMap<String,Room>> =
         object : MutableLiveData<HashMap<String,Room>>(HashMap()) {
             private val queryRooms = PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
-                .child(groupId).child("rooms")
+                .child(groupId).child(Constants.DATABASE_CHILD_ROOMS)
 
             override fun onActive() {
                 super.onActive()
@@ -74,7 +74,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child("rooms").child(roomId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
     }
 
 }

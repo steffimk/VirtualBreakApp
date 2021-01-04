@@ -170,8 +170,8 @@ class PushData {
         fun sendFriendRequest(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("friendRequests").child(friendId).setValue(false)
-                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child("friendRequests").child(currentUserId).setValue(true)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(friendId).setValue(false)
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(currentUserId).setValue(true)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send friend request.")
             }
@@ -187,8 +187,8 @@ class PushData {
                 database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIENDS).child(friendId).setValue(friendId)
                 database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIENDS).child(currentUserId).setValue(currentUserId)
                 // Remove users from each others friend requests
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child("friendRequests").child(friendId).removeValue()
-                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child("friendRequests").child(currentUserId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(friendId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(currentUserId).removeValue()
             } else {
                 Log.d(TAG, "No user logged in. Cannot confirm friend request.")
             }

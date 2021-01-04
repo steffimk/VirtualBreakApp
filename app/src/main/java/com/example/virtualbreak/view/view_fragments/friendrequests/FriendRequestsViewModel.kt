@@ -48,7 +48,7 @@ class FriendRequestsViewModel : ViewModel() {
     private val incomingFriendRequests: MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
 
-            private val queryFriendRequests = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child("friendRequests")
+            private val queryFriendRequests = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_FRIEND_REQUESTS)
 
             override fun onActive() {
                 super.onActive()

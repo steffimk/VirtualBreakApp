@@ -14,7 +14,7 @@
         android:textSize="18sp"
         android:layout_marginTop="10dp"/>
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,41 +24,42 @@
         android:layout_marginBottom="16dp"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:padding="8dp">
 
-        <EditText
-            android:id="@+id/friend_email"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:autofillHints="Email"
-            android:hint="@string/login_email_hint"
-            android:includeFontPadding="true"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:layout_marginTop="10dp"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp"
-            android:singleLine="true"
-            android:imeOptions="actionSearch"/>
+            <EditText
+                android:id="@+id/friend_email"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:autofillHints="Email"
+                android:hint="@string/login_email_hint"
+                android:includeFontPadding="true"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:layout_marginTop="10dp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp"
+                android:singleLine="true"
+                android:layout_alignParentStart="true"
+                android:imeOptions="actionSearch"/>
 
-        <Button
-            android:id="@+id/searchFriend_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="58dp"
-            android:backgroundTint="@color/mandarin"
-            android:text="@string/suche"
-            android:textAllCaps="true"
-            android:textColor="@color/light_green"
-           />
+            <Button
+                android:id="@+id/searchFriend_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:backgroundTint="@color/mandarin"
+                android:text="@string/suche"
+                android:textAllCaps="true"
+                android:textColor="@color/light_green"
+                android:layout_alignParentEnd="true"
+               />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -76,7 +77,7 @@
             android:textSize="18sp"
             android:visibility="invisible"/>
 
-        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/foundfriend_cardview"
             android:layout_width="match_parent"
@@ -84,72 +85,63 @@
             card_view:cardCornerRadius="5dp"
             android:layout_height="100dp"
             android:layout_marginVertical="8dp"
-            android:visibility="invisible"
+
             >
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="8dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
 
-                <ImageView
-                    android:id="@+id/foundfriend_img"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/user"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintHorizontal_bias="0.018"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/foundfriend_img"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_person_24"
+                        android:scaleType="centerCrop"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        card_view:riv_corner_radius="6dp"/>
 
-                <TextView
-                    android:id="@+id/foundfriend_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/username"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintHorizontal_bias="0.199"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias="0.346" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_toEndOf="@+id/foundfriend_img"
+                        android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/foundfriend_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textSize="14sp"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintHorizontal_bias="0.191"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias="0.633" />
+                        <TextView
+                            android:id="@+id/foundfriend_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/username"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
 
-                <Button
-                    android:id="@+id/btn_sendfriendrequest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="257dp"
-                    android:text="Add"
+                        <TextView
+                            android:id="@+id/foundfriend_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Text"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                    </LinearLayout>
 
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintHorizontal_bias="1.0"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias="0.555" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_sendfriendrequest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="@string/add"
+                        card_view:icon="@drawable/ic_person_add"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </RelativeLayout>
+
 
         </androidx.cardview.widget.CardView>
 

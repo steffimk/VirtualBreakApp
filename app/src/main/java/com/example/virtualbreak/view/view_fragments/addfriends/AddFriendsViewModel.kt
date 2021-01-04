@@ -18,9 +18,11 @@ class AddFriendsViewModel : ViewModel() {
 
     private val TAG = "AddFriendsViewModel"
 
-    private val currentUser: MutableLiveData<User> = MutableLiveData<User>().also {
-        PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
-            .addValueEventListener(userValueEventListener)
+    private val currentUser: MutableLiveData<User> by lazy {
+        MutableLiveData<User>().also {
+            PullData.database.child("users").child(SharedPrefManager.instance.getUserId() ?: "")
+                .addValueEventListener(userValueEventListener)
+        }
     }
     private val searchedUser: MutableLiveData<User?> = MutableLiveData(null)
 

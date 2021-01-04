@@ -28,10 +28,6 @@ class AddFriendsFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +51,8 @@ class AddFriendsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getCurrentUser() // Get once to trigger "by lazy" instantiation
 
         viewModel.getSearchedUser().observe(viewLifecycleOwner, Observer<User?>{ searchedUser ->
             if (searchedUser != null) {
@@ -83,7 +81,7 @@ class AddFriendsFragment : Fragment() {
         var snackbarText = ""
         var isValidFriendRequest = false
 
-        if (user == null) {
+        if (user == null || currentUser == null) {
             snackbarText = "Kein User gefunden"
         }
         // User tries to send himself a friend request

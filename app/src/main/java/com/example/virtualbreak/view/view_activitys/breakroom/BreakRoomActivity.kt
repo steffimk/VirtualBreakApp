@@ -17,9 +17,7 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.activity_break_room.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -52,8 +50,7 @@ class BreakRoomActivity : AppCompatActivity() {
 //            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
 
             var defaultMessages : MutableList<Message> = ArrayList()
-            //var defaultM = Message("default", "Keine Nachricht", Timestamp(Constants.DEFAULT_TIMESTAMP_SEC,Constants.DEFAULT_TIMESTAMP_NANOSEC))
-            var defaultM = Message("default", "Keine Nachricht", Timestamp(Constants.DEFAULT_TIMESTAMP_SEC,Constants.DEFAULT_TIMESTAMP_NANOSEC))
+            var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
             chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)

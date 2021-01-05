@@ -1,10 +1,10 @@
 package com.example.virtualbreak.model
 
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.ServerTimestamp
-import java.util.*
+import com.example.virtualbreak.controller.Constants
 
-data class Message (var sender: String = "",
-                    var message: String ="",
-                    @ServerTimestamp var timestamp: Timestamp ){
+data class Message(
+    var sender: String = "",
+    var message: String = "",
+    var timestamp: Long = Constants.DEFAULT_TIME
+) {
 }

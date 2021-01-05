@@ -1,11 +1,6 @@
 package com.example.virtualbreak.controller.communication
 
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
-import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
@@ -13,7 +8,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.io.ByteArrayOutputStream
+import java.util.*
+import kotlin.collections.HashMap
 
 class PushData {
 
@@ -135,7 +131,8 @@ class PushData {
         fun sendMessage(roomId: String, message: String){
             val currentUserId = Firebase.auth.currentUser?.uid
             if(currentUserId != null){
-                val newChatMessage = Message(currentUserId, message)
+                val date = Date()
+                val newChatMessage = Message(currentUserId, message, date.time)
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
             } else {
                 Log.d(TAG, "No user logged in. Cannot send message.")

@@ -10,8 +10,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.Message
+import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -114,14 +116,20 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
         layout: RelativeLayout
     ) {
         viewMessage.setText(message.message)
-        val date = message.timestamp?.toDate()
 
-        val sfd = SimpleDateFormat(
-            "dd-MM-yyyy HH:mm:ss",
-            Locale.getDefault()
-        )
-        val text: String = sfd.format(date)
-        viewTimestamp.setText(text)
+        val date = message.timestamp
+
+        if(date !=  Constants.DEFAULT_TIME){
+            val timestamp = Timestamp(date)
+
+            val sfd = SimpleDateFormat(
+                "dd.MM.yyyy HH:mm",
+                Locale.getDefault()
+            )
+            val text: String = sfd.format(timestamp)
+            viewTimestamp.setText(text)
+        }
+
 
         // highlight own sended messages
         val ownId = SharedPrefManager.instance.getUserId() ?: ""

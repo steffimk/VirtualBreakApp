@@ -17,11 +17,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/profileImg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="44dp"
+            android:scaleType="centerCrop"
             android:contentDescription="profile picture"
-            android:src="@drawable/user" />
+            android:src="@drawable/ic_person_24" />
 
         <TextView
             android:id="@+id/username"
@@ -68,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
         android:contentDescription="edit picture"
-        android:src="@drawable/ic_menu_camera"
+        android:src="@drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.707"
         app:layout_constraintStart_toStartOf="parent"

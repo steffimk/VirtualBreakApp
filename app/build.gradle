@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-storage'
+
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
@@ -84,4 +86,6 @@ dependencies {
     // Jitsi
     implementation ('org.jitsi.react:jitsi-meet-sdk:2.+') { transitive = true }
 
+    //Picasso image loading
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

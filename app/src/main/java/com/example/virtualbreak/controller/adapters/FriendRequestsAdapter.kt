@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,13 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 
 class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View
+    val TAG = "FriendRequestsAdapter"
 
     class ViewHolderFriendRequests(itemView: View) : RecyclerView.ViewHolder(itemView){
         val acceptRequestBtn: Button
@@ -51,6 +55,8 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         holder.username_textView.text = friendRequests[position].username
         holder.email_textView.text = friendRequests[position].email
 
+        loadProfilePicture(holder, friendRequests[position].uid)
+
         //define click listener for viewholders view
         holder.acceptRequestBtn.setOnClickListener{
 
@@ -58,8 +64,18 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
             Snackbar.make(view, "Add friend "+friendRequests[position].username+" uid: "+friendRequests[position].uid, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-        //TODO get images from firebase storage
-        //holder.profile_imageView =
+    }
+
+    private fun loadProfilePicture(holder: FriendRequestsAdapter.ViewHolderFriendRequests, userId: String) {
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Picasso.get().load(task.result).into(holder.profile_imageView)
+            } else {
+                Log.w(TAG, "getProfilePictureURI unsuccessful")
+            }
+
+        }
     }
 
 

@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/darkblue</item>
         <item name="colorPrimaryVariant">@color/blue_dark_night</item>
         <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorAccent">@color/mandarin</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/mandarin</item>
         <item name="colorSecondaryVariant">@color/sinopia</item>
@@ -28,7 +30,6 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:background">?colorPrimary</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <!-- Used to color back button and three dots -->
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 </resources>

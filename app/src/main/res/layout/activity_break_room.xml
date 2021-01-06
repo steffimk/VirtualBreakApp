@@ -26,8 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/rename_room"
+            android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHighlight="@color/mandarin"
+            android:backgroundTint="@color/mandarin"
             android:textColorHint="@color/lightgray"
             android:visibility="gone" />
     </androidx.appcompat.widget.Toolbar>
@@ -57,24 +58,36 @@
             android:id="@+id/chat_message_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
             android:hint="@string/message"
             android:scrollbars="vertical"
-            android:textColorHighlight="@color/mandarin" />
+            android:layout_weight="4"
+            android:backgroundTint="@color/mandarin" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/send_message_button"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="4dp"
-            android:padding="3dp"
-            android:layout_weight="1"
-            android:background="@color/blue_dark_night"
+            android:layout_margin="4dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:elevation="0dp"
+            android:background="@color/mandarin"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_action_send"
-            android:text="@string/send_message"
-            android:tint="@color/white" />
+            android:layout_weight="1"
+            android:src="@drawable/send_white" />
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/send_message_button"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginHorizontal="8dp"-->
+        <!--            android:layout_marginVertical="4dp"-->
+        <!--            android:padding="3dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="@color/blue_dark_night"-->
+        <!--            android:scaleType="fitCenter"-->
+        <!--            android:src="@drawable/ic_action_send"-->
+        <!--            android:text="@string/send_message"-->
+        <!--            android:tint="@color/white" />-->
 
     </LinearLayout>
 

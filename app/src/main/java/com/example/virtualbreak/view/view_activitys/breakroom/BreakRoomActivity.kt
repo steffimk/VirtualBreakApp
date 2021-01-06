@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -33,9 +35,11 @@ class BreakRoomActivity : AppCompatActivity() {
 
     private val TAG = "BreakRoomActivity"
 
-    private val viewModel: BreakRoomViewModel by viewModels { BreakRoomViewModelFactory(
-        SharedPrefManager.instance.getRoomId() ?: ""
-    ) }
+    private val viewModel: BreakRoomViewModel by viewModels {
+        BreakRoomViewModelFactory(
+            SharedPrefManager.instance.getRoomId() ?: ""
+        )
+    }
     private var room: Room? = null
 
     lateinit var mtoolbar: Toolbar
@@ -72,7 +76,7 @@ class BreakRoomActivity : AppCompatActivity() {
             PushData.joinRoom(roomId)
 //            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
 
-            var defaultMessages : MutableList<Message> = ArrayList()
+            var defaultMessages: MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
@@ -95,9 +99,9 @@ class BreakRoomActivity : AppCompatActivity() {
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
                 }
-                        /*if (room != null && (room!!.users != observedRoom.users)) {
-                            viewModel.loadUsersOfRoom(this)
-                        }*/
+                /*if (room != null && (room!!.users != observedRoom.users)) {
+                    viewModel.loadUsersOfRoom(this)
+                }*/
                 Log.d(TAG, "Observed room: $observedRoom")
                 if (observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()) {
                     val messages = observedRoom.messages
@@ -119,15 +123,13 @@ class BreakRoomActivity : AppCompatActivity() {
         send_message_button.setOnClickListener {
             val input = chat_message_input.text
             val message = input.toString()
-            if(!input.equals("")){
+            if (!input.equals("")) {
                 if (roomId != null) {
                     PushData.sendMessage(roomId, message)
                 }
             }
             input.clear()
         }
-
-
 
 
     }
@@ -137,9 +139,9 @@ class BreakRoomActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId){
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
 
-        android.R.id.home ->{
+        android.R.id.home -> {
             // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
             viewModel.getRoom().removeObservers(this)
             PushData.leaveRoom(room)
@@ -169,7 +171,7 @@ class BreakRoomActivity : AppCompatActivity() {
             }
             true
         }
-        R.id.action_videocall ->{
+        R.id.action_videocall -> {
             val args = Bundle()
             args.putString(Constants.ROOM_ID, roomId)
             args.putString(Constants.USER_NAME, userName)
@@ -179,11 +181,10 @@ class BreakRoomActivity : AppCompatActivity() {
             this.startActivity(intent)
             true
         }
-        else ->{
+        else -> {
             super.onOptionsItemSelected(item)
         }
     }
-
 
     override fun onBackPressed() {
         //Do nothing, can only leave breakroom via button

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/addfriends_intro"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_marginTop="10dp"/>
 
     <androidx.cardview.widget.CardView
@@ -25,14 +25,14 @@
         >
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp">
 
             <EditText
                 android:id="@+id/friend_email"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
                 android:autofillHints="Email"
@@ -40,6 +40,7 @@
                 android:includeFontPadding="true"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:drawableRight="@drawable/ic_cancel_24"
                 android:layout_marginTop="10dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
@@ -48,12 +49,14 @@
                 android:singleLine="true"
                 android:imeOptions="actionSearch"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/searchFriend_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:backgroundTint="@color/mandarin"
                 android:text="@string/suche"
+                card_view:icon="@drawable/ic_search_24"
+                style="@style/Widget.MaterialComponents.Button.Icon"
                 android:textAllCaps="true"
                 android:textColor="@color/light_green"
                />
@@ -73,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_was_search_successful"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:visibility="invisible"/>
 
         <androidx.cardview.widget.CardView
@@ -95,8 +98,8 @@
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/foundfriend_img"
                         android:layout_marginStart="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/ic_person_24"
                         android:scaleType="centerCrop"
                         android:layout_centerVertical="true"
@@ -115,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/username"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"/>
 
                         <TextView

@@ -148,8 +148,9 @@ class PushData {
             }
         }
 
+        //not needed, we use Firebase Storage
         fun setProfilPicture(picture: String) {
-            // TODO: encode picture with Base64
+            // encode picture with Base64
 //            val byteArrayOutputStream = ByteArrayOutputStream()
 //            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.user)
 //            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
@@ -164,6 +165,9 @@ class PushData {
             }
         }
 
+        /**
+         * sends friend request: logic: id for user id - boolean: incoming (true) or outgoing (false)
+         */
         fun sendFriendRequest(friendId: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -188,6 +192,21 @@ class PushData {
                 database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(currentUserId).removeValue()
             } else {
                 Log.d(TAG, "No user logged in. Cannot confirm friend request.")
+            }
+        }
+
+        /**
+         * if you sent a friend request and decide you want to delete the request
+         * or if you got a friend request and don't want to accept - delete request go back to normal
+         */
+        fun removeFriendRequest(friendId: String){
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                // Remove users from each others friend requests
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(friendId).removeValue()
+                database.child(Constants.DATABASE_CHILD_USERS).child(friendId).child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).child(currentUserId).removeValue()
+            } else {
+                Log.d(TAG, "No user logged in. Cannot delete friend request.")
             }
         }
 

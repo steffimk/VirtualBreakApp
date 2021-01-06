@@ -16,12 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profileImg"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="44dp"
             android:scaleType="centerCrop"
+            app:riv_corner_radius="6dp"
             android:contentDescription="profile picture"
             android:src="@drawable/ic_person_24" />
 

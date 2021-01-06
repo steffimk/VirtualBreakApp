@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -39,6 +41,11 @@ class AddFriendsFragment : Fragment() {
 
         // Inflate the layout for this fragment
         _binding = FragmentAddFriendsBinding.inflate(inflater, container, false)
+
+        //cancel icon on right clears edittext email search
+        binding.friendEmail.onRightDrawableClicked {
+            it.text.clear()
+        }
 
         binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
@@ -141,6 +148,24 @@ class AddFriendsFragment : Fragment() {
                 .setAction("Action", null).show()
         }
 
+    }
+
+    /**
+     * cancel icon on right clears edittext for email search
+     */
+    fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
+        this.setOnTouchListener { v, event ->
+            var hasConsumed = false
+            if (v is EditText) {
+                if (event.x >= v.width - v.totalPaddingRight) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        onClicked(this)
+                    }
+                    hasConsumed = true
+                }
+            }
+            hasConsumed
+        }
     }
 
 }

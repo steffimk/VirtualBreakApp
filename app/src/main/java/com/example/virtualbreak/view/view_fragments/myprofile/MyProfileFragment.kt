@@ -103,6 +103,9 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    /**
+     * asynchronous loading of profile picture from FB storage to view using Picasso
+     */
     private fun initProfilePicture() {
         Log.d(TAG, "initProfilePicture")
 
@@ -209,6 +212,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             .show()
     }
 
+    //TODO move this method to PushData
     fun uploadProfilePicture(fullPhotoUri: Uri?, context: Context?) {
         Log.d(TAG, "uploadProfilePicture")
         fullPhotoUri?.let{

@@ -16,13 +16,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
-class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsAdapter.ViewHolderFriendRequests>() {
+class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsOutgoingAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View
     val TAG = "FriendRequestsAdapter"
 
     class ViewHolderFriendRequests(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val acceptRequestBtn: Button
         val deleteRequestBtn: Button
         val username_textView: TextView
         val email_textView: TextView
@@ -30,16 +29,15 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         private val TAG: String = "FriendRequestsAdapter_ViewHolder"
 
         init{
-            acceptRequestBtn = itemView.findViewById(R.id.friendrequest_accept)
-            deleteRequestBtn = itemView.findViewById(R.id.friendrequest_delete)
-            username_textView = itemView.findViewById(R.id.friendrequest_username)
-            email_textView = itemView.findViewById(R.id.friendrequest_email)
-            profile_imageView = itemView.findViewById(R.id.friendrequest_img)
+            deleteRequestBtn = itemView.findViewById(R.id.friendrequest_outgoing_delete)
+            username_textView = itemView.findViewById(R.id.friendrequest_outgoing_username)
+            email_textView = itemView.findViewById(R.id.friendrequest_outgoing_email)
+            profile_imageView = itemView.findViewById(R.id.friendrequest_outgoing_img)
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolderFriendRequests {
-        view = LayoutInflater.from(viewGroup.context).inflate(R.layout.friend_request_item, viewGroup, false)
+        view = LayoutInflater.from(viewGroup.context).inflate(R.layout.friend_request_outgoing_item, viewGroup, false)
 
         return ViewHolderFriendRequests(view)
     }
@@ -60,21 +58,15 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         loadProfilePicture(holder, friendRequests[position].uid)
 
         //define click listener for viewholders view
-        holder.acceptRequestBtn.setOnClickListener{
+        holder.deleteRequestBtn.setOnClickListener{
 
-            PushData.confirmFriendRequest(friendRequests[position].uid)
-            Snackbar.make(view, ""+friendRequests[position].username+" wurde zu deiner Freundeliste hinzugefügt!", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
-        holder.deleteRequestBtn.setOnClickListener {
             PushData.removeFriendRequest(friendRequests[position].uid)
-            Snackbar.make(view, "Du hast die Freundschaftsanfrage von ${friendRequests[position].username} gelöscht", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Du hast die Freundschaftsanfrage an ${friendRequests[position].username} rückgängig gemacht", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
     }
 
-    private fun loadProfilePicture(holder: FriendRequestsAdapter.ViewHolderFriendRequests, userId: String) {
+    private fun loadProfilePicture(holder: FriendRequestsOutgoingAdapter.ViewHolderFriendRequests, userId: String) {
         val mStorageRef = FirebaseStorage.getInstance().getReference()
         mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
             if (task.isSuccessful) {

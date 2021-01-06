@@ -82,7 +82,7 @@
     <string name="leave_room">Austreten</string>
     <string name="message">Nachricht</string>
     <string name="annehmen">Annehmen</string>
-    <string name="friend_request_intro_string">Hier kannst du offene Freundschaftsanfragen sehen und annehmen:</string>
+    <string name="bekommen">Bekommen:</string>
     <string name="freundschaftsanfragen">Freundschaftsanfragen</string>
     <string name="addfriends_intro">Du kannst Freunde mithilfe ihrer E-Mail-Adresse hinzufügen:</string>
     <string name="suche">Suche</string>
@@ -92,5 +92,9 @@
     <string name="search_friend_not_successful">Es wurde kein User mit dieser Mail gefunden.</string>
     <string name="searching_for_friend">User wird gesucht...</string>
     <string name="add">Add</string>
+    <string name="keine_offenen_freundschaftsanfragen">Keine offenen Freundschaftsanfragen</string>
+    <string name="abgeschickt">Abgeschickt:</string>
+    <string name="keine_abgeschickten_freundschaftsanfragen">Keine abgeschickten Freundschaftsanfragen</string>
+    <string name="suche_freunde">Suche Freunde</string>
 
 </resources>

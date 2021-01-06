@@ -96,5 +96,7 @@
     <string name="abgeschickt">Abgeschickt:</string>
     <string name="keine_abgeschickten_freundschaftsanfragen">Keine abgeschickten Freundschaftsanfragen</string>
     <string name="suche_freunde">Suche Freunde</string>
+    <string name="freundschaftsanfrage_senden">Freundschaftsanfrage senden</string>
+    <string name="löschen">Löschen</string>
 
 </resources>

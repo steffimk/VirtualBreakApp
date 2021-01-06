@@ -56,8 +56,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/friendrequests_search_friends_btn"
+        android:backgroundTint="@color/mandarin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:layout_margin="8dp"
         app:icon="@drawable/ic_search_24"
         android:text="@string/suche_freunde"/>

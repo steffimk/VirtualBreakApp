@@ -73,6 +73,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             if (observedUser != null) {
                 //set username text of current user
                 root.findViewById<TextView>(R.id.username).text = observedUser.username
+                profile_email.text = observedUser.email
                 // Set position of spinner to current status
                 val aa = spinner.adapter as ArrayAdapter<String>
                 spinner.setSelection(aa.getPosition(observedUser.status?.dbStr))

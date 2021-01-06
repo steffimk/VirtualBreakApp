@@ -128,6 +128,10 @@ class PushData {
             }
         }
 
+        fun setRoomDescription(roomId: String, description: String) {
+            database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
+        }
+
         fun sendMessage(roomId: String, message: String){
             val currentUserId = Firebase.auth.currentUser?.uid
             if(currentUserId != null){

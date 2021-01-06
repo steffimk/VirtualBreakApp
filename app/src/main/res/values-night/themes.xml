@@ -3,14 +3,14 @@
     <style name="Theme.VirtualBreak" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/darkblue</item>
-        <item name="colorPrimaryVariant">@color/darkblue</item>
-        <item name="colorOnPrimary">@color/light_green</item>
+        <item name="colorPrimaryVariant">@color/blue_dark_night</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/sinopia</item>
-        <item name="colorSecondaryVariant">@color/mandarin</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/mandarin</item>
+        <item name="colorSecondaryVariant">@color/sinopia</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/blue_dark_night</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

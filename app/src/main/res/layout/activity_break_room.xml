@@ -6,21 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".view.view_activitys.breakroom.BreakRoomActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_breakroom"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/darkblue"
+        android:theme="@style/Theme.VirtualBreak.BreakroomToolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:popupTheme="@style/Theme.VirtualBreak.PopupOverlay"
+        app:titleTextAppearance="@color/white"
+        app:titleTextColor="@color/white">
+
+        <EditText
+            android:id="@+id/et_changeRoomName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/rename_room"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/mandarin"
+            android:textColorHint="@color/lightgray"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_messages_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom" />
 
     <LinearLayout
         android:id="@+id/user_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_margin="8dp"
         android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,40 +55,29 @@
 
         <EditText
             android:id="@+id/chat_message_input"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
             android:hint="@string/message"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            android:textColorHighlight="@color/mandarin" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="8dp">
-
-            <Button
-                android:id="@+id/send_message_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/send_message"
-                android:layout_marginRight="10dp"/>
-
-            <Button
-                android:id="@+id/leave_room_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/leave_room" />
-
-            <Button
-                android:id="@+id/start_video_call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Video Call"/>
-
-        </LinearLayout>
-
+        <ImageButton
+            android:id="@+id/send_message_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            android:padding="3dp"
+            android:layout_weight="1"
+            android:background="@color/blue_dark_night"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_send"
+            android:text="@string/send_message"
+            android:tint="@color/white" />
 
     </LinearLayout>
+
 
 
     <!--<TextView
@@ -72,4 +88,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:scrollbars="vertical"/>-->
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

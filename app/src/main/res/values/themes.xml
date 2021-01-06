@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.VirtualBreak" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.VirtualBreak" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/darkblue</item>
         <item name="colorPrimaryVariant">@color/blue_dark_night</item>
@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/sinopia</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/blue_dark_night</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -22,4 +22,13 @@
     <style name="Theme.VirtualBreak.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.VirtualBreak.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.VirtualBreak.BreakroomToolbar">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/blue_dark_night</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- Used to color back button and three dots -->
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
 </resources>

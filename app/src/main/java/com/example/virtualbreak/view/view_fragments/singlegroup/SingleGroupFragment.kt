@@ -99,21 +99,12 @@ class SingleGroupFragment : Fragment() {
         Log.d(TAG, "create $roomtype Breakroom")
 
         var roomId: String? = null
-        val groupId = thisContext?.getSharedPreferences(
-            "com.example.virtualbreak",
-            Context.MODE_PRIVATE
-        )?.getString("com.example.virtualbreak.groupId", "")
-        if (groupId != null && groupId != "") {
+        if (groupId != "") {
             roomId = PushData.saveRoom(groupId, roomtype, roomtype.dbStr)
             SharedPrefManager.instance.saveRoomId(roomId!!)
-
         }
-
         val intent = Intent(activity, BreakRoomActivity::class.java)
         activity?.startActivity(intent)
-
-        //context.startActivity(intent)
-
         //TODO send notification to friends
 
     }

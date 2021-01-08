@@ -99,4 +99,8 @@
     <string name="freundschaftsanfrage_senden">Freundschaftsanfrage senden</string>
     <string name="löschen">Löschen</string>
 
+    <string name="video_call">Video Call</string>
+    <string name="edit">edit</string>
+    <string name="rename_room">Rename Room</string>
+
 </resources>

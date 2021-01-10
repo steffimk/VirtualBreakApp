@@ -1,6 +1,5 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,19 +14,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
-import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.nambimobile.widgets.efab.FabOption
-import kotlinx.android.synthetic.main.fragment_singlegroup.*
-import kotlinx.android.synthetic.main.fragment_myprofile.*
 
 class SingleGroupFragment : Fragment() {
 
@@ -67,7 +63,12 @@ class SingleGroupFragment : Fragment() {
                 Log.d(TAG, "Observed rooms: $roomsMap")
                 val customAdapter =
                     context?.let {
-                        SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, ArrayList(roomsMap.values),userName)
+                        SingleGroupRoomsAdapter(
+                            it,
+                            R.layout.singlegroup_room_list_item,
+                            ArrayList(roomsMap.values),
+                            userName
+                        )
                     }
                 gridView.adapter = customAdapter
             })
@@ -77,30 +78,30 @@ class SingleGroupFragment : Fragment() {
 
         val fabOptionCoffee: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
         fabOptionCoffee.setOnClickListener {
-            openBreakroom(Roomtype.COFFEE, context)
+            openBreakroom(Roomtype.COFFEE, context, userName)
         }
 
         val fabOptionQuestion: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
         fabOptionQuestion.setOnClickListener {
-            openBreakroom(Roomtype.QUESTION, context)
+            openBreakroom(Roomtype.QUESTION, context, userName)
 
         }
 
         val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
         fabOptionGame.setOnClickListener {
-            openBreakroom(Roomtype.GAME, context)
+            openBreakroom(Roomtype.GAME, context, userName)
         }
 
         val fabOptionSport: FabOption = root.findViewById(R.id.fab_singlegroup_option4)
         fabOptionSport.setOnClickListener {
-            openBreakroom(Roomtype.SPORT, context)
+            openBreakroom(Roomtype.SPORT, context, userName)
         }
 
         return root
     }
 
 
-    private fun openBreakroom(roomtype: Roomtype, thisContext: Context?) {
+    private fun openBreakroom(roomtype: Roomtype, thisContext: Context?, userName:String?) {
 
         Log.d(TAG, "create $roomtype Breakroom")
 
@@ -110,6 +111,7 @@ class SingleGroupFragment : Fragment() {
             SharedPrefManager.instance.saveRoomId(roomId!!)
         }
         val intent = Intent(activity, BreakRoomActivity::class.java)
+        intent.putExtra(Constants.USER_NAME, userName)
         activity?.startActivity(intent)
         //TODO send notification to friends
 

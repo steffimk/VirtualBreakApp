@@ -76,7 +76,10 @@ class BreakRoomActivity : AppCompatActivity() {
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
-            chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)
+            var layoutManager = LinearLayoutManager(this)
+            layoutManager.setStackFromEnd(true)
+            chat_messages_recycler_view.layoutManager = layoutManager
+
             chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
 
             viewModel.getUser().observe(this, Observer<User> { observedUser ->

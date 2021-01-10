@@ -81,6 +81,10 @@
     <string name="send_message">Senden</string>
     <string name="leave_room">Austreten</string>
     <string name="message">Nachricht</string>
+    <string name="joined"> ist beigetreten</string>
+    <string name="left"> hat den Raum verlassen</string>
+
+
     <string name="annehmen">Annehmen</string>
     <string name="friend_request_intro_string">Hier kannst du offene Freundschaftsanfragen sehen und annehmen:</string>
     <string name="freundschaftsanfragen">Freundschaftsanfragen</string>

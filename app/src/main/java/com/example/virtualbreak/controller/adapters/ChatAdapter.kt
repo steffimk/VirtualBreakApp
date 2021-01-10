@@ -136,6 +136,8 @@ class ChatAdapter(context: Context, messages: MutableList<Message>) :
         if (message.sender.equals(ownId)) {
             //viewMessage.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow_green))
             layout.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow_green))
+        } else if(message.sender.equals(Constants.DEFAULT_MESSAGE_SENDER)){
+            layout.setBackgroundColor(ContextCompat.getColor(context, R.color.blue_pale))
         }
     }
 

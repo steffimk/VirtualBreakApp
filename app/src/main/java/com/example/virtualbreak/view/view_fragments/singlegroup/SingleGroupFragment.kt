@@ -17,9 +17,11 @@ import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.nambimobile.widgets.efab.FabOption
+import kotlinx.android.synthetic.main.fragment_myprofile.*
 
 class SingleGroupFragment : Fragment() {
 
@@ -46,13 +48,21 @@ class SingleGroupFragment : Fragment() {
         groupId = args.groupId
         val gridView: GridView = root.findViewById(R.id.grid_view)
 
+        var userName: String? = null
+
+        singleGroupViewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
+            if (observedUser != null) {
+                userName = observedUser.username
+            }
+        })
+
         // Observe whether rooms changed
         singleGroupViewModel.getRooms().observe(viewLifecycleOwner,
             Observer<HashMap<String, Room>>{ roomsMap ->
                 Log.d(TAG, "Observed rooms: $roomsMap")
                 val customAdapter =
                     context?.let {
-                        SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, ArrayList(roomsMap.values))
+                        SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, ArrayList(roomsMap.values),userName)
                     }
                 gridView.adapter = customAdapter
         })

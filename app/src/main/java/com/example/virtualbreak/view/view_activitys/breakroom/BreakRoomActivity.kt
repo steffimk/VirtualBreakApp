@@ -36,18 +36,14 @@ class BreakRoomActivity : AppCompatActivity() {
 
         var userName : String? = null
 
-        /*
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
-            val roomId = bundle.getString("room_id")
-
-            Toast.makeText(this, roomId, Toast.LENGTH_LONG).show()
+            userName = bundle.getString(Constants.USER_NAME)
         }
-        */
+
 
         if (roomId != null) {
-            PushData.joinRoom(roomId)
-//            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
+            PushData.joinRoom(this, roomId, userName)
 
             var defaultMessages : MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
@@ -114,7 +110,7 @@ class BreakRoomActivity : AppCompatActivity() {
         // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
         leave_room_button.setOnClickListener {
             viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(room)
+            PushData.leaveRoom(this, room, userName)
             SharedPrefManager.instance.removeRoomId()
             Log.d(TAG, "Left room $roomId")
             finish()

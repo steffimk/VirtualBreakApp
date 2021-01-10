@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/addfriends_intro"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_marginTop="10dp"/>
 
     <androidx.cardview.widget.CardView
@@ -25,14 +25,14 @@
         >
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp">
 
             <EditText
                 android:id="@+id/friend_email"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
                 android:autofillHints="Email"
@@ -40,6 +40,7 @@
                 android:includeFontPadding="true"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:drawableRight="@drawable/ic_cancel_24"
                 android:layout_marginTop="10dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
@@ -48,12 +49,14 @@
                 android:singleLine="true"
                 android:imeOptions="actionSearch"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/searchFriend_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:backgroundTint="@color/mandarin"
                 android:text="@string/suche"
+                card_view:icon="@drawable/ic_search_24"
+                style="@style/Widget.MaterialComponents.Button.Icon"
                 android:textAllCaps="true"
                 android:textColor="@color/light_green"
                />
@@ -73,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_was_search_successful"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:visibility="invisible"/>
 
         <androidx.cardview.widget.CardView
@@ -82,33 +85,27 @@
             android:layout_width="match_parent"
             card_view:cardBackgroundColor="@color/lightgray"
             card_view:cardCornerRadius="5dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
 
             >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_toEndOf="@+id/foundfriend_img"
+                android:padding="8dp">
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/foundfriend_img"
-                        android:layout_marginStart="5dp"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="8dp"
                         android:src="@drawable/ic_person_24"
                         android:scaleType="centerCrop"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentStart="true"
                         card_view:riv_corner_radius="6dp"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_toEndOf="@+id/foundfriend_img"
-                        android:padding="16dp">
 
                         <TextView
                             android:id="@+id/foundfriend_username"
@@ -125,21 +122,19 @@
                             android:text="Text"
                             android:textAppearance="?attr/textAppearanceBody2"
                             android:textColor="?android:attr/textColorSecondary"/>
-                    </LinearLayout>
+
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_sendfriendrequest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/add"
+                        android:layout_width="match_parent"
+                        android:layout_height="58dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/freundschaftsanfrage_senden"
                         card_view:icon="@drawable/ic_person_add"
                         style="@style/Widget.MaterialComponents.Button.Icon"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
                         />
 
-                </RelativeLayout>
+            </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>

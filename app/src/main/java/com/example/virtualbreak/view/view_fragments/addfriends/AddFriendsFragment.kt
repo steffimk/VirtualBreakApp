@@ -1,16 +1,20 @@
 package com.example.virtualbreak.view.view_fragments.addfriends
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
 import com.example.virtualbreak.model.User
@@ -40,10 +44,18 @@ class AddFriendsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddFriendsBinding.inflate(inflater, container, false)
 
+        //cancel icon on right clears edittext email search
+        binding.friendEmail.onRightDrawableClicked {
+            it.text.clear()
+        }
+
         binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
             binding.tvWasSearchSuccessful.text = getString(R.string.searching_for_friend)
             binding.tvWasSearchSuccessful.visibility = View.VISIBLE
+            binding.friendEmail.text.clear() //clear text field after press search
+
+            hideSoftKeyboard(binding.friendEmail)
         }
 
         binding.btnSendfriendrequest.setOnClickListener {
@@ -58,7 +70,7 @@ class AddFriendsFragment : Fragment() {
 
         viewModel.getCurrentUser() // Get once to trigger "by lazy" instantiation
 
-        viewModel.getSearchedUser().observe(viewLifecycleOwner, Observer<User?>{ searchedUser ->
+        viewModel.getSearchedUser().observe(viewLifecycleOwner, Observer<User?> { searchedUser ->
             if (searchedUser != null) {
                 binding.tvWasSearchSuccessful.text = getString(R.string.search_friend_successful)
                 binding.foundfriendCardview.visibility = View.VISIBLE
@@ -66,11 +78,12 @@ class AddFriendsFragment : Fragment() {
                 binding.foundfriendEmail.text = searchedUser.email
 
                 loadProfilePicture(binding.foundfriendImg, searchedUser.uid)
-                // binding.foundfriendImg.setImageDrawable(searchedUser.profilePicture) TODO: Show profile picture
+
                 Log.d(TAG, "Found user " + searchedUser.username)
             }
             if (searchedUser == null) {
-                binding.tvWasSearchSuccessful.text = getString(R.string.search_friend_not_successful)
+                binding.tvWasSearchSuccessful.text =
+                    getString(R.string.search_friend_not_successful)
                 binding.foundfriendCardview.visibility = View.INVISIBLE
                 Log.d(TAG, "Found no user with that mail")
             }
@@ -89,12 +102,17 @@ class AddFriendsFragment : Fragment() {
         }
     }
 
+    fun hideSoftKeyboard(editText: EditText) {
+        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    private fun sendFriendRequestToUser(user : User?) {
+    private fun sendFriendRequestToUser(user: User?) {
         val currentUser = viewModel.getCurrentUser().value
         var snackbarText = ""
         var isValidFriendRequest = false
@@ -141,6 +159,24 @@ class AddFriendsFragment : Fragment() {
                 .setAction("Action", null).show()
         }
 
+    }
+
+    /**
+     * cancel icon on right clears edittext for email search
+     */
+    fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
+        this.setOnTouchListener { v, event ->
+            var hasConsumed = false
+            if (v is EditText) {
+                if (event.x >= v.width - v.totalPaddingRight) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        onClicked(this)
+                    }
+                    hasConsumed = true
+                }
+            }
+            hasConsumed
+        }
     }
 
 }

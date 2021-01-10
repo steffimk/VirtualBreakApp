@@ -30,30 +30,30 @@
             android:id="@+id/grid_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="auto_fit"
-            android:horizontalSpacing="15dp"
-            android:verticalSpacing="15dp"
             android:layout_margin="10dp"
+            android:horizontalSpacing="15dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
-<!--
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_singlegroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginBottom="8dp"
-        android:contentDescription="@string/neuer_pausenraum"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/plus" />
--->
+    <!--
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_singlegroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/neuer_pausenraum"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/plus" />
+    -->
 
     <com.nambimobile.widgets.efab.ExpandableFabLayout
         android:layout_width="match_parent"
@@ -72,23 +72,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginEnd="@dimen/efab_ui_margin_medium"
             android:layout_marginStart="@dimen/efab_ui_margin_medium"
+            android:layout_marginEnd="@dimen/efab_ui_margin_medium"
             android:layout_marginBottom="@dimen/efab_ui_margin_medium"
-            app:efab_icon="@drawable/ic_plus_white_24dp"
-            app:efab_color="@color/mandarin"/>
-           <!-- app:efab_iconAnimationRotationDeg="-180"
-            app:efab_openingAnimationDurationMs="500"
-            app:efab_closingAnticipateTension="0"-->
+            app:efab_color="@color/mandarin"
+            app:efab_icon="@drawable/ic_plus_white_24dp" />
+        <!-- app:efab_iconAnimationRotationDeg="-180"
+         app:efab_openingAnimationDurationMs="500"
+         app:efab_closingAnticipateTension="0"-->
 
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_singlegroup_option1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_color="@color/mandarin"
-            app:fab_icon="@drawable/addfriend"
             android:layout_gravity="center"
+            app:fab_color="@color/mandarin"
+            app:fab_icon="@drawable/ic_cup_white"
             app:label_text="Coffee" />
 
         <com.nambimobile.widgets.efab.FabOption
@@ -96,14 +96,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_color="@color/mandarin"
-            app:label_text="Sport" />
+            app:fab_icon="@drawable/ic_question_white"
+            app:label_text="Frage" />
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_singlegroup_option3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_color="@color/mandarin"
+            app:fab_icon="@drawable/ic_game_white"
             app:label_text="Game" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fab_singlegroup_option4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_color="@color/mandarin"
+            app:fab_icon="@drawable/ic_sport"
+            app:label_text="Sport" />
 
     </com.nambimobile.widgets.efab.ExpandableFabLayout>
 

@@ -16,12 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profileImg"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="44dp"
             android:scaleType="centerCrop"
+            app:riv_corner_radius="6dp"
             android:contentDescription="profile picture"
             android:src="@drawable/ic_person_24" />
 
@@ -32,6 +33,17 @@
             android:text="@string/username"
             android:layout_marginTop="10dp"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_email_hint"
+            android:enabled="true"
+            android:textIsSelectable="true"
+            android:focusable="true"
+            android:longClickable="true"
+            android:textSize="16sp" />
 
 
         <androidx.cardview.widget.CardView

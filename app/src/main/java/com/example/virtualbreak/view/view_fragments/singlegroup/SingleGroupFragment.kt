@@ -1,6 +1,8 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,14 +15,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.nambimobile.widgets.efab.FabOption
+import kotlinx.android.synthetic.main.fragment_singlegroup.*
 import kotlinx.android.synthetic.main.fragment_myprofile.*
 
 class SingleGroupFragment : Fragment() {
@@ -39,7 +45,6 @@ class SingleGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_singlegroup, container, false)
-
         val textView: TextView = root.findViewById(R.id.text_singlegroup)
         singleGroupViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
@@ -58,58 +63,55 @@ class SingleGroupFragment : Fragment() {
 
         // Observe whether rooms changed
         singleGroupViewModel.getRooms().observe(viewLifecycleOwner,
-            Observer<HashMap<String, Room>>{ roomsMap ->
+            Observer<HashMap<String, Room>> { roomsMap ->
                 Log.d(TAG, "Observed rooms: $roomsMap")
                 val customAdapter =
                     context?.let {
                         SingleGroupRoomsAdapter(it, R.layout.singlegroup_room_list_item, ArrayList(roomsMap.values),userName)
                     }
                 gridView.adapter = customAdapter
-        })
+            })
 
 
         val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
 
-        val fabOptionNormal: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
-
-        fabOptionNormal.setOnClickListener {
-            //TODO Send notificaitons, go to created Breakroom
-
-            //Save the Breakroom with intent coffee
-
-            if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.COFFEE, "Kaffe trinken")
-                Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-
-
+        val fabOptionCoffee: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
+        fabOptionCoffee.setOnClickListener {
+            openBreakroom(Roomtype.COFFEE, context)
         }
+
         val fabOptionQuestion: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
         fabOptionQuestion.setOnClickListener {
-            //TODO Send notificaitons, go to created Breakroom
+            openBreakroom(Roomtype.QUESTION, context)
 
-            //Save the BreakRoom with Intent Sport
-            if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.QUESTION, "Kaffee trinken")
-                Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
         }
+
         val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
         fabOptionGame.setOnClickListener {
-            //TODO Send notificaitons, go to created Breakroom
+            openBreakroom(Roomtype.GAME, context)
+        }
 
-            // save the Breakroom with intent Game
-           if (groupId != null && groupId != "") {
-                PushData.saveRoom(groupId, Roomtype.GAME, "Games")
-                Snackbar.make(root, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-
-            //TODO Make another Button for Sport?
+        val fabOptionSport: FabOption = root.findViewById(R.id.fab_singlegroup_option4)
+        fabOptionSport.setOnClickListener {
+            openBreakroom(Roomtype.SPORT, context)
         }
 
         return root
+    }
+
+
+    private fun openBreakroom(roomtype: Roomtype, thisContext: Context?) {
+
+        Log.d(TAG, "create $roomtype Breakroom")
+
+        var roomId: String? = null
+        if (groupId != "") {
+            roomId = PushData.saveRoom(groupId, roomtype, roomtype.dbStr)
+            SharedPrefManager.instance.saveRoomId(roomId!!)
+        }
+        val intent = Intent(activity, BreakRoomActivity::class.java)
+        activity?.startActivity(intent)
+        //TODO send notification to friends
+
     }
 }

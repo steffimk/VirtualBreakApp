@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendRequestsAdapter
+import com.example.virtualbreak.controller.adapters.FriendRequestsOutgoingAdapter
 import com.example.virtualbreak.model.User
-import kotlinx.android.synthetic.main.friend_requests_fragment.*
+import kotlinx.android.synthetic.main.fragment_friend_requests.*
 
 class FriendRequestsFragment() : Fragment() {
 
@@ -31,7 +34,7 @@ class FriendRequestsFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.friend_requests_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_friend_requests, container, false)
 
     }
 
@@ -39,6 +42,7 @@ class FriendRequestsFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         friendrequests_recyler_list_view.layoutManager = LinearLayoutManager(context)
+        outgoing_friendrequests_recyler_list_view.layoutManager = LinearLayoutManager(context)
 
         /*friendrequestsTest.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
         friendrequestsTest.add(User("b", "Freund2", "email2", Status.AVAILABLE, null, null, null, null))
@@ -47,10 +51,34 @@ class FriendRequestsFragment() : Fragment() {
 
         viewModel.getIncomingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ incomingFriendRequests ->
             Log.d(TAG, "Observed the following incomingFriendRequests: $incomingFriendRequests")
+
+            if(incomingFriendRequests.size == 0){
+                text_no_incoming_friendrequests.visibility = View.VISIBLE
+            } else{
+                text_no_incoming_friendrequests.visibility = View.GONE
+            }
             //pass list of users who sent you a friend request
             friendrequests_recyler_list_view.adapter =
                 FriendRequestsAdapter(ArrayList(incomingFriendRequests.values))
         })
+
+        viewModel.getOutgoingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ outgoingFriendRequests ->
+            Log.d(TAG, "Observed the following incomingFriendRequests: $outgoingFriendRequests")
+
+            if(outgoingFriendRequests.size == 0){
+                text_no_outgoing_friendrequests.visibility = View.VISIBLE
+            } else{
+                text_no_outgoing_friendrequests.visibility = View.GONE
+            }
+            //pass list of users who sent you a friend request
+            outgoing_friendrequests_recyler_list_view.adapter =
+                FriendRequestsOutgoingAdapter(ArrayList(outgoingFriendRequests.values))
+        })
+
+
+        friendrequests_search_friends_btn.setOnClickListener{
+            view.findNavController().navigate(R.id.action_friendrequests_to_addfriends)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

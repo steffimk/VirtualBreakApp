@@ -68,7 +68,7 @@ class FriendRequestsViewModel : ViewModel() {
         return incomingFriendRequests
     }
 
-    fun getOutGoingFriendRequests(): LiveData<HashMap<String,User>> {
+    fun getOutgoingFriendRequests(): LiveData<HashMap<String,User>> {
         return outgoingFriendRequests
     }
 

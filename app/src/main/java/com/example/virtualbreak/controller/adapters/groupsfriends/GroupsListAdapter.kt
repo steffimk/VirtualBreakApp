@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -26,10 +27,12 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
+        val groupImg: ImageView
         private val TAG: String = "GroupsListAdapter_ViewHolder"
 
         init{
             textView = itemView.findViewById(R.id.group_list_name)
+            groupImg = itemView.findViewById(R.id.group_list_img)
         }
     }
 
@@ -42,6 +45,9 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // Get pulled groups, transform HashMap in ArrayList, get group description
         holder.textView.text = groups[position].description
+
+        //TODO choose image for group
+        //holder.groupImg = ...
 
         view.setOnClickListener{
             val groupId = groups[position].uid

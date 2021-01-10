@@ -73,6 +73,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             if (observedUser != null) {
                 //set username text of current user
                 root.findViewById<TextView>(R.id.username).text = observedUser.username
+                profile_email.text = observedUser.email
                 // Set position of spinner to current status
                 val aa = spinner.adapter as ArrayAdapter<String>
                 spinner.setSelection(aa.getPosition(observedUser.status?.dbStr))
@@ -103,6 +104,9 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    /**
+     * asynchronous loading of profile picture from FB storage to view using Picasso
+     */
     private fun initProfilePicture() {
         Log.d(TAG, "initProfilePicture")
 
@@ -209,6 +213,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             .show()
     }
 
+    //TODO move this method to PushData
     fun uploadProfilePicture(fullPhotoUri: Uri?, context: Context?) {
         Log.d(TAG, "uploadProfilePicture")
         fullPhotoUri?.let{

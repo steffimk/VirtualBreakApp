@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    tools:context=".view.view_fragments.friendrequests.FriendRequestsFragment">
+
+
+    <TextView
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:text="@string/bekommen" />
+
+    <TextView
+        android:id="@+id/text_no_incoming_friendrequests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:text="@string/keine_offenen_freundschaftsanfragen"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendrequests_recyler_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
+
+    <TextView
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:text="@string/abgeschickt" />
+
+    <TextView
+        android:id="@+id/text_no_outgoing_friendrequests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="5dp"
+        android:text="@string/keine_abgeschickten_freundschaftsanfragen"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/outgoing_friendrequests_recyler_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/friendrequests_search_friends_btn"
+        android:backgroundTint="@color/mandarin"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_margin="8dp"
+        app:icon="@drawable/ic_search_24"
+        android:text="@string/suche_freunde"/>
+
+
+</LinearLayout>

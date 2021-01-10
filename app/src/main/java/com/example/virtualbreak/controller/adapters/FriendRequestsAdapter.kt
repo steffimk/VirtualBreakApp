@@ -23,6 +23,7 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
 
     class ViewHolderFriendRequests(itemView: View) : RecyclerView.ViewHolder(itemView){
         val acceptRequestBtn: Button
+        val deleteRequestBtn: Button
         val username_textView: TextView
         val email_textView: TextView
         val profile_imageView: ImageView
@@ -30,6 +31,7 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
 
         init{
             acceptRequestBtn = itemView.findViewById(R.id.friendrequest_accept)
+            deleteRequestBtn = itemView.findViewById(R.id.friendrequest_delete)
             username_textView = itemView.findViewById(R.id.friendrequest_username)
             email_textView = itemView.findViewById(R.id.friendrequest_email)
             profile_imageView = itemView.findViewById(R.id.friendrequest_img)
@@ -61,7 +63,13 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         holder.acceptRequestBtn.setOnClickListener{
 
             PushData.confirmFriendRequest(friendRequests[position].uid)
-            Snackbar.make(view, "Add friend "+friendRequests[position].username+" uid: "+friendRequests[position].uid, Snackbar.LENGTH_LONG)
+            Snackbar.make(view, ""+friendRequests[position].username+" wurde zu deiner Freundeliste hinzugefügt!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
+        holder.deleteRequestBtn.setOnClickListener {
+            PushData.removeFriendRequest(friendRequests[position].uid)
+            Snackbar.make(view, "Du hast die Freundschaftsanfrage von ${friendRequests[position].username} gelöscht", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
     }

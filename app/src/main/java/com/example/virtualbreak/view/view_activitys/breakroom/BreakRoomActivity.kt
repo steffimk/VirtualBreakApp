@@ -122,10 +122,15 @@ class BreakRoomActivity : AppCompatActivity() {
         send_message_button.setOnClickListener {
             val input = chat_message_input.text
             val message = input.toString()
-            if (!input.equals("")) {
+            if (!message.isEmpty()) {
                 if (roomId != null) {
                     PushData.sendMessage(roomId, message)
                 }
+            } else{
+                Toast.makeText(
+                    this, R.string.toast_enter_message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             input.clear()
         }

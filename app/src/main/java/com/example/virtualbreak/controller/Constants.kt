@@ -12,8 +12,13 @@ class Constants {
         const val DATABASE_CHILD_DESCRIPTION = "description"
         const val DATABASE_CHILD_MESSAGES = "messages"
         const val DATABASE_CHILD_STATUS = "status"
+        const val DATABASE_CHILD_FCM_TOKEN: String = "fcmToken"
         const val DATABASE_CHILD_PROFILE_PICTURE = "profilePicture"
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DEFAULT_TIME:Long = 0
+
+        const val BASE_URL = "https://fcm.googleapis.com"
+        const val SERVER_KEY = "AAAAq1RP918:APA91bG34UvpK6BFYE1DGNlaHxOFVnuOFTj37u-mob6AbJsTPyVILdksD9XUzt6TSwmY-WyWLEuBe-NCjwIweJWqdqlfriUlOFfNA-dZiz8PLgun4Rj3AUnxwJuB4D7t_na-FVSxhOIl"
+        const val CONTENT_TYPE = "application/json"
     }
 }

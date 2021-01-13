@@ -13,10 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.adapters.groupsfriends.SearchFriendListAdapter
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.NotificationData
+import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -66,7 +70,7 @@ class AddGroupFragment : Fragment() {
                 adapter = SearchFriendListAdapter(ArrayList(friendsMap.values), context)
                 select_friends_recylerlist.adapter = adapter
 
-                //Set the clicklistner to select friends and recive selected friends ids
+                //Set the clicklistener to select friends and recive selected friends ids
                 adapter.setOnItemClickListener(object : SearchFriendListAdapter.OnItemClickListener{
                     override fun onItemClick(friend: User) {
                         if (friend.isSelected && !selectFriendsIds.contains(friend.uid)){
@@ -81,18 +85,6 @@ class AddGroupFragment : Fragment() {
             }
         })
 
-        //get current friends from PullData and pass to recycler view adapter for friends list
-        /*PullData.friends.value?.values.let{
-            friends = ArrayList(PullData.friends.value?.values)
-            adapter = SearchFriendListAdapter(friends, context)
-        }
-        select_friends_recylerlist.adapter = adapter
-
-        //adapt friend list at changes
-        PullData.friends.observe(viewLifecycleOwner, {
-            select_friends_recylerlist.adapter = FriendListAdapter(ArrayList(PullData.friends.value?.values), context) // TODO: Maybe reuse old adapter
-        })*/
-
         val groupName : EditText = view.findViewById(R.id.et_group_name)
 
         val createGroupButton: FloatingActionButton = view.findViewById(R.id.make_group_button)
@@ -102,7 +94,7 @@ class AddGroupFragment : Fragment() {
             if (groupName.text.toString() != ""){
                 if(selectFriendsIds.isNotEmpty()){
                     //TODO PushData.saveGroup(groupName.text.toString(), selectedFriendsIds), convert mutable list to array?
-                    PushData.saveGroup(groupName.text.toString(), selectFriendsIds.toTypedArray())
+                    this.createNewGroup(groupName.text.toString(), selectFriendsIds.toTypedArray())
                     view.findNavController().navigate(R.id.action_addGroupFragment_to_navHome)
                 }else{
                     Toast.makeText(activity, getString(R.string.Error_no_friends), Toast.LENGTH_SHORT).show()
@@ -114,5 +106,22 @@ class AddGroupFragment : Fragment() {
 
     }
 
-
+    private fun createNewGroup(groupName: String, friendIds: Array<String>) {
+        PushData.saveGroup(groupName, friendIds)
+        friendIds.forEach { id ->
+            val title = "Neue Gruppe"
+            val message = "Du wurdest zu der Gruppe \"$groupName\" hinzugefügt"
+            val recipientToken = groupsFriendsViewModel.getFriends().value?.get(id)?.fcmToken
+            Log.d(TAG, "FCMToken: $recipientToken")
+            if(recipientToken != null) {
+                PushNotification(
+                    NotificationData(title, message),
+                    recipientToken
+                ).also {
+                    Log.d(TAG, "Sending notification: $it")
+                    FCMService.sendNotification(it)
+                }
+            }
+        }
+    }
 }

@@ -17,8 +17,11 @@ import androidx.navigation.fragment.navArgs
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.NotificationData
+import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
@@ -101,11 +104,24 @@ class SingleGroupFragment : Fragment() {
         var roomId: String? = null
         if (groupId != "") {
             roomId = PushData.saveRoom(groupId, roomtype, roomtype.dbStr)
+            sendNotifications(groupId, roomtype.dbStr)
             SharedPrefManager.instance.saveRoomId(roomId!!)
         }
         val intent = Intent(activity, BreakRoomActivity::class.java)
         activity?.startActivity(intent)
-        //TODO send notification to friends
 
+    }
+
+    private fun sendNotifications(groupId: String, roomType: String) {
+        val title = "Neuer Pausenraum"
+        val message = "Es wurde ein neuer $roomType Pausenraum erstellt"
+        Log.d(TAG, "Send notificaitons to group : $groupId")
+        PushNotification(
+            NotificationData(title, message),
+            groupId
+        ).also {
+            Log.d(TAG, "Sending notification: $it")
+            FCMService.sendNotification(it)
+        }
     }
 }

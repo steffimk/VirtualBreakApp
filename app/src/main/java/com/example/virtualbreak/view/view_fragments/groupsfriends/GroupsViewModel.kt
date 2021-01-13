@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.User
@@ -134,6 +135,7 @@ class GroupsViewModel : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val group = dataSnapshot.getValue(Group::class.java)
                 if (group != null) {
+                    FCMService.subscribeToTopic(groupId)
                     groups.value?.put(groupId, group)
                     groups.value = groups.value // Set value so that observers are notified of change
                 }

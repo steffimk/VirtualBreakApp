@@ -50,10 +50,11 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
         //holder.groupImg = ...
 
         view.setOnClickListener{
-            val groupId = groups[position].uid
+            val group = groups[position]
+            val groupId = group.uid
             //SharedPrefManager.instance.saveGroupId(groupId)
             Log.d(TAG, "clicked on group "+groupId)
-            val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
+            val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(group)
             view.findNavController().navigate(action)
         }
 

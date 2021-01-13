@@ -38,8 +38,8 @@
         android:label="Deine Gruppe"
         tools:layout="@layout/fragment_singlegroup" >
         <argument
-            android:name="groupId"
-            app:argType="string" />
+            android:name="group"
+            app:argType="com.example.virtualbreak.model.Group" />
     </fragment>
 
     <fragment

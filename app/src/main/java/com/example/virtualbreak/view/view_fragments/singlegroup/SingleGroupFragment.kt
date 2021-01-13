@@ -34,11 +34,11 @@ class SingleGroupFragment : Fragment() {
 
     private val TAG: String = "SingleGroupFragment"
 
-    //Navigation argument to pass selected group id from GroupsFriendsFragment (GroupsListAdapter) to SingleGroupFragment
+    //Navigation argument to pass selected group from GroupsFriendsFragment (GroupsListAdapter) to SingleGroupFragment
     val args: SingleGroupFragmentArgs by navArgs()
     private lateinit var groupId: String
 
-    private val singleGroupViewModel: SingleGroupViewModel by viewModels { SingleGroupViewModelFactory(args.groupId) }
+    private val singleGroupViewModel: SingleGroupViewModel by viewModels { SingleGroupViewModelFactory(args.group.uid) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +51,7 @@ class SingleGroupFragment : Fragment() {
             textView.text = it
         })
 
-        groupId = args.groupId
+        groupId = args.group.uid
         val gridView: GridView = root.findViewById(R.id.grid_view)
 
         // Observe whether rooms changed
@@ -113,12 +113,13 @@ class SingleGroupFragment : Fragment() {
     }
 
     private fun sendNotifications(groupId: String, roomType: String) {
-        val title = "Neuer Pausenraum"
-        val message = "Es wurde ein neuer $roomType Pausenraum erstellt"
+        val userName = SharedPrefManager.instance.getUserName()
+        val title = "Neuer Pausenraum in ${this.args.group.description}"
+        val message = "$userName hat einen neuen $roomType Pausenraum erstellt"
         Log.d(TAG, "Send notificaitons to group : $groupId")
         PushNotification(
             NotificationData(title, message),
-            groupId
+            groupId // TODO: Topics funktionieren noch nicht
         ).also {
             Log.d(TAG, "Sending notification: $it")
             FCMService.sendNotification(it)

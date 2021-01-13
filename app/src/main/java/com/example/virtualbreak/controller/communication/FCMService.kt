@@ -100,7 +100,7 @@ class FCMService : FirebaseMessagingService() {
                 if (!task.isSuccessful) {
                     Log.d(TAG, "Could not subscribe to topic $topic")
                 } else {
-                    Log.d(TAG, "Succesfully subscribed to topic $topic")
+                    Log.d(TAG, "Successfully subscribed to topic $topic")
                 }
             }
         }

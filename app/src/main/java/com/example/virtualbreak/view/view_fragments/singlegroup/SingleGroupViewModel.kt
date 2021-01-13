@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.Room
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

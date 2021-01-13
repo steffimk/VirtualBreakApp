@@ -46,8 +46,10 @@ class MyProfileViewModel : ViewModel() {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             val pulledUser = dataSnapshot.getValue<User>()
             Log.d(TAG, "Pulled User $pulledUser")
-
-            user.value = pulledUser
+            if (pulledUser != null) {
+                SharedPrefManager.instance.saveUserName(pulledUser.username)
+                user.value = pulledUser
+            }
         }
 
         override fun onCancelled(databaseError: DatabaseError) {

@@ -1,6 +1,8 @@
 package com.example.virtualbreak.controller.communication
 
+import android.content.Context
 import android.util.Log
+import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
@@ -99,17 +101,22 @@ class PushData {
             }
         }
 
-        fun joinRoom(roomId: String) {
+        fun joinRoom(context:Context, roomId: String, userName : String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).setValue(currentUserId)
+                if(userName != null){
+                    sendSystemMessage(roomId,userName + " " + context.getString(R.string.joined))
+                } else{
+                    sendSystemMessage(roomId,currentUserId + " " +context.getString(R.string.joined))
+                }
                 Log.d(TAG, "User joined room")
             } else {
                 Log.d(TAG, "No user logged in. Cannot join room.")
             }
         }
 
-        fun leaveRoom(room: Room?) {
+        fun leaveRoom(context: Context, room: Room?, userName: String?) {
             if (room == null) return
 
             val currentUserId = Firebase.auth.currentUser?.uid
@@ -121,6 +128,12 @@ class PushData {
                 } else {
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                         .removeValue()
+                    if(userName != null){
+                        sendSystemMessage(room.uid,userName + " " + context.getString(R.string.left))
+                    } else{
+                        sendSystemMessage(room.uid,currentUserId + " " + context.getString(R.string.left))
+                    }
+
                     Log.d(TAG, "Removed user from room")
                 }
             } else {
@@ -141,6 +154,12 @@ class PushData {
             } else {
                 Log.d(TAG, "No user logged in. Cannot send message.")
             }
+        }
+
+        fun sendSystemMessage(roomId: String, message: String){
+            val date = Date()
+            val newChatMessage = Message(Constants.DEFAULT_MESSAGE_SENDER, message, date.time)
+            database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
         }
 
         fun setStatus(status: Status) {

@@ -9,17 +9,19 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 
 
-class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayList<Room>) :
+class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayList<Room>, userName:String?) :
     ArrayAdapter<Room>(context, resource, objects) {
 
     var items_list: ArrayList<Room> = ArrayList<Room>()
     var custom_layout_id: Int
     val TAG: String = "SingleGroupRoomsAdapter"
+    val userName = userName
 
     override fun getCount(): Int {
         return items_list.size
@@ -59,6 +61,7 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayLis
                 val roomId = "abc"
                 intent.putExtra("room_id", roomId)
                 */
+                intent.putExtra(Constants.USER_NAME, userName)
                 context.startActivity(intent)
             }
 

@@ -63,24 +63,23 @@ class BreakRoomActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_leave)
 
 
-        /*
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
-            val roomId = bundle.getString("room_id")
-
-            Toast.makeText(this, roomId, Toast.LENGTH_LONG).show()
+            userName = bundle.getString(Constants.USER_NAME)
         }
-        */
+
 
         if (roomId != null) {
-            PushData.joinRoom(roomId)
-//            Toast.makeText(this, "not Null", Toast.LENGTH_LONG).show()
+            PushData.joinRoom(this, roomId, userName)
 
             var defaultMessages: MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
-            chat_messages_recycler_view.layoutManager = LinearLayoutManager(this)
+            var layoutManager = LinearLayoutManager(this)
+            layoutManager.setStackFromEnd(true)
+            chat_messages_recycler_view.layoutManager = layoutManager
+
             chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
 
             viewModel.getUser().observe(this, Observer<User> { observedUser ->
@@ -123,10 +122,15 @@ class BreakRoomActivity : AppCompatActivity() {
         send_message_button.setOnClickListener {
             val input = chat_message_input.text
             val message = input.toString()
-            if (!input.equals("")) {
+            if (!message.isEmpty()) {
                 if (roomId != null) {
                     PushData.sendMessage(roomId, message)
                 }
+            } else{
+                Toast.makeText(
+                    this, R.string.toast_enter_message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             input.clear()
         }
@@ -144,7 +148,7 @@ class BreakRoomActivity : AppCompatActivity() {
         android.R.id.home -> {
             // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
             viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(room)
+            PushData.leaveRoom(this, room, userName)
             SharedPrefManager.instance.removeRoomId()
             Log.d(TAG, "Left room $roomId")
             finish()

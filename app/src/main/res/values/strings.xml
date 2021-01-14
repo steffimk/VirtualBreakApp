@@ -81,6 +81,11 @@
     <string name="send_message">Senden</string>
     <string name="leave_room">Austreten</string>
     <string name="message">Nachricht</string>
+    <string name="joined"> ist beigetreten</string>
+    <string name="left"> hat den Raum verlassen</string>
+    <string name="toast_enter_message">Bitte gib eine Nachricht ein</string>
+
+
     <string name="annehmen">Annehmen</string>
     <string name="bekommen">Bekommen:</string>
     <string name="freundschaftsanfragen">Freundschaftsanfragen</string>

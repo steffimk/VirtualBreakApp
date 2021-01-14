@@ -13,6 +13,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.NotificationBody
 import com.example.virtualbreak.model.NotificationData
 import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
@@ -70,8 +71,11 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
             val ownUserName = SharedPrefManager.instance.getUserName()
             PushData.confirmFriendRequest(friendToBeAdded.uid)
             // Send notification to user
+            val title = "Freundschaft geschlossen"
+            val message = "${ownUserName} hat deine Freundschaftsanfrage angenommen."
             PushNotification(
-                NotificationData("Freundschaft geschlossen", "${ownUserName} hat deine Freundschaftsanfrage angenommen."),
+                NotificationData(title, message),
+                NotificationBody(title, message),
                 friendToBeAdded.fcmToken
             ).also {
                 Log.d(TAG, "Sending notification: $it")

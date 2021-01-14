@@ -18,6 +18,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
+import com.example.virtualbreak.model.NotificationBody
 import com.example.virtualbreak.model.NotificationData
 import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
@@ -156,8 +157,11 @@ class AddFriendsFragment : Fragment() {
         if (isValidFriendRequest) {
             PushData.sendFriendRequest(user!!.uid)
             // Send notification to user
+            val title = "Neue Freundschaftsanfrage"
+            val message = "${currentUser!!.username} möchte dich als Freund hinzufügen."
             PushNotification(
-                NotificationData("Neue Freundschaftsanfrage", "${currentUser!!.username} möchte dich als Freund hinzufügen."),
+                NotificationData(title, message),
+                NotificationBody(title, message),
                 user.fcmToken
             ).also {
                 Log.d(TAG, "Sending notification: $it")

@@ -19,10 +19,7 @@ import com.example.virtualbreak.controller.adapters.groupsfriends.SearchFriendLi
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.model.NotificationData
-import com.example.virtualbreak.model.PushNotification
-import com.example.virtualbreak.model.Status
-import com.example.virtualbreak.model.User
+import com.example.virtualbreak.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_group.*
 import kotlinx.android.synthetic.main.fragment_add_group.select_friends_recylerlist
@@ -116,6 +113,7 @@ class AddGroupFragment : Fragment() {
             if(recipientToken != null) {
                 PushNotification(
                     NotificationData(title, message),
+                    NotificationBody(title, message),
                     recipientToken
                 ).also {
                     Log.d(TAG, "Sending notification: $it")

@@ -20,10 +20,7 @@ import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.model.NotificationData
-import com.example.virtualbreak.model.PushNotification
-import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.model.*
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -115,11 +112,12 @@ class SingleGroupFragment : Fragment() {
     private fun sendNotifications(groupId: String, roomType: String) {
         val userName = SharedPrefManager.instance.getUserName()
         val title = "Neuer Pausenraum in ${this.args.group.description}"
-        val message = "$userName hat einen neuen $roomType Pausenraum erstellt"
-        Log.d(TAG, "Send notificaitons to group : $groupId")
+        val message = "$userName hat eine neue $roomType Pause erstellt"
+        Log.d(TAG, "Send notifications to group : $groupId")
         PushNotification(
             NotificationData(title, message),
-            groupId // TODO: Topics funktionieren noch nicht
+            NotificationBody(title,message),
+            groupId
         ).also {
             Log.d(TAG, "Sending notification: $it")
             FCMService.sendNotification(it)

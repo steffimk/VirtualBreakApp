@@ -32,7 +32,7 @@ class FCMService : FirebaseMessagingService() {
 
     override fun onMessageReceived(msg: RemoteMessage) {
         super.onMessageReceived(msg)
-        Log.d(TAG, "Received message with data " + msg)
+        Log.d(TAG, "Received message with data " + msg.data + "" + msg.notification)
         val intent = Intent(this, NavigationDrawerActivity::class.java)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         Log.d(TAG, "notification manager: " + notificationManager)

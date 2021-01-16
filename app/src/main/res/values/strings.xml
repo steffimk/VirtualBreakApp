@@ -112,5 +112,9 @@
     <!--Single Group -->
     <string name="leave_group">Gruppe verlassen</string>
     <string name="delete_group">Gruppename ändern</string>
+    <string name="breakroom_alert_text">Wenn du jetzt gehst wird der Pausenraum permanent gelöscht. Willst du das wirklich?</string>
+    <string name="breakroom_alert_achtung">Achtung!</string>
+    <string name="verlassen">Gehen</string>
+    <string name="bleiben">Bleiben</string>
 
 </resources>

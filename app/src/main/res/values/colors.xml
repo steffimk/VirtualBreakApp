@@ -23,16 +23,16 @@
 
     <color name="very_dark_brown">#2e1e15</color>
     <color name="black">#FF000000</color>
-    <color name="dark_grey">#545454</color>
+    <color name="dark_gray">#545454</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lightgray">#F4F4F4</color>
-    <color name ="light_blue">#F0F9FD</color>
+    <color name="light_gray">#F4F4F4</color>
+    <color name="light_gray2">#e8e8e8</color>
+    <color name="light_blue">#F0F9FD</color>
 
     <color name="dark_brown">#634532</color>
     <color name="cafe">#B4816A</color>
-    <color name = "ocker">#F9BD25</color>
+    <color name="ocker">#F9BD25</color>
     <color name="pale_yellow">#fbe8a6</color>
-
 
 
 </resources>

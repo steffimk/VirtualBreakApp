@@ -1,5 +1,7 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +9,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +29,9 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
@@ -42,6 +50,8 @@ class BreakRoomActivity : AppCompatActivity() {
     lateinit var editText: EditText
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
+
+    private var activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,11 +153,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
         android.R.id.home -> {
             // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
-            viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(this, room, userName)
-            SharedPrefManager.instance.removeRoomId()
-            Log.d(TAG, "Left room $roomId")
-            finish()
+            leaveRoom()
             true
         }
 
@@ -194,6 +200,40 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //Do nothing, can only leave breakroom via button
+        leaveRoom()
+    }
+
+    private fun leaveRoom() {
+        if (room?.users?.size == 1) {
+            showDialog()
+        } else {
+            viewModel.getRoom().removeObservers(this)
+            PushData.leaveRoom(this, room, userName)
+            SharedPrefManager.instance.removeRoomId()
+            Log.d(TAG, "Left room $roomId")
+            finish()
+        }
+    }
+
+    private fun showDialog() {
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.breakroom_alert_dialog)
+//        val body = dialog.findViewById(R.id.b) as TextView
+//        body.text = title
+        val yesBtn = dialog.findViewById(R.id.room_alert_confirm_button) as Button
+        val noBtn = dialog.findViewById(R.id.room_alert_dismiss_button) as Button
+        yesBtn.setOnClickListener {
+            dialog.dismiss()
+            viewModel.getRoom().removeObservers(this)
+            PushData.leaveRoom(this, room, userName)
+            SharedPrefManager.instance.removeRoomId()
+            Log.d(TAG, "Left room $roomId")
+            finish()
+        }
+        noBtn.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+
     }
 }

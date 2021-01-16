@@ -29,6 +29,7 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -159,7 +160,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
         R.id.action_edit -> {
             //User wants to edit the room name
-            supportActionBar?.title = null
+            //supportActionBar?.title = null // uncommented because otherwise old title not shown, if new text was empty
             editText.visibility = View.VISIBLE
             //Show the keyboard
             val imm: InputMethodManager =
@@ -173,15 +174,22 @@ class BreakRoomActivity : AppCompatActivity() {
         }
         R.id.action_enter -> {
             val newTitle = editText.text.toString()
-            mtoolbar.title = newTitle
             editText.visibility = View.GONE
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = false
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = true
 
             //save the new title in firebase
             if (roomId != null) {
-                PushData.setRoomDescription(roomId, newTitle)
+                if("".equals(newTitle)){
+                    Snackbar.make(editText, "Du hast keinen neuen Namen eingegeben!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                } else{
+                    PushData.setRoomDescription(roomId, newTitle)
+                    mtoolbar.title = newTitle
+                }
             }
+
+            hideSoftKeyboard(editText)
             true
         }
         R.id.action_videocall -> {
@@ -235,5 +243,14 @@ class BreakRoomActivity : AppCompatActivity() {
         noBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
+    }
+
+    /**
+     * closes soft keyboard
+     * editText: View
+     */
+    private fun hideSoftKeyboard(editText: EditText) {
+        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 }

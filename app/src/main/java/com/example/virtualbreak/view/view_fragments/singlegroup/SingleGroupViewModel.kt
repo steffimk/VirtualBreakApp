@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
@@ -111,6 +112,27 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             Log.d(TAG, databaseError.message)
         }
 
+    }
+
+    var currentGroup: Group? = null
+
+    fun pullGroupWithId(groupId: String) {
+        val valueEventListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var group = dataSnapshot.getValue(Group::class.java)!!
+                if (group != null) {
+                    currentGroup = group
+                }
+                Log.d(TAG, "Pulled Current Group")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .addListenerForSingleValueEvent(valueEventListener)
     }
 
 }

@@ -42,19 +42,19 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayLis
         // setting data
         if (v != null) {
             val imageView = v.findViewById<ImageView>(R.id.room_imageview)
-            val textView = v.findViewById<TextView>(R.id.room_text)
+            val roomName = v.findViewById<TextView>(R.id.room_text)
+            val participantCount = v.findViewById<TextView>(R.id.room_participants_count)
 
             // get the item using the  position param
             val item: Room = items_list[position]
             imageView.setImageResource(item.type.symbol)
-            textView.setText(item.type.dbStr)
+            roomName.text = item.description
+            participantCount.text = item.users.size.toString()
 
             v.setOnClickListener {
                 var context = imageView.context
 
                 SharedPrefManager.instance.saveRoomId(item.uid)
-
-                //Snackbar.make(v, "Go To breakroom", Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
                 val intent = Intent(context, BreakRoomActivity::class.java)
                 /*

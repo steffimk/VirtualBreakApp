@@ -13,17 +13,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="8dp"
             android:orientation="horizontal"
             android:padding="5dp">
 
-                <ImageView
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/group_list_img"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_group_24"/>
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/group_list_img"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_group_24" />
 
-                <TextView
+            <TextView
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/group_list_name"

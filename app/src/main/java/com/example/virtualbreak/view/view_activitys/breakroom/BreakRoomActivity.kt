@@ -1,8 +1,7 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -26,9 +24,7 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_break_room.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -139,7 +135,7 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_menu, menu)
+        menuInflater.inflate(R.menu.breakroom_menu, menu)
         return true
     }
 
@@ -159,6 +155,12 @@ class BreakRoomActivity : AppCompatActivity() {
             //User wants to edit the room name
             supportActionBar?.title = null
             editText.visibility = View.VISIBLE
+            //Show the keyboard
+            val imm: InputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            editText.requestFocus()
+
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = true
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = false
             true
@@ -169,6 +171,7 @@ class BreakRoomActivity : AppCompatActivity() {
             editText.visibility = View.GONE
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = false
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = true
+
             //save the new title in firebase
             if (roomId != null) {
                 PushData.setRoomDescription(roomId, newTitle)

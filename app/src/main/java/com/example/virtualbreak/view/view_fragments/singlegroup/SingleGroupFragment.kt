@@ -4,14 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.GridView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -21,9 +22,13 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_activitys.NavigationDrawerActivity
+import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nambimobile.widgets.efab.FabOption
+import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
+import kotlinx.android.synthetic.main.fragment_singlegroup.*
 
 class SingleGroupFragment : Fragment() {
 
@@ -46,7 +51,10 @@ class SingleGroupFragment : Fragment() {
             textView.text = it
         })
 
+        setHasOptionsMenu(true);
+
         groupId = args.groupId
+        singleGroupViewModel.pullGroupWithId(groupId)
         val gridView: GridView = root.findViewById(R.id.grid_view)
 
         var userName: String? = null
@@ -116,4 +124,24 @@ class SingleGroupFragment : Fragment() {
         //TODO send notification to friends
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.singlegroup_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+
+        R.id.action_leave_group -> {
+            singleGroupViewModel.currentGroup?.let { PushData.leaveGroup(it) }
+            view?.findNavController()?.navigate(R.id.action_singleGroupFragment_to_home)
+            true
+        }
+        //TODO edit group name? maybe in extra fragment
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
 }

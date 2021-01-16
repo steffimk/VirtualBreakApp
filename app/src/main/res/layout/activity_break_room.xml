@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/rename_room"
             android:singleLine="true"
+            android:maxLength="10"
             android:textColor="@color/white"
             android:backgroundTint="@color/mandarin"
             android:textColorHint="@color/lightgray"

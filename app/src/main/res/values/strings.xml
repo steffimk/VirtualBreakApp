@@ -116,5 +116,6 @@
     <string name="breakroom_alert_achtung">Achtung!</string>
     <string name="verlassen">Gehen</string>
     <string name="bleiben">Bleiben</string>
+    <string name="nachricht">Nachricht</string>
 
 </resources>

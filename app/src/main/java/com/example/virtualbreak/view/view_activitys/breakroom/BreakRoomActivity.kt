@@ -52,6 +52,8 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
+    private var chatAdapter: ChatAdapter? = null
+
     private var activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,17 +79,24 @@ class BreakRoomActivity : AppCompatActivity() {
 
 
         if (roomId != null) {
+
+            viewModel.loadUsersOfRoom()
+
             PushData.joinRoom(this, roomId, userName)
 
             var defaultMessages: MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
-            var layoutManager = LinearLayoutManager(this)
+            val layoutManager = LinearLayoutManager(this)
             layoutManager.setStackFromEnd(true)
             chat_messages_recycler_view.layoutManager = layoutManager
 
-            chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
+            chatAdapter = ChatAdapter(this, defaultMessages, SharedPrefManager.instance.getRoomUsersHashmap())
+            chat_messages_recycler_view.adapter = chatAdapter
+            chatAdapter?.let{
+                chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+            }
 
             viewModel.getUser().observe(this, Observer<User> { observedUser ->
                 if (observedUser != null) {
@@ -100,7 +109,7 @@ class BreakRoomActivity : AppCompatActivity() {
             viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
 
                 room = observedRoom
-                viewModel.loadUsersOfRoom(this)
+                //viewModel.loadUsersOfRoom()
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
@@ -113,8 +122,17 @@ class BreakRoomActivity : AppCompatActivity() {
                     val messages = observedRoom.messages
                     var messagesList = ArrayList(messages.values)
                     messagesList.sortBy { it.timestamp }
-                    Log.i(TAG, "messagesList: $messages")
-                    chat_messages_recycler_view.adapter = ChatAdapter(this, messagesList)
+                    Log.i(TAG, "messagesList: $messagesList")
+
+                    if(chatAdapter == null){
+                        chatAdapter = ChatAdapter(this, messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
+                        chat_messages_recycler_view.adapter = chatAdapter
+                    } else{
+                        chatAdapter?.updateData(messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
+                    }
+                    chatAdapter?.let{
+                        chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+                    }
                 }
             })
         } else {

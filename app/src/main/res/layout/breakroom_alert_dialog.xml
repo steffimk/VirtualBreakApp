@@ -27,6 +27,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
+        android:padding="10dp"
         android:text="@string/breakroom_alert_text"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/room_alert_dismiss_button"

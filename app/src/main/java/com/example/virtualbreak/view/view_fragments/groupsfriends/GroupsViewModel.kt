@@ -112,7 +112,8 @@ class GroupsViewModel : ViewModel() {
     private val groups: MutableLiveData<HashMap<String,Group>> =
         object : MutableLiveData<HashMap<String,Group>>(HashMap()) {
 
-            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_GROUPS)
+            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+                .child(Constants.DATABASE_CHILD_GROUPS)
 
             override fun onActive() {
                 super.onActive()
@@ -135,7 +136,6 @@ class GroupsViewModel : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val group = dataSnapshot.getValue(Group::class.java)
                 if (group != null) {
-                    FCMService.subscribeToTopic(groupId)
                     groups.value?.put(groupId, group)
                     groups.value = groups.value // Set value so that observers are notified of change
                 }
@@ -149,5 +149,12 @@ class GroupsViewModel : ViewModel() {
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addListenerForSingleValueEvent(valueEventListener)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+            .child(Constants.DATABASE_CHILD_GROUPS).removeEventListener(groupsValueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+            .child(Constants.DATABASE_CHILD_FRIENDS).removeEventListener(friendsValueEventListener)
+    }
 
 }

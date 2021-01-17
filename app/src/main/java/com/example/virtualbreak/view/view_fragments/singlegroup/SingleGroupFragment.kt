@@ -57,6 +57,7 @@ class SingleGroupFragment : Fragment() {
 
         groupId = args.groupId
         singleGroupViewModel.pullGroupWithId(groupId)
+        singleGroupViewModel.getGroupUsersWithFcmToken() // to trigger start init by lazy
 
         val gridView: GridView = root.findViewById(R.id.grid_view)
 
@@ -122,13 +123,14 @@ class SingleGroupFragment : Fragment() {
 
     }
 
-    private fun sendNotifications(groupId: String, groupDescription:String?, roomType: String) {
+    private fun sendNotifications(groupId: String, groupDescription: String?, roomType: String) {
         val groupName = groupDescription ?: ""
         val title = "Neuer Pausenraum in $groupName"
-        val message = "${SharedPrefManager.instance.getUserName()} hat eine neue $roomType Pause erstellt"
+        val message = "${SharedPrefManager.instance.getUserName()} hat eine neue $roomType -Pause erstellt"
         Log.d(TAG, "Send notifications to group : $groupId")
         for( (userId, fcmToken) in this.singleGroupViewModel.getGroupUsersWithFcmToken()){
             if (userId != SharedPrefManager.instance.getUserId()) {
+                Log.d(TAG, "Send notification to token: $fcmToken")
                 PushNotification(
                     NotificationData(title, message),
                     NotificationBody(title,message),

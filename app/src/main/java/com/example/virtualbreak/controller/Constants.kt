@@ -2,6 +2,7 @@ package com.example.virtualbreak.controller
 
 class Constants {
     companion object {
+
         const val ROOM_ID = "roomId"
         const val USER_NAME = "userName"
         const val DISPLAY_NAME = "displayName"
@@ -15,6 +16,7 @@ class Constants {
         const val DATABASE_CHILD_STATUS = "status"
         const val DATABASE_CHILD_FCM_TOKEN: String = "fcmToken"
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
+        const val DATABASE_CHILD_USERNAME = "username"
 
         const val DEFAULT_TIME:Long = 0
 

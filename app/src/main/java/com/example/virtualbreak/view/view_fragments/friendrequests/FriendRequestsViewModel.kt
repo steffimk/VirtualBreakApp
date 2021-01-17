@@ -95,4 +95,10 @@ class FriendRequestsViewModel : ViewModel() {
         }
         PullData.database.child(Constants.DATABASE_CHILD_USERS).child(userId).addListenerForSingleValueEvent(valueEventListener)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+            .child(Constants.DATABASE_CHILD_FRIEND_REQUESTS).removeEventListener(valueEventListener)
+    }
 }

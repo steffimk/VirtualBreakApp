@@ -13,6 +13,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PullData
 import com.google.android.material.navigation.NavigationView
 
 /**
@@ -30,6 +31,8 @@ class NavigationDrawerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        PullData.pullAndSaveOwnUserName()
 
         setContentView(R.layout.activity_navigationdrawer)
         val toolbar: Toolbar = findViewById(R.id.toolbar)

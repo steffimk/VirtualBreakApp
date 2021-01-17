@@ -1,7 +1,14 @@
 package com.example.virtualbreak.controller.communication
 
+import android.util.Log
+import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
 
@@ -12,8 +19,29 @@ class PullData {
         private const val TAG: String = "PullData"
 
         val database : DatabaseReference = Firebase.database.reference
+
 //        var currentUser: MutableLiveData<User?> = MutableLiveData(null)
-        
+
+        fun pullAndSaveOwnUserName() {
+
+            val userNameListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val pulledName = dataSnapshot.getValue<String>()
+                    Log.d(TAG,"Pulled username $pulledName")
+                    if (pulledName == null) return
+                    else SharedPrefManager.instance.saveUserName(pulledName)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, error.message)
+                }
+
+            }
+
+            database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId()?:"")
+                .child(Constants.DATABASE_CHILD_USERNAME).addListenerForSingleValueEvent(userNameListener)
+        }
+
 //        fun attachListenerToCurrentUser() {
 //            if (currentUser.value != null) {
 //                return // Listener already attached

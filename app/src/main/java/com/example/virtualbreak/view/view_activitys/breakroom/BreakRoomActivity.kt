@@ -94,6 +94,9 @@ class BreakRoomActivity : AppCompatActivity() {
 
             chatAdapter = ChatAdapter(this, defaultMessages, SharedPrefManager.instance.getRoomUsersHashmap())
             chat_messages_recycler_view.adapter = chatAdapter
+            chatAdapter?.let{
+                chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+            }
 
             viewModel.getUser().observe(this, Observer<User> { observedUser ->
                 if (observedUser != null) {
@@ -121,13 +124,15 @@ class BreakRoomActivity : AppCompatActivity() {
                     messagesList.sortBy { it.timestamp }
                     Log.i(TAG, "messagesList: $messagesList")
 
-                    //if(chatAdapter == null){
+                    if(chatAdapter == null){
                         chatAdapter = ChatAdapter(this, messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
                         chat_messages_recycler_view.adapter = chatAdapter
-                    /*} else{
+                    } else{
                         chatAdapter?.updateData(messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
-                    }*/
-                    //chat_messages_recycler_view.adapter = ChatAdapter(this, messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
+                    }
+                    chatAdapter?.let{
+                        chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+                    }
                 }
             })
         } else {

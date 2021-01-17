@@ -1,10 +1,12 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -13,7 +15,6 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,15 +30,13 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
 
     private val TAG = "BreakRoomActivity"
+    private val SYSTEM_ALERT_WINDOW_PERMISSION = 2084
 
     private val viewModel: BreakRoomViewModel by viewModels {
         BreakRoomViewModelFactory(
@@ -59,6 +58,11 @@ class BreakRoomActivity : AppCompatActivity() {
 
         //val roomId = SharedPrefManager.instance.getRoomId()
         //var userName : String? = null
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            askPermission();
+        }
+
 
 
         mtoolbar = findViewById(R.id.toolbar_breakroom)
@@ -185,13 +189,7 @@ class BreakRoomActivity : AppCompatActivity() {
             true
         }
         R.id.action_videocall -> {
-            val args = Bundle()
-            args.putString(Constants.ROOM_ID, roomId)
-            args.putString(Constants.USER_NAME, userName)
-
-            val intent = Intent(this, VideoCallActivity::class.java)
-            intent.putExtras(args)
-            this.startActivity(intent)
+            videocall()
             true
         }
         else -> {
@@ -200,10 +198,11 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        leaveRoom()
+        //leaveRoom()
+        openWidget()
     }
 
-    private fun leaveRoom() {
+    fun leaveRoom() {
         if (room?.users?.size == 1) {
             showDialog()
         } else {
@@ -213,6 +212,16 @@ class BreakRoomActivity : AppCompatActivity() {
             Log.d(TAG, "Left room $roomId")
             finish()
         }
+    }
+
+    fun videocall() {
+        val args = Bundle()
+        args.putString(Constants.ROOM_ID, roomId)
+        args.putString(Constants.USER_NAME, userName)
+
+        val intent = Intent(this, VideoCallActivity::class.java)
+        intent.putExtras(args)
+        this.startActivity(intent)
     }
 
     private fun showDialog() {
@@ -235,5 +244,30 @@ class BreakRoomActivity : AppCompatActivity() {
         noBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
+    }
+
+    private fun openWidget() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            startService(Intent(this, BreakroomWidgetService::class.java))
+            finish()
+        } else if (Settings.canDrawOverlays(this)) {
+            startService(Intent(this, BreakroomWidgetService::class.java))
+            finish()
+        } else {
+            askPermission()
+            Toast.makeText(
+                this,
+                "You need System Alert Window Permission to do this",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun askPermission() {
+        val intent = Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:$packageName")
+        )
+        startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION)
     }
 }

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -26,14 +27,18 @@
         <activity
             android:name=".view.view_activitys.NavigationDrawerActivity"
             android:label="@string/home"
-            android:theme="@style/Theme.VirtualBreak.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.VirtualBreak.NoActionBar"></activity>
         <activity android:name=".view.view_activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".view.view_activitys.breakroom.BreakroomWidgetService"
+            android:enabled="true"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

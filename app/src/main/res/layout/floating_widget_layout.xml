@@ -12,7 +12,7 @@
 
         <!-- collapsed layout -->
         <RelativeLayout
-            android:id="@+id/layoutCollapsed"
+            android:id="@+id/widget_layoutCollapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -49,10 +49,53 @@
 
         <LinearLayout
             android:id="@+id/widget_layoutExpanded"
-            android:layout_width="280dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible">
+
+
+            <RelativeLayout
+                android:id="@+id/widget_logo_expanded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:paddingStart="12dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="12dp"
+                android:paddingTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/rounded_corners_background_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/widget_expanded_iv"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_vb_alt_round" />
+
+                <FrameLayout
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/rounded_corners_orange">
+
+                    <TextView
+                        android:id="@+id/widget_expanded_notification_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:text="1" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,56 +103,20 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners_background_button"
                 android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingBottom="8dp"
+                android:padding="8dp"
                 android:visibility="visible">
 
-                <RelativeLayout
-                    android:id="@+id/widget_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/widget_expanded_iv"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="8dp"
-                        android:scaleType="fitCenter"
-                        android:src="@mipmap/ic_vb_alt_round" />
-
-                    <FrameLayout
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="50dp"
-                        android:background="@drawable/rounded_corners_orange">
-
-                        <TextView
-                            android:id="@+id/widget_expanded_notification_count"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            android:text="1" />
-
-                    </FrameLayout>
-
-                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/widget_logo"
-                    app:layout_constraintTop_toTopOf="@+id/widget_logo">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/widget_roomName_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
@@ -118,6 +125,7 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/widget_roomtype_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
@@ -133,8 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="@+id/widget_logo"
-                    app:layout_constraintStart_toEndOf="@+id/widget_logo"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                     <ImageView
@@ -195,15 +202,17 @@
                 android:visibility="visible">
 
                 <ImageButton
-                    android:layout_width="wrap_content"
+                    android:id="@+id/widget_button_leaveroom"
+                    android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_action_leave"
                     android:scaleType="fitCenter"
-                    android:paddingHorizontal="12dp"
+                    android:paddingHorizontal="8dp"
                     android:background="@null"
                     android:layout_marginEnd="12dp" />
 
                 <Button
+                    android:id="@+id/widget_button_open_room"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/ButtonStlyeOrange"
@@ -211,7 +220,8 @@
                     android:layout_marginEnd="12dp" />
 
                 <ImageButton
-                    android:layout_width="wrap_content"
+                    android:id="@+id/widget_button_videocall"
+                    android:layout_width="45dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/videocall_white"
                     android:scaleType="fitCenter"

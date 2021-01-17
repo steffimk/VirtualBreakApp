@@ -53,11 +53,12 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
         }
     }
 
-    fun loadUsersOfRoom(context: Context){
-        val currentRoom = room.value
-        val users = currentRoom?.users
+    private val currentRoom = room.value
+    val users = currentRoom?.users
 
-        var usersOfRoom : HashMap<String,String> = HashMap()
+    fun loadUsersOfRoom(context: Context) {
+
+        var usersOfRoom: HashMap<String, String> = HashMap()
 
         Log.d(TAG, "loadUsersOfRoom")
 

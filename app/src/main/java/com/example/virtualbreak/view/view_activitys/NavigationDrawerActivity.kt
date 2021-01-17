@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_activitys
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -22,7 +23,7 @@ import com.google.android.material.navigation.NavigationView
  * 3) NavController automatically handles switching the fragments when menu item are clicked
  *
  */
-class NavigationDrawerActivity : AppCompatActivity(){
+class NavigationDrawerActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val TAG = "NavigationDrawerActivity"

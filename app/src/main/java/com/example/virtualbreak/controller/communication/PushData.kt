@@ -3,6 +3,7 @@ package com.example.virtualbreak.controller.communication
 import android.content.Context
 import android.util.Log
 import com.example.virtualbreak.R
+import androidx.lifecycle.LiveData
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
@@ -51,19 +52,26 @@ class PushData {
         }
 
         fun joinGroup(groupId: String, userId: String) {
-            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
-            database.child(Constants.DATABASE_CHILD_USERS).child(userId).child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(groupId)
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+                .child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
+            database.child(Constants.DATABASE_CHILD_USERS).child(userId)
+                .child(Constants.DATABASE_CHILD_GROUPS).child(groupId).setValue(groupId)
             Log.d(TAG, "User $userId joined group $groupId")
         }
 
-        fun leaveGroup(group: Group){
+        fun leaveGroup(group: Group) {
+            //TODO SOMETHING NOT WORKING HERE? Doesent delet
+            //TODO change that id user is last user delete Group
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
-                database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
+                database.child(Constants.DATABASE_CHILD_USERS)
+                    .child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
+                database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid)
+                    .child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
                     .removeValue()
                 group.rooms?.forEach {
-                    database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value).child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value)
+                        .child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
                 }
             } else {
                 Log.d(TAG, "No user logged in. Cannot leave group.")

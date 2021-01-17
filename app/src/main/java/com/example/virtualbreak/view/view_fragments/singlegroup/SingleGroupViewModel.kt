@@ -79,4 +79,117 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         }
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
     }
+
+    private val groupUsersWithFcmTokens: HashMap<String,String> by lazy {
+        HashMap<String,String>().also {
+            PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+                .child(Constants.DATABASE_CHILD_USERS).addValueEventListener(groupUsersEventListener)
+        }
+    }
+
+    fun getGroupUsersWithFcmToken(): HashMap<String,String> {
+        return this.groupUsersWithFcmTokens;
+    }
+
+    private val groupUsersEventListener = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val pulledUsers = dataSnapshot.getValue<HashMap<String,String>>()
+            Log.d(TAG, "Pulled Users $pulledUsers")
+
+            if (pulledUsers == null) return
+
+            for(userId in pulledUsers.keys){
+                if(groupUsersWithFcmTokens.containsKey(userId)) return
+                else PullData.database.child(Constants.DATABASE_CHILD_USERS)
+                    .child(userId).addListenerForSingleValueEvent(userFcmTokenListener)
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+
+    }
+
+    private val userFcmTokenListener = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val pulledUser = dataSnapshot.getValue<User>()
+            Log.d(TAG, "Pulled User $pulledUser")
+
+            if (pulledUser == null) return
+
+            groupUsersWithFcmTokens[pulledUser.uid] = pulledUser.fcmToken
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(Constants.DATABASE_CHILD_USERS)
+            .removeEventListener(groupUsersEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
+            .child(groupId).child(Constants.DATABASE_CHILD_ROOMS).removeEventListener(roomsValueEventListener)
+    }
+
+//    private val user: MutableLiveData<User> = object : MutableLiveData<User>() {
+//        private val userQuery = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(
+//            SharedPrefManager.instance.getUserId() ?: "")
+//
+//        override fun onActive() {
+//            super.onActive()
+//            userQuery.addValueEventListener(userValueEventListener)
+//        }
+//
+//        override fun onInactive() {
+//            super.onInactive()
+//            userQuery.removeEventListener(userValueEventListener)
+//        }
+//    }
+//
+//    fun getUser(): LiveData<User> {
+//        return user
+//    }
+//
+//    private val userValueEventListener = object : ValueEventListener {
+//
+//        override fun onDataChange(dataSnapshot: DataSnapshot) {
+//            val pulledUser = dataSnapshot.getValue<User>()
+//            Log.d(TAG, "Pulled User $pulledUser")
+//
+//            user.value = pulledUser
+//        }
+//
+//        override fun onCancelled(databaseError: DatabaseError) {
+//            Log.d(TAG, databaseError.message)
+//        }
+//
+//    }
+
+    var currentGroup: Group? = null
+
+    fun pullGroupWithId(groupId: String) {
+        val valueEventListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var group = dataSnapshot.getValue(Group::class.java)!!
+                if (group != null) {
+                    currentGroup = group
+                }
+                Log.d(TAG, "Pulled Current Group")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .addListenerForSingleValueEvent(valueEventListener)
+    }
+
 }

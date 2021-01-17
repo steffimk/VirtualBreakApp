@@ -1,10 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.VirtualBreak" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.VirtualBreak" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/darkblue</item>
         <item name="colorPrimaryVariant">@color/blue_dark_night</item>
         <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorAccent">@color/mandarin</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/mandarin</item>
         <item name="colorSecondaryVariant">@color/sinopia</item>
@@ -12,5 +14,22 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/blue_dark_night</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.VirtualBreak.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.VirtualBreak.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.VirtualBreak.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.VirtualBreak.BreakroomToolbar">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/blue_dark_night</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 </resources>

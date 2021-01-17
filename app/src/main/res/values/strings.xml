@@ -92,6 +92,10 @@
     <string name="addfriends_intro">Du kannst Freunde mithilfe ihrer E-Mail-Adresse hinzufügen:</string>
     <string name="suche">Suche</string>
 
+    <string name="video_call">Video Call</string>
+    <string name="edit">edit</string>
+    <string name="rename_room">Rename Room</string>
+
     <!-- Search Friends -->
     <string name="search_friend_successful">Gefunden:</string>
     <string name="search_friend_not_successful">Es wurde kein User mit dieser Mail gefunden.</string>
@@ -104,8 +108,13 @@
     <string name="freundschaftsanfrage_senden">Freundschaftsanfrage senden</string>
     <string name="löschen">Löschen</string>
 
-    <string name="video_call">Video Call</string>
-    <string name="edit">edit</string>
-    <string name="rename_room">Rename Room</string>
+
+    <!--Single Group -->
+    <string name="leave_group">Gruppe verlassen</string>
+    <string name="delete_group">Gruppename ändern</string>
+    <string name="breakroom_alert_text">Wenn du jetzt gehst wird der Pausenraum permanent gelöscht. Willst du das wirklich?</string>
+    <string name="breakroom_alert_achtung">Achtung!</string>
+    <string name="verlassen">Gehen</string>
+    <string name="bleiben">Bleiben</string>
 
 </resources>

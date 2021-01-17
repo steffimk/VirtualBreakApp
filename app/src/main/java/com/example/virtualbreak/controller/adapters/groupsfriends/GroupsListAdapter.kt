@@ -54,7 +54,7 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
             val groupId = group.uid
             //SharedPrefManager.instance.saveGroupId(groupId)
             Log.d(TAG, "clicked on group "+groupId)
-            val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(group)
+            val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
             view.findNavController().navigate(action)
         }
 

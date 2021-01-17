@@ -3,7 +3,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/friend_item_layout"
-    card_view:cardBackgroundColor="@color/lightgray"
+    card_view:cardBackgroundColor="@color/light_gray"
     android:layout_width="match_parent"
     android:layout_height="@dimen/group_list_height"
     android:layout_margin="8dp">

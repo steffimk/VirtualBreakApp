@@ -1,18 +1,21 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -26,9 +29,11 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_break_room.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -46,6 +51,8 @@ class BreakRoomActivity : AppCompatActivity() {
     lateinit var editText: EditText
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
+
+    private var activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,7 +146,7 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_menu, menu)
+        menuInflater.inflate(R.menu.breakroom_menu, menu)
         return true
     }
 
@@ -147,32 +154,42 @@ class BreakRoomActivity : AppCompatActivity() {
 
         android.R.id.home -> {
             // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
-            viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(this, room, userName)
-            SharedPrefManager.instance.removeRoomId()
-            Log.d(TAG, "Left room $roomId")
-            finish()
+            leaveRoom()
             true
         }
 
         R.id.action_edit -> {
             //User wants to edit the room name
-            supportActionBar?.title = null
+            //supportActionBar?.title = null // uncommented because otherwise old title not shown, if new text was empty
             editText.visibility = View.VISIBLE
+            //Show the keyboard
+            val imm: InputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            editText.requestFocus()
+
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = true
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = false
             true
         }
         R.id.action_enter -> {
             val newTitle = editText.text.toString()
-            mtoolbar.title = newTitle
             editText.visibility = View.GONE
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = false
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = true
+
             //save the new title in firebase
             if (roomId != null) {
-                PushData.setRoomDescription(roomId, newTitle)
+                if("".equals(newTitle)){
+                    Snackbar.make(editText, "Du hast keinen neuen Namen eingegeben!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                } else{
+                    PushData.setRoomDescription(roomId, newTitle)
+                    mtoolbar.title = newTitle
+                }
             }
+
+            hideSoftKeyboard(editText)
             true
         }
         R.id.action_videocall -> {
@@ -191,6 +208,49 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //Do nothing, can only leave breakroom via button
+        leaveRoom()
+    }
+
+    private fun leaveRoom() {
+        if (room?.users?.size == 1) {
+            showDialog()
+        } else {
+            viewModel.getRoom().removeObservers(this)
+            PushData.leaveRoom(this, room, userName)
+            SharedPrefManager.instance.removeRoomId()
+            Log.d(TAG, "Left room $roomId")
+            finish()
+        }
+    }
+
+    private fun showDialog() {
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.breakroom_alert_dialog)
+//        val body = dialog.findViewById(R.id.b) as TextView
+//        body.text = title
+        val yesBtn = dialog.findViewById(R.id.room_alert_confirm_button) as Button
+        val noBtn = dialog.findViewById(R.id.room_alert_dismiss_button) as Button
+        yesBtn.setOnClickListener {
+            dialog.dismiss()
+            viewModel.getRoom().removeObservers(this)
+            PushData.leaveRoom(this, room, userName)
+            SharedPrefManager.instance.removeRoomId()
+            Log.d(TAG, "Left room $roomId")
+            finish()
+        }
+        noBtn.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+
+    }
+
+    /**
+     * closes soft keyboard
+     * editText: View
+     */
+    private fun hideSoftKeyboard(editText: EditText) {
+        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 }

@@ -37,6 +37,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
     private val TAG = "BreakRoomActivity"
     private val SYSTEM_ALERT_WINDOW_PERMISSION = 2084
+    private val DRAW_OVER_OTHER_APP_PERMISSION = 123
 
     private val viewModel: BreakRoomViewModel by viewModels {
         BreakRoomViewModelFactory(
@@ -58,6 +59,8 @@ class BreakRoomActivity : AppCompatActivity() {
 
         //val roomId = SharedPrefManager.instance.getRoomId()
         //var userName : String? = null
+
+        //Close widget, not widget in breakroomact
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             askPermission();
@@ -136,7 +139,7 @@ class BreakRoomActivity : AppCompatActivity() {
                 if (roomId != null) {
                     PushData.sendMessage(roomId, message)
                 }
-            } else{
+            } else {
                 Toast.makeText(
                     this, R.string.toast_enter_message,
                     Toast.LENGTH_SHORT
@@ -202,6 +205,47 @@ class BreakRoomActivity : AppCompatActivity() {
         openWidget()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+
+        // To prevent starting the service if the required permission is NOT granted.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) {
+            startService(
+                Intent(
+                    this@BreakRoomActivity,
+                    BreakroomWidgetService::class.java
+                ).putExtra("activity_background", true)
+            )
+            finish()
+        } else {
+            Toast.makeText(
+                this,
+                "You need System Alert Window Permission to do this",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d(TAG, "onACtivityREsult")
+        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(this)) {
+                    //Permission is not available. Display error text.
+                    Toast.makeText(
+                        this,
+                        "You need System Alert Window Permission to do this",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     fun leaveRoom() {
         if (room?.users?.size == 1) {
             showDialog()
@@ -247,7 +291,8 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     private fun openWidget() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        Log.d(TAG, "openwidget")
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
             startService(Intent(this, BreakroomWidgetService::class.java))
             finish()
         } else if (Settings.canDrawOverlays(this)) {
@@ -263,11 +308,25 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
+
     private fun askPermission() {
-        val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
-        )
-        startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION)
+//        val intent = Intent(
+//            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//            Uri.parse("package:$packageName")
+//        )
+//        startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION)
+//    }
+
+        Log.d(TAG, "askPermission")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName())
+            );
+            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
+        }
     }
 }

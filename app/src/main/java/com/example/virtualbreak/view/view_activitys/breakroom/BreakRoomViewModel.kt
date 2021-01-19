@@ -46,6 +46,7 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
             Log.d(TAG, "Pulled Room $pulledRoom")
 
             room.value = pulledRoom
+            loadUsersOfRoom()
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -53,12 +54,14 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
         }
     }
 
-    private val currentRoom = room.value
-    val users = currentRoom?.users
 
-    fun loadUsersOfRoom(context: Context) {
+    fun loadUsersOfRoom() {
 
-        var usersOfRoom: HashMap<String, String> = HashMap()
+        //some logic so that usernames are added to hashmap saved in SharedPrefs, but none can be removed, if someone leaves the room
+        var usersOfRoom: HashMap<String, String>? = HashMap()
+        if(SharedPrefManager.instance.getRoomUsersHashmap() != null){
+            usersOfRoom = SharedPrefManager.instance.getRoomUsersHashmap()
+        }
 
         Log.d(TAG, "loadUsersOfRoom")
 
@@ -67,15 +70,17 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
                 val user = dataSnapshot.getValue(User::class.java)
                 val name = user!!.username
                 Log.d(TAG, "User added: "+name)
-                usersOfRoom.put(dataSnapshot.key.toString(), name)
-
+                if (usersOfRoom != null) {
+                    if(!usersOfRoom.containsKey(dataSnapshot.key.toString()))
+                        usersOfRoom.put(dataSnapshot.key.toString(), name)
+                }
                 //convert to string using gson
                 val gson = Gson()
                 val hashMapString = gson.toJson(usersOfRoom)
 
-                SharedPrefManager.instance.removeRoomUsers()
-                SharedPrefManager.instance.saveRoomUsers(hashMapString)
-                //save hashmap in shared prefs
+                //SharedPrefManager.instance.removeRoomUsers()
+                SharedPrefManager.instance.saveRoomUsers(hashMapString) //save hashmap in shared prefs
+                room.value = room.value // notify observers of room to change
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -83,6 +88,7 @@ class BreakRoomViewModel(private val roomId: String): ViewModel() {
             }
         }
 
+        val users = room.value?.users
         if (users != null) {
             for(u in users){
                 PullData.database.child(Constants.DATABASE_CHILD_USERS).child(u.key).addListenerForSingleValueEvent(valueEventListener)

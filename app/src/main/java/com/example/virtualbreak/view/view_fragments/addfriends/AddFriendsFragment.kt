@@ -15,8 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
+import com.example.virtualbreak.model.NotificationBody
+import com.example.virtualbreak.model.NotificationData
+import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
@@ -152,6 +156,17 @@ class AddFriendsFragment : Fragment() {
 
         if (isValidFriendRequest) {
             PushData.sendFriendRequest(user!!.uid)
+            // Send notification to user
+            val title = "Neue Freundschaftsanfrage"
+            val message = "${currentUser!!.username} möchte dich als Freund hinzufügen."
+            PushNotification(
+                NotificationData(title, message),
+                NotificationBody(title, message),
+                user.fcmToken
+            ).also {
+                Log.d(TAG, "Sending notification: $it")
+                FCMService.sendNotification(it)
+            }
         }
 
         view?.let {

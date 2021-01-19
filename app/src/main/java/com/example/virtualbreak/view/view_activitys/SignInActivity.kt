@@ -74,6 +74,7 @@ class SignInActivity : AppCompatActivity() {
                             if (user != null) {
                                 // Save userId in shared preferences
                                 SharedPrefManager.instance.saveUserId(user.uid)
+                                SharedPrefManager.instance.saveUserName(name)
                                 PushData.saveUser(user, name)
                             }
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))

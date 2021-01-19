@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.google.c2dm.permission.RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,13 @@
         android:screenOrientation="portrait"
         android:theme="@style/Theme.VirtualBreak">
 
+        <service android:name=".controller.communication.FCMService"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
 
         <activity android:name=".view.view_activitys.LogInActivity"/>
         <activity android:name=".view.view_activitys.SignInActivity" />
@@ -43,6 +51,11 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <!-- Meta-data for notifications -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/mandarin" />
     </application>
 
 </manifest>

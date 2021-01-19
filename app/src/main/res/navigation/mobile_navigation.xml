@@ -40,6 +40,8 @@
         <argument
             android:name="groupId"
             app:argType="string" />
+<!--            android:name="group"-->
+<!--            app:argType="com.example.virtualbreak.model.Group" />-->
 
         <action
             android:id="@+id/action_singleGroupFragment_to_home"

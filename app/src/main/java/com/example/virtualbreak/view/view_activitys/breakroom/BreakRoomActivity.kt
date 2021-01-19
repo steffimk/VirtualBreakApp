@@ -30,6 +30,10 @@ import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_break_room.*
 
 
@@ -49,6 +53,8 @@ class BreakRoomActivity : AppCompatActivity() {
     lateinit var editText: EditText
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
+
+    private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
 
@@ -80,17 +86,24 @@ class BreakRoomActivity : AppCompatActivity() {
 
 
         if (roomId != null) {
+
+            viewModel.loadUsersOfRoom()
+
             PushData.joinRoom(this, roomId, userName)
 
             var defaultMessages: MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
-            var layoutManager = LinearLayoutManager(this)
+            val layoutManager = LinearLayoutManager(this)
             layoutManager.setStackFromEnd(true)
             chat_messages_recycler_view.layoutManager = layoutManager
 
-            chat_messages_recycler_view.adapter = ChatAdapter(this, defaultMessages)
+            chatAdapter = ChatAdapter(this, defaultMessages, SharedPrefManager.instance.getRoomUsersHashmap())
+            chat_messages_recycler_view.adapter = chatAdapter
+            chatAdapter?.let{
+                chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+            }
 
             viewModel.getUser().observe(this, Observer<User> { observedUser ->
                 if (observedUser != null) {
@@ -103,7 +116,7 @@ class BreakRoomActivity : AppCompatActivity() {
             viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
 
                 room = observedRoom
-                viewModel.loadUsersOfRoom(this)
+                //viewModel.loadUsersOfRoom()
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
@@ -116,8 +129,17 @@ class BreakRoomActivity : AppCompatActivity() {
                     val messages = observedRoom.messages
                     var messagesList = ArrayList(messages.values)
                     messagesList.sortBy { it.timestamp }
-                    Log.i(TAG, "messagesList: $messages")
-                    chat_messages_recycler_view.adapter = ChatAdapter(this, messagesList)
+                    Log.i(TAG, "messagesList: $messagesList")
+
+                    if(chatAdapter == null){
+                        chatAdapter = ChatAdapter(this, messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
+                        chat_messages_recycler_view.adapter = chatAdapter
+                    } else{
+                        chatAdapter?.updateData(messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
+                    }
+                    chatAdapter?.let{
+                        chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+                    }
                 }
             })
         } else {
@@ -163,7 +185,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
         R.id.action_edit -> {
             //User wants to edit the room name
-            supportActionBar?.title = null
+            //supportActionBar?.title = null // uncommented because otherwise old title not shown, if new text was empty
             editText.visibility = View.VISIBLE
             //Show the keyboard
             val imm: InputMethodManager =
@@ -177,15 +199,22 @@ class BreakRoomActivity : AppCompatActivity() {
         }
         R.id.action_enter -> {
             val newTitle = editText.text.toString()
-            mtoolbar.title = newTitle
             editText.visibility = View.GONE
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = false
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = true
 
             //save the new title in firebase
             if (roomId != null) {
-                PushData.setRoomDescription(roomId, newTitle)
+                if("".equals(newTitle)){
+                    Snackbar.make(editText, "Du hast keinen neuen Namen eingegeben!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                } else{
+                    PushData.setRoomDescription(roomId, newTitle)
+                    mtoolbar.title = newTitle
+                }
             }
+
+            hideSoftKeyboard(editText)
             true
         }
         R.id.action_videocall -> {
@@ -269,5 +298,14 @@ class BreakRoomActivity : AppCompatActivity() {
             Uri.parse("package:$packageName")
         )
         startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION)
+    }
+
+    /**
+     * closes soft keyboard
+     * editText: View
+     */
+    private fun hideSoftKeyboard(editText: EditText) {
+        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 }

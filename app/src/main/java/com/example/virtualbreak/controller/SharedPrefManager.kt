@@ -20,9 +20,9 @@ class SharedPrefManager
 private constructor() {
     private var sharedPrefs: SharedPreferences? = null
 
-    val GROUP_ID: String = "groupId"
     val ROOM_ID: String = "roomId"
     val USER_ID: String = "userId"
+    val USER_NAME: String = "userName"
     val ROOM_USER: String = "roomUser"
 
 
@@ -35,21 +35,6 @@ private constructor() {
             sharedPrefs =
                 context.getSharedPreferences(context.getPackageName(), Activity.MODE_PRIVATE)
         }
-    }
-
-    fun saveGroupId(groupId: String?) {
-        sharedPrefs?.let{
-            it.edit().putString(GROUP_ID, groupId).apply()
-            Log.d(TAG, "GroupId $groupId added to shared preferences")
-        }
-        if(sharedPrefs == null)
-            Log.w(TAG, "SharedPrefs is null")
-    }
-
-    fun getGroupId(): String? {
-        var groupId = sharedPrefs?.getString(GROUP_ID, "")
-        Log.d(TAG, "Got groupId from shared preferences: $groupId")
-        return groupId
     }
 
     fun saveRoomId(roomId: String) {
@@ -88,6 +73,26 @@ private constructor() {
 
     fun removeUserId(){
         sharedPrefs?.edit()?.remove(USER_ID)?.apply()
+        if(sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun saveUserName(userName: String) {
+
+        sharedPrefs?.let{
+            it.edit().putString(USER_NAME, userName).apply()
+            Log.d(TAG, "UserName " + userName + " added to shared preferences")
+        }
+        if(sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun getUserName(): String?{
+        return sharedPrefs?.getString(USER_NAME, null)
+    }
+
+    fun removeUserName(){
+        sharedPrefs?.edit()?.remove(USER_NAME)?.apply()
         if(sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
     }

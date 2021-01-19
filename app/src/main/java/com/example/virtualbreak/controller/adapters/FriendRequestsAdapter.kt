@@ -10,7 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.NotificationBody
+import com.example.virtualbreak.model.NotificationData
+import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
@@ -62,7 +67,20 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         //define click listener for viewholders view
         holder.acceptRequestBtn.setOnClickListener{
 
-            PushData.confirmFriendRequest(friendRequests[position].uid)
+            val friendToBeAdded = friendRequests[position]
+            val ownUserName = SharedPrefManager.instance.getUserName()
+            PushData.confirmFriendRequest(friendToBeAdded.uid)
+            // Send notification to user
+            val title = "Freundschaft geschlossen"
+            val message = "${ownUserName} hat deine Freundschaftsanfrage angenommen."
+            PushNotification(
+                NotificationData(title, message),
+                NotificationBody(title, message),
+                friendToBeAdded.fcmToken
+            ).also {
+                Log.d(TAG, "Sending notification: $it")
+                FCMService.sendNotification(it)
+            }
             Snackbar.make(view, ""+friendRequests[position].username+" wurde zu deiner Freundeliste hinzugefügt!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }

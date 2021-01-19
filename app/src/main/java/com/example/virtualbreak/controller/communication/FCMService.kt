@@ -14,9 +14,12 @@ import androidx.core.app.NotificationCompat
 import com.example.virtualbreak.R
 import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.view.view_activitys.NavigationDrawerActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -103,6 +106,27 @@ class FCMService : FirebaseMessagingService() {
                     Log.d(TAG, "Successfully subscribed to topic $topic")
                 }
             }
+        }
+
+        /**
+         * Saves the Firebase Cloud Messaging Token in the database.
+         */
+        fun addFCMTokenListener() {
+
+            Log.d(TAG, "addFCMTokenListener function called")
+
+            Firebase.messaging.token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                val token = task.result
+                if (token != null) {
+                    PushData.setFcmToken(token)
+                    Log.d(TAG, "Saved fcm token $token")
+                }
+            })
+
         }
     }
 

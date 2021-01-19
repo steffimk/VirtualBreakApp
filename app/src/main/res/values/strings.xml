@@ -118,4 +118,7 @@
     <string name="bleiben">Bleiben</string>
     <string name="nachricht">Nachricht</string>
 
+    <!--Profile -->
+    <string name="save_username">Benutzernamen speichern</string>
+
 </resources>

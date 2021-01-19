@@ -26,13 +26,42 @@
             android:contentDescription="profile picture"
             android:src="@drawable/ic_person_24" />
 
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/username"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="@string/username"
+                android:visibility="visible"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/username_textEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="@string/username"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_editUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_action_edit"
+                app:fabSize="mini"
+                app:tint="@color/dark_gray"
+                app:backgroundTint="@color/light_gray"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/profile_email"

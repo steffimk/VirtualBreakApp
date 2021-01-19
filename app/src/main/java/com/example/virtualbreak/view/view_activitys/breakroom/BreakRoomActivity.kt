@@ -16,8 +16,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
@@ -55,13 +53,14 @@ class BreakRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
-        //val ft: FragmentTransaction = supportFragmentManager.beginTransaction().replace(R.id.fragment_container_view, TextchatFragment()).commit()
+
+        // TODO: depending on room type set fragments
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<TextchatFragment>(R.id.fragment_container_view)
+                add<TextchatFragment>(R.id.fragment_container_game_view)
 
-                add<TextchatFragment>(R.id.fragment_container_view_second)
+                add<TextchatFragment>(R.id.fragment_container_chat_view)
             }
         }
 

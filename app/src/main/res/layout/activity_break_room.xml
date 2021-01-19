@@ -35,125 +35,19 @@
             android:visibility="gone" />
     </androidx.appcompat.widget.Toolbar>
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_game_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:weightSum="2"
-        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom"
-        app:layout_constraintHeight_percent="0.92">
+        app:layout_constraintBottom_toTopOf="@id/fragment_container_chat_view"
+        android:visibility="gone"
+        />
 
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view_second"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
-    </LinearLayout>
-
-
-
-    <!--<LinearLayout
-        android:id="@+id/room_swipe_view_holder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/roomfr_tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/roomfr_view_Pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </androidx.viewpager2.widget.ViewPager2>
-
-    </LinearLayout>-->
-
-
-    <!--<androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_messages_recycler_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_chat_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/user_input"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom" />
-
-    <LinearLayout
-        android:id="@+id/user_input"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
-        android:padding="3dp"
-        android:weightSum="5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-
-        <EditText
-            android:id="@+id/chat_message_input"
-            android:background="@drawable/rounded_corners"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/light_gray2"
-            android:layout_weight="4.3"
-            android:hint="@string/message"
-            android:scrollbars="vertical" />
-
-        <ImageButton
-            android:id="@+id/send_message_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:background="@null"
-            android:elevation="0dp"
-            android:contentDescription="@string/send_message"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/send_black" />
-
-        &lt;!&ndash;        <ImageButton&ndash;&gt;
-        &lt;!&ndash;            android:id="@+id/send_message_button"&ndash;&gt;
-        &lt;!&ndash;            android:layout_width="0dp"&ndash;&gt;
-        &lt;!&ndash;            android:layout_height="match_parent"&ndash;&gt;
-        &lt;!&ndash;            android:layout_marginHorizontal="8dp"&ndash;&gt;
-        &lt;!&ndash;            android:layout_marginVertical="4dp"&ndash;&gt;
-        &lt;!&ndash;            android:padding="3dp"&ndash;&gt;
-        &lt;!&ndash;            android:layout_weight="1"&ndash;&gt;
-        &lt;!&ndash;            android:background="@color/blue_dark_night"&ndash;&gt;
-        &lt;!&ndash;            android:scaleType="fitCenter"&ndash;&gt;
-        &lt;!&ndash;            android:src="@drawable/ic_action_send"&ndash;&gt;
-        &lt;!&ndash;            android:text="@string/send_message"&ndash;&gt;
-        &lt;!&ndash;            android:tint="@color/white" />&ndash;&gt;
-
-    </LinearLayout>-->
-
-
-
-    <!--<TextView
-        android:id="@+id/chat_messages_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/user_input"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:scrollbars="vertical"/>-->
+        app:layout_constraintTop_toBottomOf="@+id/fragment_container_game_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/break_room_layout"
     tools:context=".view.view_activitys.breakroom.BreakRoomActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,7 +35,58 @@
             android:visibility="gone" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:weightSum="2"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom"
+        app:layout_constraintHeight_percent="0.92">
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view_second"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+
+
+    <!--<LinearLayout
+        android:id="@+id/room_swipe_view_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/roomfr_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/roomfr_view_Pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </androidx.viewpager2.widget.ViewPager2>
+
+    </LinearLayout>-->
+
+
+    <!--<androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_messages_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -78,21 +130,21 @@
             android:scaleType="fitCenter"
             android:src="@drawable/send_black" />
 
-        <!--        <ImageButton-->
-        <!--            android:id="@+id/send_message_button"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_marginHorizontal="8dp"-->
-        <!--            android:layout_marginVertical="4dp"-->
-        <!--            android:padding="3dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="@color/blue_dark_night"-->
-        <!--            android:scaleType="fitCenter"-->
-        <!--            android:src="@drawable/ic_action_send"-->
-        <!--            android:text="@string/send_message"-->
-        <!--            android:tint="@color/white" />-->
+        &lt;!&ndash;        <ImageButton&ndash;&gt;
+        &lt;!&ndash;            android:id="@+id/send_message_button"&ndash;&gt;
+        &lt;!&ndash;            android:layout_width="0dp"&ndash;&gt;
+        &lt;!&ndash;            android:layout_height="match_parent"&ndash;&gt;
+        &lt;!&ndash;            android:layout_marginHorizontal="8dp"&ndash;&gt;
+        &lt;!&ndash;            android:layout_marginVertical="4dp"&ndash;&gt;
+        &lt;!&ndash;            android:padding="3dp"&ndash;&gt;
+        &lt;!&ndash;            android:layout_weight="1"&ndash;&gt;
+        &lt;!&ndash;            android:background="@color/blue_dark_night"&ndash;&gt;
+        &lt;!&ndash;            android:scaleType="fitCenter"&ndash;&gt;
+        &lt;!&ndash;            android:src="@drawable/ic_action_send"&ndash;&gt;
+        &lt;!&ndash;            android:text="@string/send_message"&ndash;&gt;
+        &lt;!&ndash;            android:tint="@color/white" />&ndash;&gt;
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 

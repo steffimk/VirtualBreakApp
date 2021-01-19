@@ -47,16 +47,13 @@ class Groups_grouplist_fragment : Fragment() {
 
         groups_recyler_list_view.layoutManager = LinearLayoutManager(activity)
 
-        viewModel.getGroups().observe(viewLifecycleOwner, Observer<HashMap<String,Group>>{ groups ->
-            groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(groups.values))
-            Log.d(TAG, "Observed groups: $groups")
-        })
+        viewModel.getGroups()
+            .observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groups ->
+                groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(groups.values))
+                Log.d(TAG, "Observed groups: $groups")
+            })
 
-        groups_add_group_button.setOnClickListener{
-            //TODO Add Groups
-            //Snackbar.make(view, "Öffne neuen Pausenraum", Snackbar.LENGTH_LONG)
-            //   .setAction("Action", null).show()
-            //itemView.findNavController().navigate(R.id.action_nav_home_to_singleGroupFragment)
+        groups_add_group_button.setOnClickListener {
             view.findNavController().navigate(R.id.action_nav_home_to_addGroupFragment)
         }
     }

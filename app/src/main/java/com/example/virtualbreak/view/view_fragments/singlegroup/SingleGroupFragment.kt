@@ -128,12 +128,15 @@ class SingleGroupFragment : Fragment() {
         val title = "Neuer Pausenraum in $groupName"
         val message = "${SharedPrefManager.instance.getUserName()} hat eine neue $roomType -Pause erstellt"
         Log.d(TAG, "Send notifications to group : $groupId")
-        for( (userId, fcmToken) in this.singleGroupViewModel.getGroupUsersWithFcmToken()){
-            if (userId != SharedPrefManager.instance.getUserId()) {
+        for( (userId, pair) in this.singleGroupViewModel.getGroupUsersWithFcmToken()){
+            val fcmToken = pair.first
+            val userIsBusy = pair.second
+            // Don't send notification to user with status "busy" and don't send to oneself
+            if (!userIsBusy && userId != SharedPrefManager.instance.getUserId()) {
                 Log.d(TAG, "Send notification to token: $fcmToken")
                 PushNotification(
                     NotificationData(title, message),
-                    NotificationBody(title,message),
+                    NotificationBody(title, message),
                     fcmToken
                 ).also {
                     Log.d(TAG, "Sending notification: $it")

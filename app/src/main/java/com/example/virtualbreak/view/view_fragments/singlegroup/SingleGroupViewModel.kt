@@ -7,6 +7,7 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -80,14 +81,17 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
     }
 
-    private val groupUsersWithFcmTokens: HashMap<String,String> by lazy {
-        HashMap<String,String>().also {
+    private val groupUsersWithFcmTokens: HashMap<String,Pair<String,Boolean>> by lazy {
+        HashMap<String,Pair<String,Boolean>>().also {
             PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
                 .child(Constants.DATABASE_CHILD_USERS).addValueEventListener(groupUsersEventListener)
         }
     }
 
-    fun getGroupUsersWithFcmToken(): HashMap<String,String> {
+    /**
+     * Returns HashMap with userId as key and pair(fcmToken, isBusy) as value
+     */
+    fun getGroupUsersWithFcmToken(): HashMap<String,Pair<String,Boolean>> {
         return this.groupUsersWithFcmTokens;
     }
 
@@ -99,10 +103,18 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
             if (pulledUsers == null) return
 
+            // Pull fcmToken of new users in group
             for(userId in pulledUsers.keys){
-                if(groupUsersWithFcmTokens.containsKey(userId)) return
+                if(groupUsersWithFcmTokens.containsKey(userId)) return // fcmToken already saved
                 else PullData.database.child(Constants.DATABASE_CHILD_USERS)
                     .child(userId).addListenerForSingleValueEvent(userFcmTokenListener)
+            }
+
+            // Delete users that left group
+            for (userId in groupUsersWithFcmTokens) {
+                if (!pulledUsers.keys.contains(userId)){
+                    groupUsersWithFcmTokens.remove(userId)
+                }
             }
         }
 
@@ -120,7 +132,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
             if (pulledUser == null) return
 
-            groupUsersWithFcmTokens[pulledUser.uid] = pulledUser.fcmToken
+            groupUsersWithFcmTokens[pulledUser.uid] = Pair(pulledUser.fcmToken,pulledUser.status == Status.BUSY)
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -128,7 +140,6 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         }
 
     }
-
     override fun onCleared() {
         super.onCleared()
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(Constants.DATABASE_CHILD_USERS)

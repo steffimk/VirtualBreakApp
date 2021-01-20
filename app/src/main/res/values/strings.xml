@@ -54,7 +54,7 @@
     <string name="make_group">Erstelle eine Gruppe!</string>
     <string name="hint_group_name">Gruppen Name</string>
     <string name="search_friends">Suche Freunde</string>
-    <string name="select_friends">Füge ein paar Freunde hinzu:</string>
+    <string name="select_friends">2. Füge ein paar Freunde hinzu:</string>
     <string name="Error_no_friends">Bitte wähle mindestens einen Freund aus!</string>
     <string name="Error_no_groupname">Bitte legen einen Gruppennamen fest!</string>
 
@@ -117,5 +117,9 @@
     <string name="verlassen">Gehen</string>
     <string name="bleiben">Bleiben</string>
     <string name="nachricht">Nachricht</string>
+    <string name="wahl_gruppenname">1. Wähle einen Gruppennamen:</string>
+    <string name="willkommen_bei">Willkommen bei</string>
+    <string name="virtualbreak">VirtualBreak</string>
+    <string name="starte_gemeinsame_virtuelle_pausen">Starte gemeinsame virtuelle Pausen!</string>
 
 </resources>

@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Willkommen bei"
+            android:text="@string/willkommen_bei"
             android:textSize="20sp"
             android:gravity="center"/>
 
@@ -26,15 +26,21 @@
             android:fontFamily="@font/architects_daughter"
             android:gravity="center"
             android:padding="10dp"
-            android:text="VirtualBreak"
+            android:text="@string/virtualbreak"
             android:textSize="40sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Starte gemeinsame virtuelle Pausen!"
+            android:text="@string/starte_gemeinsame_virtuelle_pausen"
             android:textSize="20sp"
             android:gravity="center"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vb_foreground"/>
 
         <Button
             android:layout_width="match_parent"
@@ -44,7 +50,7 @@
             android:padding="10dp"
             android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="100dp"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

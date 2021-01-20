@@ -21,6 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.adapters.StatusSpinnerArrayAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
@@ -40,7 +41,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val mStorageRef = FirebaseStorage.getInstance().getReference()
     private val TAG = "MyProfileFragment"
 
-    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE)
+    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE, Status.ABSENT) //INBREAK nicht dabei, weil das automatisch gesetzt wird
     private lateinit var currentStatus: Status
 
     private var currentUserID: String? = null
@@ -93,11 +94,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun initStatusSpinner(spinner: Spinner) {
         context?.let {
-            val aa = ArrayAdapter(
-                it,
-                android.R.layout.simple_spinner_item,
-                status_array.map { status -> status.dbStr }
-            )
+            val aa = StatusSpinnerArrayAdapter(it, R.layout.status_spinner_item, status_array)
             // Set layout to use when the list of choices (for different status) appear
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Set array Adapter to Spinner
@@ -219,7 +216,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             .show()
     }
 
-    //TODO move this method to PushData
+    //evtl move this method to PushData
     fun uploadProfilePicture(fullPhotoUri: Uri?, context: Context?) {
         Log.d(TAG, "uploadProfilePicture")
         fullPhotoUri?.let{

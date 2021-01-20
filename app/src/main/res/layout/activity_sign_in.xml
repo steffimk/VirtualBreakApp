@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_blue"
     tools:context=".view.view_activitys.SignInActivity">
 
     <LinearLayout
@@ -129,7 +130,6 @@
         android:layout_height="58dp"
         android:layout_margin="20dp"
         android:layout_marginTop="32dp"
-        android:backgroundTint="@color/mandarin"
         android:text="@string/signin_submit"
         android:textAllCaps="false"
         android:textColor="@color/white"

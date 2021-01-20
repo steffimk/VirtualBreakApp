@@ -28,7 +28,8 @@
 
         <TextView
             android:id="@+id/username"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/username"
@@ -47,33 +48,48 @@
             android:textSize="16sp" />
 
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
+            app:cardBackgroundColor="@color/darkblue"
+            app:cardCornerRadius="8dp"
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/light_gray">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="wrap_content"
+                    android:textColor="@color/light_gray"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/status" />
 
                 <Spinner
                     android:id="@+id/status_spinner"
+                    android:backgroundTint="@color/light_gray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_marginVertical="10dp"
                     android:layout_margin="10dp" />
+
+                <TextView
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/light_gray"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_margin="10dp"
+                    android:text="Bei 'Beschäftigt' erhältst du keine Benachrichtigungen zu neuen Pausenräumen" />
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

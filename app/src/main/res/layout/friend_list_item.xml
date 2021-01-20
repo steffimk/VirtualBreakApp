@@ -11,8 +11,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
             android:padding="8dp"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
                 <CheckBox
@@ -38,10 +38,10 @@
                 <ImageView
                     android:id="@+id/status_circle_img"
                     android:contentDescription="status circle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="17dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/status_circle_available" />
+                    android:layout_margin="3dp"
+                    android:src="@drawable/status_circle_busy" />
 
                 <TextView
                     android:id="@+id/friend_list_name"
@@ -50,8 +50,8 @@
                     android:layout_marginStart="10dp"
                     android:padding="5dp"
                     android:text="@string/friend_name"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textSize="20sp" />
 
 
         </LinearLayout>

@@ -6,9 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/group_list_height"
     card_view:cardBackgroundColor="@color/light_gray"
-    card_view:strokeColor="@color/light_gray2"
-    card_view:strokeWidth="1dp"
-    card_view:cardCornerRadius="3dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="8dp">
 

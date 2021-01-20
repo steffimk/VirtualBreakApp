@@ -15,6 +15,7 @@ import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
 
@@ -107,15 +108,21 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
     }
 
     private fun loadProfilePicture(holder: SearchFriendListAdapter.ViewHolderFriends, userId: String) {
-        val mStorageRef = FirebaseStorage.getInstance().getReference()
-        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Picasso.get().load(task.result).into(holder.profilePicture)
-            } else {
-                Log.w(TAG, "getProfilePictureURI unsuccessful")
-            }
+        try{
+            val mStorageRef = FirebaseStorage.getInstance().getReference()
+            mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Picasso.get().load(task.result).into(holder.profilePicture)
+                } else {
+                    Log.w(TAG, "getProfilePictureURI unsuccessful")
+                }
 
+            }
         }
+        catch(e: StorageException){
+            Log.d(TAG, "This user does not have a profile picture")
+        }
+
     }
 
 

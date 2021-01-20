@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_myprofile.*
@@ -112,13 +113,18 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         Log.d(TAG, "current user "+currentUserID)
         currentUserID?.let {
-            mStorageRef.child("img/profilePics/$currentUserID").downloadUrl.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Picasso.get().load(task.result).into(profileImg)
-                } else {
-                    Log.w(TAG, "getProfilePictureURI unsuccessful")
-                }
+            try{
+                mStorageRef.child("img/profilePics/$currentUserID").downloadUrl.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Picasso.get().load(task.result).into(profileImg)
+                    } else {
+                        Log.w(TAG, "getProfilePictureURI unsuccessful")
+                    }
 
+                }
+            }
+            catch(e: StorageException){
+                Log.d(TAG, "This user does not have a profile picture")
             }
 
         }

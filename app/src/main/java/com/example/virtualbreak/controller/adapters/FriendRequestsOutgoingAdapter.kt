@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters
 
 
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.User
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
+import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
+import java.io.IOException
 
 class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsOutgoingAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View
-    val TAG = "FriendRequestsAdapter"
+    val TAG = "FriendRequestsOutgoingAdapter"
 
     class ViewHolderFriendRequests(itemView: View) : RecyclerView.ViewHolder(itemView){
         val deleteRequestBtn: Button
@@ -68,21 +72,16 @@ class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>)
     }
 
     private fun loadProfilePicture(holder: FriendRequestsOutgoingAdapter.ViewHolderFriendRequests, userId: String) {
-        try{
-            val mStorageRef = FirebaseStorage.getInstance().getReference()
-            mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Picasso.get().load(task.result).into(holder.profile_imageView)
-                } else {
-                    Log.w(TAG, "getProfilePictureURI unsuccessful")
-                }
 
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get().load(result).into(holder.profile_imageView)
             }
-        }
-        catch(e: StorageException){
-            Log.d(TAG, "This user does not have a profile picture")
-        }
-
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
+            }
     }
 
 

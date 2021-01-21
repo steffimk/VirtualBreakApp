@@ -64,7 +64,9 @@ class AddGroupFragment : Fragment() {
         groupsFriendsViewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>> { friendsMap ->
             Log.d(TAG, "Observed Friends $friendsMap")
             if (friendsMap != null){
-                adapter = SearchFriendListAdapter(ArrayList(friendsMap.values), context)
+
+                adapter.updateData(ArrayList(friendsMap.values))
+                //adapter = SearchFriendListAdapter(ArrayList(friendsMap.values), context)
                 select_friends_recylerlist.adapter = adapter
 
                 //Set the clicklistener to select friends and recive selected friends ids

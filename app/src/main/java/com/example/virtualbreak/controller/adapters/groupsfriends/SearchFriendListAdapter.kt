@@ -18,13 +18,19 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import java.io.IOException
 
 /**
  * This adapter manages the friend list in AddGroupFragment, when choosing friends to make a group
  */
-class SearchFriendListAdapter (private val friends: ArrayList<User>, private val context: Context?): RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
+class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Context?): RecyclerView.Adapter<SearchFriendListAdapter.ViewHolderFriends>() {
 
     private val TAG = "SearchFriendListAdapter"
+    var friends: ArrayList<User>
+
+    init{
+        this.friends = friends
+    }
 
     //private var testNames: HashMap<String, User> = HashMap()
 
@@ -112,24 +118,23 @@ class SearchFriendListAdapter (private val friends: ArrayList<User>, private val
     }
 
     private fun loadProfilePicture(holder: SearchFriendListAdapter.ViewHolderFriends, userId: String) {
-        try{
-            val mStorageRef = FirebaseStorage.getInstance().getReference()
-            mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Picasso.get().load(task.result).into(holder.profilePicture)
-                } else {
-                    Log.w(TAG, "getProfilePictureURI unsuccessful")
-                }
 
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get().load(result).into(holder.profilePicture)
             }
-        }
-        catch(e: StorageException){
-            Log.d(TAG, "This user does not have a profile picture")
-        }
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
+            }
 
     }
 
-
+    fun updateData(newFriends: ArrayList<User>){
+        this.friends = newFriends
+        notifyDataSetChanged()
+    }
 
 
 }

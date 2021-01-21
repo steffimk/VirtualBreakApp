@@ -121,5 +121,6 @@
     <string name="willkommen_bei">Willkommen bei</string>
     <string name="virtualbreak">VirtualBreak</string>
     <string name="starte_gemeinsame_virtuelle_pausen">Starte gemeinsame virtuelle Pausen!</string>
+    <string name="status_busy_info">Bei \'Beschäftigt\' erhältst du keine Benachrichtigungen zu neuen Pausenräumen</string>
 
 </resources>

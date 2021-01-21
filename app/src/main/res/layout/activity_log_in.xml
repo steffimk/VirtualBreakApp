@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_marginHorizontal="40dp"
-        android:backgroundTint="@color/blue_Dark_cornflower"
+        android:backgroundTint="@color/mandarin"
         android:text="@string/login_submit"
         android:textAllCaps="false"
         android:textColor="@color/light_gray"

@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_myprofile.*
+import java.io.IOException
 
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -110,19 +111,16 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         Log.d(TAG, "current user "+currentUserID)
         currentUserID?.let {
-            try{
-                mStorageRef.child("img/profilePics/$currentUserID").downloadUrl.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Picasso.get().load(task.result).into(profileImg)
-                    } else {
-                        Log.w(TAG, "getProfilePictureURI unsuccessful")
-                    }
 
+            val mStorageRef = FirebaseStorage.getInstance().getReference()
+            mStorageRef.child("img/profilePics/$currentUserID").downloadUrl
+                .addOnSuccessListener { result ->
+                    Picasso.get().load(result).into(profileImg)
                 }
-            }
-            catch(e: StorageException){
-                Log.d(TAG, "This user does not have a profile picture")
-            }
+                .addOnFailureListener {
+                    //Log.w(TAG, it) // exception is already printed in StorageException class
+                    Log.d(TAG, "This user does not have a profile picture!")
+                }
 
         }
     }

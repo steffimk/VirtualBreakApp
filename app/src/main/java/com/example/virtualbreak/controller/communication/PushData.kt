@@ -31,6 +31,16 @@ class PushData {
             }
         }
 
+        fun saveUserName(name: String) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_USERNAME).setValue(name)
+                Log.d(TAG, "Saved username")
+            } else {
+                Log.d(TAG, "No user logged in. Cannot save user.")
+            }
+        }
+
         fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {

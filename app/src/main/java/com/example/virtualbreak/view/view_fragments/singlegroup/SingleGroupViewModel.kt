@@ -81,18 +81,18 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
     }
 
-    private val groupUsersWithFcmTokens: HashMap<String,Pair<String,Boolean>> by lazy {
-        HashMap<String,Pair<String,Boolean>>().also {
+    private val usersOfGroup: HashMap<String,User> by lazy {
+        HashMap<String,User>().also {
             PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
                 .child(Constants.DATABASE_CHILD_USERS).addValueEventListener(groupUsersEventListener)
         }
     }
 
     /**
-     * Returns HashMap with userId as key and pair(fcmToken, isBusy) as value
+     * Returns HashMap with userId as key and user as value
      */
-    fun getGroupUsersWithFcmToken(): HashMap<String,Pair<String,Boolean>> {
-        return this.groupUsersWithFcmTokens;
+    fun getGroupUsers(): HashMap<String,User> {
+        return this.usersOfGroup;
     }
 
     private val groupUsersEventListener = object : ValueEventListener {
@@ -103,17 +103,17 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
             if (pulledUsers == null) return
 
-            // Pull fcmToken of new users in group
+            // Pull new users in group
             for(userId in pulledUsers.keys){
-                if(groupUsersWithFcmTokens.containsKey(userId)) return // fcmToken already saved
+                if(usersOfGroup.containsKey(userId)) return // fcmToken already saved
                 else PullData.database.child(Constants.DATABASE_CHILD_USERS)
-                    .child(userId).addListenerForSingleValueEvent(userFcmTokenListener)
+                    .child(userId).addValueEventListener(userListener)
             }
 
             // Delete users that left group
-            for (userId in groupUsersWithFcmTokens) {
+            for (userId in usersOfGroup) {
                 if (!pulledUsers.keys.contains(userId)){
-                    groupUsersWithFcmTokens.remove(userId)
+                    usersOfGroup.remove(userId)
                 }
             }
         }
@@ -124,7 +124,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
     }
 
-    private val userFcmTokenListener = object : ValueEventListener {
+    private val userListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             val pulledUser = dataSnapshot.getValue<User>()
@@ -132,7 +132,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
             if (pulledUser == null) return
 
-            groupUsersWithFcmTokens[pulledUser.uid] = Pair(pulledUser.fcmToken,pulledUser.status == Status.BUSY)
+            usersOfGroup[pulledUser.uid] = pulledUser
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -146,6 +146,10 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             .removeEventListener(groupUsersEventListener)
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
             .child(groupId).child(Constants.DATABASE_CHILD_ROOMS).removeEventListener(roomsValueEventListener)
+        usersOfGroup.keys.forEach{
+            PullData.database.child(Constants.DATABASE_CHILD_USERS)
+                .child(it).removeEventListener(userListener)
+        }
     }
 
 //    private val user: MutableLiveData<User> = object : MutableLiveData<User>() {

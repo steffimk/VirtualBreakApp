@@ -9,10 +9,12 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -47,6 +49,9 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private var currentUserID: String? = null
 
+    private lateinit var userNameTextView: TextView
+    private lateinit var userNameEditText: EditText
+    private lateinit var userNameButton: FloatingActionButton
 
     private val PICK_FROM_GALLERY = 1
 
@@ -60,6 +65,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val spinner = root.findViewById<Spinner>(R.id.status_spinner)
         currentUserID = SharedPrefManager.instance.getUserId()
+
+        userNameTextView = root.findViewById<TextView>(R.id.username)
+        userNameEditText = root.findViewById<EditText>(R.id.username_textEdit)
+        userNameButton = root.findViewById<FloatingActionButton>(R.id.fab_editUsername)
 
         initProfilePicture()
 
@@ -88,6 +97,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             //Snackbar.make(root, "Neues Profilbild", Snackbar.LENGTH_LONG).setAction("Action", null).show()
             chooseProfileImg()
 
+        }
+
+        userNameButton.setOnClickListener {
+            editOrSaveUsername()
         }
 
         return root
@@ -122,6 +135,25 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     Log.d(TAG, "This user does not have a profile picture!")
                 }
 
+        }
+    }
+
+    private fun editOrSaveUsername() {
+        if (userNameTextView.visibility == View.VISIBLE) {
+            userNameTextView.visibility = View.GONE
+            userNameEditText.setText(userNameTextView.text)
+            userNameEditText.visibility = View.VISIBLE
+            userNameButton.setImageResource(R.drawable.ic_action_check)
+        } else {
+            if (userNameEditText.text.isEmpty()) {
+                Toast.makeText(context, "Der Benutzername kann nicht leer sein.", Toast.LENGTH_SHORT).show()
+                return
+            }
+            userNameTextView.visibility = View.VISIBLE
+            userNameEditText.visibility = View.GONE
+            userNameButton.setImageResource(R.drawable.ic_action_edit)
+            PushData.saveUserName(userNameEditText.text.toString())
+            this.hideSoftKeyboard(userNameEditText)
         }
     }
 
@@ -238,5 +270,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
      */
     override fun onNothingSelected(arg0: AdapterView<*>) {
 
+    }
+
+    fun hideSoftKeyboard(editText: EditText) {
+        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 }

@@ -32,7 +32,7 @@
             android:layout_marginHorizontal="16dp"
             android:gravity="start"
             android:text="@string/wahl_gruppenname"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/groupname_layout"
@@ -85,7 +85,7 @@
             android:layout_marginTop="10dp"
             android:gravity="start"
             android:text="@string/select_friends"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
 
         <androidx.recyclerview.widget.RecyclerView

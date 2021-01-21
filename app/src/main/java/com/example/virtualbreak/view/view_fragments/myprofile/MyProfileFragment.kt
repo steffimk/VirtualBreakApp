@@ -51,7 +51,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var userNameTextView: TextView
     private lateinit var userNameEditText: EditText
-    private lateinit var userNameButton: FloatingActionButton
+    private lateinit var userNameButton: ImageButton
 
     private val PICK_FROM_GALLERY = 1
 
@@ -68,7 +68,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         userNameTextView = root.findViewById<TextView>(R.id.username)
         userNameEditText = root.findViewById<EditText>(R.id.username_textEdit)
-        userNameButton = root.findViewById<FloatingActionButton>(R.id.fab_editUsername)
+        userNameButton = root.findViewById<ImageButton>(R.id.fab_editUsername)
 
         initProfilePicture()
 
@@ -84,11 +84,11 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             Log.d(TAG, "Observed User: $observedUser")
             if (observedUser != null) {
                 //set username text of current user
-                root.findViewById<TextView>(R.id.username).text = observedUser.username
+                userNameTextView.text = observedUser.username
                 profile_email.text = observedUser.email
+
                 // Set position of spinner to current status
-                val aa = spinner.adapter as ArrayAdapter<String>
-                spinner.setSelection(aa.getPosition(observedUser.status?.dbStr))
+                spinner.setSelection(status_array.indexOf(observedUser.status))
             }
         })
 

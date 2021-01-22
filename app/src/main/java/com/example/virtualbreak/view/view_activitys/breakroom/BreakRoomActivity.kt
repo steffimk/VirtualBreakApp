@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.activity_break_room.*
 class BreakRoomActivity : AppCompatActivity() {
 
     private val TAG = "BreakRoomActivity"
-    private val SYSTEM_ALERT_WINDOW_PERMISSION = 2084
     private val DRAW_OVER_OTHER_APP_PERMISSION = 123
 
     private val viewModel: BreakRoomViewModel by viewModels {
@@ -160,7 +159,9 @@ class BreakRoomActivity : AppCompatActivity() {
 
         android.R.id.home -> {
             // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
-            leaveRoom()
+            //leaveRoom()
+            openWidget()
+            Log.d(TAG, "Back/home pressed")
             true
         }
 
@@ -293,10 +294,18 @@ class BreakRoomActivity : AppCompatActivity() {
     private fun openWidget() {
         Log.d(TAG, "openwidget")
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
-            startService(Intent(this, BreakroomWidgetService::class.java))
+            Log.d("BreakRoom", room?.description + room?.type?.dbStr)
+            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
+            intent.putExtra("RoomName", room?.description)
+            intent.putExtra("RoomType", room?.type?.dbStr)
+            startService(intent)
             finish()
         } else if (Settings.canDrawOverlays(this)) {
-            startService(Intent(this, BreakroomWidgetService::class.java))
+            Log.d("BreakRoom", room?.description + room?.type?.dbStr)
+            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
+            intent.putExtra("RoomName", room?.description)
+            intent.putExtra("RoomType", room?.type?.dbStr)
+            startService(intent)
             finish()
         } else {
             askPermission()

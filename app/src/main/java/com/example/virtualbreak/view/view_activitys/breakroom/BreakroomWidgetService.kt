@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.R.attr.data
 import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
@@ -7,16 +8,15 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.view.*
-import android.view.View.OnTouchListener
 import android.widget.Button
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.TextView
 import com.example.virtualbreak.R
-import com.example.virtualbreak.view.view_activitys.MainActivity
+import kotlin.math.abs
 
 
-class BreakroomWidgetService : Service(), View.OnClickListener {
+class BreakroomWidgetService : Service() {
 
     private val TAG = "BreakRoomWidgetService"
 
@@ -24,7 +24,10 @@ class BreakroomWidgetService : Service(), View.OnClickListener {
     private lateinit var mFloatingView: View
     private lateinit var collapsedView: View
     private lateinit var expandedView: View
-    private lateinit var logo: RelativeLayout
+    private var roomName: String? = "RoomName"
+    private var roomType: String? = "RoomType"
+
+    private lateinit var params: WindowManager.LayoutParams
 
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -36,30 +39,27 @@ class BreakroomWidgetService : Service(), View.OnClickListener {
 
         setTheme(R.style.Theme_VirtualBreak)
 
+        //Inflate the Layout
         mFloatingView = LayoutInflater.from(this).inflate(
             R.layout.floating_widget_layout,
             null
         )
 
-        val LAYOUT_FLAG: Int
+        //Spefify parameters for the layout
+        params = WindowManager.LayoutParams().apply {
+            format = PixelFormat.TRANSLUCENT
+            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            @Suppress("DEPRECATION")
+            type = when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                else -> WindowManager.LayoutParams.TYPE_TOAST
+            }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE
+            gravity = Gravity.CENTER
+            width = WindowManager.LayoutParams.WRAP_CONTENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
         }
-
-        val params = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            LAYOUT_FLAG,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            PixelFormat.TRANSLUCENT
-        )
-
-        params.gravity = Gravity.TOP
-        params.x = 10
-        params.y = 100
 
         //getting windows services and adding the floating view to it
         mWindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
@@ -70,179 +70,105 @@ class BreakroomWidgetService : Service(), View.OnClickListener {
         collapsedView = mFloatingView.findViewById(R.id.widget_layoutCollapsed)
         expandedView = mFloatingView.findViewById(R.id.widget_layoutExpanded)
 
-        //adding click listener to close button and expanded view
 
-        //adding click listener to close button and expanded view
-        //mFloatingView.setOnClickListener(this)
-        expandedView.findViewById<View>(R.id.widget_logo_expanded).setOnClickListener(this)
-
-        var leaveRoomButton: ImageView = mFloatingView.findViewById(R.id.widget_button_leaveroom)
-        leaveRoomButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@BreakroomWidgetService, "LeaveRoom.", Toast.LENGTH_LONG)
-                    .show()
-            }
-        })
-
-//        val openRoomButton: Button = mFloatingView.findViewById(R.id.widget_button_open_room)
-//        openRoomButton.setOnClickListener {
-//            val intent = Intent(this@FloatingViewService, MainActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            startActivity(intent)
-//            //close the service and remove view from the view hierarchy
+//        var testClose: ImageView = mFloatingView.findViewById(R.id.widget_test_close)
+//        testClose.setOnClickListener {
 //            stopSelf()
 //        }
-//        expandedView.findViewById<View>(R.id.widget_button_open_room).setOnClickListener(this)
-//        expandedView.findViewById<View>(R.id.widget_button_videocall).setOnClickListener(this)
 
-        //logo = mFloatingView.findViewById(R.id.relativeLayoutParent)
+        //Set the OntouchListener for the rootParent
+        val layoutParent = mFloatingView.findViewById<View>(R.id.widget_relativeLayoutParent)
+        layoutParent.setOnTouchListener(onTouchListener)
 
-//        mFloatingView.findViewById<View>(R.id.relativeLayoutParent).setOnTouchListener(object : OnTouchListener{
-//            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-//
-//                //remember the initial position.
-//                initialX = params.x;
-//                initialY = params.y;
-//
-//
-//                //get the touch location
-//                initialTouchX = event.getRawX();
-//                initialTouchY = event.getRawY();
-//                return true;
-//                case MotionEvent.ACTION_MOVE:
-//                //Calculate the X and Y coordinates of the view.
-//                params.x = initialX + (int) (event.getRawX() - initialTouchX);
-//                params.y = initialY + (int) (event.getRawY() - initialTouchY);
-//
-//
-//                //Update the layout with new X & Y coordinate
-//                mWindowManager.updateViewLayout(mFloatingView, params);
-//                return true;
-//            }
-//            return false;
-//            }
-//
-//        })
+        mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text = roomName
+        mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text = roomType
 
 
-        mFloatingView.findViewById<ImageView>(R.id.widget_collapsed_iv).setOnTouchListener(object :
-            OnTouchListener {
-            private var initialX = 0
-            private var initialY = 0
-            private var initialTouchX = 0f
-            private var initialTouchY = 0f
-            override fun onTouch(v: View?, event: MotionEvent): Boolean {
-                v?.performClick()
-                Log.d(TAG, "OnTouch" + event.action)
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
+        val leaveRoomButton: ImageButton = mFloatingView.findViewById(R.id.widget_button_leaveroom)
+        leaveRoomButton.setOnClickListener {
+            Log.d(TAG, "Leave room")
+        }
 
-                        //remember the initial position.
-                        initialX = params.x
-                        initialY = params.y
+        val videoCall: ImageButton = mFloatingView.findViewById(R.id.widget_button_videocall)
+        videoCall.setOnClickListener {
+            Log.d(TAG, "Join Video call")
+        }
 
-
-                        //get the touch location
-                        initialTouchX = event.rawX
-                        initialTouchY = event.rawY
-
-                        return true
-                    }
-                    MotionEvent.ACTION_UP ->
-                        //Add code for launching application and positioning the widget to nearest edge.
-                        return true
-                    MotionEvent.ACTION_MOVE -> {
-                        val Xdiff = Math.round(event.rawX - initialTouchX).toFloat()
-                        val Ydiff = Math.round(event.rawY - initialTouchY).toFloat()
-
-
-                        //Calculate the X and Y coordinates of the view.
-                        params.x = initialX + Xdiff.toInt()
-                        params.y = initialY + Ydiff.toInt()
-
-                        //Update the layout with new X & Y coordinates
-                        mWindowManager.updateViewLayout(mFloatingView, params)
-                        return true
-                    }
-                }
-                return false
-            }
-        })
-
-
-//        mFloatingView.findViewById<View>(R.id.relativeLayoutParent)
-//            .setOnTouchListener(object : OnTouchListener {
-//                private var initialX = 0
-//                private var initialY = 0
-//                private var initialTouchX = 0f
-//                private var initialTouchY = 0f
-//                override fun onTouch(v: View, event: MotionEvent): Boolean {
-//                    when (event.action) {
-//                        MotionEvent.ACTION_DOWN -> {
-//                            initialX = params.x
-//                            initialY = params.y
-//                            initialTouchX = event.rawX
-//                            initialTouchY = event.rawY
-//                            return true
-//                        }
-//                        MotionEvent.ACTION_UP -> {
-//                            //when the drag is ended switching the state of the widget
-//                            collapsedView.visibility = View.GONE
-//                            expandedView.visibility = View.VISIBLE
-//                            return true
-//                        }
-//                        MotionEvent.ACTION_MOVE -> {
-//                            //this code is helping the widget to move around the screen with fingers
-//                            params.x = initialX + (event.rawX - initialTouchX).toInt()
-//                            params.y = initialY + (event.rawY - initialTouchY).toInt()
-//                            mWindowManager.updateViewLayout(mFloatingView, params)
-//                            return true
-//                        }
-//                    }
-//                    return false
-//                }
-//            })
-
+        val openRoomButton: Button = mFloatingView.findViewById(R.id.widget_button_open_room)
+        openRoomButton.setOnClickListener {
+            Log.d(TAG, "Open room")
+            val intent = Intent(this@BreakroomWidgetService, BreakRoomActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            //close the service and remove view from the view hierarchy
+            stopSelf()
+        }
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mFloatingView != null) {
-            mWindowManager.removeView(mFloatingView)
-        }
-
+        mWindowManager.removeView(mFloatingView)
+        stopSelf()
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.widget_logo_expanded -> {
-                //switching views
-                collapsedView.visibility = View.VISIBLE
-                expandedView.visibility = View.GONE
-            }
-            R.id.widget_button_open_room -> {
-//                val notificationIntent = Intent(context, BreakRoomActivity::class.java)
-//                notificationIntent.action = Intent.ACTION_MAIN
-//                notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-//                notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-//                val intent = Intent(context, BreakRoomActivity::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // You need this if starting
-//                //  the activity from a service
-//                intent.action = Intent.ACTION_MAIN
-//                intent.addCategory(Intent.CATEGORY_LAUNCHER)
-//                startActivity(intent)
+    //OnTouchListener
+    private var lastX: Int = 0
+    private var lastY: Int = 0
+    private var firstX: Int = 0
+    private var firstY: Int = 0
 
-            }
-            R.id.widget_button_leaveroom -> {
+    private var isShowing = false
+    private var touchConsumedByMove = false
 
-            }
-            R.id.widget_button_videocall -> {
+    private val onTouchListener = View.OnTouchListener { view, event ->
+        val totalDeltaX = lastX - firstX
+        val totalDeltaY = lastY - firstY
 
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                Log.d("BreakroomWidget", "ACTION_DOWN")
+                lastX = event.rawX.toInt()
+                lastY = event.rawY.toInt()
+                firstX = lastX
+                firstY = lastY
             }
-            // close widget stopSelf()
+            MotionEvent.ACTION_UP -> {
+                view.performClick()
+            }
+            MotionEvent.ACTION_MOVE -> {
+                Log.d("BreakroomWidget", "ACTION_MOVE")
+                val deltaX = event.rawX.toInt() - lastX
+                val deltaY = event.rawY.toInt() - lastY
+                lastX = event.rawX.toInt()
+                lastY = event.rawY.toInt()
+                if (abs(totalDeltaX) >= 5 || abs(totalDeltaY) >= 5) {
+                    if (event.pointerCount == 1) {
+                        params.x += deltaX
+                        params.y += deltaY
+                        touchConsumedByMove = true
+                        mWindowManager?.apply {
+                            updateViewLayout(mFloatingView, params)
+                        }
+                    } else {
+                        touchConsumedByMove = false
+                    }
+                } else {
+                    touchConsumedByMove = false
+                }
+            }
+            else -> {
+            }
         }
+        touchConsumedByMove
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        roomName = intent?.extras!!["RoomName"] as String?
+        roomType = intent?.extras!!["RoomType"] as String?
+        Log.d("BreakRoom", roomName + roomType)
+        return super.onStartCommand(intent, flags, startId)
     }
 
 }

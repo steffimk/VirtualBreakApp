@@ -87,7 +87,11 @@ class FriendListAdapter(friends: ArrayList<User>, private val context: Context?)
         val mStorageRef = FirebaseStorage.getInstance().getReference()
         mStorageRef.child("img/profilePics/$userId").downloadUrl
             .addOnSuccessListener { result ->
-                Picasso.get().load(result).into(holder.profilePic)
+                Picasso.get()
+                    .load(result)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.profilePic)
             }
             .addOnFailureListener {
                 //Log.w(TAG, it) // exception is already printed in StorageException class

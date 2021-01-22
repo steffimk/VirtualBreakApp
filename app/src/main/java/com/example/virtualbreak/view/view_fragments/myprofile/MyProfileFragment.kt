@@ -128,7 +128,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val mStorageRef = FirebaseStorage.getInstance().getReference()
             mStorageRef.child("img/profilePics/$currentUserID").downloadUrl
                 .addOnSuccessListener { result ->
-                    Picasso.get().load(result).into(profileImg)
+                    Picasso.get()
+                        .load(result)
+                        .fit()
+                        .centerCrop().into(profileImg)
                 }
                 .addOnFailureListener {
                     //Log.w(TAG, it) // exception is already printed in StorageException class

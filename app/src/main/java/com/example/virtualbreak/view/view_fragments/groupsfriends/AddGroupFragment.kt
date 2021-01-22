@@ -10,20 +10,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.transition.Slide
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.adapters.groupsfriends.SearchFriendListAdapter
 import com.example.virtualbreak.controller.communication.FCMService
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_add_group.*
 import kotlinx.android.synthetic.main.fragment_add_group.select_friends_recylerlist
-import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
 
 class AddGroupFragment : Fragment() {
@@ -57,9 +52,16 @@ class AddGroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //select_friends_recylerlist.setHasFixedSize(true)
 
+        addTransition()
+
         adapter = SearchFriendListAdapter(ArrayList(), context)
         //select_friends_recylerlist.adapter = SearchFriendListAdapter(friends, context)
         select_friends_recylerlist.adapter = adapter
+
+        //for faster image loadig
+        select_friends_recylerlist.setHasFixedSize(true)
+        select_friends_recylerlist.setItemViewCacheSize(20)
+
 
         groupsFriendsViewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>> { friendsMap ->
             Log.d(TAG, "Observed Friends $friendsMap")
@@ -123,6 +125,14 @@ class AddGroupFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun addTransition() {
+        returnTransition = Slide().apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            addTarget(R.id.groups_recyler_list_view)
+        }
+
     }
 
 }

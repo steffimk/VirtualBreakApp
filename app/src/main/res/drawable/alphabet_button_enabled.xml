@@ -7,11 +7,11 @@
         android:width="@dimen/alphabet_buttons_width"
         android:height="@dimen/alphabet_buttons_height" />
 
-    <corners
+    <!--<corners
         android:bottomRightRadius="3dp"
         android:bottomLeftRadius="3dp"
         android:topLeftRadius="3dp"
-        android:topRightRadius="3dp" />
+        android:topRightRadius="3dp" />-->
 
     <padding
         android:left="1dp"

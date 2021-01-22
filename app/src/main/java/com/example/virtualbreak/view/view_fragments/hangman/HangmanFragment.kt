@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.view.view_fragments.textchat.TextchatViewModel
-import com.example.virtualbreak.view.view_fragments.textchat.TextchatViewModelFactory
+import kotlinx.android.synthetic.main.hangman_fragment.*
 
 class HangmanFragment : Fragment() {
 
@@ -27,6 +24,9 @@ class HangmanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        a_input.setOnClickListener {
+            //a_input.setEnabled(false)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

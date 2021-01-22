@@ -35,4 +35,8 @@
     <color name="pale_yellow">#fbe8a6</color>
 
 
+
+    <color name="alphabet_button">@color/mandarin</color>
+
+
 </resources>

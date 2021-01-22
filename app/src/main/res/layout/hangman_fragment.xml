@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HangmanFragment">
+
+    <LinearLayout
+        android:id="@+id/hangman_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/hangman_word"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <GridLayout
+            android:id="@+id/input_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:rowCount="7"
+            android:useDefaultMargins="true">
+
+            <!-- Alphabet Buttons -->
+            <Button
+                android:id="@+id/a_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="A" />
+
+            <Button
+                android:id="@+id/b_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="B" />
+
+            <Button
+                android:id="@+id/c_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="C" />
+
+            <Button
+                android:id="@+id/d_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="D" />
+
+            <Button
+                android:id="@+id/e_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="E" />
+
+            <Button
+                android:id="@+id/f_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="F" />
+
+            <Button
+                android:id="@+id/g_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="G" />
+            <Button
+                android:id="@+id/h_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="H" />
+            <Button
+                android:id="@+id/i_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="I" />
+            <Button
+                android:id="@+id/j_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="J" />
+            <Button
+                android:id="@+id/k_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="K" />
+            <Button
+                android:id="@+id/l_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="L" />
+            <Button
+                android:id="@+id/m_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="M" />
+            <Button
+                android:id="@+id/n_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="N" />
+            <Button
+                android:id="@+id/o_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="O" />
+            <Button
+                android:id="@+id/p_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="P" />
+            <Button
+                android:id="@+id/q_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="Q" />
+            <Button
+                android:id="@+id/r_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="R" />
+            <Button
+                android:id="@+id/s_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="S" />
+            <Button
+                android:id="@+id/t_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="T" />
+            <Button
+                android:id="@+id/u_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="U" />
+            <Button
+                android:id="@+id/v_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="V" />
+            <Button
+                android:id="@+id/w_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="W" />
+            <Button
+                android:id="@+id/x_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="X" />
+            <Button
+                android:id="@+id/y_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="Y" />
+            <Button
+                android:id="@+id/z_input"
+                android:layout_height="wrap_content"
+                android:layout_width="@dimen/alphabet_buttons"
+                android:backgroundTint="@color/alphabet_button"
+                android:text="Z" />
+
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/fault_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_vb"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/hangman_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/hangman_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        android:text="Hello" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

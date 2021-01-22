@@ -29,4 +29,6 @@
     <dimen name="min_List_group_size">24sp</dimen>
     <dimen name="max_List_group_size">28sp</dimen>
     <dimen name="margin_10">10dp</dimen>
+
+    <dimen name="alphabet_buttons">40dp</dimen>
 </resources>

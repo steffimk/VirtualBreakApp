@@ -131,7 +131,7 @@ class ChatAdapter(
                 )
             } else{ // message was sent on different day, also show date
                 sdf = SimpleDateFormat(
-                    "HH:mm, MMM d, ''yy",//"dd.MM.yyyy HH:mm",
+                    "HH:mm, dd.MM.yyyy",//"dd.MM.yyyy HH:mm", // MMM d, ''yy
                     Locale.getDefault()
                 )
             }

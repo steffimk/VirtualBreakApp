@@ -88,7 +88,8 @@ class BreakRoomActivity : AppCompatActivity() {
 
             viewModel.loadUsersOfRoom()
 
-            PushData.joinRoom(this, roomId, userName)
+            //bug moved to other places this can lead to too many messages when device screen turns on and off
+            // PushData.joinRoom(this, roomId, userName)
 
             viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
 

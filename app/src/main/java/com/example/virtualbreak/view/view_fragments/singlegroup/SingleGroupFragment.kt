@@ -48,10 +48,6 @@ class SingleGroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_singlegroup, container, false)
-        val textView: TextView = root.findViewById(R.id.text_singlegroup)
-        singleGroupViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
 
         setHasOptionsMenu(true);
 
@@ -115,7 +111,15 @@ class SingleGroupFragment : Fragment() {
         if (groupId != "") {
             roomId = PushData.saveRoom(groupId, roomtype, roomtype.dbStr)
             sendNotifications(groupId, this.singleGroupViewModel.currentGroup?.description, roomtype.dbStr)
-            SharedPrefManager.instance.saveRoomId(roomId!!)
+
+            if(roomId != null){
+                context?.let{
+                    PushData.joinRoom(it, roomId, userName)
+                }
+                SharedPrefManager.instance.saveRoomId(roomId)
+            } else{
+                Log.w(TAG, "Room ID is null, can't open Breakroom")
+            }
         }
         val intent = Intent(activity, BreakRoomActivity::class.java)
         intent.putExtra(Constants.USER_NAME, userName)

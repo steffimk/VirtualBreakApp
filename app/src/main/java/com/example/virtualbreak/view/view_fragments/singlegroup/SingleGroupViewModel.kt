@@ -18,11 +18,6 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
     private val TAG = "SingleGroupViewModel"
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Offene Pausenräume:"
-    }
-    val text: LiveData<String> = _text
-
     private val rooms : MutableLiveData<HashMap<String,Room>> =
         object : MutableLiveData<HashMap<String,Room>>(HashMap()) {
             private val queryRooms = PullData.database.child(Constants.DATABASE_CHILD_GROUPS)

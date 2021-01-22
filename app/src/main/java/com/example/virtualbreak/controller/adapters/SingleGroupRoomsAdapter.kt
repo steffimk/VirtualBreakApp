@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 
@@ -54,6 +55,7 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayLis
             v.setOnClickListener {
                 var context = imageView.context
 
+                PushData.joinRoom(context, item.uid, userName)
                 SharedPrefManager.instance.saveRoomId(item.uid)
 
                 val intent = Intent(context, BreakRoomActivity::class.java)

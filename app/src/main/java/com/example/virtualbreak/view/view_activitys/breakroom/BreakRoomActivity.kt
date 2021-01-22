@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.sax.TextElementListener
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -16,15 +17,18 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
+import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
@@ -46,6 +50,8 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
+    private var roomType : String = Roomtype.COFFEE.dbStr
+
     private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
@@ -54,13 +60,32 @@ class BreakRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
 
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            userName = bundle.getString(Constants.USER_NAME)
+            val type = bundle.getString(Constants.ROOM_TYPE)
+            if (type != null) {
+                roomType = type
+            }
+        }
+
         // TODO: depending on room type set fragments
         if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<TextchatFragment>(R.id.fragment_container_game_view)
+            if(roomType.equals(Roomtype.GAME.dbStr)){
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    // TODO make game fragment visible
+                    val fragment = findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
 
-                add<TextchatFragment>(R.id.fragment_container_chat_view)
+                    add<HangmanFragment>(R.id.fragment_container_game_view)
+                    add<TextchatFragment>(R.id.fragment_container_chat_view)
+                }
+            } else{
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    add<TextchatFragment>(R.id.fragment_container_chat_view)
+                }
             }
         }
 
@@ -77,11 +102,6 @@ class BreakRoomActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_leave)
 
-
-        val bundle: Bundle? = intent.extras
-        if (bundle != null) {
-            userName = bundle.getString(Constants.USER_NAME)
-        }
 
 
         if (roomId != null) {

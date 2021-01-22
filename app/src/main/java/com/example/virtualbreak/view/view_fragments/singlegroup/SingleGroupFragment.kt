@@ -119,6 +119,7 @@ class SingleGroupFragment : Fragment() {
         }
         val intent = Intent(activity, BreakRoomActivity::class.java)
         intent.putExtra(Constants.USER_NAME, userName)
+        intent.putExtra(Constants.ROOM_TYPE, roomtype.dbStr)
         activity?.startActivity(intent)
 
     }

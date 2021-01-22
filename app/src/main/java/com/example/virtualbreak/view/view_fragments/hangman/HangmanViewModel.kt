@@ -1,4 +1,4 @@
-package com.example.virtualbreak
+package com.example.virtualbreak.view.view_fragments.hangman
 
 import androidx.lifecycle.ViewModel
 

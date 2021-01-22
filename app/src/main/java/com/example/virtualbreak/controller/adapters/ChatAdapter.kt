@@ -175,7 +175,6 @@ class ChatAdapter(
 
     }
 
-    //can be used to  update data, but then the  chatview does not scroll to last message, so use new ChatAdapter to update
     fun updateData(messages: MutableList<Message>, roomUsernames: HashMap<String, String>?) {
         roomUsers = roomUsernames
         messagesList = messages

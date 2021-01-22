@@ -24,7 +24,9 @@ import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.squareup.picasso.Picasso
+import java.io.IOException
 
 
 /**
@@ -96,14 +98,14 @@ class AddFriendsFragment : Fragment() {
 
     private fun loadProfilePicture(imageView: ImageView, userId: String) {
         val mStorageRef = FirebaseStorage.getInstance().getReference()
-        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Picasso.get().load(task.result).into(imageView)
-            } else {
-                Log.w(TAG, "getProfilePictureURI unsuccessful")
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get().load(result).into(imageView)
             }
-
-        }
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
+            }
     }
 
     fun hideSoftKeyboard(editText: EditText) {

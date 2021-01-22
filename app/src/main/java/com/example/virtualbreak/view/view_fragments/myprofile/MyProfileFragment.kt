@@ -23,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.adapters.StatusSpinnerArrayAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
@@ -30,9 +31,11 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_myprofile.*
+import java.io.IOException
 
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -41,14 +44,14 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val mStorageRef = FirebaseStorage.getInstance().getReference()
     private val TAG = "MyProfileFragment"
 
-    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE)
+    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE, Status.ABSENT) //INBREAK nicht dabei, weil das automatisch gesetzt wird
     private lateinit var currentStatus: Status
 
     private var currentUserID: String? = null
 
     private lateinit var userNameTextView: TextView
     private lateinit var userNameEditText: EditText
-    private lateinit var userNameButton: FloatingActionButton
+    private lateinit var userNameButton: ImageButton
 
     private val PICK_FROM_GALLERY = 1
 
@@ -65,7 +68,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         userNameTextView = root.findViewById<TextView>(R.id.username)
         userNameEditText = root.findViewById<EditText>(R.id.username_textEdit)
-        userNameButton = root.findViewById<FloatingActionButton>(R.id.fab_editUsername)
+        userNameButton = root.findViewById<ImageButton>(R.id.fab_editUsername)
 
         initProfilePicture()
 
@@ -81,11 +84,11 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             Log.d(TAG, "Observed User: $observedUser")
             if (observedUser != null) {
                 //set username text of current user
-                root.findViewById<TextView>(R.id.username).text = observedUser.username
+                userNameTextView.text = observedUser.username
                 profile_email.text = observedUser.email
+
                 // Set position of spinner to current status
-                val aa = spinner.adapter as ArrayAdapter<String>
-                spinner.setSelection(aa.getPosition(observedUser.status?.dbStr))
+                spinner.setSelection(status_array.indexOf(observedUser.status))
             }
         })
 
@@ -105,11 +108,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun initStatusSpinner(spinner: Spinner) {
         context?.let {
-            val aa = ArrayAdapter(
-                it,
-                android.R.layout.simple_spinner_item,
-                status_array.map { status -> status.dbStr }
-            )
+            val aa = StatusSpinnerArrayAdapter(it, R.layout.status_spinner_item, status_array)
             // Set layout to use when the list of choices (for different status) appear
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             // Set array Adapter to Spinner
@@ -125,14 +124,16 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         Log.d(TAG, "current user "+currentUserID)
         currentUserID?.let {
-            mStorageRef.child("img/profilePics/$currentUserID").downloadUrl.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Picasso.get().load(task.result).into(profileImg)
-                } else {
-                    Log.w(TAG, "getProfilePictureURI unsuccessful")
-                }
 
-            }
+            val mStorageRef = FirebaseStorage.getInstance().getReference()
+            mStorageRef.child("img/profilePics/$currentUserID").downloadUrl
+                .addOnSuccessListener { result ->
+                    Picasso.get().load(result).into(profileImg)
+                }
+                .addOnFailureListener {
+                    //Log.w(TAG, it) // exception is already printed in StorageException class
+                    Log.d(TAG, "This user does not have a profile picture!")
+                }
 
         }
     }
@@ -245,7 +246,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             .show()
     }
 
-    //TODO move this method to PushData
+    //evtl move this method to PushData
     fun uploadProfilePicture(fullPhotoUri: Uri?, context: Context?) {
         Log.d(TAG, "uploadProfilePicture")
         fullPhotoUri?.let{

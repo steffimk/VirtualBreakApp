@@ -54,7 +54,7 @@
     <string name="make_group">Erstelle eine Gruppe!</string>
     <string name="hint_group_name">Gruppen Name</string>
     <string name="search_friends">Suche Freunde</string>
-    <string name="select_friends">Füge ein paar Freunde hinzu:</string>
+    <string name="select_friends">2. Füge ein paar Freunde hinzu:</string>
     <string name="Error_no_friends">Bitte wähle mindestens einen Freund aus!</string>
     <string name="Error_no_groupname">Bitte legen einen Gruppennamen fest!</string>
 
@@ -74,7 +74,7 @@
     <string name="neuer_pausenraum">Neuer Pausenraum</string>
     <string name="willst_du_dich_wirklich_ausloggen">Willst du dich wirklich ausloggen?</string>
     <string name="ja">Ja</string>
-    <string name="status">Status</string>
+    <string name="status">Status setzen:</string>
     <string name="username">Username</string>
 
     <!-- BreakRoomActivity -->
@@ -117,8 +117,14 @@
     <string name="verlassen">Gehen</string>
     <string name="bleiben">Bleiben</string>
     <string name="nachricht">Nachricht</string>
+    <string name="wahl_gruppenname">1. Wähle einen Gruppennamen:</string>
+    <string name="willkommen_bei">Willkommen bei</string>
+    <string name="virtualbreak">VirtualBreak</string>
+    <string name="starte_gemeinsame_virtuelle_pausen">Starte gemeinsame virtuelle Pausen!</string>
+    <string name="status_busy_info">Bei \'Beschäftigt\' erhältst du keine Benachrichtigungen zu neuen Pausenräumen</string>
 
     <!--Profile -->
     <string name="save_username">Benutzernamen speichern</string>
+    <string name="new_name">New name</string>
 
 </resources>

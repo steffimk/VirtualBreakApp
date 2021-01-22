@@ -8,13 +8,13 @@
     <color name="blue_columbia">#B4D5E5</color>
     <color name="blue_Dark_cornflower">#303C6C</color>
     <color name="blue_dark_night">#191f38</color>
-    <color name="mandarin">#EC7846</color>
+    <color name="mandarin">#E17243</color>
     <color name="sinopia">#C9532C</color>
     <color name="brow_sugar">#AF6B46</color>
     <color name="coffee">#7f5239</color>
 
-    <color name="darkblue_ripple">#43303C6C</color>
-
+    <color name="darkblue_ripple">#2C303C6C</color>
+    <color name="blue_cornflower">#5568B5</color>
 
     <color name="light_green">#F6F4D2</color>
     <color name="tea_green">#CBDFBD</color>

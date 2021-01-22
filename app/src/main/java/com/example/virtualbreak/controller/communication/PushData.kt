@@ -3,7 +3,6 @@ package com.example.virtualbreak.controller.communication
 import android.content.Context
 import android.util.Log
 import com.example.virtualbreak.R
-import androidx.lifecycle.LiveData
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
@@ -100,6 +99,25 @@ class PushData {
 
         fun setGroupDescription(groupId: String, description: String) {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
+        }
+
+        fun createGame(roomId: String): String? {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                val gameId = database.child(Constants.DATABASE_CHILD_ROOMS).push().key
+                if (gameId != null) {
+                    val randomWord = "BREAK"
+                    val newGame = Game(gameId, roomId, randomWord)
+                    database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).setValue(newGame)
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                        .child(Constants.DATABASE_CHILD_GAMES).child(gameId).setValue(gameId)
+                    Log.d(TAG, "Saved new game")
+                }
+                return gameId
+            } else {
+                Log.d(TAG, "No user logged in. Cannot save game.")
+                return null
+            }
         }
 
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {

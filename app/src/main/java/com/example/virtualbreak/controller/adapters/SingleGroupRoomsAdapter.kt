@@ -62,7 +62,7 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayLis
                 intent.putExtra("room_id", roomId)
                 */
                 intent.putExtra(Constants.USER_NAME, userName)
-                // TODO put roomType
+                intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
                 context.startActivity(intent)
             }
 

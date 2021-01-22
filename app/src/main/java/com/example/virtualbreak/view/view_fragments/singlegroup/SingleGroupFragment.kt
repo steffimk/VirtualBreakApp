@@ -111,13 +111,18 @@ class SingleGroupFragment : Fragment() {
 
         Log.d(TAG, "create $roomtype Breakroom")
 
+        val intent = Intent(activity, BreakRoomActivity::class.java)
         var roomId: String? = null
         if (groupId != "") {
             roomId = PushData.saveRoom(groupId, roomtype, roomtype.dbStr)
             sendNotifications(groupId, this.singleGroupViewModel.currentGroup?.description, roomtype.dbStr)
             SharedPrefManager.instance.saveRoomId(roomId!!)
+            if(roomtype == Roomtype.GAME){
+                val gameId = PushData.createGame(roomId)
+                intent.putExtra(Constants.GAME_ID, gameId)
+            }
         }
-        val intent = Intent(activity, BreakRoomActivity::class.java)
+
         intent.putExtra(Constants.USER_NAME, userName)
         intent.putExtra(Constants.ROOM_TYPE, roomtype.dbStr)
         activity?.startActivity(intent)

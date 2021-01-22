@@ -7,6 +7,7 @@ class Constants {
         const val USER_NAME = "userName"
         const val DISPLAY_NAME = "displayName"
         const val ROOM_TYPE = "roomType"
+        const val GAME_ID = "gameId"
 
         const val DATABASE_CHILD_USERS = "users"
         const val DATABASE_CHILD_GROUPS = "groups"
@@ -18,6 +19,7 @@ class Constants {
         const val DATABASE_CHILD_FCM_TOKEN: String = "fcmToken"
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DATABASE_CHILD_USERNAME = "username"
+        const val DATABASE_CHILD_GAMES = "games"
 
         const val DEFAULT_TIME:Long = 0
 

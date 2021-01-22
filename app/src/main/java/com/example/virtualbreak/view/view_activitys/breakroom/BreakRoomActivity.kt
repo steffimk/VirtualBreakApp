@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.sax.TextElementListener
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -17,11 +16,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
-import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
@@ -30,6 +29,7 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -52,6 +52,8 @@ class BreakRoomActivity : AppCompatActivity() {
 
     private var roomType : String = Roomtype.COFFEE.dbStr
 
+    private var gameId : String? = null
+
     private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
@@ -67,6 +69,10 @@ class BreakRoomActivity : AppCompatActivity() {
             if (type != null) {
                 roomType = type
             }
+            val game = bundle.getString(Constants.GAME_ID)
+            if (game != null) {
+                gameId = game
+            }
         }
 
         // TODO: depending on room type set fragments
@@ -78,7 +84,17 @@ class BreakRoomActivity : AppCompatActivity() {
                     val fragment = findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
                     fragment.setVisibility(View.VISIBLE)
 
-                    add<HangmanFragment>(R.id.fragment_container_game_view)
+                    //val bundle = Bundle()
+                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+
+                    /*if(gameId != null){
+                        bundle.putString(Constants.GAME_ID, gameId)
+                    }*/
+                    add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+
+                    //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
+
+                    //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
                     add<TextchatFragment>(R.id.fragment_container_chat_view)
                 }
             } else{

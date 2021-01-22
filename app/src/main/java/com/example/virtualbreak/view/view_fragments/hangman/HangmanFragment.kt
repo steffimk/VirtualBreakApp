@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import kotlinx.android.synthetic.main.hangman_fragment.*
 
 class HangmanFragment : Fragment() {
@@ -24,6 +25,7 @@ class HangmanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val gameId = requireArguments().getString(Constants.GAME_ID)
         a_input.setOnClickListener {
             //a_input.setEnabled(false)
         }

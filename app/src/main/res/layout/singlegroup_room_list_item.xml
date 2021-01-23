@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    card_view:cardBackgroundColor="@color/blue"
     card_view:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +25,7 @@
             android:layout_marginEnd="6dp"
             android:contentDescription="room picture"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_vb_foreground"
+            android:src="@drawable/ic_coffee2"
             card_view:layout_constraintEnd_toStartOf="@+id/linearLayout"
             card_view:layout_constraintStart_toEndOf="@+id/linearLayout"
             card_view:layout_constraintTop_toTopOf="parent" />

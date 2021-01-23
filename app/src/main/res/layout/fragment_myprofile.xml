@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_action_edit"
                 android:visibility="visible"
-                app:backgroundTint="@color/white"
+                app:backgroundTint="@color/light_gray"
                 app:fabSize="mini"
                 app:tint="@color/dark_gray" />
 

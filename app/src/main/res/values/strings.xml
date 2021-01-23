@@ -126,5 +126,6 @@
     <!--Profile -->
     <string name="save_username">Benutzernamen speichern</string>
     <string name="new_name">New name</string>
+    <string name="open_rooms">Offene Pausenräume:</string>
 
 </resources>

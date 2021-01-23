@@ -6,6 +6,8 @@ class Constants {
         const val ROOM_ID = "roomId"
         const val USER_NAME = "userName"
         const val DISPLAY_NAME = "displayName"
+        const val ROOM_NAME = "roomName"
+        const val ROOM_TYPE = "roomType"
 
         const val DATABASE_CHILD_USERS = "users"
         const val DATABASE_CHILD_GROUPS = "groups"

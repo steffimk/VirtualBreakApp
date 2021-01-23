@@ -96,6 +96,10 @@
     <string name="edit">edit</string>
     <string name="rename_room">Rename Room</string>
 
+    <string name="breakroomname">Pausenraum Name</string>
+    <string name="breakroomtype">Pausenraum Typ</string>
+    <string name="openRoom">Öffne Raum</string>
+
     <!-- Search Friends -->
     <string name="search_friend_successful">Gefunden:</string>
     <string name="search_friend_not_successful">Es wurde kein User mit dieser Mail gefunden.</string>
@@ -126,6 +130,9 @@
     <!--Profile -->
     <string name="save_username">Benutzernamen speichern</string>
     <string name="new_name">New name</string>
+    <string name="pausenraumtype">PausenraumType</string>
+    <string name="pausenraum_name">Pausenraum Name</string>
     <string name="open_rooms">Offene Pausenräume:</string>
+
 
 </resources>

@@ -71,6 +71,13 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="ButtonStlyeOrange">
+        <item name="android:textSize">12dp</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/rounded_corners_orange</item>
+    </style>
+
     <style name="MySpecialButton" parent = "Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/coffee</item>
         <item name="android:padding">5dp</item>

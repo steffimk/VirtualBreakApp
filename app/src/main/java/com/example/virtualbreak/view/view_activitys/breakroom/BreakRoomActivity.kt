@@ -59,20 +59,16 @@ class BreakRoomActivity : AppCompatActivity() {
         //val roomId = SharedPrefManager.instance.getRoomId()
         //var userName : String? = null
 
-        //Close widget, not widget in breakroomact
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             askPermission();
         }
-
-
 
         mtoolbar = findViewById(R.id.toolbar_breakroom)
         editText = findViewById(R.id.et_changeRoomName)
 
         setSupportActionBar(mtoolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_leave)
+        //For the Back Button
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
         val bundle: Bundle? = intent.extras
@@ -146,8 +142,6 @@ class BreakRoomActivity : AppCompatActivity() {
             }
             input.clear()
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -156,14 +150,14 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-
-        android.R.id.home -> {
-            // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
-            //leaveRoom()
-            openWidget()
-            Log.d(TAG, "Back/home pressed")
-            true
-        }
+//        For the Back Button
+//        android.R.id.home -> {
+//            // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
+//            //leaveRoom()
+//            openWidget()
+//            Log.d(TAG, "Back/home pressed")
+//            true
+//        }
 
         R.id.action_edit -> {
             //User wants to edit the room name
@@ -196,6 +190,10 @@ class BreakRoomActivity : AppCompatActivity() {
             videocall()
             true
         }
+        R.id.action_leaveRoom -> {
+            leaveRoom()
+            true
+        }
         else -> {
             super.onOptionsItemSelected(item)
         }
@@ -205,27 +203,24 @@ class BreakRoomActivity : AppCompatActivity() {
         //leaveRoom()
         openWidget()
     }
-
     override fun onPause() {
         super.onPause()
-
-
         // To prevent starting the service if the required permission is NOT granted.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) {
-            startService(
-                Intent(
-                    this@BreakRoomActivity,
-                    BreakroomWidgetService::class.java
-                ).putExtra("activity_background", true)
-            )
-            finish()
-        } else {
-            Toast.makeText(
-                this,
-                "You need System Alert Window Permission to do this",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) {
+//            startService(
+//                Intent(
+//                    this@BreakRoomActivity,
+//                    BreakroomWidgetService::class.java
+//                ).putExtra("activity_background", true)
+//            )
+//            finish()
+//        } else {
+//            Toast.makeText(
+//                this,
+//                "You need System Alert Window Permission to do this",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -293,18 +288,20 @@ class BreakRoomActivity : AppCompatActivity() {
 
     private fun openWidget() {
         Log.d(TAG, "openwidget")
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
-            Log.d("BreakRoom", room?.description + room?.type?.dbStr)
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
+//            Log.d("BreakRoom1", room?.description + room?.type?.dbStr)
+//            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
+//            intent.putExtra(Constants.ROOM_NAME, room?.description)
+//            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
+//            startService(intent)
+//            finish()
+
+        if (Settings.canDrawOverlays(this)) {
+            Log.d("BreakRoom2", room?.description + room?.type?.dbStr)
             val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
-            intent.putExtra("RoomName", room?.description)
-            intent.putExtra("RoomType", room?.type?.dbStr)
-            startService(intent)
-            finish()
-        } else if (Settings.canDrawOverlays(this)) {
-            Log.d("BreakRoom", room?.description + room?.type?.dbStr)
-            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
-            intent.putExtra("RoomName", room?.description)
-            intent.putExtra("RoomType", room?.type?.dbStr)
+            intent.putExtra(Constants.ROOM_NAME, room?.description)
+            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
+            intent.putExtra(Constants.USER_NAME, userName)
             startService(intent)
             finish()
         } else {

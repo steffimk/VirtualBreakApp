@@ -13,6 +13,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.virtualbreak.R
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.android.material.navigation.NavigationView
 
 /**
@@ -62,5 +63,10 @@ class NavigationDrawerActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, BreakroomWidgetService::class.java))
     }
 }

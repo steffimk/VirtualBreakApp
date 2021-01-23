@@ -1,18 +1,20 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
-import android.R.attr.data
 import android.app.Service
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.RelativeLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import kotlin.math.abs
 
 
@@ -24,8 +26,9 @@ class BreakroomWidgetService : Service() {
     private lateinit var mFloatingView: View
     private lateinit var collapsedView: View
     private lateinit var expandedView: View
-    private var roomName: String? = "RoomName"
-    private var roomType: String? = "RoomType"
+    private var roomName = "RoomName"
+    private var roomType = "RoomType"
+    private var userName = "UserName"
 
     private lateinit var params: WindowManager.LayoutParams
 
@@ -44,6 +47,7 @@ class BreakroomWidgetService : Service() {
             R.layout.floating_widget_layout,
             null
         )
+
 
         //Spefify parameters for the layout
         params = WindowManager.LayoutParams().apply {
@@ -80,6 +84,7 @@ class BreakroomWidgetService : Service() {
         val layoutParent = mFloatingView.findViewById<View>(R.id.widget_relativeLayoutParent)
         layoutParent.setOnTouchListener(onTouchListener)
 
+
         mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text = roomName
         mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text = roomType
 
@@ -98,6 +103,7 @@ class BreakroomWidgetService : Service() {
         openRoomButton.setOnClickListener {
             Log.d(TAG, "Open room")
             val intent = Intent(this@BreakroomWidgetService, BreakRoomActivity::class.java)
+            intent.putExtra(Constants.USER_NAME, userName)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             //close the service and remove view from the view hierarchy
@@ -119,7 +125,6 @@ class BreakroomWidgetService : Service() {
     private var firstX: Int = 0
     private var firstY: Int = 0
 
-    private var isShowing = false
     private var touchConsumedByMove = false
 
     private val onTouchListener = View.OnTouchListener { view, event ->
@@ -128,7 +133,6 @@ class BreakroomWidgetService : Service() {
 
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                Log.d("BreakroomWidget", "ACTION_DOWN")
                 lastX = event.rawX.toInt()
                 lastY = event.rawY.toInt()
                 firstX = lastX
@@ -136,9 +140,12 @@ class BreakroomWidgetService : Service() {
             }
             MotionEvent.ACTION_UP -> {
                 view.performClick()
+                ///Activate for View Change, not realy good
+                // handleViewChange()
+
             }
+
             MotionEvent.ACTION_MOVE -> {
-                Log.d("BreakroomWidget", "ACTION_MOVE")
                 val deltaX = event.rawX.toInt() - lastX
                 val deltaY = event.rawY.toInt() - lastY
                 lastX = event.rawX.toInt()
@@ -164,10 +171,30 @@ class BreakroomWidgetService : Service() {
         touchConsumedByMove
     }
 
+    private fun handleViewChange() {
+
+        if (mFloatingView == null || mFloatingView.findViewById<View>(R.id.widget_layoutCollapsed).visibility == View.VISIBLE) {
+            //When user clicks on the image view of the collapsed layout,
+            //visibility of the collapsed layout will be changed to "View.GONE"
+            //and expanded view will become visible.
+            collapsedView.visibility = View.GONE
+            expandedView.visibility = View.VISIBLE
+        } else {
+            collapsedView.visibility = View.VISIBLE
+            expandedView.visibility = View.GONE
+        }
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        roomName = intent?.extras!!["RoomName"] as String?
-        roomType = intent?.extras!!["RoomType"] as String?
-        Log.d("BreakRoom", roomName + roomType)
+        val bundle: Bundle? = intent?.extras
+        if (bundle != null) {
+            mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text =
+                bundle.getString(Constants.ROOM_NAME).toString()
+            mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text =
+                "Pausentyp  ${bundle.getString(Constants.ROOM_TYPE).toString()}"
+            userName = bundle.getString(Constants.USER_NAME).toString()
+            Log.d("BreakRoom3", roomName + roomType)
+        }
         return super.onStartCommand(intent, flags, startId)
     }
 

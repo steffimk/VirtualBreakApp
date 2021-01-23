@@ -12,6 +12,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 
 
@@ -63,6 +64,9 @@ class SingleGroupRoomsAdapter(context: Context, resource: Int, objects: ArrayLis
                 */
                 intent.putExtra(Constants.USER_NAME, userName)
                 intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
+                if (item.type.equals(Roomtype.GAME)){
+                    intent.putExtra(Constants.GAME_ID, item.gameId)
+                }
                 context.startActivity(intent)
             }
 

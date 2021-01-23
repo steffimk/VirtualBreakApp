@@ -110,7 +110,7 @@ class PushData {
                     val newGame = Game(gameId, roomId, randomWord)
                     database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).setValue(newGame)
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
-                        .child(Constants.DATABASE_CHILD_GAMES).child(gameId).setValue(gameId)
+                        .child(Constants.DATABASE_CHILD_ROOM_GAME).setValue(gameId)
                     Log.d(TAG, "Saved new game")
                 }
                 return gameId
@@ -118,6 +118,16 @@ class PushData {
                 Log.d(TAG, "No user logged in. Cannot save game.")
                 return null
             }
+        }
+
+        fun addLetterToGame(gameId: String, letter: String) {
+            database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).child(Constants.DATABASE_CHILD_GAME_LETTERS).child(letter).setValue(letter)
+            Log.d(TAG, "added letter to game")
+        }
+
+        fun addError(gameId: String, errors: Int) {
+            database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).child(Constants.DATABASE_CHILD_GAME_ERRORS).setValue(errors)
+            Log.d(TAG, "added error to game")
         }
 
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {

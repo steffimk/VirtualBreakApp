@@ -80,17 +80,20 @@ class BreakRoomActivity : AppCompatActivity() {
             if(roomType.equals(Roomtype.GAME.dbStr)){
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
-                    // TODO make game fragment visible
-                    val fragment = findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
+                    if (gameId != null) {
+                        val fragment =
+                            findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                        fragment.setVisibility(View.VISIBLE)
 
-                    //val bundle = Bundle()
-                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+                        //val bundle = Bundle()
 
-                    /*if(gameId != null){
-                        bundle.putString(Constants.GAME_ID, gameId)
-                    }*/
-                    add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                        val bundle = bundleOf(Constants.GAME_ID to gameId)
+
+                        /*if(gameId != null){
+                            bundle.putString(Constants.GAME_ID, gameId)
+                        }*/
+                        add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                    }
 
                     //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
 

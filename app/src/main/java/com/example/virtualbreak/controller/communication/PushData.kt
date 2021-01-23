@@ -31,6 +31,16 @@ class PushData {
             }
         }
 
+        fun saveUserName(name: String) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_USERNAME).setValue(name)
+                Log.d(TAG, "Saved username")
+            } else {
+                Log.d(TAG, "No user logged in. Cannot save user.")
+            }
+        }
+
         fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -179,20 +189,12 @@ class PushData {
             }
         }
 
-        //not needed, we use Firebase Storage
-        fun setProfilPicture(picture: String) {
-            // encode picture with Base64
-//            val byteArrayOutputStream = ByteArrayOutputStream()
-//            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.user)
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-//            val imageInBytes: ByteArray = byteArrayOutputStream.toByteArray()
-//            val imageAsString: String = Base64.encodeToString(imageInBytes, Base64.DEFAULT)
-
+        fun setFcmToken(fcmToken: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_PROFILE_PICTURE).setValue(picture)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FCM_TOKEN).setValue(fcmToken)
             } else {
-                Log.d(TAG, "No user logged in. Cannot save profile picture.")
+                Log.d(TAG, "No user logged in. Cannot set fcmToken.")
             }
         }
 

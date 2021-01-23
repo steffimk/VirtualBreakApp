@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/break_room_layout"
     tools:context=".view.view_activitys.breakroom.BreakRoomActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,76 +35,19 @@
             android:visibility="gone" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_messages_recycler_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_game_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/user_input"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_breakroom"
+        app:layout_constraintBottom_toTopOf="@id/fragment_container_chat_view"
+        android:visibility="gone"
+        />
 
-    <LinearLayout
-        android:id="@+id/user_input"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_chat_view"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        android:background="@drawable/rounded_corners"
-        android:orientation="horizontal"
-        android:padding="3dp"
-        android:weightSum="5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-
-        <EditText
-            android:id="@+id/chat_message_input"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4.3"
-            android:backgroundTint="@color/mandarin"
-            android:hint="@string/message"
-            android:scrollbars="vertical" />
-
-        <ImageButton
-            android:id="@+id/send_message_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:background="@null"
-            android:elevation="0dp"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/send_black" />
-
-        <!--        <ImageButton-->
-        <!--            android:id="@+id/send_message_button"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_marginHorizontal="8dp"-->
-        <!--            android:layout_marginVertical="4dp"-->
-        <!--            android:padding="3dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="@color/blue_dark_night"-->
-        <!--            android:scaleType="fitCenter"-->
-        <!--            android:src="@drawable/ic_action_send"-->
-        <!--            android:text="@string/send_message"-->
-        <!--            android:tint="@color/white" />-->
-
-    </LinearLayout>
-
-
-
-    <!--<TextView
-        android:id="@+id/chat_messages_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/user_input"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:scrollbars="vertical"/>-->
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_container_game_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

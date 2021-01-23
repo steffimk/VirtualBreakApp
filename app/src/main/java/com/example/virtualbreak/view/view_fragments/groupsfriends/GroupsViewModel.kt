@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.User
@@ -49,11 +50,13 @@ class GroupsViewModel : ViewModel() {
 
             override fun onActive() {
                 super.onActive()
+                Log.d(TAG, "Listening for friends")
                 queryFriends.addValueEventListener(friendsValueEventListener)
             }
 
             override fun onInactive() {
                 super.onInactive()
+                Log.d(TAG, "Removed listener for friends")
                 queryFriends.removeEventListener(friendsValueEventListener)
             }
 
@@ -111,7 +114,8 @@ class GroupsViewModel : ViewModel() {
     private val groups: MutableLiveData<HashMap<String,Group>> =
         object : MutableLiveData<HashMap<String,Group>>(HashMap()) {
 
-            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "").child(Constants.DATABASE_CHILD_GROUPS)
+            private val queryGroups = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+                .child(Constants.DATABASE_CHILD_GROUPS)
 
             override fun onActive() {
                 super.onActive()
@@ -147,5 +151,12 @@ class GroupsViewModel : ViewModel() {
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addListenerForSingleValueEvent(valueEventListener)
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+            .child(Constants.DATABASE_CHILD_GROUPS).removeEventListener(groupsValueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
+            .child(Constants.DATABASE_CHILD_FRIENDS).removeEventListener(friendsValueEventListener)
+    }
 
 }

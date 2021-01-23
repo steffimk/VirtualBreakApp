@@ -15,18 +15,25 @@ import com.example.virtualbreak.model.User
 import com.makeramen.roundedimageview.RoundedImageView
 import com.example.virtualbreak.model.Status
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_myprofile.*
+import java.io.IOException
 
 
 /**
  * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
  */
 
-class FriendListAdapter(private val friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
+class FriendListAdapter(friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
     lateinit var view: View
+    var friends: ArrayList<User>
     val TAG = "FriendListAdapter"
+
+    init{
+        this.friends = friends
+    }
 
     class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView = itemView.findViewById(R.id.friend_list_name)
@@ -47,10 +54,7 @@ class FriendListAdapter(private val friends: ArrayList<User>, private val contex
     }
 
     override fun getItemCount(): Int {
-        if (friends == null)
-            return 0
-        else
-            return friends.size
+        return friends.size
     }
 
 
@@ -64,6 +68,8 @@ class FriendListAdapter(private val friends: ArrayList<User>, private val contex
                 Status.AVAILABLE -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_available))
                 Status.BUSY -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_busy))
                 Status.STUDYING -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_studying))
+                Status.INBREAK -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_cup_black))
+                Status.ABSENT -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
                 else -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
             }
         }
@@ -77,15 +83,21 @@ class FriendListAdapter(private val friends: ArrayList<User>, private val contex
     }
 
     private fun loadProfilePicture(holder: ViewHolderFriends, userId: String) {
-        val mStorageRef = FirebaseStorage.getInstance().getReference()
-        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Picasso.get().load(task.result).into(holder.profilePic)
-            } else {
-                Log.w(TAG, "getProfilePictureURI unsuccessful")
-            }
 
-        }
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get().load(result).into(holder.profilePic)
+            }
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
+            }
+    }
+
+    fun updateData(newFriends: ArrayList<User>){
+        this.friends = newFriends
+        notifyDataSetChanged()
     }
 
 

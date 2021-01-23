@@ -1,5 +1,5 @@
 package com.example.virtualbreak.model
 
 enum class Status (val dbStr : String) {
-    STUDYING("Studying"), BUSY("Busy"), AVAILABLE("Available")
+    STUDYING("Beim Arbeiten"), BUSY("Beschäftigt"), AVAILABLE("Verfügbar"), ABSENT("Abwesend") , INBREAK("Macht Pause")
 }

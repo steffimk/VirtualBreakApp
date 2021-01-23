@@ -44,11 +44,6 @@ class FriendRequestsFragment() : Fragment() {
         friendrequests_recyler_list_view.layoutManager = LinearLayoutManager(context)
         outgoing_friendrequests_recyler_list_view.layoutManager = LinearLayoutManager(context)
 
-        /*friendrequestsTest.add(User("a", "Freund1", "email", Status.AVAILABLE, null, null, null, null))
-        friendrequestsTest.add(User("b", "Freund2", "email2", Status.AVAILABLE, null, null, null, null))
-
-        friendrequests_recyler_list_view.adapter = FriendRequestsAdapter(friendrequestsTest)*/
-
         viewModel.getIncomingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ incomingFriendRequests ->
             Log.d(TAG, "Observed the following incomingFriendRequests: $incomingFriendRequests")
 

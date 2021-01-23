@@ -13,6 +13,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.FCMService
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.android.material.navigation.NavigationView
 
@@ -31,6 +33,9 @@ class NavigationDrawerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        PullData.pullAndSaveOwnUserName()
+        FCMService.addFCMTokenListener()
 
         setContentView(R.layout.activity_navigationdrawer)
         val toolbar: Toolbar = findViewById(R.id.toolbar)

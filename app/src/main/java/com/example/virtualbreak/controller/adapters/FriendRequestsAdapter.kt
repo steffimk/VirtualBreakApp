@@ -10,11 +10,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.NotificationBody
+import com.example.virtualbreak.model.NotificationData
+import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.squareup.picasso.Picasso
+import java.io.IOException
 
 class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsAdapter.ViewHolderFriendRequests>() {
 
@@ -62,7 +69,20 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
         //define click listener for viewholders view
         holder.acceptRequestBtn.setOnClickListener{
 
-            PushData.confirmFriendRequest(friendRequests[position].uid)
+            val friendToBeAdded = friendRequests[position]
+            val ownUserName = SharedPrefManager.instance.getUserName()
+            PushData.confirmFriendRequest(friendToBeAdded.uid)
+            // Send notification to user
+            val title = "Freundschaft geschlossen"
+            val message = "${ownUserName} hat deine Freundschaftsanfrage angenommen."
+            PushNotification(
+                NotificationData(title, message),
+                NotificationBody(title, message),
+                friendToBeAdded.fcmToken
+            ).also {
+                Log.d(TAG, "Sending notification: $it")
+                FCMService.sendNotification(it)
+            }
             Snackbar.make(view, ""+friendRequests[position].username+" wurde zu deiner Freundeliste hinzugefügt!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
@@ -75,15 +95,17 @@ class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : Recyc
     }
 
     private fun loadProfilePicture(holder: FriendRequestsAdapter.ViewHolderFriendRequests, userId: String) {
+
         val mStorageRef = FirebaseStorage.getInstance().getReference()
-        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Picasso.get().load(task.result).into(holder.profile_imageView)
-            } else {
-                Log.w(TAG, "getProfilePictureURI unsuccessful")
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get().load(result).into(holder.profile_imageView)
+            }
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
             }
 
-        }
     }
 
 

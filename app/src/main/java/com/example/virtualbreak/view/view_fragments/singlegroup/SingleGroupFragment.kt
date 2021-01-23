@@ -18,7 +18,9 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.*
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.model.User
@@ -34,7 +36,7 @@ class SingleGroupFragment : Fragment() {
 
     private val TAG: String = "SingleGroupFragment"
 
-    //Navigation argument to pass selected group id from GroupsFriendsFragment (GroupsListAdapter) to SingleGroupFragment
+    //Navigation argument to pass selected group from GroupsFriendsFragment (GroupsListAdapter) to SingleGroupFragment
     val args: SingleGroupFragmentArgs by navArgs()
     private lateinit var groupId: String
 
@@ -55,15 +57,11 @@ class SingleGroupFragment : Fragment() {
 
         groupId = args.groupId
         singleGroupViewModel.pullGroupWithId(groupId)
+        singleGroupViewModel.getGroupUsers() // to trigger start init by lazy
+
         val gridView: GridView = root.findViewById(R.id.grid_view)
 
-        var userName: String? = null
-
-        singleGroupViewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
-            if (observedUser != null) {
-                userName = observedUser.username
-            }
-        })
+        var userName: String? = SharedPrefManager.instance.getUserName()
 
         // Observe whether rooms changed
         singleGroupViewModel.getRooms().observe(viewLifecycleOwner,
@@ -116,13 +114,36 @@ class SingleGroupFragment : Fragment() {
         var roomId: String? = null
         if (groupId != "") {
             roomId = PushData.saveRoom(groupId, roomtype, roomtype.dbStr)
+            sendNotifications(groupId, this.singleGroupViewModel.currentGroup?.description, roomtype.dbStr)
             SharedPrefManager.instance.saveRoomId(roomId!!)
         }
         val intent = Intent(activity, BreakRoomActivity::class.java)
         intent.putExtra(Constants.USER_NAME, userName)
         activity?.startActivity(intent)
-        //TODO send notification to friends
 
+    }
+
+    private fun sendNotifications(groupId: String, groupDescription: String?, roomType: String) {
+        val groupName = groupDescription ?: ""
+        val title = "Neuer Pausenraum in $groupName"
+        val message = "${SharedPrefManager.instance.getUserName()} hat eine neue $roomType-Pause erstellt"
+        Log.d(TAG, "Send notifications to group : $groupId")
+        for( (userId, user) in this.singleGroupViewModel.getGroupUsers()){
+            val fcmToken = user.fcmToken
+            val userIsBusy = user.status == Status.BUSY
+            // Don't send notification to user with status "busy" and don't send to oneself
+            if (!userIsBusy && userId != SharedPrefManager.instance.getUserId()) {
+                Log.d(TAG, "Send notification to token: $fcmToken")
+                PushNotification(
+                    NotificationData(title, message),
+                    NotificationBody(title, message),
+                    fcmToken
+                ).also {
+                    Log.d(TAG, "Sending notification: $it")
+                    FCMService.sendNotification(it)
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

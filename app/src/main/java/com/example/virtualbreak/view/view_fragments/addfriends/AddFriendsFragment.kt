@@ -15,12 +15,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentAddFriendsBinding
+import com.example.virtualbreak.model.NotificationBody
+import com.example.virtualbreak.model.NotificationData
+import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.squareup.picasso.Picasso
+import java.io.IOException
 
 
 /**
@@ -92,14 +98,14 @@ class AddFriendsFragment : Fragment() {
 
     private fun loadProfilePicture(imageView: ImageView, userId: String) {
         val mStorageRef = FirebaseStorage.getInstance().getReference()
-        mStorageRef.child("img/profilePics/$userId").downloadUrl.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Picasso.get().load(task.result).into(imageView)
-            } else {
-                Log.w(TAG, "getProfilePictureURI unsuccessful")
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get().load(result).into(imageView)
             }
-
-        }
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
+            }
     }
 
     fun hideSoftKeyboard(editText: EditText) {
@@ -152,6 +158,17 @@ class AddFriendsFragment : Fragment() {
 
         if (isValidFriendRequest) {
             PushData.sendFriendRequest(user!!.uid)
+            // Send notification to user
+            val title = "Neue Freundschaftsanfrage"
+            val message = "${currentUser!!.username} möchte dich als Freund hinzufügen."
+            PushNotification(
+                NotificationData(title, message),
+                NotificationBody(title, message),
+                user.fcmToken
+            ).also {
+                Log.d(TAG, "Sending notification: $it")
+                FCMService.sendNotification(it)
+            }
         }
 
         view?.let {

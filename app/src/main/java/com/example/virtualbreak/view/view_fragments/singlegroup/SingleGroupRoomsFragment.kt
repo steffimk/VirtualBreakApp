@@ -1,16 +1,16 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import android.widget.GridView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
@@ -21,7 +21,7 @@ import com.example.virtualbreak.model.*
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nambimobile.widgets.efab.FabOption
-
+import kotlinx.android.synthetic.main.fragment_singlegroup_rooms.*
 
 
 private const val GROUP_ID = "groupId"
@@ -32,6 +32,8 @@ class SingleGroupRoomsFragment : Fragment() {
 
     private var groupId: String? = null
     private lateinit var groupUsers: HashMap<String, User>
+    var customAdapter: SingleGroupRoomsAdapter? = null
+    private lateinit var root: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,16 +49,28 @@ class SingleGroupRoomsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_singlegroup_rooms, container, false)
+        root = inflater.inflate(R.layout.fragment_singlegroup_rooms, container, false)
+        return root
+    }
 
+    /**
+     * method called after viwes created, so put logic here to prevent nullpointerexcpetions
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         groupId?.let{
-
-            val singleGroupViewModel: SingleGroupViewModel by viewModels { SingleGroupViewModelFactory(it) }
+            val singleGroupViewModel: SingleGroupViewModel by viewModels { SingleGroupViewModelFactory(
+                it
+            ) }
 
             singleGroupViewModel.pullGroupWithId(it)
             singleGroupViewModel.getGroupUsers() // to trigger start init by lazy
 
-            val gridView: GridView = root.findViewById(R.id.grid_view)
+            grid_view.setHasFixedSize(true)
+
+            val gridLayoutManager = GridLayoutManager(context, 2)
+            grid_view.setLayoutManager(gridLayoutManager)
+            grid_view.setItemAnimator(DefaultItemAnimator())
 
             var userName: String? = SharedPrefManager.instance.getUserName()
 
@@ -64,16 +78,20 @@ class SingleGroupRoomsFragment : Fragment() {
             singleGroupViewModel.getRooms().observe(viewLifecycleOwner,
                 { roomsMap ->
                     Log.d(TAG, "Observed rooms: $roomsMap")
-                    val customAdapter =
-                        context?.let {
-                            SingleGroupRoomsAdapter(
-                                it,
-                                R.layout.singlegroup_room_list_item,
-                                ArrayList(roomsMap.values),
-                                userName
-                            )
-                        }
-                    gridView.adapter = customAdapter //TODO reuse old adapter
+                    if (customAdapter == null) {
+                        customAdapter =
+                            context?.let {
+                                SingleGroupRoomsAdapter(
+                                    it,
+                                    ArrayList(roomsMap.values),
+                                    userName
+                                )
+                            }
+                        grid_view.adapter = customAdapter
+                    } else { // reuse old adapter
+                        customAdapter?.updateData(ArrayList(roomsMap.values))
+                    }
+
                 })
 
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, {
@@ -104,16 +122,14 @@ class SingleGroupRoomsFragment : Fragment() {
                 openBreakroom(Roomtype.SPORT, singleGroupViewModel, userName)
             }
         }
-
-
-
-
-
-        return root
     }
 
 
-    private fun openBreakroom(roomtype: Roomtype, singleGroupViewModel:SingleGroupViewModel ,userName:String?) {
+    private fun openBreakroom(
+        roomtype: Roomtype,
+        singleGroupViewModel: SingleGroupViewModel,
+        userName: String?
+    ) {
 
         Log.d(TAG, "create $roomtype Breakroom")
 
@@ -140,12 +156,16 @@ class SingleGroupRoomsFragment : Fragment() {
 
     }
 
-    private fun sendNotifications(groupId: String, singleGroupViewModel: SingleGroupViewModel, roomType: String) {
+    private fun sendNotifications(
+        groupId: String,
+        singleGroupViewModel: SingleGroupViewModel,
+        roomType: String
+    ) {
         val groupName = singleGroupViewModel.currentGroup?.description ?: ""
         val title = "Neuer Pausenraum in $groupName"
         val message = "${SharedPrefManager.instance.getUserName()} hat eine neue $roomType-Pause erstellt"
         Log.d(TAG, "Send notifications to group : $groupId")
-        for( (userId, user) in this.groupUsers){
+        for((userId, user) in this.groupUsers){
             val fcmToken = user.fcmToken
             val userIsBusy = user.status == Status.BUSY
             // Don't send notification to user with status "busy" and don't send to oneself

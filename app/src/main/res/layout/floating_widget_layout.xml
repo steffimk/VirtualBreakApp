@@ -131,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
-                        android:text="@string/breakroom_name"
+                        android:text="@string/breakroomname"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -140,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
-                        android:text="@string/roomtype"
+                        android:text="@string/breakroomtype"
                         android:textColor="@color/light_gray"
                         android:textSize="15sp" />
 
@@ -229,7 +229,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/ButtonStlyeOrange"
-                    android:text="@string/open_room" />
+                    android:text="@string/openRoom" />
                 <!--                    android:layout_marginEnd="12dp" />-->
 
                 <ImageButton

@@ -131,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
-                        android:text="@string/breakroomname"
+                        android:text="@string/pausenraum_name"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
@@ -140,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
-                        android:text="@string/breakroomtype"
+                        android:text="@string/pausenraumtype"
                         android:textColor="@color/light_gray"
                         android:textSize="15sp" />
 

@@ -130,6 +130,8 @@
     <!--Profile -->
     <string name="save_username">Benutzernamen speichern</string>
     <string name="new_name">New name</string>
+    <string name="pausenraumtype">PausenraumType</string>
+    <string name="pausenraum_name">Pausenraum Name</string>
 
 
 </resources>

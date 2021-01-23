@@ -170,6 +170,11 @@ class PushData {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
                     database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                    if(room.type == Roomtype.GAME){
+                        if(room.gameId != null){
+                            database.child(Constants.DATABASE_CHILD_GAMES).child(room.gameId!!).removeValue()
+                        }
+                    }
                     Log.d(TAG, "Deleted empty room.")
                 } else {
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)

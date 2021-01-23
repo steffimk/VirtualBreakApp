@@ -6,18 +6,56 @@
     android:layout_height="match_parent"
     tools:context=".view.view_fragments.groupsfriends.AddGroupFragment">
 
-    <TextView
-        android:id="@+id/textViewGroup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="@string/make_group"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01">
+        <!--
+        <TextView
+            android:id="@+id/textViewGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="@string/make_group"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="30sp" />-->
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:gravity="start"
+            android:text="@string/wahl_gruppenname"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/groupname_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:hint="@string/hint_group_name"
+                android:includeFontPadding="true"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!--
     <EditText
         android:id="@+id/et_group_name"
         android:layout_width="match_parent"
@@ -36,66 +74,18 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewGroup" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_group_name"
-        app:layout_constraintVertical_bias="0.07999998">
 
         <TextView
             android:id="@+id/textViewGroup2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
             android:gravity="start"
             android:text="@string/select_friends"
-            android:textSize="22sp" />
-
-
-        <!--TODO Change this so SearchVIew with Recylerview -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingVertical="16dp"
-                android:src="@drawable/search"
-                android:visibility="gone" />
-
-
-            <EditText
-                android:id="@+id/search_friends"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:layout_marginEnd="25dp"
-                android:layout_weight="4"
-                android:drawablePadding="10dp"
-                android:hint="@string/search_friends"
-                android:includeFontPadding="true"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingStart="20dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="20dp"
-                android:singleLine="true"
-                android:visibility="gone" />
-
-        </LinearLayout>
+            android:textSize="18sp" />
 
 
         <androidx.recyclerview.widget.RecyclerView

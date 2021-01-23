@@ -26,7 +26,7 @@
             android:layout_marginEnd="6dp"
             android:contentDescription="room picture"
             android:scaleType="fitCenter"
-            android:src="@drawable/user"
+            android:src="@drawable/ic_vb_foreground"
             card_view:layout_constraintEnd_toStartOf="@+id/linearLayout"
             card_view:layout_constraintStart_toEndOf="@+id/linearLayout"
             card_view:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +65,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_person" />
+                android:src="@drawable/ic_person_24" />
 
             <TextView
                 android:id="@+id/room_participants_count"

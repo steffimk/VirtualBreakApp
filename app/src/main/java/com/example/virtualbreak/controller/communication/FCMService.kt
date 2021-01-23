@@ -51,12 +51,16 @@ class FCMService : FirebaseMessagingService() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(msg.data["title"])
             .setContentText(msg.data["message"])
-            .setSmallIcon(R.drawable.ic_vb_alt_playstore)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-            .build()
 
-        notificationManager.notify(notificationId, notification)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notification.setSmallIcon(R.drawable.ic_cup_white).color = getColor(R.color.mandarin)
+        } else {
+            notification.setSmallIcon(R.drawable.ic_vb_alt)
+        }
+
+        notificationManager.notify(notificationId, notification.build())
     }
 
     /**

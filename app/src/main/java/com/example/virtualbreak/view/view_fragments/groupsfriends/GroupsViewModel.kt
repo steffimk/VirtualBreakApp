@@ -50,11 +50,13 @@ class GroupsViewModel : ViewModel() {
 
             override fun onActive() {
                 super.onActive()
+                Log.d(TAG, "Listening for friends")
                 queryFriends.addValueEventListener(friendsValueEventListener)
             }
 
             override fun onInactive() {
                 super.onInactive()
+                Log.d(TAG, "Removed listener for friends")
                 queryFriends.removeEventListener(friendsValueEventListener)
             }
 

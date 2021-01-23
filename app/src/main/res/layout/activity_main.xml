@@ -10,13 +10,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
+        android:background="@drawable/gradient_blue"
         android:padding="30dp"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Willkommen bei"
+            android:text="@string/willkommen_bei"
             android:textSize="20sp"
             android:gravity="center"/>
 
@@ -26,25 +27,31 @@
             android:fontFamily="@font/architects_daughter"
             android:gravity="center"
             android:padding="10dp"
-            android:text="VirtualBreak"
+            android:text="@string/virtualbreak"
             android:textSize="40sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Starte gemeinsame virtuelle Pausen!"
+            android:text="@string/starte_gemeinsame_virtuelle_pausen"
             android:textSize="20sp"
             android:gravity="center"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vb_foreground"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/log_in"
+            android:backgroundTint="@color/mandarin"
             android:id="@+id/loginButton"
             android:padding="10dp"
-            android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="100dp"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -52,9 +59,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/create_an_account"
+            android:backgroundTint="@color/mandarin"
             android:id="@+id/signupButton"
             android:padding="10dp"
-            android:backgroundTint="@color/mandarin"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

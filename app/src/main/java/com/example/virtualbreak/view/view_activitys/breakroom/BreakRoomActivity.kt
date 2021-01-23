@@ -19,22 +19,18 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_break_room.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -61,6 +57,18 @@ class BreakRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
+
+        // TODO: depending on room type set fragments
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<TextchatFragment>(R.id.fragment_container_game_view)
+
+                add<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        }
+
+
 
         //val roomId = SharedPrefManager.instance.getRoomId()
         //var userName : String? = null
@@ -91,7 +99,18 @@ class BreakRoomActivity : AppCompatActivity() {
 
             PushData.joinRoom(this, roomId, userName)
 
-            var defaultMessages: MutableList<Message> = ArrayList()
+            viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
+
+                room = observedRoom
+                //viewModel.loadUsersOfRoom()
+
+                if (observedRoom != null) {
+                    supportActionBar?.title = observedRoom.description
+                }
+            })
+
+
+            /*var defaultMessages: MutableList<Message> = ArrayList()
             var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
             defaultMessages.add(defaultM)
 
@@ -141,7 +160,7 @@ class BreakRoomActivity : AppCompatActivity() {
                         chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
                     }
                 }
-            })
+            })*/
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous
@@ -150,7 +169,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
         // makes textview scrollable
         //chat_messages_view.setMovementMethod(ScrollingMovementMethod())
-
+/*
         send_message_button.setOnClickListener {
             val input = chat_message_input.text
             val message = input.toString()
@@ -165,7 +184,7 @@ class BreakRoomActivity : AppCompatActivity() {
                 ).show()
             }
             input.clear()
-        }
+        }*/
 
 
     }

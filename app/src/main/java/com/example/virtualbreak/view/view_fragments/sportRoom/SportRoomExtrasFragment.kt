@@ -30,6 +30,8 @@ class SportRoomExtrasFragment : Fragment() {
     private var timerIndex = 0
     private var timerIsRunning = false
 
+    private var countDownTimer: CountDownTimer? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,12 +66,13 @@ class SportRoomExtrasFragment : Fragment() {
                 binding.inputRow2.visibility = View.GONE
                 binding.startTimerBtn.visibility = View.GONE
                 val remainingMilliSeconds = timerEndDate - Date().time
-                object : CountDownTimer(remainingMilliSeconds, 1000) {
+                countDownTimer?.cancel()
+                countDownTimer = object : CountDownTimer(remainingMilliSeconds, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
                         binding.timerView.text = (secondsToTimerString(millisUntilFinished/1000))
                     }
                     override fun onFinish() {
-                        val roomId = SharedPrefManager.instance.getRoomId()?:return
+                        val roomId = SharedPrefManager.instance.getRoomId() ?: return
                         PushData.removeTimer(roomId)
                     }
                 }.start()
@@ -117,6 +120,28 @@ class SportRoomExtrasFragment : Fragment() {
         val minutes = (sec/60).toInt().toString()
         val seconds = (sec%60).toInt().toString()
         return minutes + "m " + seconds + "s"
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(countDownTimer == null) return
+        countDownTimer?.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val timerEnd = viewModel.getTimerEndDate().value?:return
+        val remainingMilliSeconds = timerEnd - Date().time
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer(remainingMilliSeconds, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                binding.timerView.text = (secondsToTimerString(millisUntilFinished/1000))
+            }
+            override fun onFinish() {
+                val roomId = SharedPrefManager.instance.getRoomId() ?: return
+                PushData.removeTimer(roomId)
+            }
+        }.start()
     }
 
 }

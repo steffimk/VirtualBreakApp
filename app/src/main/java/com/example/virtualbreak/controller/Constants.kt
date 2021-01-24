@@ -19,6 +19,7 @@ class Constants {
         const val DATABASE_CHILD_FCM_TOKEN: String = "fcmToken"
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DATABASE_CHILD_USERNAME = "username"
+        const val DATABASE_CHILD_TIMER_END = "timerEnd"
 
         const val DEFAULT_TIME:Long = 0
 

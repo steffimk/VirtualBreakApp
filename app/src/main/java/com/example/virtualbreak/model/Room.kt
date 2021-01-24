@@ -5,5 +5,6 @@ data class Room(var uid: String = "",
                 var description: String = "",
                 var users: HashMap<String, String> = HashMap(),
                 var messages: HashMap<String, Message> = HashMap(),
-                var type: Roomtype = Roomtype.COFFEE) {
+                var type: Roomtype = Roomtype.COFFEE,
+                var timerEnd: Long? = null) {
 }

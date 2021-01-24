@@ -93,22 +93,8 @@ class FCMService : FirebaseMessagingService() {
                 } else {
                     Log.e(TAG, response.errorBody().toString())
                 }
-            } catch (ex: Exception) {
-                Log.e(TAG, ex.toString())
-            }
-        }
-
-        /**
-         * Subscribe to a topic to receive all notifications send out for this topic
-         */
-        fun subscribeToTopic(topic: String) {
-            FirebaseMessaging.getInstance().subscribeToTopic(topic)
-                .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.d(TAG, "Could not subscribe to topic $topic")
-                } else {
-                    Log.d(TAG, "Successfully subscribed to topic $topic")
-                }
+            } catch (e: Exception) {
+                Log.e(TAG, e.toString())
             }
         }
 

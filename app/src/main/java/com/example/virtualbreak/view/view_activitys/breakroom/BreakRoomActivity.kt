@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
@@ -29,6 +30,7 @@ import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -62,8 +64,11 @@ class BreakRoomActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<TextchatFragment>(R.id.fragment_container_game_view)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
+                add<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
                 add<TextchatFragment>(R.id.fragment_container_chat_view)
             }
         }

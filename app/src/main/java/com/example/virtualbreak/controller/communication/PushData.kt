@@ -197,6 +197,26 @@ class PushData {
             }
         }
 
+        fun startNewTimer(roomId: String, minutes: Int, seconds: Int){
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                val currentTime = Date().time
+                val timerEnd = currentTime + minutes*60000 + seconds*1000
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_TIMER_END).setValue(timerEnd)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot start new timer.")
+            }
+        }
+
+        fun removeTimer(roomId: String){
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_TIMER_END).setValue(null)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot remove timer.")
+            }
+        }
+
         /**
          * sends friend request: logic: id for user id - boolean: incoming (true) or outgoing (false)
          */

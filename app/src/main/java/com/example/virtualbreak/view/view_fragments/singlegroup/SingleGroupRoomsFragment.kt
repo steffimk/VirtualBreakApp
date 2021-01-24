@@ -63,7 +63,7 @@ class SingleGroupRoomsFragment : Fragment() {
                 it
             ) }
 
-            singleGroupViewModel.pullGroupWithId(it)
+            singleGroupViewModel.getCurrentGroup() // to trigger start init by lazy
             singleGroupViewModel.getGroupUsers() // to trigger start init by lazy
 
             grid_view.setHasFixedSize(true)
@@ -161,7 +161,7 @@ class SingleGroupRoomsFragment : Fragment() {
         singleGroupViewModel: SingleGroupViewModel,
         roomType: String
     ) {
-        val groupName = singleGroupViewModel.currentGroup?.description ?: ""
+        val groupName = singleGroupViewModel.getCurrentGroup().value?.description ?: ""
         val title = "Neuer Pausenraum in $groupName"
         val message = "${SharedPrefManager.instance.getUserName()} hat eine neue $roomType-Pause erstellt"
         Log.d(TAG, "Send notifications to group : $groupId")

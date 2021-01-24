@@ -160,6 +160,8 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             .removeEventListener(groupUsersEventListener)
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
             .child(groupId).child(Constants.DATABASE_CHILD_ROOMS).removeEventListener(roomsValueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .removeEventListener(currentGroupListener)
 
         usersOfGroup.value?.let{
             it.keys.forEach{
@@ -168,6 +170,30 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             }
         }
     }
+
+    private val currentGroup: MutableLiveData<Group?> by lazy { MutableLiveData<Group?>().also{
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .addValueEventListener(currentGroupListener)
+    } }
+
+    fun getCurrentGroup(): LiveData<Group?> {
+        return currentGroup
+    }
+
+    private val currentGroupListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var group = dataSnapshot.getValue(Group::class.java)!!
+                if (group != null) {
+                    currentGroup.value = group
+                }
+                Log.d(TAG, "Pulled Current Group")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
 
 //    private val user: MutableLiveData<User> = object : MutableLiveData<User>() {
 //        private val userQuery = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(
@@ -202,26 +228,5 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 //        }
 //
 //    }
-
-    var currentGroup: Group? = null
-
-    fun pullGroupWithId(groupId: String) {
-        val valueEventListener = object : ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var group = dataSnapshot.getValue(Group::class.java)!!
-                if (group != null) {
-                    currentGroup = group
-                }
-                Log.d(TAG, "Pulled Current Group")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d(TAG, databaseError.message)
-            }
-        }
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
-            .addListenerForSingleValueEvent(valueEventListener)
-    }
 
 }

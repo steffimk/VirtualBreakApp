@@ -50,7 +50,7 @@ class SingleGroupMembersFragment : Fragment() {
                 it
             ) }
 
-            singleGroupViewModel.pullGroupWithId(it)
+            singleGroupViewModel.getCurrentGroup()
             singleGroupViewModel.getGroupUsers() // to trigger start init by lazy
 
             singlegroup_members_recyclerlistview.layoutManager =

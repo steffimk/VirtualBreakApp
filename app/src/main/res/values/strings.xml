@@ -100,6 +100,8 @@
     <string name="breakroomtype">Pausenraum Typ</string>
     <string name="openRoom">Öffne Raum</string>
 
+    <string name="startTimer">Timer Starten</string>
+
     <!-- Search Friends -->
     <string name="search_friend_successful">Gefunden:</string>
     <string name="search_friend_not_successful">Es wurde kein User mit dieser Mail gefunden.</string>

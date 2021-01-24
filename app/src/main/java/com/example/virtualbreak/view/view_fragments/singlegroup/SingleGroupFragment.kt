@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -46,7 +47,11 @@ class SingleGroupFragment : Fragment() {
     val args: SingleGroupFragmentArgs by navArgs()
     private lateinit var groupId: String
 
-    private val singleGroupViewModel: SingleGroupViewModel by viewModels { SingleGroupViewModelFactory(args.groupId) }
+    private val singleGroupViewModel: SingleGroupViewModel by viewModels {
+        SingleGroupViewModelFactory(
+            args.groupId
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,23 +63,35 @@ class SingleGroupFragment : Fragment() {
         setHasOptionsMenu(true)
 
         groupId = args.groupId
-        singleGroupViewModel.pullGroupWithId(groupId)
 
-        // not needed anymore
         singleGroupViewModel.getGroupUsers() // to trigger start init by lazy
 
-        Log.d(TAG, "Gruppe DESCRIPTION \t"+singleGroupViewModel.currentGroup?.description)
+        Log.d(TAG, "Gruppe DESCRIPTION \t" + singleGroupViewModel.getCurrentGroup().value?.description)
+
+        singleGroupViewModel.getCurrentGroup()
+            .observe(viewLifecycleOwner, Observer<Group?> { currentGroup ->
+                if (currentGroup != null) {
+                    activity?.toolbar?.title = currentGroup.description
+                    Log.d(TAG, "Found group name " + currentGroup.description)
+                }
+            })
 
         //instantiate member list fragment and room grid fragment
         activity?.supportFragmentManager?.beginTransaction()?.let {
-            it.replace(R.id.singlegroup_containerview_members, SingleGroupMembersFragment.newInstance(groupId))
+            it.replace(
+                R.id.singlegroup_containerview_members,
+                SingleGroupMembersFragment.newInstance(groupId)
+            )
             it.addToBackStack(null)
             it.commit()
         }
 
         // display rooms
         activity?.supportFragmentManager?.beginTransaction()?.let {
-            it.replace(R.id.singlegroup_containerview_rooms, SingleGroupRoomsFragment.newInstance(groupId))
+            it.replace(
+                R.id.singlegroup_containerview_rooms,
+                SingleGroupRoomsFragment.newInstance(groupId)
+            )
             it.addToBackStack(null)
             it.commit()
         }
@@ -100,14 +117,11 @@ class SingleGroupFragment : Fragment() {
 
 
         }*/
-
-
         var userName: String? = SharedPrefManager.instance.getUserName()
 
 
         return root
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -119,7 +133,7 @@ class SingleGroupFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.action_leave_group -> {
-            singleGroupViewModel.currentGroup?.let { PushData.leaveGroup(it) } //TODO here bug, currentgroup can be null
+            singleGroupViewModel.getCurrentGroup().value?.let { PushData.leaveGroup(it) } //TODO here bug, currentgroup can be null
             view?.findNavController()?.navigate(R.id.action_singleGroupFragment_to_home)
             true
         }

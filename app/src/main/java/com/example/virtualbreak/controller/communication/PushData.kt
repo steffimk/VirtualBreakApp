@@ -3,7 +3,6 @@ package com.example.virtualbreak.controller.communication
 import android.content.Context
 import android.util.Log
 import com.example.virtualbreak.R
-import androidx.lifecycle.LiveData
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser

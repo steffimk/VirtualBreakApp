@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentSportRoomExtrasBinding
@@ -34,6 +35,8 @@ class SportRoomExtrasFragment : Fragment() {
 
     private var countDownTimer: CountDownTimer? = null
 
+    private var fitnessIndex = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +45,15 @@ class SportRoomExtrasFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSportRoomExtrasBinding.inflate(inflater, container, false)
 
+        binding.fitnessNextBtn.setOnClickListener {
+            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
+            fitnessIndex = (fitnessIndex+1) % Constants.FITNESS_IDEAS.size
+        }
+        binding.fitnessPreviousBtn.setOnClickListener {
+            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
+            if (fitnessIndex == 0) fitnessIndex = Constants.FITNESS_IDEAS.size
+            fitnessIndex = (fitnessIndex-1) % Constants.FITNESS_IDEAS.size
+        }
         binding.startTimerBtn.setOnClickListener { startNewTimer() }
 
         binding.inputBtn0.setOnClickListener { addNumber("0") }
@@ -122,7 +134,7 @@ class SportRoomExtrasFragment : Fragment() {
                 binding.timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
             }
             override fun onFinish() {
-                MediaPlayer.create(context, R.raw.alarm_sound).start()
+                MediaPlayer.create(context, R.raw.alarm_sound).start() // TODO
                 val roomId = SharedPrefManager.instance.getRoomId() ?: return
                 PushData.removeTimer(roomId)
             }

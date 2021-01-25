@@ -101,6 +101,7 @@
     <string name="openRoom">Öffne Raum</string>
 
     <string name="startTimer">Timer Starten</string>
+    <string name="getFitnessActivity">Fitnessübung anzeigen</string>
 
     <!-- Search Friends -->
     <string name="search_friend_successful">Gefunden:</string>

@@ -67,19 +67,7 @@ class SportRoomExtrasFragment : Fragment() {
                 binding.inputRow1.visibility = View.GONE
                 binding.inputRow2.visibility = View.GONE
                 binding.startTimerBtn.visibility = View.GONE
-                val remainingMilliSeconds = timerEndDate - Date().time
-                countDownTimer?.cancel()
-                countDownTimer = object : CountDownTimer(remainingMilliSeconds, 1000) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        binding.timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
-                    }
-
-                    override fun onFinish() {
-                        MediaPlayer.create(context, R.raw.alarm_tone).start()
-                        val roomId = SharedPrefManager.instance.getRoomId() ?: return
-                        PushData.removeTimer(roomId)
-                    }
-                }.start()
+                countDownTimer = getCountDownTimer(timerEndDate).start()
             } else {
                 binding.timerView.text = "00m 00s"
                 timerArray = arrayOf("0", "0", "0", "0")
@@ -126,6 +114,21 @@ class SportRoomExtrasFragment : Fragment() {
         return minutes + "m " + seconds + "s"
     }
 
+    private fun getCountDownTimer(timerEndDate: Long): CountDownTimer {
+        val remainingMilliSeconds = timerEndDate - Date().time
+        countDownTimer?.cancel()
+        return object : CountDownTimer(remainingMilliSeconds, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                binding.timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
+            }
+            override fun onFinish() {
+                MediaPlayer.create(context, R.raw.alarm_sound).start()
+                val roomId = SharedPrefManager.instance.getRoomId() ?: return
+                PushData.removeTimer(roomId)
+            }
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         if(countDownTimer == null) return
@@ -135,18 +138,7 @@ class SportRoomExtrasFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val timerEnd = viewModel.getTimerEndDate().value?:return
-        val remainingMilliSeconds = timerEnd - Date().time
-        countDownTimer?.cancel()
-        countDownTimer = object : CountDownTimer(remainingMilliSeconds, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                binding.timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
-            }
-            override fun onFinish() {
-                MediaPlayer.create(context, R.raw.alarm_tone).start()
-                val roomId = SharedPrefManager.instance.getRoomId() ?: return
-                PushData.removeTimer(roomId)
-            }
-        }.start()
+        countDownTimer = getCountDownTimer(timerEnd).start()
     }
 
 }

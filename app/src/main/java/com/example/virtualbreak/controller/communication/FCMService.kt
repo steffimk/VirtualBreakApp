@@ -5,8 +5,11 @@ import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_ONE_SHOT
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -16,15 +19,14 @@ import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.view.view_activitys.NavigationDrawerActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.ktx.messaging
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+
 
 private const val CHANNEL_ID = "vb-channel"
 
@@ -48,11 +50,14 @@ class FCMService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT)
 
+        val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.dilin_ringtone)
+
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(msg.data["title"])
             .setContentText(msg.data["message"])
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
+            .setSound(soundUri)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notification.setSmallIcon(R.drawable.ic_cup_white).color = getColor(R.color.mandarin)
@@ -74,9 +79,15 @@ class FCMService : FirebaseMessagingService() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {
+        val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.dilin_ringtone)
+        val audioAttributes = AudioAttributes.Builder()
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+            .build()
         val channel = NotificationChannel(CHANNEL_ID, "vb channel name", IMPORTANCE_HIGH).apply {
             description = "Description of channel"
             enableLights(true)
+            setSound(soundUri,audioAttributes)
         }
         notificationManager.createNotificationChannel(channel)
     }

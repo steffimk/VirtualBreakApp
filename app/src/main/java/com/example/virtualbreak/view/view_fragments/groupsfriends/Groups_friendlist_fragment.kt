@@ -45,6 +45,10 @@ class Groups_friendlist_fragment : Fragment() {
 
         friends_recyler_list_view.layoutManager = LinearLayoutManager(activity)
 
+        //for faster image loadig
+        friends_recyler_list_view.setHasFixedSize(true)
+        friends_recyler_list_view.setItemViewCacheSize(20)
+
          //for test
         /*var friends: ArrayList<User> = ArrayList()
         friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, false, null, null, null))

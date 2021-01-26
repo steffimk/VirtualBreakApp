@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.transition.Slide
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
@@ -24,9 +24,7 @@ import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
 import com.squareup.picasso.Picasso
-import java.io.IOException
 
 
 /**
@@ -73,6 +71,8 @@ class AddFriendsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        addTransition()
 
         viewModel.getCurrentUser() // Get once to trigger "by lazy" instantiation
 
@@ -194,6 +194,24 @@ class AddFriendsFragment : Fragment() {
             }
             hasConsumed
         }
+    }
+
+
+    private fun addTransition() {
+        /*enterTransition = MaterialContainerTransform().apply {
+            startView = requireActivity().findViewById(R.id.friends_add_friends_button)
+            endView = view
+            duration = resources.getInteger(R.integer.reply_motion_duration_small).toLong()
+            scrimColor = Color.TRANSPARENT
+            containerColor = requireContext().getColor(R.color.white)
+            startContainerColor = requireContext().getColor(R.color.white)
+            endContainerColor = requireContext().getColor(R.color.white)
+        }*/
+        returnTransition = Slide().apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            addTarget(R.id.friends_recyler_list_view)
+        }
+
     }
 
 }

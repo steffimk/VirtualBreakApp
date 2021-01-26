@@ -4,9 +4,9 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="7dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    card_view:cardBackgroundColor="@color/blue"
+    android:layout_height="wrap_content"
     card_view:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
             android:layout_marginEnd="6dp"
             android:contentDescription="room picture"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_vb_foreground"
+            android:src="@drawable/ic_coffee2"
             card_view:layout_constraintEnd_toStartOf="@+id/linearLayout"
             card_view:layout_constraintStart_toEndOf="@+id/linearLayout"
             card_view:layout_constraintTop_toTopOf="parent" />

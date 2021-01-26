@@ -47,19 +47,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/log_in"
-            android:backgroundTint="@color/mandarin"
+            style="@style/MySpecialButton"
             android:id="@+id/loginButton"
             android:padding="10dp"
             android:textAllCaps="false"
             android:layout_marginTop="100dp"
-            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/create_an_account"
-            android:backgroundTint="@color/mandarin"
             android:id="@+id/signupButton"
             android:padding="10dp"
             android:textAllCaps="false"

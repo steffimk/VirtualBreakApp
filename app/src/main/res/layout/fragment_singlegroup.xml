@@ -1,121 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.view_fragments.singlegroup.SingleGroupFragment">
+    android:layout_width="match_parent"
+    tools:context=".view.view_fragments.singlegroup.SingleGroupRoomsFragment"
+    >
+<!--
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/singlegroup_toggleButton"
+        app:singleSelection="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/singlegroup_toggle_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pausenräume"
+            style="?attr/materialButtonOutlinedStyle"
+            />
+        <Button
+            android:id="@+id/singlegroup_toggle_members"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mitglieder"
+            style="?attr/materialButtonOutlinedStyle"
+            />
+    </com.google.android.material.button.MaterialButtonToggleGroup>-->
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/singlegroup_containerview_members"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_singlegroup"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"/>
 
 
-        <GridView
-            android:id="@+id/grid_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:horizontalSpacing="15dp"
-            android:numColumns="auto_fit"
-            android:verticalSpacing="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
-
-    <!--
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_singlegroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/neuer_pausenraum"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/plus" />
-    -->
-
-    <com.nambimobile.widgets.efab.ExpandableFabLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/singlegroup_containerview_rooms"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"/>
 
-        <com.nambimobile.widgets.efab.Overlay
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+</LinearLayout>
 
-        <com.nambimobile.widgets.efab.ExpandableFab
-            android:id="@+id/fab_singlegroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginStart="@dimen/efab_ui_margin_medium"
-            android:layout_marginEnd="@dimen/efab_ui_margin_medium"
-            android:layout_marginBottom="@dimen/efab_ui_margin_medium"
-            app:efab_color="@color/mandarin"
-            app:efab_icon="@drawable/ic_plus_white_24dp" />
-        <!-- app:efab_iconAnimationRotationDeg="-180"
-         app:efab_openingAnimationDurationMs="500"
-         app:efab_closingAnticipateTension="0"-->
-
-
-        <com.nambimobile.widgets.efab.FabOption
-            android:id="@+id/fab_singlegroup_option1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:fab_color="@color/mandarin"
-            app:fab_icon="@drawable/ic_cup_white"
-            app:label_text="Coffee" />
-
-        <com.nambimobile.widgets.efab.FabOption
-            android:id="@+id/fab_singlegroup_option2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_color="@color/mandarin"
-            app:fab_icon="@drawable/ic_question_white"
-            app:label_text="Frage" />
-
-        <com.nambimobile.widgets.efab.FabOption
-            android:id="@+id/fab_singlegroup_option3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_color="@color/mandarin"
-            app:fab_icon="@drawable/ic_game_white"
-            app:label_text="Game" />
-
-        <com.nambimobile.widgets.efab.FabOption
-            android:id="@+id/fab_singlegroup_option4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_color="@color/mandarin"
-            app:fab_icon="@drawable/ic_sport"
-            app:label_text="Sport" />
-
-    </com.nambimobile.widgets.efab.ExpandableFabLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>

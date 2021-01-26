@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/light_gray"
+            android:backgroundTint="@color/white"
             android:background="@drawable/rounded_corners"
             android:paddingHorizontal="5dp"
             android:layout_weight="4.1"

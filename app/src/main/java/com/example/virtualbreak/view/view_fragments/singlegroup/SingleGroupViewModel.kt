@@ -18,11 +18,6 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
     private val TAG = "SingleGroupViewModel"
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Offene Pausenräume:"
-    }
-    val text: LiveData<String> = _text
-
     private val rooms : MutableLiveData<HashMap<String,Room>> =
         object : MutableLiveData<HashMap<String,Room>>(HashMap()) {
             private val queryRooms = PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
@@ -81,18 +76,25 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
     }
 
-    private val usersOfGroup: HashMap<String,User> by lazy {
-        HashMap<String,User>().also {
-            PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
-                .child(Constants.DATABASE_CHILD_USERS).addValueEventListener(groupUsersEventListener)
-        }
-    }
 
-    /**
-     * Returns HashMap with userId as key and user as value
-     */
-    fun getGroupUsers(): HashMap<String,User> {
-        return this.usersOfGroup;
+    private val usersOfGroup : MutableLiveData<HashMap<String,User>> =
+        object : MutableLiveData<HashMap<String,User>>(HashMap()) {
+            private val queryUsers = PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+                .child(Constants.DATABASE_CHILD_USERS)
+
+            override fun onActive() {
+                super.onActive()
+                queryUsers.addValueEventListener(groupUsersEventListener)
+            }
+
+            override fun onInactive() {
+                super.onInactive()
+                queryUsers.removeEventListener(groupUsersEventListener)
+            }
+        }
+
+    fun getGroupUsers(): LiveData<HashMap<String, User>> {
+        return this.usersOfGroup
     }
 
     private val groupUsersEventListener = object : ValueEventListener {
@@ -103,19 +105,29 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
             if (pulledUsers == null) return
 
-            // Pull new users in group
-            for(userId in pulledUsers.keys){
-                if(usersOfGroup.containsKey(userId)) return // fcmToken already saved
-                else PullData.database.child(Constants.DATABASE_CHILD_USERS)
-                    .child(userId).addValueEventListener(userListener)
-            }
+            usersOfGroup.value?.let{
+                // Pull new users in group
+                for(userId in pulledUsers.keys){
+                    if(it.containsKey(userId)) return // fcmToken already saved
+                    else PullData.database.child(Constants.DATABASE_CHILD_USERS)
+                        .child(userId).addValueEventListener(userListener)
+                }
 
-            // Delete users that left group
-            for (userId in usersOfGroup) {
-                if (!pulledUsers.keys.contains(userId)){
-                    usersOfGroup.remove(userId)
+                // Delete users that left group
+                for (userId in it) {
+                    if (!pulledUsers.keys.contains(userId)){
+                        it.remove(userId)
+                    }
                 }
             }
+
+            if(usersOfGroup == null){
+                for(userId in pulledUsers.keys){
+                    PullData.database.child(Constants.DATABASE_CHILD_USERS)
+                        .child(userId).addValueEventListener(userListener)
+                }
+            }
+
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -132,7 +144,9 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
             if (pulledUser == null) return
 
-            usersOfGroup[pulledUser.uid] = pulledUser
+            usersOfGroup.value?.put(pulledUser.uid, pulledUser)
+            usersOfGroup.value = usersOfGroup.value
+            //usersOfGroup[pulledUser.uid] = pulledUser
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -146,11 +160,40 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             .removeEventListener(groupUsersEventListener)
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
             .child(groupId).child(Constants.DATABASE_CHILD_ROOMS).removeEventListener(roomsValueEventListener)
-        usersOfGroup.keys.forEach{
-            PullData.database.child(Constants.DATABASE_CHILD_USERS)
-                .child(it).removeEventListener(userListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .removeEventListener(currentGroupListener)
+
+        usersOfGroup.value?.let{
+            it.keys.forEach{
+                PullData.database.child(Constants.DATABASE_CHILD_USERS)
+                    .child(it).removeEventListener(userListener)
+            }
         }
     }
+
+    private val currentGroup: MutableLiveData<Group?> by lazy { MutableLiveData<Group?>().also{
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .addValueEventListener(currentGroupListener)
+    } }
+
+    fun getCurrentGroup(): LiveData<Group?> {
+        return currentGroup
+    }
+
+    private val currentGroupListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var group = dataSnapshot.getValue(Group::class.java)!!
+                if (group != null) {
+                    currentGroup.value = group
+                }
+                Log.d(TAG, "Pulled Current Group")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
 
 //    private val user: MutableLiveData<User> = object : MutableLiveData<User>() {
 //        private val userQuery = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(
@@ -185,26 +228,5 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 //        }
 //
 //    }
-
-    var currentGroup: Group? = null
-
-    fun pullGroupWithId(groupId: String) {
-        val valueEventListener = object : ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var group = dataSnapshot.getValue(Group::class.java)!!
-                if (group != null) {
-                    currentGroup = group
-                }
-                Log.d(TAG, "Pulled Current Group")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d(TAG, databaseError.message)
-            }
-        }
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
-            .addListenerForSingleValueEvent(valueEventListener)
-    }
 
 }

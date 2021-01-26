@@ -25,7 +25,7 @@ import java.io.IOException
  * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
  */
 
-class FriendListAdapter(friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
+class SingleGroupMembersAdapter(friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<SingleGroupMembersAdapter.ViewHolderFriends>() {
 
     lateinit var view: View
     var friends: ArrayList<User>
@@ -36,9 +36,9 @@ class FriendListAdapter(friends: ArrayList<User>, private val context: Context?)
     }
 
     class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val  textView: TextView = itemView.findViewById(R.id.friend_list_name)
-        val statusCircleImg: ImageView = itemView.findViewById(R.id.status_circle_img)
-        val profilePic: ImageView = itemView.findViewById(R.id.friend_list_image)
+        val textView: TextView = itemView.findViewById(R.id.singlegroup_member_name)
+        val statusCircleImg: ImageView = itemView.findViewById(R.id.singlegroup_member_status)
+        val profilePic: ImageView = itemView.findViewById(R.id.singlegroup_member_img)
 
         private val TAG: String = "FriendListAdapter_ViewHolder"
 
@@ -48,7 +48,7 @@ class FriendListAdapter(friends: ArrayList<User>, private val context: Context?)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolderFriends {
-        view = LayoutInflater.from(viewGroup.context).inflate(R.layout.friend_list_item, viewGroup, false)
+        view = LayoutInflater.from(viewGroup.context).inflate(R.layout.singlegroup_member_item, viewGroup, false)
 
         return ViewHolderFriends(view)
     }

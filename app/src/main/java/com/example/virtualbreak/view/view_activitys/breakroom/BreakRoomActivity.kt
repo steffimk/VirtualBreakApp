@@ -3,7 +3,10 @@ package com.example.virtualbreak.view.view_activitys.breakroom
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -38,6 +41,7 @@ import com.google.android.material.snackbar.Snackbar
 class BreakRoomActivity : AppCompatActivity() {
 
     private val TAG = "BreakRoomActivity"
+    private val DRAW_OVER_OTHER_APP_PERMISSION = 123
 
     private val viewModel: BreakRoomViewModel by viewModels {
         BreakRoomViewModelFactory(
@@ -117,13 +121,16 @@ class BreakRoomActivity : AppCompatActivity() {
         //val roomId = SharedPrefManager.instance.getRoomId()
         //var userName : String? = null
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            askPermission();
+        }
 
         mtoolbar = findViewById(R.id.toolbar_breakroom)
         editText = findViewById(R.id.et_changeRoomName)
 
         setSupportActionBar(mtoolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_leave)
+        //For the Back Button
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
 
@@ -131,7 +138,8 @@ class BreakRoomActivity : AppCompatActivity() {
 
             viewModel.loadUsersOfRoom()
 
-            PushData.joinRoom(this, roomId, userName)
+            //bug moved to other places this can lead to too many messages when device screen turns on and off
+            // PushData.joinRoom(this, roomId, userName)
 
             viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
 
@@ -263,12 +271,14 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-
-        android.R.id.home -> {
-            // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
-            leaveRoom()
-            true
-        }
+//        For the Back Button
+//        android.R.id.home -> {
+//            // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
+//            //leaveRoom()
+//            openWidget()
+//            Log.d(TAG, "Back/home pressed")
+//            true
+//        }
 
         R.id.action_edit -> {
             //User wants to edit the room name
@@ -305,13 +315,11 @@ class BreakRoomActivity : AppCompatActivity() {
             true
         }
         R.id.action_videocall -> {
-            val args = Bundle()
-            args.putString(Constants.ROOM_ID, roomId)
-            args.putString(Constants.USER_NAME, userName)
-
-            val intent = Intent(this, VideoCallActivity::class.java)
-            intent.putExtras(args)
-            this.startActivity(intent)
+            videocall()
+            true
+        }
+        R.id.action_leaveRoom -> {
+            leaveRoom()
             true
         }
         else -> {
@@ -320,10 +328,49 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        leaveRoom()
+        //leaveRoom()
+        openWidget()
+    }
+    override fun onPause() {
+        super.onPause()
+        // To prevent starting the service if the required permission is NOT granted.
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) {
+//            startService(
+//                Intent(
+//                    this@BreakRoomActivity,
+//                    BreakroomWidgetService::class.java
+//                ).putExtra("activity_background", true)
+//            )
+//            finish()
+//        } else {
+//            Toast.makeText(
+//                this,
+//                "You need System Alert Window Permission to do this",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
     }
 
-    private fun leaveRoom() {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d(TAG, "onACtivityREsult")
+        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(this)) {
+                    //Permission is not available. Display error text.
+                    Toast.makeText(
+                        this,
+                        "You need System Alert Window Permission to do this",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    fun leaveRoom() {
         if (room?.users?.size == 1) {
             showDialog()
         } else {
@@ -333,6 +380,16 @@ class BreakRoomActivity : AppCompatActivity() {
             Log.d(TAG, "Left room $roomId")
             finish()
         }
+    }
+
+    fun videocall() {
+        val args = Bundle()
+        args.putString(Constants.ROOM_ID, roomId)
+        args.putString(Constants.USER_NAME, userName)
+
+        val intent = Intent(this, VideoCallActivity::class.java)
+        intent.putExtras(args)
+        this.startActivity(intent)
     }
 
     private fun showDialog() {
@@ -355,6 +412,56 @@ class BreakRoomActivity : AppCompatActivity() {
         noBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
+    }
+
+    private fun openWidget() {
+        Log.d(TAG, "openwidget")
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
+//            Log.d("BreakRoom1", room?.description + room?.type?.dbStr)
+//            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
+//            intent.putExtra(Constants.ROOM_NAME, room?.description)
+//            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
+//            startService(intent)
+//            finish()
+
+        if (Settings.canDrawOverlays(this)) {
+            Log.d("BreakRoom2", room?.description + room?.type?.dbStr)
+            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
+            intent.putExtra(Constants.ROOM_NAME, room?.description)
+            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
+            intent.putExtra(Constants.USER_NAME, userName)
+            startService(intent)
+            finish()
+        } else {
+            askPermission()
+            Toast.makeText(
+                this,
+                "You need System Alert Window Permission to do this",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+
+    private fun askPermission() {
+//        val intent = Intent(
+//            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//            Uri.parse("package:$packageName")
+//        )
+//        startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION)
+//    }
+
+        Log.d(TAG, "askPermission")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName())
+            );
+            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
+        }
     }
 
     /**

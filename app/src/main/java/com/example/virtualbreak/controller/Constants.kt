@@ -29,6 +29,9 @@ class Constants {
         const val SERVER_KEY = "AAAAq1RP918:APA91bG34UvpK6BFYE1DGNlaHxOFVnuOFTj37u-mob6AbJsTPyVILdksD9XUzt6TSwmY-WyWLEuBe-NCjwIweJWqdqlfriUlOFfNA-dZiz8PLgun4Rj3AUnxwJuB4D7t_na-FVSxhOIl"
         const val CONTENT_TYPE = "application/json"
 
-        val FITNESS_IDEAS = arrayOf("Liegestützen", "Hampelmänner", "Sit-Ups", "Plank", "Kniebeugen", "Mountain Climber")
+        val FITNESS_IDEAS = arrayOf(
+            "Liegestützen", "Hampelmänner", "Sit-Ups", "Plank", "Kniebeugen",
+            "Mountain Climber", "Superman", "Dehnen", "Burpees", "Side Plank",
+            "Ausfallschritt", "Crunches", "Donkey Kicks", "Seilspringen")
     }
 }

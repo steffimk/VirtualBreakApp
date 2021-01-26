@@ -45,14 +45,16 @@ class SportRoomExtrasFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSportRoomExtrasBinding.inflate(inflater, container, false)
 
+        binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
+
         binding.fitnessNextBtn.setOnClickListener {
-            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
             fitnessIndex = (fitnessIndex+1) % Constants.FITNESS_IDEAS.size
+            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
         }
         binding.fitnessPreviousBtn.setOnClickListener {
-            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
             if (fitnessIndex == 0) fitnessIndex = Constants.FITNESS_IDEAS.size
             fitnessIndex = (fitnessIndex-1) % Constants.FITNESS_IDEAS.size
+            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
         }
         binding.startTimerBtn.setOnClickListener { startNewTimer() }
 

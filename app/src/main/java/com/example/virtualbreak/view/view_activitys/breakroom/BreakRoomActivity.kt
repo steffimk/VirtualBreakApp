@@ -20,6 +20,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -76,7 +77,7 @@ class BreakRoomActivity : AppCompatActivity() {
         }
 
         // TODO: depending on room type set fragments
-        if (savedInstanceState == null) {
+        //if (savedInstanceState == null) {
             if(roomType.equals(Roomtype.GAME.dbStr)){
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
@@ -92,21 +93,24 @@ class BreakRoomActivity : AppCompatActivity() {
                         /*if(gameId != null){
                             bundle.putString(Constants.GAME_ID, gameId)
                         }*/
-                        add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                        replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                        //add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
                     }
 
                     //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
 
                     //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
-                    add<TextchatFragment>(R.id.fragment_container_chat_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
                 }
             } else{
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
-                    add<TextchatFragment>(R.id.fragment_container_chat_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
                 }
             }
-        }
+        //}
 
 
 
@@ -218,6 +222,40 @@ class BreakRoomActivity : AppCompatActivity() {
 
 
     }
+
+    /*override fun onResume() {
+        super.onResume()
+        if (roomType.equals(Roomtype.GAME.dbStr)) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                if (gameId != null) {
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    //val bundle = Bundle()
+
+                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+
+                    *//*if(gameId != null){
+                        bundle.putString(Constants.GAME_ID, gameId)
+                    }*//*
+                    add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                }
+
+                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
+
+                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
+                add<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        } else {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        }
+
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.breakroom_menu, menu)

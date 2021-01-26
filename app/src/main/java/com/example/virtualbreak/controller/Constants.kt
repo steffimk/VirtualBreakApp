@@ -31,5 +31,57 @@ class Constants {
         const val BASE_URL = "https://fcm.googleapis.com"
         const val SERVER_KEY = "AAAAq1RP918:APA91bG34UvpK6BFYE1DGNlaHxOFVnuOFTj37u-mob6AbJsTPyVILdksD9XUzt6TSwmY-WyWLEuBe-NCjwIweJWqdqlfriUlOFfNA-dZiz8PLgun4Rj3AUnxwJuB4D7t_na-FVSxhOIl"
         const val CONTENT_TYPE = "application/json"
+
+
+        val HANGMAN_WORDS = listOf<String>(
+            "Chrysantheme",
+            "Kernspintomografie",
+            "Puzzle",
+            "Schifffahrtsgesellschaft",
+            "Puderzucker",
+            "Zwiebelsuppe",
+            "Quiz",
+            "Espressomaschine",
+            "Bugfix",
+            "Prokrastination",
+            "Geburtstagstorte",
+            "Ausgangsbeschränkung",
+            "Homeoffice",
+            "Terrasse",
+            "Zucchini",
+            "Portemonnaie",
+            "ISO-OSI Schichtenmodell",
+            "Orchideenzucht",
+            "Gurkensalat",
+            "Karottenkuchen",
+            "Kaninchen",
+            "Giraffenhals",
+            "Elefantenhaus",
+            "Ohrenschmerzen",
+            "Unwetterwarnung",
+            "Desinfektionsmittelspender",
+            "Blubberblaeschen",
+            "Kaffeeklatsch",
+            "Kaulquappe",
+            "Verschlimmbesserung",
+            "Halbmond",
+            "Achteck",
+            "Surfbrett",
+            "Rettungsschwimmer",
+            "Gabelstapler",
+            "Schlauchboot",
+            "Heissluftballonflug",
+            "Fallschirmspringen",
+            "Halsnasenohrenarztpraxis",
+            "Regenbogenfarben",
+            "Rechtschreibfehler",
+            "Tintenfisch",
+            "Hummer",
+            "Seeigel",
+            "Manati",
+            "Zufallsgenerator",
+            "Rentierkutsche",
+            "Schokoladenfabrikmitarbeiter"
+        )
     }
 }

@@ -106,7 +106,9 @@ class PushData {
             if (currentUserId != null) {
                 val gameId = database.child(Constants.DATABASE_CHILD_ROOMS).push().key
                 if (gameId != null) {
-                    val randomWord = "BREAK"
+                    val randomValue = (0..(Constants.HANGMAN_WORDS.size-1)).random()
+                    Log.i(TAG, "random value: " + randomValue)
+                    val randomWord = Constants.HANGMAN_WORDS.get(randomValue)
                     val newGame = Game(gameId, roomId, randomWord)
                     database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).setValue(newGame)
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
@@ -170,6 +172,7 @@ class PushData {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
                     database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                    // TODO: something is wrong here
                     if(room.type == Roomtype.GAME){
                         if(room.gameId != null){
                             database.child(Constants.DATABASE_CHILD_GAMES).child(room.gameId!!).removeValue()

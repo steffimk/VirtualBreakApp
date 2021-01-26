@@ -19,9 +19,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -29,8 +30,10 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
+import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -52,26 +55,75 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
+    private var roomType : String = Roomtype.COFFEE.dbStr
+
+    private var gameId : String? = null
+
     private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
+
+    private var activeCall = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
 
-        // TODO: depending on room type set fragments
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                val fragment =
-                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                fragment.setVisibility(View.VISIBLE)
-
-                add<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
-                add<TextchatFragment>(R.id.fragment_container_chat_view)
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            userName = bundle.getString(Constants.USER_NAME)
+            val type = bundle.getString(Constants.ROOM_TYPE)
+            if (type != null) {
+                roomType = type
+            }
+            val game = bundle.getString(Constants.GAME_ID)
+            if (game != null) {
+                gameId = game
             }
         }
+
+        // TODO: depending on room type set fragments
+        //if (savedInstanceState == null) {
+            if(roomType.equals(Roomtype.GAME.dbStr)){
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    if (gameId != null) {
+                        val fragment =
+                            findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                        fragment.setVisibility(View.VISIBLE)
+
+                        val bundle = bundleOf(Constants.GAME_ID to gameId)
+
+                        replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                        //add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                    }
+
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
+                }
+            } else if(roomType.equals(Roomtype.SPORT.dbStr)){
+                // TODO: add sport room fragment here
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+
+                    // makes fragment visible
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    // if you don't need to pass info to fragment
+                    replace<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+                }
+            } else{
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
+                }
+            }
+        //}
 
 
 
@@ -90,11 +142,6 @@ class BreakRoomActivity : AppCompatActivity() {
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-        val bundle: Bundle? = intent.extras
-        if (bundle != null) {
-            userName = bundle.getString(Constants.USER_NAME)
-        }
-
 
         if (roomId != null) {
 
@@ -110,6 +157,22 @@ class BreakRoomActivity : AppCompatActivity() {
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
+
+                    val callBefore = activeCall
+                    // there are callMembers so it exists an active call
+                    if (observedRoom.callMembers != null) {
+                        activeCall = true
+                        // update menu only if call has changed
+                        if(callBefore != activeCall){
+                            invalidateOptionsMenu ()
+                        }
+                    } else {
+                        activeCall = false
+                        // update menu only if call has changed
+                        if(callBefore != activeCall){
+                            invalidateOptionsMenu ()
+                        }
+                    }
                 }
             })
 
@@ -193,8 +256,54 @@ class BreakRoomActivity : AppCompatActivity() {
 
     }
 
+    /*override fun onResume() {
+        super.onResume()
+        if (roomType.equals(Roomtype.GAME.dbStr)) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                if (gameId != null) {
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    //val bundle = Bundle()
+
+                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+
+                    *//*if(gameId != null){
+                        bundle.putString(Constants.GAME_ID, gameId)
+                    }*//*
+                    add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+                }
+
+                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
+
+                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
+                add<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        } else {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        }
+
+    }*/
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.breakroom_menu, menu)
+        return true
+    }
+
+    // updating menu
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        // when there is an active call, highlight the call item
+        if(activeCall){
+            menu?.findItem(R.id.action_videocall)?.setIcon(R.drawable.videocall_white_call)
+        } else{
+            menu?.findItem(R.id.action_videocall)?.setIcon(R.drawable.videocall_white)
+        }
         return true
     }
 
@@ -358,6 +467,7 @@ class BreakRoomActivity : AppCompatActivity() {
             intent.putExtra(Constants.ROOM_NAME, room?.description)
             intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
             intent.putExtra(Constants.USER_NAME, userName)
+            intent.putExtra(Constants.GAME_ID, gameId)
             startService(intent)
             finish()
         } else {

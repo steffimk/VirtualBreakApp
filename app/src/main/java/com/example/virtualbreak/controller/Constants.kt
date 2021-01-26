@@ -8,6 +8,7 @@ class Constants {
         const val DISPLAY_NAME = "displayName"
         const val ROOM_NAME = "roomName"
         const val ROOM_TYPE = "roomType"
+        const val GAME_ID = "gameId"
 
         const val DATABASE_CHILD_USERS = "users"
         const val DATABASE_CHILD_GROUPS = "groups"
@@ -20,6 +21,11 @@ class Constants {
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DATABASE_CHILD_USERNAME = "username"
         const val DATABASE_CHILD_TIMER_END = "timerEnd"
+        const val DATABASE_CHILD_GAMES = "games"
+        const val DATABASE_CHILD_ROOM_GAME = "gameId"
+        const val DATABASE_CHILD_GAME_LETTERS = "letters"
+        const val DATABASE_CHILD_GAME_ERRORS = "errors"
+        const val DATABASE_CHILD_CALL_MEMBERS = "callMembers"
 
         const val DEFAULT_TIME:Long = 0
 
@@ -33,5 +39,56 @@ class Constants {
             "Liegestützen", "Hampelmänner", "Sit-Ups", "Plank", "Kniebeugen",
             "Mountain Climber", "Superman", "Dehnen", "Burpees", "Side Plank",
             "Ausfallschritt", "Crunches", "Donkey Kicks", "Seilspringen")
+
+        val HANGMAN_WORDS = listOf<String>(
+            "Chrysantheme",
+            "Kernspintomografie",
+            "Puzzle",
+            "Schifffahrtsgesellschaft",
+            "Puderzucker",
+            "Zwiebelsuppe",
+            "Quiz",
+            "Espressomaschine",
+            "Bugfix",
+            "Prokrastination",
+            "Geburtstagstorte",
+            "Ausgangsbeschränkung",
+            "Homeoffice",
+            "Terrasse",
+            "Zucchini",
+            "Portemonnaie",
+            "ISO-OSI Schichtenmodell",
+            "Orchideenzucht",
+            "Gurkensalat",
+            "Karottenkuchen",
+            "Kaninchen",
+            "Giraffenhals",
+            "Elefantenhaus",
+            "Ohrenschmerzen",
+            "Unwetterwarnung",
+            "Desinfektionsmittelspender",
+            "Blubberblaeschen",
+            "Kaffeeklatsch",
+            "Kaulquappe",
+            "Verschlimmbesserung",
+            "Halbmond",
+            "Achteck",
+            "Surfbrett",
+            "Rettungsschwimmer",
+            "Gabelstapler",
+            "Schlauchboot",
+            "Heissluftballonflug",
+            "Fallschirmspringen",
+            "Halsnasenohrenarztpraxis",
+            "Regenbogenfarben",
+            "Rechtschreibfehler",
+            "Tintenfisch",
+            "Hummer",
+            "Seeigel",
+            "Manati",
+            "Zufallsgenerator",
+            "Rentierkutsche",
+            "Schokoladenfabrikmitarbeiter"
+        )
     }
 }

@@ -3,6 +3,7 @@ package com.example.virtualbreak.view.view_activitys
 import android.os.Bundle
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.communication.PushData
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
@@ -12,11 +13,12 @@ import java.net.URL
 class VideoCallActivity : JitsiMeetActivity() {
 
     private val JITSI_URL = "https://meet.jit.si"
+    var roomId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var roomId = ""
+
         var currentName = "user"
 
         // room & user info
@@ -29,6 +31,9 @@ class VideoCallActivity : JitsiMeetActivity() {
             }
         }
         val roomName: String = getString(R.string.app_name) + roomId
+
+        // add user in call list
+        PushData.addCallMember(this, roomId)
 
         // user info
         var userInfoBundle = Bundle()
@@ -47,5 +52,10 @@ class VideoCallActivity : JitsiMeetActivity() {
             .build()
 
         join(options)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PushData.removeCallMember(this, roomId)
     }
 }

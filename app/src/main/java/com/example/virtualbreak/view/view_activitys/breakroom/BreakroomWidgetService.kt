@@ -30,6 +30,8 @@ class BreakroomWidgetService : Service() {
     private var roomType = "RoomType"
     private var userName = "UserName"
 
+    private var gameId: String? = null
+
     private lateinit var params: WindowManager.LayoutParams
 
 
@@ -104,6 +106,8 @@ class BreakroomWidgetService : Service() {
             Log.d(TAG, "Open room")
             val intent = Intent(this@BreakroomWidgetService, BreakRoomActivity::class.java)
             intent.putExtra(Constants.USER_NAME, userName)
+            intent.putExtra(Constants.ROOM_TYPE, roomType)
+            intent.putExtra(Constants.GAME_ID, gameId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             //close the service and remove view from the view hierarchy
@@ -193,6 +197,8 @@ class BreakroomWidgetService : Service() {
             mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text =
                 "Pausentyp  ${bundle.getString(Constants.ROOM_TYPE).toString()}"
             userName = bundle.getString(Constants.USER_NAME).toString()
+            roomType = bundle.getString(Constants.ROOM_TYPE).toString()
+            gameId = bundle.getString(Constants.GAME_ID).toString()
             Log.d("BreakRoom3", roomName + roomType)
         }
         return super.onStartCommand(intent, flags, startId)

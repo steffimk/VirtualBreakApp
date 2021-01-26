@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -101,6 +102,73 @@ class PushData {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }
 
+        fun createGame(roomId: String): String? {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                val gameId = database.child(Constants.DATABASE_CHILD_ROOMS).push().key
+                if (gameId != null) {
+                    val randomValue = (0..(Constants.HANGMAN_WORDS.size-1)).random()
+                    Log.i(TAG, "random value: " + randomValue)
+                    val randomWord = Constants.HANGMAN_WORDS.get(randomValue)
+                    val newGame = Game(gameId, roomId, randomWord)
+                    database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).setValue(newGame)
+                    database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                        .child(Constants.DATABASE_CHILD_ROOM_GAME).setValue(gameId)
+                    Log.d(TAG, "Saved new game")
+                }
+                return gameId
+            } else {
+                Log.d(TAG, "No user logged in. Cannot save game.")
+                return null
+            }
+        }
+
+        fun addLetterToGame(gameId: String, letter: String) {
+            database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).child(Constants.DATABASE_CHILD_GAME_LETTERS).child(letter).setValue(letter)
+            Log.d(TAG, "added letter to game")
+        }
+
+        fun addError(gameId: String, errors: Int) {
+            database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).child(Constants.DATABASE_CHILD_GAME_ERRORS).setValue(errors)
+            Log.d(TAG, "added error to game")
+        }
+
+        fun addCallMember(context:Context, roomId: String?) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            val userName = SharedPrefManager.instance.getUserName()
+            if (currentUserId != null && roomId != null) {
+                if(userName != null){
+                    sendSystemMessage(roomId,userName + " " + context.getString(R.string.joined_call))
+                } else{
+                    sendSystemMessage(roomId,currentUserId + " " +context.getString(R.string.joined_call))
+                }
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                    .child(Constants.DATABASE_CHILD_CALL_MEMBERS).child(currentUserId)
+                    .setValue(currentUserId)
+                Log.d(TAG, "Saved new call member")
+            } else {
+                Log.d(TAG, "No user logged in. Cannot save call member.")
+            }
+        }
+
+        fun removeCallMember(context:Context,roomId: String?) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            val userName = SharedPrefManager.instance.getUserName()
+            if (currentUserId != null && roomId != null) {
+                if(userName != null){
+                    sendSystemMessage(roomId,userName + " " + context.getString(R.string.left_call))
+                } else{
+                    sendSystemMessage(roomId,currentUserId + " " +context.getString(R.string.left_call))
+                }
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                    .child(Constants.DATABASE_CHILD_CALL_MEMBERS).child(currentUserId).removeValue()
+                Log.d(TAG, "Removed call member")
+
+            } else {
+                Log.d(TAG, "No user logged in. Cannot remove call member.")
+            }
+        }
+
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -141,6 +209,12 @@ class PushData {
                 if (room.users.size == 1 && room.users.containsKey(currentUserId)) {
                     database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId).child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                    // TODO: something is wrong here
+                    if(room.type == Roomtype.GAME){
+                        if(room.gameId != null){
+                            database.child(Constants.DATABASE_CHILD_GAMES).child(room.gameId!!).removeValue()
+                        }
+                    }
                     Log.d(TAG, "Deleted empty room.")
                 } else {
                     database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).child(Constants.DATABASE_CHILD_USERS).child(currentUserId)

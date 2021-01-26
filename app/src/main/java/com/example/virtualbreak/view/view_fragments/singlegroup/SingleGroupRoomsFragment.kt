@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -133,6 +134,8 @@ class SingleGroupRoomsFragment : Fragment() {
 
         Log.d(TAG, "create $roomtype Breakroom")
 
+        val intent = Intent(activity, BreakRoomActivity::class.java)
+
         groupId?.let{
             if (groupId != "") {
                 val roomId = PushData.saveRoom(it, roomtype, roomtype.dbStr)
@@ -144,14 +147,18 @@ class SingleGroupRoomsFragment : Fragment() {
                         PushData.joinRoom(it, roomId, userName)
                     }
                     SharedPrefManager.instance.saveRoomId(roomId)
+                    if(roomtype == Roomtype.GAME){
+                        val gameId = PushData.createGame(roomId)
+                        intent.putExtra(Constants.GAME_ID, gameId)
+                    }
                 } else{
                     Log.w(TAG, "Room ID is null, can't open Breakroom")
                 }
             }
         }
 
-        val intent = Intent(activity, BreakRoomActivity::class.java)
         intent.putExtra(Constants.USER_NAME, userName)
+        intent.putExtra(Constants.ROOM_TYPE, roomtype.dbStr)
         activity?.startActivity(intent)
 
     }

@@ -14,6 +14,7 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 
 class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName:String?) : RecyclerView.Adapter<SingleGroupRoomsAdapter.ViewHolderRooms>() {
@@ -62,10 +63,14 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
             PushData.joinRoom(context, item.uid, username)
             SharedPrefManager.instance.saveRoomId(item.uid)
 
-            val intent = Intent(context, BreakRoomActivity::class.java)
-            intent.putExtra(Constants.USER_NAME, username)
-            context.startActivity(intent)
-        }
+                val intent = Intent(context, BreakRoomActivity::class.java)
+                intent.putExtra(Constants.USER_NAME, username)
+                intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
+                if (item.type.equals(Roomtype.GAME)){
+                    intent.putExtra(Constants.GAME_ID, item.gameId)
+                }
+                context.startActivity(intent)
+            }
 
     }
 

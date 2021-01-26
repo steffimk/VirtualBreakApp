@@ -90,22 +90,34 @@ class BreakRoomActivity : AppCompatActivity() {
                             findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
                         fragment.setVisibility(View.VISIBLE)
 
-                        //val bundle = Bundle()
-
                         val bundle = bundleOf(Constants.GAME_ID to gameId)
 
-                        /*if(gameId != null){
-                            bundle.putString(Constants.GAME_ID, gameId)
-                        }*/
                         replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
                         //add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
                     }
 
-                    //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
-
-                    //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
                     replace<TextchatFragment>(R.id.fragment_container_chat_view)
                     //add<TextchatFragment>(R.id.fragment_container_chat_view)
+                }
+            } else if(roomType.equals(Roomtype.SPORT.dbStr)){
+                // TODO: add sport room fragment here
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+
+                    // makes fragment visible
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    // if you don't need to pass info to fragment
+                    replace<HangmanFragment>(R.id.fragment_container_game_view)
+                    // if you need to pass info to fragment
+                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+                    replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
+
+
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
                 }
             } else{
                 supportFragmentManager.commit {

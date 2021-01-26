@@ -132,6 +132,31 @@ class PushData {
             Log.d(TAG, "added error to game")
         }
 
+        fun addCallMember(roomId: String?) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null && roomId != null) {
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                    .child(Constants.DATABASE_CHILD_CALL_MEMBERS).child(currentUserId)
+                    .setValue(currentUserId)
+                Log.d(TAG, "Saved new call member")
+
+            } else {
+                Log.d(TAG, "No user logged in. Cannot save call member.")
+            }
+        }
+
+        fun removeCallMember(roomId: String?) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null && roomId != null) {
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                    .child(Constants.DATABASE_CHILD_CALL_MEMBERS).child(currentUserId).removeValue()
+                Log.d(TAG, "Removed call member")
+
+            } else {
+                Log.d(TAG, "No user logged in. Cannot remove call member.")
+            }
+        }
+
         fun saveRoom(groupId: String, roomType: Roomtype?, roomDescription: String) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {

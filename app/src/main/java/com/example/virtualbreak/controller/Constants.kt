@@ -24,6 +24,7 @@ class Constants {
         const val DATABASE_CHILD_ROOM_GAME = "gameId"
         const val DATABASE_CHILD_GAME_LETTERS = "letters"
         const val DATABASE_CHILD_GAME_ERRORS = "errors"
+        const val DATABASE_CHILD_CALL_MEMBERS = "callMembers"
 
         const val DEFAULT_TIME:Long = 0
 

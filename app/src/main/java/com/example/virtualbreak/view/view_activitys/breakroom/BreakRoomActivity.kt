@@ -160,6 +160,11 @@ class BreakRoomActivity : AppCompatActivity() {
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
+                    if (observedRoom.callMembers != null) {
+                        // TODO : indicate that call is running
+                    } else {
+                        // TODO: remove indication of call
+                    }
                 }
             })
 

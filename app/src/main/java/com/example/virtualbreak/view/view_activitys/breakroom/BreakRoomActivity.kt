@@ -442,6 +442,7 @@ class BreakRoomActivity : AppCompatActivity() {
             intent.putExtra(Constants.ROOM_NAME, room?.description)
             intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
             intent.putExtra(Constants.USER_NAME, userName)
+            intent.putExtra(Constants.GAME_ID, gameId)
             startService(intent)
             finish()
         } else {

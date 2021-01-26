@@ -33,7 +33,7 @@ class VideoCallActivity : JitsiMeetActivity() {
         val roomName: String = getString(R.string.app_name) + roomId
 
         // add user in call list
-        PushData.addCallMember(roomId)
+        PushData.addCallMember(this, roomId)
 
         // user info
         var userInfoBundle = Bundle()
@@ -56,6 +56,6 @@ class VideoCallActivity : JitsiMeetActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        PushData.removeCallMember(roomId)
+        PushData.removeCallMember(this, roomId)
     }
 }

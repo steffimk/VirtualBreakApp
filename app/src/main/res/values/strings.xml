@@ -85,6 +85,9 @@
     <string name="left"> hat den Raum verlassen</string>
     <string name="toast_enter_message">Bitte gib eine Nachricht ein</string>
 
+    <string name="joined_call"> ist dem Call beigetreten</string>
+    <string name="left_call"> hat den Call verlassen</string>
+
 
     <string name="annehmen">Annehmen</string>
     <string name="bekommen">Bekommen:</string>

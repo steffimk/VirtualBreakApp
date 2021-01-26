@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
@@ -62,6 +61,8 @@ class BreakRoomActivity : AppCompatActivity() {
     private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
+
+    private var activeCall = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,10 +161,21 @@ class BreakRoomActivity : AppCompatActivity() {
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
+
+                    val callBefore = activeCall
+                    // there are callMembers so it exists an active call
                     if (observedRoom.callMembers != null) {
-                        // TODO : indicate that call is running
+                        activeCall = true
+                        // update menu only if call has changed
+                        if(callBefore != activeCall){
+                            invalidateOptionsMenu ()
+                        }
                     } else {
-                        // TODO: remove indication of call
+                        activeCall = false
+                        // update menu only if call has changed
+                        if(callBefore != activeCall){
+                            invalidateOptionsMenu ()
+                        }
                     }
                 }
             })
@@ -284,6 +296,18 @@ class BreakRoomActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.breakroom_menu, menu)
+        return true
+    }
+
+    // updating menu
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        // when there is an active call, highlight the call item
+        if(activeCall){
+            menu?.findItem(R.id.action_videocall)?.setIcon(R.drawable.videocall_white_call)
+        } else{
+            menu?.findItem(R.id.action_videocall)?.setIcon(R.drawable.videocall_white)
+        }
         return true
     }
 

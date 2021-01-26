@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -132,22 +133,33 @@ class PushData {
             Log.d(TAG, "added error to game")
         }
 
-        fun addCallMember(roomId: String?) {
+        fun addCallMember(context:Context, roomId: String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
+            val userName = SharedPrefManager.instance.getUserName()
             if (currentUserId != null && roomId != null) {
+                if(userName != null){
+                    sendSystemMessage(roomId,userName + " " + context.getString(R.string.joined_call))
+                } else{
+                    sendSystemMessage(roomId,currentUserId + " " +context.getString(R.string.joined_call))
+                }
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
                     .child(Constants.DATABASE_CHILD_CALL_MEMBERS).child(currentUserId)
                     .setValue(currentUserId)
                 Log.d(TAG, "Saved new call member")
-
             } else {
                 Log.d(TAG, "No user logged in. Cannot save call member.")
             }
         }
 
-        fun removeCallMember(roomId: String?) {
+        fun removeCallMember(context:Context,roomId: String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
+            val userName = SharedPrefManager.instance.getUserName()
             if (currentUserId != null && roomId != null) {
+                if(userName != null){
+                    sendSystemMessage(roomId,userName + " " + context.getString(R.string.left_call))
+                } else{
+                    sendSystemMessage(roomId,currentUserId + " " +context.getString(R.string.left_call))
+                }
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
                     .child(Constants.DATABASE_CHILD_CALL_MEMBERS).child(currentUserId).removeValue()
                 Log.d(TAG, "Removed call member")

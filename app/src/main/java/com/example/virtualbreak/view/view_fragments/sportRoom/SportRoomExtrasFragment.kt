@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,12 +31,8 @@ class SportRoomExtrasFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    private var timerArray = arrayOf("0", "0", "0", "0")
-    private var timerIndex = 0
     private var timerIsRunning = false
-
     private var countDownTimer: CountDownTimer? = null
-
     private var fitnessIndex = 0
 
     override fun onCreateView(
@@ -46,27 +43,35 @@ class SportRoomExtrasFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSportRoomExtrasBinding.inflate(inflater, container, false)
 
-        binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
-
+        binding.startTimerBtn.setOnClickListener { startNewTimer() }
         binding.fitnessNextBtn.setOnClickListener {
             fitnessIndex = (fitnessIndex + 1) % Constants.FITNESS_IDEAS.size
-            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
+            onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
         binding.fitnessPreviousBtn.setOnClickListener {
             if (fitnessIndex == 0) fitnessIndex = Constants.FITNESS_IDEAS.size
             fitnessIndex = (fitnessIndex - 1) % Constants.FITNESS_IDEAS.size
-            binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
+            onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
+
         binding.minPicker.maxValue = 30 // TODO: Maximum length
-        binding.secPicker.maxValue = 6
+        val secPicker = binding.secPicker
+        secPicker.maxValue = 6
         // Formatter to make steps of 10
         val secFormatter = NumberPicker.Formatter { value ->
-            val tmp = value * 10
-            tmp.toString()
+            var tmp = (value * 10).toString()
+            if (tmp == "0") tmp = "00"
+            tmp
         }
-        binding.secPicker.setFormatter(secFormatter)
-        binding.startTimerBtn.setOnClickListener { startNewTimer() }
-
+        secPicker.setFormatter(secFormatter)
+        // Following code fixes bug that formatter does not format on first render
+        for(index in secPicker.minValue..secPicker.maxValue) {
+            val edit = secPicker.getChildAt(index-secPicker.minValue)
+            if (edit != null && edit is EditText) {
+                edit.filters = arrayOfNulls(0)
+            }
+        }
+        onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         return binding.root
     }
 
@@ -87,13 +92,17 @@ class SportRoomExtrasFragment : Fragment() {
             binding.startTimerBtn.visibility = View.GONE
             countDownTimer = getCountDownTimer(timerEndDate!!).start()
         } else {
-            binding.timerView.text = "00m 00s"
-            timerArray = arrayOf("0", "0", "0", "0")
-            timerIndex = 0
             binding.timePicker.visibility = View.VISIBLE
             binding.timerView.visibility = View.GONE
             binding.startTimerBtn.visibility = View.VISIBLE
         }
+    }
+
+    private fun onSelectedNewExercise(exercise: Pair<String, Double>) {
+        binding.fitnessText.text = exercise.first
+        val defaultTime = exercise.second as Double
+        binding.minPicker.value = defaultTime.toInt()
+        binding.secPicker.value = ((defaultTime - defaultTime.toInt()) * 10).toInt() // Get first decimal
     }
 
     override fun onDestroyView() {
@@ -107,20 +116,6 @@ class SportRoomExtrasFragment : Fragment() {
         val secs = binding.secPicker.value * 10
         val roomId = SharedPrefManager.instance.getRoomId() ?: return
         PushData.startNewTimer(roomId, mins, secs)
-    }
-
-    private fun addNumber(n: String){
-        if (this.timerIsRunning) return
-        var number = n
-        // Mins and secs cannot be bigger than 59
-        if ((timerIndex == 0 || timerIndex == 2) && n.toInt() > 5) number = "5"
-        timerArray[timerIndex] = number
-        timerIndex = (timerIndex+1) % 4
-        binding.timerView.text = timerArrayToTimerString()
-    }
-
-    private fun timerArrayToTimerString(): String{
-        return timerArray[0] + timerArray[1] + "m " + timerArray[2] + timerArray[3] + "s"
     }
 
     private fun secondsToTimerString(sec: Long): String{

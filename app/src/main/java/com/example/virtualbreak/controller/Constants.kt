@@ -36,9 +36,9 @@ class Constants {
         const val CONTENT_TYPE = "application/json"
 
         val FITNESS_IDEAS = arrayOf(
-            "Liegestützen", "Hampelmänner", "Sit-Ups", "Plank", "Kniebeugen",
-            "Mountain Climber", "Superman", "Dehnen", "Burpees", "Side Plank",
-            "Ausfallschritt", "Crunches", "Donkey Kicks", "Seilspringen")
+            Pair("Liegestützen",1.3), Pair("Hampelmänner",2.0), Pair("Sit-Ups",1.0), Pair("Plank",2.0), Pair("Kniebeugen",1.0),
+            Pair("Mountain Climber",1.0), Pair("Superman",0.3), Pair("Dehnen",2.0), Pair("Burpees",2.0), Pair("Side Plank",1.0),
+            Pair("Ausfallschritt",1.0), Pair("Crunches",1.3), Pair("Donkey Kicks",1.0), Pair("Seilspringen",3.0))
 
         val HANGMAN_WORDS = listOf<String>(
             "Chrysantheme",

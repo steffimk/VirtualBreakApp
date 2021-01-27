@@ -76,22 +76,26 @@ class SportRoomExtrasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getTimerEndDate().observe(viewLifecycleOwner, Observer<Long?> { timerEndDate ->
-            this.timerIsRunning = timerEndDate != null
-            if (timerEndDate != null && timerEndDate > Date().time) {
-                binding.inputRow1.visibility = View.GONE
-                binding.inputRow2.visibility = View.GONE
-                binding.startTimerBtn.visibility = View.GONE
-                countDownTimer = getCountDownTimer(timerEndDate).start()
-            } else {
-                binding.timerView.text = "00m 00s"
-                timerArray = arrayOf("0", "0", "0", "0")
-                timerIndex = 0
-                binding.inputRow1.visibility = View.VISIBLE
-                binding.inputRow2.visibility = View.VISIBLE
-                binding.startTimerBtn.visibility = View.VISIBLE
-            }
+            handleNewTimerEndDate(timerEndDate)
             Log.d(TAG, "Observed timerEndDate " + timerEndDate)
         })
+    }
+
+    private fun handleNewTimerEndDate(timerEndDate: Long?) {
+        this.timerIsRunning = (timerEndDate != null && timerEndDate > Date().time)
+        if (timerIsRunning) {
+            binding.inputRow1.visibility = View.GONE
+            binding.inputRow2.visibility = View.GONE
+            binding.startTimerBtn.visibility = View.GONE
+            countDownTimer = getCountDownTimer(timerEndDate!!).start()
+        } else {
+            binding.timerView.text = "00m 00s"
+            timerArray = arrayOf("0", "0", "0", "0")
+            timerIndex = 0
+            binding.inputRow1.visibility = View.VISIBLE
+            binding.inputRow2.visibility = View.VISIBLE
+            binding.startTimerBtn.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {
@@ -136,9 +140,9 @@ class SportRoomExtrasFragment : Fragment() {
                 binding.timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
             }
             override fun onFinish() {
-                MediaPlayer.create(context, R.raw.alarm_sound).start() // TODO
+                MediaPlayer.create(context, R.raw.alarm_sound).start()
                 val roomId = SharedPrefManager.instance.getRoomId() ?: return
-                PushData.removeTimer(roomId)
+                handleNewTimerEndDate(null)
             }
         }
     }
@@ -151,8 +155,7 @@ class SportRoomExtrasFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val timerEnd = viewModel.getTimerEndDate().value?:return
-        countDownTimer = getCountDownTimer(timerEnd).start()
+        handleNewTimerEndDate(viewModel.getTimerEndDate().value)
     }
 
 }

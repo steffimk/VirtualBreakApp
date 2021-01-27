@@ -55,7 +55,12 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
             //SharedPrefManager.instance.saveGroupId(groupId)
             Log.d(TAG, "clicked on group "+groupId)
             val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
-            view.findNavController().navigate(action)
+            try {
+                view.findNavController().navigate(action) // TODO
+            } catch (ex: Exception) {
+                Log.e(TAG, ex.message ?: "Could not find NavController")
+            }
+
         }
 
     }

@@ -69,6 +69,12 @@
             android:orientation="vertical"
             android:gravity="center">
 
+            <TimePicker
+                android:id="@+id/datePicker1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"/>
+
             <TextView
                 android:id="@+id/timerView"
                 android:layout_width="wrap_content"

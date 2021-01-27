@@ -77,7 +77,7 @@ class SportRoomExtrasFragment : Fragment() {
 
         viewModel.getTimerEndDate().observe(viewLifecycleOwner, Observer<Long?> { timerEndDate ->
             this.timerIsRunning = timerEndDate != null
-            if (timerEndDate != null) {
+            if (timerEndDate != null && timerEndDate > Date().time) {
                 binding.inputRow1.visibility = View.GONE
                 binding.inputRow2.visibility = View.GONE
                 binding.startTimerBtn.visibility = View.GONE

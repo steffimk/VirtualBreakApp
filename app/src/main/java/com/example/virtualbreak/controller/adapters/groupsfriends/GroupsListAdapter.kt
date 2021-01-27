@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
@@ -20,10 +21,15 @@ import kotlinx.android.synthetic.main.group_list_item.*
 /**
  * This Adapter manages the Receyler View of the Groups in the groups_grouplist_fragment
  */
-class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
+class GroupsListAdapter(groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
     lateinit var view: View
     val TAG = "GroupsListAdapter"
+    var groups: ArrayList<Group>
+
+    init{
+        this.groups = groups
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
@@ -55,12 +61,7 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
             //SharedPrefManager.instance.saveGroupId(groupId)
             Log.d(TAG, "clicked on group "+groupId)
             val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
-            try {
-                view.findNavController().navigate(action) // TODO
-            } catch (ex: Exception) {
-                Log.e(TAG, ex.message ?: "Could not find NavController")
-            }
-
+            Navigation.findNavController(view).navigate(action)
         }
 
     }
@@ -72,6 +73,10 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
             return groups.size
     }
 
+    fun updateData(groups: ArrayList<Group>){
+        this.groups = groups
+        notifyDataSetChanged()
+    }
 
 
 

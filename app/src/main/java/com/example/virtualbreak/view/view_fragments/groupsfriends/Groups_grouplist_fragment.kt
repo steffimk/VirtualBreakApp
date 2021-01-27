@@ -20,6 +20,7 @@ import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewMode
 class Groups_grouplist_fragment : Fragment() {
 
     private val TAG = "Group_GroupList_Fragment"
+    private var groupsListAdapter: GroupsListAdapter? = null
 
     companion object {
         fun newInstance() = Groups_grouplist_fragment()
@@ -49,7 +50,13 @@ class Groups_grouplist_fragment : Fragment() {
 
         viewModel.getGroups()
             .observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groups ->
-                groups_recyler_list_view.adapter = GroupsListAdapter(ArrayList(groups.values))
+                if(groupsListAdapter == null){
+                    groupsListAdapter = GroupsListAdapter(ArrayList(groups.values))
+                    groups_recyler_list_view.adapter = groupsListAdapter
+                } else{
+                    groupsListAdapter?.updateData(ArrayList(groups.values))
+                }
+
                 Log.d(TAG, "Observed groups: $groups")
             })
 

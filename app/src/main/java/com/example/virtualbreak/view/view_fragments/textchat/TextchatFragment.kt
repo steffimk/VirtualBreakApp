@@ -112,6 +112,9 @@ class TextchatFragment() : Fragment() {
                         SharedPrefManager.instance.getRoomUsersHashmap()
                     )
                 }
+                chatAdapter?.let {
+                    chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+                }
             }
         })
 

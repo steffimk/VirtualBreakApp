@@ -25,6 +25,14 @@ class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
         }
     }
 
+    var fitnessExercise: String? = null
+
+    fun startPullingExercise() {
+        if (fitnessExercise != null) return
+        PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_EXERCISE)
+            .addValueEventListener(exerciseEventListener)
+    }
+
     fun getTimerEndDate(): LiveData<Long?> {
         return timerEndDate
     }
@@ -44,10 +52,27 @@ class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
 
     }
 
+    private val exerciseEventListener = object : ValueEventListener {
+
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val pulledExercise = dataSnapshot.getValue<String>()
+            Log.d(TAG, "Pulled Exercise $pulledExercise")
+
+            fitnessExercise = pulledExercise
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+
+    }
+
     override fun onCleared() {
         super.onCleared()
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_TIMER_END)
             .removeEventListener(timerEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_EXERCISE)
+            .removeEventListener(exerciseEventListener)
     }
 }
 

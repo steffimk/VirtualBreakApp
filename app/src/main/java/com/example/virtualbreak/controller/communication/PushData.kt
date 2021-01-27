@@ -271,9 +271,10 @@ class PushData {
             }
         }
 
-        fun startNewTimer(roomId: String, minutes: Int, seconds: Int){
+        fun startNewTimer(roomId: String, minutes: Int, seconds: Int, exercise: String){
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_EXERCISE).setValue(exercise)
                 val currentTime = Date().time
                 val timerEnd = currentTime + minutes*60000 + seconds*1000
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_TIMER_END).setValue(timerEnd)

@@ -21,6 +21,7 @@ class Constants {
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DATABASE_CHILD_USERNAME = "username"
         const val DATABASE_CHILD_TIMER_END = "timerEnd"
+        const val DATABASE_CHILD_EXERCISE = "exercise"
         const val DATABASE_CHILD_GAMES = "games"
         const val DATABASE_CHILD_ROOM_GAME = "gameId"
         const val DATABASE_CHILD_GAME_LETTERS = "letters"

@@ -77,7 +77,7 @@ class SportRoomExtrasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.startPullingExercise()
         viewModel.getTimerEndDate().observe(viewLifecycleOwner, Observer<Long?> { timerEndDate ->
             handleNewTimerEndDate(timerEndDate)
             Log.d(TAG, "Observed timerEndDate " + timerEndDate)
@@ -90,11 +90,17 @@ class SportRoomExtrasFragment : Fragment() {
             binding.timePicker.visibility = View.GONE
             binding.timerView.visibility = View.VISIBLE
             binding.startTimerBtn.visibility = View.GONE
+            binding.fitnessNextBtn.visibility = View.INVISIBLE
+            binding.fitnessPreviousBtn.visibility = View.INVISIBLE
+            binding.fitnessText.text = viewModel.fitnessExercise?:"Fehler beim Laden der Übung"
             countDownTimer = getCountDownTimer(timerEndDate!!).start()
+            if (viewModel.fitnessExercise == null) Log.d(TAG, "Fitness exercise is null")
         } else {
             binding.timePicker.visibility = View.VISIBLE
             binding.timerView.visibility = View.GONE
             binding.startTimerBtn.visibility = View.VISIBLE
+            binding.fitnessNextBtn.visibility = View.VISIBLE
+            binding.fitnessPreviousBtn.visibility = View.VISIBLE
         }
     }
 
@@ -115,7 +121,7 @@ class SportRoomExtrasFragment : Fragment() {
         val mins = binding.minPicker.value
         val secs = binding.secPicker.value * 10
         val roomId = SharedPrefManager.instance.getRoomId() ?: return
-        PushData.startNewTimer(roomId, mins, secs)
+        PushData.startNewTimer(roomId, mins, secs, binding.fitnessText.text.toString())
     }
 
     private fun secondsToTimerString(sec: Long): String{
@@ -133,7 +139,6 @@ class SportRoomExtrasFragment : Fragment() {
             }
             override fun onFinish() {
                 MediaPlayer.create(context, R.raw.alarm_sound).start()
-                val roomId = SharedPrefManager.instance.getRoomId() ?: return
                 handleNewTimerEndDate(null)
             }
         }

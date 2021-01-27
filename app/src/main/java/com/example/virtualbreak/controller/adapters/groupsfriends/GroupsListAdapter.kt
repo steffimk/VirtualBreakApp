@@ -21,10 +21,15 @@ import kotlinx.android.synthetic.main.group_list_item.*
 /**
  * This Adapter manages the Receyler View of the Groups in the groups_grouplist_fragment
  */
-class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
+class GroupsListAdapter(groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
     lateinit var view: View
     val TAG = "GroupsListAdapter"
+    var groups: ArrayList<Group>
+
+    init{
+        this.groups = groups
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
@@ -68,6 +73,10 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
             return groups.size
     }
 
+    fun updateData(groups: ArrayList<Group>){
+        this.groups = groups
+        notifyDataSetChanged()
+    }
 
 
 

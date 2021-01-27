@@ -56,7 +56,7 @@ class SportRoomExtrasFragment : Fragment() {
 
         binding.minPicker.maxValue = 30 // TODO: Maximum length
         val secPicker = binding.secPicker
-        secPicker.maxValue = 6
+        secPicker.maxValue = 5
         // Formatter to make steps of 10
         val secFormatter = NumberPicker.Formatter { value ->
             var tmp = (value * 10).toString()
@@ -89,7 +89,7 @@ class SportRoomExtrasFragment : Fragment() {
         if (timerIsRunning) {
             binding.timePicker.visibility = View.GONE
             binding.timerView.visibility = View.VISIBLE
-            binding.startTimerBtn.visibility = View.GONE
+            binding.startTimerBtn.text = getString(R.string.cancelTimer)
             binding.fitnessNextBtn.visibility = View.INVISIBLE
             binding.fitnessPreviousBtn.visibility = View.INVISIBLE
             binding.fitnessText.text = viewModel.fitnessExercise?:"Fehler beim Laden der Übung"
@@ -98,7 +98,7 @@ class SportRoomExtrasFragment : Fragment() {
         } else {
             binding.timePicker.visibility = View.VISIBLE
             binding.timerView.visibility = View.GONE
-            binding.startTimerBtn.visibility = View.VISIBLE
+            binding.startTimerBtn.text = getString(R.string.startTimer)
             binding.fitnessNextBtn.visibility = View.VISIBLE
             binding.fitnessPreviousBtn.visibility = View.VISIBLE
         }
@@ -117,10 +117,13 @@ class SportRoomExtrasFragment : Fragment() {
     }
 
     private fun startNewTimer() {
-        if (this.timerIsRunning) return
+        val roomId = SharedPrefManager.instance.getRoomId() ?: return
+        if (this.timerIsRunning) {
+            PushData.removeTimer(roomId)
+            return
+        }
         val mins = binding.minPicker.value
         val secs = binding.secPicker.value * 10
-        val roomId = SharedPrefManager.instance.getRoomId() ?: return
         PushData.startNewTimer(roomId, mins, secs, binding.fitnessText.text.toString())
     }
 

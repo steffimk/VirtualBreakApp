@@ -52,7 +52,7 @@ class Constants {
             "Bugfix",
             "Prokrastination",
             "Geburtstagstorte",
-            "Ausgangsbeschränkung",
+            "Ausgangsbeschraenkung",
             "Homeoffice",
             "Terrasse",
             "Zucchini",

@@ -82,7 +82,7 @@ class SingleGroupFragment : Fragment() {
                 R.id.singlegroup_containerview_members,
                 SingleGroupMembersFragment.newInstance(groupId)
             )
-            it.addToBackStack(null)
+            //it.addToBackStack(null)
             it.commit()
         }
 
@@ -92,7 +92,7 @@ class SingleGroupFragment : Fragment() {
                 R.id.singlegroup_containerview_rooms,
                 SingleGroupRoomsFragment.newInstance(groupId)
             )
-            it.addToBackStack(null)
+            //it.addToBackStack(null)
             it.commit()
         }
 

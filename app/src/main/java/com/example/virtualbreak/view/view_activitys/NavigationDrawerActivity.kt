@@ -3,6 +3,7 @@ package com.example.virtualbreak.view.view_activitys
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -17,6 +18,8 @@ import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 /**
  * Activity with a navigation drawer on the left to navigate to other app fragments
@@ -32,7 +35,15 @@ class NavigationDrawerActivity : AppCompatActivity() {
     private val TAG = "NavigationDrawerActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        Log.d(TAG, "onCreate")
+
         super.onCreate(savedInstanceState)
+
+        if(Firebase.auth.currentUser == null){
+            startActivity(Intent(this, MainActivity::class.java))
+            //if no user logged in, intent to MainActivity
+        }
 
         PullData.pullAndSaveOwnUserName()
         FCMService.addFCMTokenListener()
@@ -53,6 +64,15 @@ class NavigationDrawerActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    //catches case when user logs out and then presses back
+    override fun onResume() {
+        super.onResume()
+        if(Firebase.auth.currentUser == null){
+            startActivity(Intent(this, MainActivity::class.java))
+            //if no user logged in, intent to MainActivity
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

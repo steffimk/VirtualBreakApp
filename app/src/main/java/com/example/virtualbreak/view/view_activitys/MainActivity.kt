@@ -47,4 +47,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /*override fun onBackPressed() { //not needed, because redirect NavigationDrawerActivity when user not logged in
+        // Do nothing, to prevent going back to NavigationDrawerActivity after Logout
+    }*/
+
 }

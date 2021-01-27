@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".view.view_fragments.sportRoom.SportRoomExtrasFragment">
 
     <LinearLayout
@@ -32,7 +33,6 @@
             android:visibility="visible"
             app:backgroundTint="@color/light_gray"
             app:tint="@color/mandarin" />
-
         <TextView
             android:id="@+id/fitness_text"
             android:layout_width="260dp"
@@ -43,7 +43,6 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="visible" />
-
         <ImageButton
             android:id="@+id/fitness_next_btn"
             android:layout_width="40dp"
@@ -59,7 +58,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
@@ -68,112 +67,54 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
-
-<!--            <TimePicker-->
-<!--                android:id="@+id/datePicker1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:timePickerMode="spinner"/>-->
-
+            <LinearLayout
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <NumberPicker
+                    android:id="@+id/min_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"/>
+                <NumberPicker
+                    android:id="@+id/sec_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="min"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
             <TextView
                 android:id="@+id/timerView"
                 android:layout_width="wrap_content"
                 android:layout_height="58dp"
                 android:text="00m 00s"
-                android:textSize="58dp" />
-
-            <LinearLayout
-                android:id="@+id/inputRow_1"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <Button
-                    android:id="@+id/inputBtn_0"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="0"/>
-                <Button
-                    android:id="@+id/inputBtn_1"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="1"/>
-                <Button
-                    android:id="@+id/inputBtn_2"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="2"/>
-                <Button
-                    android:id="@+id/inputBtn_3"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="3"/>
-                <Button
-                    android:id="@+id/inputBtn_4"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:text="4"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/inputRow_2"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/inputBtn_5"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="5" />
-
-                <Button
-                    android:id="@+id/inputBtn_6"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="6" />
-
-                <Button
-                    android:id="@+id/inputBtn_7"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="7" />
-
-                <Button
-                    android:id="@+id/inputBtn_8"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="10dp"
-                    android:text="8" />
-
-                <Button
-                    android:id="@+id/inputBtn_9"
-                    android:layout_width="55dp"
-                    android:layout_height="40dp"
-                    android:text="9" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/startTimer_btn"
-                android:layout_width="315dp"
-                android:layout_height="58dp"
-                android:backgroundTint="@color/mandarin"
-                android:text="@string/startTimer"
-                app:icon="@drawable/ic_hourglass_24"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:textAllCaps="true"
-                android:textColor="@color/light_green"/>
+                android:textSize="58dp"
+                android:visibility="gone"/>
 
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startTimer_btn"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:backgroundTint="@color/mandarin"
+        android:text="@string/startTimer"
+        app:icon="@drawable/ic_hourglass_24"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:textAllCaps="true"
+        android:textColor="@color/light_green"/>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -48,26 +49,23 @@ class SportRoomExtrasFragment : Fragment() {
         binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
 
         binding.fitnessNextBtn.setOnClickListener {
-            fitnessIndex = (fitnessIndex+1) % Constants.FITNESS_IDEAS.size
+            fitnessIndex = (fitnessIndex + 1) % Constants.FITNESS_IDEAS.size
             binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
         }
         binding.fitnessPreviousBtn.setOnClickListener {
             if (fitnessIndex == 0) fitnessIndex = Constants.FITNESS_IDEAS.size
-            fitnessIndex = (fitnessIndex-1) % Constants.FITNESS_IDEAS.size
+            fitnessIndex = (fitnessIndex - 1) % Constants.FITNESS_IDEAS.size
             binding.fitnessText.text = Constants.FITNESS_IDEAS[fitnessIndex]
         }
+        binding.minPicker.maxValue = 30 // TODO: Maximum length
+        binding.secPicker.maxValue = 6
+        // Formatter to make steps of 10
+        val secFormatter = NumberPicker.Formatter { value ->
+            val tmp = value * 10
+            tmp.toString()
+        }
+        binding.secPicker.setFormatter(secFormatter)
         binding.startTimerBtn.setOnClickListener { startNewTimer() }
-
-        binding.inputBtn0.setOnClickListener { addNumber("0") }
-        binding.inputBtn1.setOnClickListener { addNumber("1") }
-        binding.inputBtn2.setOnClickListener { addNumber("2") }
-        binding.inputBtn3.setOnClickListener { addNumber("3") }
-        binding.inputBtn4.setOnClickListener { addNumber("4") }
-        binding.inputBtn5.setOnClickListener { addNumber("5") }
-        binding.inputBtn6.setOnClickListener { addNumber("6") }
-        binding.inputBtn7.setOnClickListener { addNumber("7") }
-        binding.inputBtn8.setOnClickListener { addNumber("8") }
-        binding.inputBtn9.setOnClickListener { addNumber("9") }
 
         return binding.root
     }
@@ -84,16 +82,16 @@ class SportRoomExtrasFragment : Fragment() {
     private fun handleNewTimerEndDate(timerEndDate: Long?) {
         this.timerIsRunning = (timerEndDate != null && timerEndDate > Date().time)
         if (timerIsRunning) {
-            binding.inputRow1.visibility = View.GONE
-            binding.inputRow2.visibility = View.GONE
+            binding.timePicker.visibility = View.GONE
+            binding.timerView.visibility = View.VISIBLE
             binding.startTimerBtn.visibility = View.GONE
             countDownTimer = getCountDownTimer(timerEndDate!!).start()
         } else {
             binding.timerView.text = "00m 00s"
             timerArray = arrayOf("0", "0", "0", "0")
             timerIndex = 0
-            binding.inputRow1.visibility = View.VISIBLE
-            binding.inputRow2.visibility = View.VISIBLE
+            binding.timePicker.visibility = View.VISIBLE
+            binding.timerView.visibility = View.GONE
             binding.startTimerBtn.visibility = View.VISIBLE
         }
     }
@@ -105,9 +103,8 @@ class SportRoomExtrasFragment : Fragment() {
 
     private fun startNewTimer() {
         if (this.timerIsRunning) return
-        val timeString = binding.timerView.text.toString()
-        val mins = timeString.subSequence(0, 2).toString().toInt()
-        val secs = timeString.subSequence(4, 6).toString().toInt()
+        val mins = binding.minPicker.value
+        val secs = binding.secPicker.value * 10
         val roomId = SharedPrefManager.instance.getRoomId() ?: return
         PushData.startNewTimer(roomId, mins, secs)
     }

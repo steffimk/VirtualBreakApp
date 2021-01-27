@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
@@ -55,7 +56,7 @@ class GroupsListAdapter(val groups: ArrayList<Group>) : RecyclerView.Adapter<Gro
             //SharedPrefManager.instance.saveGroupId(groupId)
             Log.d(TAG, "clicked on group "+groupId)
             val action = GroupsFriendsFragmentDirections.actionNavHomeToSingleGroupFragment(groupId)
-            view.findNavController().navigate(action)
+            Navigation.findNavController(view).navigate(action)
         }
 
     }

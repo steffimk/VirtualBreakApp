@@ -57,7 +57,6 @@ class Constants {
             "Terrasse",
             "Zucchini",
             "Portemonnaie",
-            "ISO-OSI Schichtenmodell",
             "Orchideenzucht",
             "Gurkensalat",
             "Karottenkuchen",

@@ -414,6 +414,10 @@ class BreakRoomActivity : AppCompatActivity() {
             viewModel.getRoom().removeObservers(this)
             PushData.leaveRoom(this, room, userName)
             SharedPrefManager.instance.removeRoomId()
+
+            //automatically reset status to status before INBREAK
+            PushData.resetStatusToBeforeBreak()
+
             Log.d(TAG, "Left room $roomId")
             finish()
         }
@@ -443,6 +447,10 @@ class BreakRoomActivity : AppCompatActivity() {
             viewModel.getRoom().removeObservers(this)
             PushData.leaveRoom(this, room, userName)
             SharedPrefManager.instance.removeRoomId()
+
+            //automatically set status to status before room id
+            PushData.resetStatusToBeforeBreak()
+
             Log.d(TAG, "Left room $roomId")
             finish()
         }

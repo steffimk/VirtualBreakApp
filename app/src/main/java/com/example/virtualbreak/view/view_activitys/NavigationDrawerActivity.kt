@@ -47,6 +47,7 @@ class NavigationDrawerActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             //if no user logged in, intent to MainActivity
         }
+        PullData.attachListenerToCurrentUser()
 
         PullData.pullAndSaveOwnUserName()
         FCMService.addFCMTokenListener()

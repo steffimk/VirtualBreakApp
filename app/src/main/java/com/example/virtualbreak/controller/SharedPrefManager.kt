@@ -5,6 +5,9 @@ import android.content.Context
 
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.ContextCompat
+import com.example.virtualbreak.R
+import com.example.virtualbreak.model.Status
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -24,6 +27,7 @@ private constructor() {
     val USER_ID: String = "userId"
     val USER_NAME: String = "userName"
     val ROOM_USER: String = "roomUser"
+    val CURRENT_STATUS: String = "currentStatus"
 
 
     /**
@@ -35,6 +39,32 @@ private constructor() {
             sharedPrefs =
                 context.getSharedPreferences(context.getPackageName(), Activity.MODE_PRIVATE)
         }
+    }
+
+    fun saveCurrentStatus(status: Status) {
+
+        sharedPrefs?.let{
+            it.edit().putString(CURRENT_STATUS, status.dbStr).apply()
+            Log.d(TAG, "Status " + status.dbStr + " added to shared preferences")
+        }
+        if(sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    /**
+     * gets last status that was set in MyProfileFragment, used to revert to old status automatically after leave break room
+     */
+    fun getSavedStatus(): Status{
+        var status: Status? = null
+        when(sharedPrefs?.getString(CURRENT_STATUS, null)){
+            Status.AVAILABLE.dbStr -> status = Status.AVAILABLE
+            Status.BUSY.dbStr -> status = Status.BUSY
+            Status.STUDYING.dbStr -> status = Status.STUDYING
+            Status.INBREAK.dbStr -> status = Status.INBREAK
+            Status.ABSENT.dbStr -> status = Status.ABSENT
+            else -> status = Status.ABSENT
+        }
+        return status
     }
 
     fun saveRoomId(roomId: String) {

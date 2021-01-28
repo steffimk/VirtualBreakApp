@@ -1,8 +1,11 @@
 package com.example.virtualbreak.controller.communication
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.model.User
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -20,7 +23,7 @@ class PullData {
 
         val database : DatabaseReference = Firebase.database.reference
 
-//        var currentUser: MutableLiveData<User?> = MutableLiveData(null)
+        var currentUser: MutableLiveData<User?> = MutableLiveData(null)
 
         fun pullAndSaveOwnUserName() {
 
@@ -42,29 +45,29 @@ class PullData {
                 .child(Constants.DATABASE_CHILD_USERNAME).addListenerForSingleValueEvent(userNameListener)
         }
 
-//        fun attachListenerToCurrentUser() {
-//            if (currentUser.value != null) {
-//                return // Listener already attached
-//            }
-//
-//            val valueEventListener = object : ValueEventListener {
-//
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    currentUser.value = dataSnapshot.getValue(User::class.java)
-//                    Log.d(TAG, "Pulled User: " + currentUser.value)
-//                }
-//
-//                override fun onCancelled(databaseError: DatabaseError) {
-//                    Log.d(TAG, databaseError.message)
-//                }
-//            }
-//
-//            val userUid = Firebase.auth.currentUser?.uid
-//            if (userUid != null) {
-//                database.child(Constants.DATABASE_CHILD_USERS).child(userUid).addValueEventListener(valueEventListener)
-//            }
-//        }
-//
+        fun attachListenerToCurrentUser() {
+            if (currentUser.value != null) {
+                return // Listener already attached
+            }
+
+            val valueEventListener = object : ValueEventListener {
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    currentUser.value = dataSnapshot.getValue(User::class.java)
+                    Log.d(TAG, "Pulled User: " + currentUser.value)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d(TAG, databaseError.message)
+                }
+            }
+
+            val userUid = Firebase.auth.currentUser?.uid
+            if (userUid != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(userUid).addValueEventListener(valueEventListener)
+            }
+        }
+
     }
 }
 

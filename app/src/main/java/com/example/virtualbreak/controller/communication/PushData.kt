@@ -274,6 +274,17 @@ class PushData {
             }
         }
 
+        fun resetStatusToBeforeBreak() {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
+            Log.d(TAG, "resetStatusToBeforeBreak "+statusBeforeBreak.dbStr)
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(statusBeforeBreak)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot change status.")
+            }
+        }
+
         fun setFcmToken(fcmToken: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {

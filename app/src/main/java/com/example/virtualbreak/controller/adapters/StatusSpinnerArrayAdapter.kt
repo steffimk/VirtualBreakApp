@@ -45,6 +45,7 @@ class StatusSpinnerArrayAdapter(context: Context, resource: Int, objects: Array<
                 Status.AVAILABLE -> statusSymbol.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_available))
                 Status.BUSY -> statusSymbol.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_busy))
                 Status.STUDYING -> statusSymbol.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_studying))
+                Status.INBREAK -> statusSymbol.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_cup_white))
                 Status.ABSENT -> statusSymbol.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
                 else -> statusSymbol.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
             }

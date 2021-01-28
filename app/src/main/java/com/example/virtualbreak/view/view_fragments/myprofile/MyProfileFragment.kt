@@ -44,7 +44,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val mStorageRef = FirebaseStorage.getInstance().getReference()
     private val TAG = "MyProfileFragment"
 
-    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE, Status.ABSENT) //INBREAK nicht dabei, weil das automatisch gesetzt wird
+    private var status_array = arrayOf(Status.STUDYING, Status.BUSY, Status.AVAILABLE, Status.ABSENT, Status.INBREAK)
     private lateinit var currentStatus: Status
 
     private var currentUserID: String? = null
@@ -87,8 +87,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 userNameTextView.text = observedUser.username
                 profile_email.text = observedUser.email
 
-                // Set position of spinner to current status
-                spinner.setSelection(status_array.indexOf(observedUser.status))
+                observedUser.status?.let{
+                    // Set position of spinner to current status
+                    spinner.setSelection(status_array.indexOf(observedUser.status))
+                }
             }
         })
 
@@ -164,8 +166,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
      * when new status spinner item is selected, update status
      */
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-        currentStatus = status_array[position]
-        PushData.setStatus(currentStatus)
+        if(arg1 != null && position != null){
+            currentStatus = status_array[position]
+            PushData.setStatus(currentStatus)
+        }
     }
 
     /**

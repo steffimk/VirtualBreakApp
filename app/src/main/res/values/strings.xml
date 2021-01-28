@@ -145,6 +145,7 @@
         - Game by Adrien Coquet from the Noun Project\n
         - Sport by iconixar from the Noun Project\n
         - Question by Martin Delin from the Noun Project</string>
+    <string name="confirm_leavegroup_text">Willst du die Gruppe wirklich verlassen? Wenn du der/die letzte bist, wird die Gruppe gelöscht.</string>
 
 
 </resources>

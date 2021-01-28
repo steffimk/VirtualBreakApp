@@ -139,6 +139,12 @@
     <string name="pausenraumtype">PausenraumType</string>
     <string name="pausenraum_name">Pausenraum Name</string>
     <string name="open_rooms">Offene Pausenräume:</string>
+    <string name="settings_text">Viel Spaß in gemeinsamen virtuellen Pausen wünscht das VirtualBreak Team:\nManuela Eska, Miriam Halsner, Stefanie Kloß, Jenny Phu\n(MSP Gruppe 4)\n</string>
+    <string name="bilderquellen">Bilderquellen:</string>
+    <string name="bilderquellen_list">- Tea by Vectorstall from the Noun Project\n
+        - Game by Adrien Coquet from the Noun Project\n
+        - Sport by iconixar from the Noun Project\n
+        - Question by Martin Delin from the Noun Project</string>
 
 
 </resources>

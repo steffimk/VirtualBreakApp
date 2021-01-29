@@ -62,10 +62,10 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
 
         view.setOnClickListener {
 
+
+            prepareAndInitBreakStatus() //before saving roomid in SharedPrefs
             PushData.joinRoom(context, item.uid, username)
             SharedPrefManager.instance.saveRoomId(item.uid)
-
-            prepareAndInitBreakStatus()
 
             val intent = Intent(context, BreakRoomActivity::class.java)
             intent.putExtra(Constants.USER_NAME, username)
@@ -81,7 +81,7 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
     private fun prepareAndInitBreakStatus() {
         //save current status (before break) in SharedPrefs
         PullData.currentUser.value?.status?.let { it ->
-            if(it != Status.INBREAK){ //only save status before going in breakroom if not status inbreak (otherwise might be have left and reentered breakroom)
+            if(SharedPrefManager.instance.getRoomId() == null || "".equals(SharedPrefManager.instance.getRoomId())){ //only save status before going in breakroom if about to enter new room (not reenter)
                 SharedPrefManager.instance.saveCurrentStatus(
                     it
                 )

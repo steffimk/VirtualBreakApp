@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -105,6 +106,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             editOrSaveUsername()
         }
 
+        activity?.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate because sometimes bug then
         return root
     }
 

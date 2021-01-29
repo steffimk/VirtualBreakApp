@@ -170,7 +170,7 @@ class GroupsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addValueEventListener(valueEventListener)
     }
 
     override fun onCleared() {

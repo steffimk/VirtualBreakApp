@@ -147,9 +147,10 @@ class SingleGroupRoomsFragment : Fragment() {
                     context?.let{
                         PushData.joinRoom(it, roomId, userName)
                     }
-                    SharedPrefManager.instance.saveRoomId(roomId)
 
-                    prepareAndInitBreakStatus()
+                    prepareAndInitBreakStatus() //before save roomId in SharedPrefs
+
+                    SharedPrefManager.instance.saveRoomId(roomId)
 
                     if(roomtype == Roomtype.GAME){
                         val gameId = PushData.createGame(roomId)
@@ -170,7 +171,7 @@ class SingleGroupRoomsFragment : Fragment() {
     private fun prepareAndInitBreakStatus() {
         //save current status (before break) in SharedPrefs
         PullData.currentUser.value?.status?.let { it ->
-            if(it != Status.INBREAK){
+            if(SharedPrefManager.instance.getRoomId() == null || "".equals(SharedPrefManager.instance.getRoomId())){ //only save status before going in breakroom if about to enter new room (not reenter)
                 SharedPrefManager.instance.saveCurrentStatus(
                     it
                 )

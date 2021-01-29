@@ -150,7 +150,7 @@ class ChatAdapter(
             holder.chatBubble.setCardBackgroundColor(
                 ContextCompat.getColor(
                     context,
-                    R.color.blue_pale
+                    R.color.lightish_blue
                 )
             )
             holder.chatItemWhole.gravity = Gravity.END //own sent messages are aligned right
@@ -164,12 +164,13 @@ class ChatAdapter(
             holder.chatItemWhole.gravity = Gravity.CENTER //system messages are aligned in center
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Caption) // smaller and grey text
             holder.senderView.visibility = View.GONE
+            //call messages
             if(message.message.endsWith(context.getString(R.string.joined_call))){
                 holder.callIndicator.visibility =View.VISIBLE
-                holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_entered))
+                holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_start))
             } else if(message.message.endsWith(context.getString(R.string.left_call))){
                 holder.callIndicator.visibility =View.VISIBLE
-                holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_canceled))
+                holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_end))
             }
         }
         //other people's messages
@@ -179,7 +180,7 @@ class ChatAdapter(
             holder.chatBubble.setCardBackgroundColor(
                 ContextCompat.getColor(
                     context,
-                    R.color.yellow_green
+                    R.color.tea_green2
                 )
             )
         }

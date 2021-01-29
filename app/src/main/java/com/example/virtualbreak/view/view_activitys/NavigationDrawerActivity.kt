@@ -111,6 +111,7 @@ class NavigationDrawerActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         stopService(Intent(this, BreakroomWidgetService::class.java))

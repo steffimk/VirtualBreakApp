@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
 import kotlin.math.abs
 
 
@@ -118,6 +119,7 @@ class BreakroomWidgetService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        SharedPrefManager.instance.saveIsWidgetOpen(false)
         mWindowManager.removeView(mFloatingView)
         stopSelf()
     }

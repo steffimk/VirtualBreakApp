@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 
 import android.content.SharedPreferences
+import android.text.BoringLayout
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.virtualbreak.R
@@ -28,6 +29,7 @@ private constructor() {
     val USER_NAME: String = "userName"
     val ROOM_USER: String = "roomUser"
     val CURRENT_STATUS: String = "currentStatus"
+    val ISWIDGETOPEN: String = "isWidgetOpen"
 
 
     /**
@@ -163,8 +165,26 @@ private constructor() {
     fun saveRoomUsers(hashMapString: String) {
         Log.d(TAG, "saveRoomUsers()")
         sharedPrefs?.edit()?.putString(ROOM_USER, hashMapString)?.apply()
-        if(sharedPrefs == null)
+        if (sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun saveIsWidgetOpen(isWidgetOpen: Boolean) {
+        sharedPrefs?.let {
+            it.edit().putBoolean(ISWIDGETOPEN, isWidgetOpen).apply()
+            Log.d(TAG, "IswidgetOpen " + isWidgetOpen + " added to shared preferences")
+        }
+        if (sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun getIsWidgetOpen(): Boolean {
+        val isOpen = sharedPrefs?.getBoolean(ISWIDGETOPEN, false)
+        if (isOpen != null) {
+            return isOpen
+        } else {
+            return false
+        }
     }
 
     companion object {

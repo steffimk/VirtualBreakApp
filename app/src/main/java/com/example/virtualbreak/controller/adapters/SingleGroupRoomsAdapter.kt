@@ -1,7 +1,9 @@
 package com.example.virtualbreak.controller.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -52,6 +54,7 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
     }
 
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolderRooms, position: Int) {
 
         // get the item using the  position param
@@ -60,20 +63,29 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
         holder.roomName.text = item.description
         holder.participantCount.text = item.users.size.toString()
 
-        view.setOnClickListener {
+        //check if user in still in Room, if yes deactivate Click on rooms
+        Log.d(TAG, "isUserinroom ${SharedPrefManager.instance.getRoomId()}")
+        if (SharedPrefManager.instance.getRoomId() == null) {
+            Log.d(TAG, "setclicklistener")
+            view.setOnClickListener {
+                prepareAndInitBreakStatus() //before saving roomid in SharedPrefs
+                PushData.joinRoom(context, item.uid, username)
+                SharedPrefManager.instance.saveRoomId(item.uid)
 
-
-            prepareAndInitBreakStatus() //before saving roomid in SharedPrefs
-            PushData.joinRoom(context, item.uid, username)
-            SharedPrefManager.instance.saveRoomId(item.uid)
-
-            val intent = Intent(context, BreakRoomActivity::class.java)
-            intent.putExtra(Constants.USER_NAME, username)
-            intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
-            if (item.type.equals(Roomtype.GAME)){
-                intent.putExtra(Constants.GAME_ID, item.gameId)
+                val intent = Intent(context, BreakRoomActivity::class.java)
+                intent.putExtra(Constants.USER_NAME, username)
+                intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
+                if (item.type.equals(Roomtype.GAME)) {
+                    intent.putExtra(Constants.GAME_ID, item.gameId)
+                }
+                context.startActivity(intent)
             }
-            context.startActivity(intent)
+        } else {
+            Log.d(TAG, "setNOclicklistener")
+            view.setBackgroundColor(Color.parseColor("#bdbdbd"))
+            view.setOnClickListener {
+                //Do Nothing and override existing onCLickListener
+            }
         }
 
     }

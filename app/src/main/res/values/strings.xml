@@ -88,6 +88,9 @@
     <string name="joined_call"> ist dem Call beigetreten</string>
     <string name="left_call"> hat den Call verlassen</string>
 
+    <string name="win_game">Super, ihr habt das Spiel gewonnen. Gleich noch ne Runde...</string>
+    <string name="loose_game">Schade, ihr habt das Spiel verloren. Probiert es noch ein mal...</string>
+
 
     <string name="annehmen">Annehmen</string>
     <string name="bekommen">Bekommen:</string>

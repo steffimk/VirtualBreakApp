@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendListAdapter
+import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
 import com.example.virtualbreak.model.User
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
@@ -25,6 +26,8 @@ class Groups_friendlist_fragment : Fragment() {
     private val TAG = "Groups_Friendlist_Fragment"
 
     private val viewModel: GroupsViewModel by viewModels()
+
+    var friendsListAdapter: FriendListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +59,14 @@ class Groups_friendlist_fragment : Fragment() {
         friends_recyler_list_view.adapter = FriendListAdapter(friends, context)*/
 
         viewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ friends ->
-            friends_recyler_list_view.adapter = FriendListAdapter(ArrayList(friends.values), context) // TODO: Maybe reuse old adapter
+            if(friendsListAdapter == null){
+                friendsListAdapter = FriendListAdapter(ArrayList(friends.values), context)
+                friends_recyler_list_view.adapter = friendsListAdapter
+            }
+            else{ //update old adapter with new data
+                friendsListAdapter?.updateData(ArrayList(friends.values))
+            }
+
             Log.d(TAG, "Observed friends: $friends")
         })
 

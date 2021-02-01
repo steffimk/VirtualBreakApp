@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -46,6 +47,7 @@ class ChatAdapter(
         val chatBubble: CardView
         val timestampView: TextView
         val chatItemWhole: LinearLayout
+        val callIndicator : ImageView
         private val TAG: String = "ChatAdapter_ViewHolder"
 
         init {
@@ -54,6 +56,7 @@ class ChatAdapter(
             chatBubble = itemView.findViewById(R.id.chat_message_cardview)
             timestampView = itemView.findViewById(R.id.show_message_timestamp)
             chatItemWhole = itemView.findViewById(R.id.chatitem_whole)
+            callIndicator = itemView.findViewById(R.id.message_call_indicator)
         }
     }
 
@@ -114,6 +117,7 @@ class ChatAdapter(
     ) {
         //show message text
         holder.messageView.setText(message.message)
+        holder.callIndicator.visibility = View.GONE
 
         //show date
         val date = message.timestamp
@@ -146,7 +150,7 @@ class ChatAdapter(
             holder.chatBubble.setCardBackgroundColor(
                 ContextCompat.getColor(
                     context,
-                    R.color.blue_pale
+                    R.color.lightish_blue
                 )
             )
             holder.chatItemWhole.gravity = Gravity.END //own sent messages are aligned right
@@ -160,6 +164,14 @@ class ChatAdapter(
             holder.chatItemWhole.gravity = Gravity.CENTER //system messages are aligned in center
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Caption) // smaller and grey text
             holder.senderView.visibility = View.GONE
+            //call messages
+            if(message.message.endsWith(context.getString(R.string.joined_call))){
+                holder.callIndicator.visibility =View.VISIBLE
+                holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_start))
+            } else if(message.message.endsWith(context.getString(R.string.left_call))){
+                holder.callIndicator.visibility =View.VISIBLE
+                holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_end))
+            }
         }
         //other people's messages
         else{
@@ -168,7 +180,7 @@ class ChatAdapter(
             holder.chatBubble.setCardBackgroundColor(
                 ContextCompat.getColor(
                     context,
-                    R.color.yellow_green
+                    R.color.tea_green2
                 )
             )
         }

@@ -17,6 +17,7 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
 import com.example.virtualbreak.controller.communication.FCMService
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
@@ -146,7 +147,11 @@ class SingleGroupRoomsFragment : Fragment() {
                     context?.let{
                         PushData.joinRoom(it, roomId, userName)
                     }
+
+                    prepareAndInitBreakStatus() //before save roomId in SharedPrefs
+
                     SharedPrefManager.instance.saveRoomId(roomId)
+
                     if(roomtype == Roomtype.GAME){
                         val gameId = PushData.createGame(roomId)
                         intent.putExtra(Constants.GAME_ID, gameId)
@@ -161,6 +166,19 @@ class SingleGroupRoomsFragment : Fragment() {
         intent.putExtra(Constants.ROOM_TYPE, roomtype.dbStr)
         activity?.startActivity(intent)
 
+    }
+
+    private fun prepareAndInitBreakStatus() {
+        //save current status (before break) in SharedPrefs
+        PullData.currentUser.value?.status?.let { it ->
+            if(SharedPrefManager.instance.getRoomId() == null || "".equals(SharedPrefManager.instance.getRoomId())){ //only save status before going in breakroom if about to enter new room (not reenter)
+                SharedPrefManager.instance.saveCurrentStatus(
+                    it
+                )
+            }
+        }
+        //automatically set status to INBREAK
+        PushData.setStatus(Status.INBREAK)
     }
 
     private fun sendNotifications(

@@ -1,12 +1,14 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.GridView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getSystemService
@@ -82,7 +84,7 @@ class SingleGroupFragment : Fragment() {
                 R.id.singlegroup_containerview_members,
                 SingleGroupMembersFragment.newInstance(groupId)
             )
-            it.addToBackStack(null)
+            //it.addToBackStack(null)
             it.commit()
         }
 
@@ -92,7 +94,7 @@ class SingleGroupFragment : Fragment() {
                 R.id.singlegroup_containerview_rooms,
                 SingleGroupRoomsFragment.newInstance(groupId)
             )
-            it.addToBackStack(null)
+            //it.addToBackStack(null)
             it.commit()
         }
 
@@ -133,8 +135,7 @@ class SingleGroupFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.action_leave_group -> {
-            singleGroupViewModel.getCurrentGroup().value?.let { PushData.leaveGroup(it) } //TODO here bug, currentgroup can be null
-            view?.findNavController()?.navigate(R.id.action_singleGroupFragment_to_home)
+            showLeaveDialog()
             true
         }
         //TODO edit group name? maybe in extra fragment
@@ -143,5 +144,30 @@ class SingleGroupFragment : Fragment() {
         }
     }
 
+    private fun showLeaveDialog() {
+        context?.let{
+            val dialog = Dialog(it)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.leavegroup_alert_dialog)
+            val yesBtn = dialog.findViewById(R.id.leavegroup_confirm_button) as Button
+            val noBtn = dialog.findViewById(R.id.leavegroup_dismiss_button) as Button
+
+            yesBtn.setOnClickListener {
+                dialog.dismiss()
+                singleGroupViewModel.getCurrentGroup().value?.let {
+                    singleGroupViewModel.getCurrentGroup().removeObservers(this)
+                    singleGroupViewModel.getGroupUsers().removeObservers(this)
+                    singleGroupViewModel.getRooms().removeObservers(this)
+                    PushData.leaveGroup(it)
+                }
+                view?.findNavController()?.navigate(R.id.action_singleGroupFragment_to_home)
+            }
+            noBtn.setOnClickListener { dialog.dismiss() }
+            dialog.show()
+        }
+
+
+    }
 
 }

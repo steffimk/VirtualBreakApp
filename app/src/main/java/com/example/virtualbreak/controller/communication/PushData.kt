@@ -70,32 +70,44 @@ class PushData {
         }
 
         fun leaveGroup(group: Group) {
-            //TODO SOMETHING NOT WORKING HERE? Doesent delet
-            //TODO change that id user is last user delete Group
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS)
-                    .child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
-                database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid)
-                    .child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
-                    .removeValue()
-                group.rooms?.forEach {
-                    database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value)
-                        .child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
+
+                if(group.users.size == 1){
+                    //delete group, because only member is current user
+                    deleteGroup(group)
                 }
+                else{
+                    //remove group from user's internal group list
+                    database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
+                        .child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
+
+                    //removes user from group's user list
+                    database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid)
+                        .child(Constants.DATABASE_CHILD_USERS).child(currentUserId)
+                        .removeValue()
+
+                    //remove user from every room's user list in the group
+                    group.rooms?.forEach {
+                        database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value)
+                            .child(Constants.DATABASE_CHILD_USERS).child(currentUserId).removeValue()
+                    }
+                }
+
             } else {
                 Log.d(TAG, "No user logged in. Cannot leave group.")
             }
         }
 
         fun deleteGroup(group: Group) {
-            database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
-            for (user in group.users) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
+            for (user in group.users) { //remove group from internal users group lists
+                database.child(Constants.DATABASE_CHILD_USERS).child(user.key).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             }
-            group.rooms?.forEach {
+            group.rooms?.forEach { //remove remove all rooms of goup
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(it.value).removeValue()
             }
+            //remove group itself
+            database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
         }
 
         fun setGroupDescription(groupId: String, description: String) {
@@ -257,6 +269,17 @@ class PushData {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
                 database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot change status.")
+            }
+        }
+
+        fun resetStatusToBeforeBreak() {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
+            Log.d(TAG, "resetStatusToBeforeBreak "+statusBeforeBreak.dbStr)
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(statusBeforeBreak)
             } else {
                 Log.d(TAG, "No user logged in. Cannot change status.")
             }

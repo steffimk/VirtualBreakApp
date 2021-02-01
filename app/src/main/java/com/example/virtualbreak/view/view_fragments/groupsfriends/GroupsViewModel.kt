@@ -29,13 +29,35 @@ class GroupsViewModel : ViewModel() {
             }
 
             Log.d(TAG, "Pulled Friends $pulledFriends")
-            // TODO: Maybe check which friends got removed instead of clearing HashMaps
-            friends.value?.clear()
+            /*friends.value?.clear()
             friends.value = friends.value
 
-            pulledFriends.forEach() {
-                    (key, userId) -> pullUserWithId(userId)
+            pulledFriends.forEach() { (key, userId) ->
+                pullUserWithId(userId)
+            }*/
+
+            //check for removes and new friends
+            friends.value?.let{
+                for(friendId in pulledFriends.keys){
+                    if(!it.contains(friendId)){
+                        pullUserWithId(friendId)
+                    }
+                }
+
+                for(oldFriendId in it){
+                    if(!pulledFriends.contains(oldFriendId)){
+                        it.remove(oldFriendId)
+                    }
+                }
             }
+
+            //if friends is null, just get all
+            if(friends.value == null){
+                pulledFriends.forEach() {
+                        (key, userId) -> pullUserWithId(key)
+                }
+            }
+
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -82,7 +104,7 @@ class GroupsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(userId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).child(userId).addValueEventListener(valueEventListener)
     }
 
     // ---------------------------------- Groups ----------------------------------------
@@ -148,7 +170,7 @@ class GroupsViewModel : ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).addValueEventListener(valueEventListener)
     }
 
     override fun onCleared() {

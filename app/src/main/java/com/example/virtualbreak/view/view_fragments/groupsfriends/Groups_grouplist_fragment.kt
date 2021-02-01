@@ -50,12 +50,18 @@ class Groups_grouplist_fragment : Fragment() {
 
         viewModel.getGroups()
             .observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groups ->
-                if(groupsListAdapter == null){
-                    groupsListAdapter = GroupsListAdapter(ArrayList(groups.values))
+                var groupslist = ArrayList(groups.values)
+                groupslist.sortBy{it.description}
+                groupsListAdapter = GroupsListAdapter(groupslist, context)
+                groups_recyler_list_view.adapter = groupsListAdapter
+
+                //uncommented this update, because sometimes bug when clicking on group other group is opened
+                /*if(groupsListAdapter == null){
+                    groupsListAdapter = GroupsListAdapter(groupslist, context)
                     groups_recyler_list_view.adapter = groupsListAdapter
                 } else{
-                    groupsListAdapter?.updateData(ArrayList(groups.values))
-                }
+                    groupsListAdapter?.updateData(groupslist)
+                }*/
 
                 Log.d(TAG, "Observed groups: $groups")
             })

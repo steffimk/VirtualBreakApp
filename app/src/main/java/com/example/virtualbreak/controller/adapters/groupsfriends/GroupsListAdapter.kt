@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +23,7 @@ import kotlinx.android.synthetic.main.group_list_item.*
 /**
  * This Adapter manages the Receyler View of the Groups in the groups_grouplist_fragment
  */
-class GroupsListAdapter(groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
+class GroupsListAdapter(groups: ArrayList<Group>, private val context: Context?) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
     lateinit var view: View
     val TAG = "GroupsListAdapter"
@@ -34,11 +36,13 @@ class GroupsListAdapter(groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsL
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val  textView: TextView
         val groupImg: ImageView
+        val cardView: CardView
         private val TAG: String = "GroupsListAdapter_ViewHolder"
 
         init{
             textView = itemView.findViewById(R.id.group_list_name)
             groupImg = itemView.findViewById(R.id.group_list_img)
+            cardView = itemView.findViewById(R.id.group_list_item_card)
         }
     }
 
@@ -54,6 +58,18 @@ class GroupsListAdapter(groups: ArrayList<Group>) : RecyclerView.Adapter<GroupsL
 
         //TODO choose image for group
         //holder.groupImg = ...
+        groups[position].rooms?.let{
+            if(it.size > 0){
+                //there are open rooms in this group
+                context?.let{
+                    holder.groupImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cup_black))
+                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(
+                        context,
+                        R.color.tea_green2
+                    ))
+                }
+            }
+        }
 
         view.setOnClickListener{
             val group = groups[position]

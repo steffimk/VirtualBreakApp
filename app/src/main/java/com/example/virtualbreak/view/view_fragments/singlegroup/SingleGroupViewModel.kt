@@ -183,9 +183,11 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
     private val currentGroupListener = object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var group = dataSnapshot.getValue(Group::class.java)!!
+                var group = dataSnapshot.getValue(Group::class.java)
                 if (group != null) {
                     currentGroup.value = group
+                } else{
+                    Log.d(TAG, "Current Group is null!")
                 }
                 Log.d(TAG, "Pulled Current Group")
             }

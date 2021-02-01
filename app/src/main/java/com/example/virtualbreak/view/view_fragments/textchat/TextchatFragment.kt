@@ -1,14 +1,15 @@
 package com.example.virtualbreak.view.view_fragments.textchat
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,9 +20,6 @@ import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.model.User
-import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomViewModel
-import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomViewModelFactory
 import kotlinx.android.synthetic.main.textchat_fragment.*
 
 //class TextchatFragment(private var userName: String?) : Fragment() {
@@ -59,7 +57,7 @@ class TextchatFragment() : Fragment() {
         var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
         defaultMessages.add(defaultM)
 
-        var layoutManager = LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
         layoutManager.setStackFromEnd(true)
         //var chatMessageRecyclerView = root.findViewById(chat_messages_recycler_view)
         //Log.i(TAG, "recyclerView " + chatMessageRecyclerView)
@@ -139,4 +137,25 @@ class TextchatFragment() : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
+    /**
+     * closes soft keyboard (don't use, nicer if it stays open because used often in chat)
+     * editText: View
+     */
+    private fun hideSoftKeyboard(button: View) {
+        /*val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(button.getWindowToken(), 0)*/
+
+        val view: View? = activity?.getCurrentFocus()
+
+        // if nothing is currently
+        // focus then this will protect
+        // the app from crash
+        if (view != null) {
+
+            // now assign the system
+            // service to InputMethodManager
+            val manager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            manager?.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
 }

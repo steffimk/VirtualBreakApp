@@ -1,12 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.view_fragments.hangman.HangmanFragment"
+    android:id="@+id/game_base_cardview"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="5dp"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginHorizontal="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkblue"
+            android:layout_alignParentStart="true"
+            android:text="Hangman"/>
+        <ImageButton
+            android:id="@+id/expand_game_btn"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:tint="@color/darkblue"
+            android:src="@drawable/ic_baseline_expand_less_24"/>
+
+    </RelativeLayout>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/game_content_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.view_fragments.hangman.HangmanFragment">
+    android:layout_height="wrap_content">
+
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:id="@+id/hangman_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,14 +67,16 @@
 
             <TextView
                 android:id="@+id/hangman_word"
+                android:fontFamily="@font/architects_daughter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textAlignment="center"
-                android:text="Hello" />
+                android:text="Hel__lo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
@@ -48,6 +93,7 @@
             android:id="@+id/input_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hangman_game"
             app:layout_constraintStart_toStartOf="parent"
@@ -222,3 +268,8 @@
 
         </GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

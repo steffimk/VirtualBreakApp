@@ -3,6 +3,8 @@ package com.example.virtualbreak.view.view_fragments.sportRoom
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,9 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.FragmentSportRoomExtrasBinding
+import kotlinx.android.synthetic.main.fragment_sport_room_extras.*
+import kotlinx.android.synthetic.main.hangman_fragment.*
+import kotlinx.android.synthetic.main.hangman_fragment.expand_game_btn
 import java.util.*
 
 
@@ -77,6 +82,32 @@ class SportRoomExtrasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //expand or close sport fragment when click on expand arrow, textchat adapts to height
+        expand_sport_btn.setOnClickListener {
+            if (sport_content_layout.getVisibility() === View.VISIBLE) {
+
+                // The transition of the hiddenView is carried out
+                //  by the TransitionManager class.
+                // Here we use an object of the AutoTransition
+                // Class to create a default transition.
+                TransitionManager.beginDelayedTransition(
+                    sport_base_view,
+                    AutoTransition()
+                )
+                sport_content_layout.setVisibility(View.GONE)
+                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            } else {
+                TransitionManager.beginDelayedTransition(
+                    sport_base_view,
+                    AutoTransition()
+                )
+                sport_content_layout.setVisibility(View.VISIBLE)
+                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            }
+
+        }
+
         viewModel.startPullingExercise()
         viewModel.getTimerEndDate().observe(viewLifecycleOwner, Observer<Long?> { timerEndDate ->
             handleNewTimerEndDate(timerEndDate)

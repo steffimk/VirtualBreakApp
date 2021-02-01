@@ -1,6 +1,8 @@
 package com.example.virtualbreak.view.view_fragments.hangman
 
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +15,7 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Game
 import kotlinx.android.synthetic.main.hangman_fragment.*
-import java.lang.StringBuilder
+
 
 class HangmanFragment : Fragment() {
 
@@ -32,6 +34,30 @@ class HangmanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val gameId = requireArguments().getString(Constants.GAME_ID)
 
+        //expand or close game fragment when click on expand arrow, textchat adapts to height
+        expand_game_btn.setOnClickListener {
+            if (game_content_layout.getVisibility() === View.VISIBLE) {
+
+                // The transition of the hiddenView is carried out
+                //  by the TransitionManager class.
+                // Here we use an object of the AutoTransition
+                // Class to create a default transition.
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                game_content_layout.setVisibility(View.GONE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            } else {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                game_content_layout.setVisibility(View.VISIBLE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            }
+
+        }
 
         val viewModel: HangmanViewModel by viewModels {
             HangmanViewModelFactory(
@@ -47,10 +73,10 @@ class HangmanFragment : Fragment() {
             game = observedGame
             //context?.let { viewModel.loadUsersOfRoom(it) }
 
-            observedGame?.let{
-                if(observedGame.word == null){
+            observedGame?.let {
+                if (observedGame.word == null) {
                     // TODO wait
-                } else{
+                } else {
                     // game starts
                     word = observedGame.word!!
 
@@ -58,12 +84,12 @@ class HangmanFragment : Fragment() {
                     var wordFound = StringBuilder("")
 
                     // initialising word found with _
-                    for(i in word.indices){
+                    for (i in word.indices) {
                         wordFound.insert(i, '_')
                     }
 
-                    if (observedGame.letters != null){
-                        observedGame.letters!!.forEach{(key,value) ->
+                    if (observedGame.letters != null) {
+                        observedGame.letters!!.forEach { (key, value) ->
                             when (value) {
                                 "A" -> {
                                     a_input.setEnabled(false)
@@ -280,7 +306,7 @@ class HangmanFragment : Fragment() {
                         }
                     }
 
-                    if(word == wordFound.toString()){
+                    if (word == wordFound.toString()) {
                         // TODO Spiel gewonnen
                     }
                     hangman_word.setText(wordFound.toString())

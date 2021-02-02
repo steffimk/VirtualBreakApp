@@ -314,6 +314,10 @@ class HangmanFragment : Fragment() {
                             game_content_layout.visibility = View.GONE
                             game_ended.visibility = View.VISIBLE
                             end_result.text = getString(R.string.win_game)
+                            var word_result_text = getString(R.string.word_result) + word
+                            word_result.text = word_result_text
+                            try_again.text = getString(R.string.retry_win)
+
                             restart_game.setOnClickListener {
                                 // TODO remove old game and create new game
                             }
@@ -326,6 +330,9 @@ class HangmanFragment : Fragment() {
                         game_content_layout.visibility = View.GONE
                         game_ended.visibility = View.VISIBLE
                         end_result.text = getString(R.string.loose_game)
+                        var word_result_text = getString(R.string.word_result) + word
+                        word_result.text = word_result_text
+                        try_again.text = getString(R.string.retry_loose)
                         restart_game.setOnClickListener {
                             // TODO remove old game and create new game
                         }

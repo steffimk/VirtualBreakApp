@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sport_base_view"
     android:layout_width="match_parent"
-    android:background="@color/light_blue"
+    android:background="@color/blue_columbia"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="@color/light_blue"
+            android:background="@color/blue_columbia"
             android:tint="@color/darkblue"
             android:src="@drawable/ic_baseline_expand_less_24"/>
 
@@ -64,7 +64,7 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_arrow_left_24"
-                android:background="@color/light_blue"
+                android:background="@color/blue_columbia"
                 android:visibility="visible"
                 app:tint="@color/mandarin" />
             <TextView
@@ -82,7 +82,7 @@
                 android:id="@+id/fitness_next_btn"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:background="@color/light_blue"
+                android:background="@color/blue_columbia"
                 android:src="@drawable/ic_baseline_arrow_right_24"
                 android:visibility="visible"
                 app:tint="@color/mandarin" />

@@ -13,7 +13,6 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
 import kotlinx.android.synthetic.main.fragment_single_group_members.*
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val GROUP_ID = "groupId"
 
 /**
@@ -87,7 +86,6 @@ class SingleGroupMembersFragment : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment SingleGroupMembersFragment.
          */
         @JvmStatic

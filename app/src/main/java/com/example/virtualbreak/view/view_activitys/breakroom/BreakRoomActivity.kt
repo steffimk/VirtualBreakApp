@@ -36,8 +36,10 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
+import com.example.virtualbreak.view.view_fragments.boredapi.BoredApiFragment
 import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
+import com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupRoomsFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.hangman_fragment.*
@@ -110,7 +112,6 @@ class BreakRoomActivity : AppCompatActivity() {
                     //add<TextchatFragment>(R.id.fragment_container_chat_view)
                 }
             } else if(roomType.equals(Roomtype.SPORT.dbStr)){
-                // TODO: add sport room fragment here
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
 
@@ -124,7 +125,24 @@ class BreakRoomActivity : AppCompatActivity() {
                     replace<TextchatFragment>(R.id.fragment_container_chat_view)
 
                 }
-            } else{
+            } else if(roomType.equals(Roomtype.COFFEE.dbStr)){
+                // add Bored API fragment here
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+
+                    // makes fragment visible
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    // if you don't need to pass info to fragment
+                    replace<BoredApiFragment>(R.id.fragment_container_game_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+                }
+            }
+
+            else{
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace<TextchatFragment>(R.id.fragment_container_chat_view)

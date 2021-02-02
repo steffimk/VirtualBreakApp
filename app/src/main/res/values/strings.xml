@@ -147,6 +147,11 @@
         - Sport by iconixar from the Noun Project\n
         - Question by Martin Delin from the Noun Project</string>
     <string name="confirm_leavegroup_text">Willst du die Gruppe wirklich verlassen? Wenn du der/die letzte bist, wird die Gruppe gelöscht.</string>
+    <string name="bored_api">Bored API</string>
+    <string name="random_activity">Zufällige Aktivität</string>
+    <string name="teilen">Teilen</string>
+    <string name="boredapi_intro">Langeweile? Probiere die BoredAPI!</string>
+    <string name="hangman">Hangman</string>
 
 
 </resources>

@@ -3,13 +3,19 @@ package com.example.virtualbreak.view.view_fragments.boredapi
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.PushData
+import com.squareup.okhttp.*
 import kotlinx.android.synthetic.main.fragment_bored_api.*
-import kotlinx.android.synthetic.main.hangman_fragment.*
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
 
 private const val ROOM_ID = "roomId"
 
@@ -19,9 +25,10 @@ private const val ROOM_ID = "roomId"
  * create an instance of this fragment.
  */
 class BoredApiFragment : Fragment() {
-    //private var roomId: String? = null
-    private val roomId: String? = com.example.virtualbreak.controller.SharedPrefManager.instance.getRoomId()
+
+    private val roomId: String? = SharedPrefManager.instance.getRoomId()
     val TAG = "BoredApiFragment"
+    var activityString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +60,61 @@ class BoredApiFragment : Fragment() {
                     AutoTransition()
                 )
                 content_boredapi.setVisibility(View.GONE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+                expand_boredapi_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
             } else {
                 TransitionManager.beginDelayedTransition(
                     boredapi_base_cardview,
                     AutoTransition()
                 )
                 content_boredapi.setVisibility(View.VISIBLE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+                expand_boredapi_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
             }
         }
 
         random_activity_btn.setOnClickListener {
-            display_random_activity.text = "Hallo"
+            runBoredApiCall("https://www.boredapi.com/api/activity/")
         }
+
+        send_random_activity_btn.setOnClickListener {
+            if(activityString != null){
+                roomId?.let{
+                    PushData.sendMessage(it, SharedPrefManager.instance.getUserName()+" schlägt Bored-Aktivität vor: \n"+activityString)
+                }
+            }
+        }
+    }
+
+    fun runBoredApiCall(url: String) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(request: Request?, e: IOException?) {
+                Log.d(TAG, "Failure")
+            }
+            override fun onResponse(response: Response?) {
+
+
+                try {
+                    //example response body: {"activity":"Watch the sunset or the sunrise","type":"recreational","participants":1,"price":0,"link":"","key":"4748214","accessibility":1}
+                    if(response != null && response.body()!= null){
+                        var json = JSONObject(response.body().string())
+                        activityString = json.getString("activity")
+                        Log.d(TAG, "Request Successful!! "+activityString.toString())
+                        activity?.runOnUiThread {
+                            display_random_activity.text = activityString
+                            send_random_activity_btn.visibility = View.VISIBLE
+                        }
+                    }
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+        })
     }
 
     /*companion object {

@@ -309,6 +309,9 @@ class HangmanFragment : Fragment() {
                                 }
                             }
                         }
+                        else{
+                            enableAllButtons()
+                        }
 
                         if (word == wordFound.toString()) {
                             game_content_layout.visibility = View.GONE
@@ -468,6 +471,35 @@ class HangmanFragment : Fragment() {
             val errors = error + 1
             PushData.addError(gameId!!, errors)
         }
+    }
+
+    private fun enableAllButtons(){
+        a_input.setEnabled(true)
+        b_input.setEnabled(true)
+        c_input.setEnabled(true)
+        d_input.setEnabled(true)
+        e_input.setEnabled(true)
+        f_input.setEnabled(true)
+        g_input.setEnabled(true)
+        h_input.setEnabled(true)
+        i_input.setEnabled(true)
+        j_input.setEnabled(true)
+        k_input.setEnabled(true)
+        l_input.setEnabled(true)
+        m_input.setEnabled(true)
+        n_input.setEnabled(true)
+        o_input.setEnabled(true)
+        p_input.setEnabled(true)
+        q_input.setEnabled(true)
+        r_input.setEnabled(true)
+        s_input.setEnabled(true)
+        t_input.setEnabled(true)
+        u_input.setEnabled(true)
+        v_input.setEnabled(true)
+        w_input.setEnabled(true)
+        x_input.setEnabled(true)
+        y_input.setEnabled(true)
+        z_input.setEnabled(true)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

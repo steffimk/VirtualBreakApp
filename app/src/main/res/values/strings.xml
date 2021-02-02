@@ -15,6 +15,8 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_1_hint">Passwort</string>
     <string name="login_submit">Log In</string>
+    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="toast_sent_reset_mail">Du erhälst eine Mail, in der du dein Passwort zurücksetzen kannst.</string>
 
     <string name="login_with_google">Log In with Google</string>
     <string name="login_signin">Noch kein Account? Sign Up!</string>
@@ -154,7 +156,7 @@
         - Question by Martin Delin from the Noun Project</string>
     <string name="confirm_leavegroup_text">Willst du die Gruppe wirklich verlassen? Wenn du der/die letzte bist, wird die Gruppe gelöscht.</string>
 
-    <!--Login Error Messages -->
+    <!--LogIn/SignIn Error Messages -->
     <string name="ERROR_INVALID_CUSTOM_TOKEN">Das benutzerdefinierte Token-Format ist falsch. Bitte prüfen Sie die Dokumentation.</string>
     <string name="ERROR_CUSTOM_TOKEN_MISMATCH">Das benutzerdefinierte Token korrespondiert mit einem anderen Adressaten.</string>
     <string name="ERROR_INVALID_CREDENTIAL">Der gelieferte Berechtigungsnachweis ist falsch formatiert oder abgelaufen.</string>

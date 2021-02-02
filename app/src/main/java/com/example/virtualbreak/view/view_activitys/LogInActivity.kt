@@ -6,6 +6,7 @@ package com.example.virtualbreak.view.view_activitys
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.virtualbreak.controller.isOnline
+import kotlinx.android.synthetic.main.activity_log_in.*
 
 class LogInActivity : AppCompatActivity() {
 
@@ -40,12 +42,29 @@ class LogInActivity : AppCompatActivity() {
             //navigate to SignInActivity
             startActivity(Intent(this, SignInActivity::class.java))
         }
+
+        binding.resetPassword.visibility = View.GONE
 //        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //            .requestEmail()
 //            .build()
 //        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         auth = Firebase.auth
+
+        binding.resetPassword.setOnClickListener {
+            this.auth.useAppLanguage()
+            Firebase.auth.sendPasswordResetEmail(binding.loginEmail.text.toString())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Sent mail to reset password.")
+                        Toast.makeText(
+                            baseContext, R.string.toast_sent_reset_mail,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.resetPassword.visibility = View.GONE
+                    }
+                }
+        }
     }
 
     override fun onStart() {
@@ -84,11 +103,15 @@ class LogInActivity : AppCompatActivity() {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.exception)
-                            val message: String = getGermanErrorMessage((task.exception as FirebaseAuthException?)!!.errorCode, R.string.toast_loginFailed.toString())
+                            val errorCode = (task.exception as FirebaseAuthException?)!!.errorCode
+                            val message: String = getGermanErrorMessage(errorCode, R.string.toast_loginFailed.toString())
                             Toast.makeText(
                                     baseContext, message,
                                     Toast.LENGTH_SHORT
                             ).show()
+                            if (errorCode === "ERROR_WRONG_PASSWORD"){
+                                binding.resetPassword.visibility = View.VISIBLE
+                            }
                         }
                     }
         } else {

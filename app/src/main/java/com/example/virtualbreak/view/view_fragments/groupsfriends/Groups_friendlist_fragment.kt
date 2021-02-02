@@ -52,20 +52,18 @@ class Groups_friendlist_fragment : Fragment() {
         friends_recyler_list_view.setHasFixedSize(true)
         friends_recyler_list_view.setItemViewCacheSize(20)
 
-         //for test
-        /*var friends: ArrayList<User> = ArrayList()
-        friends.add(User("a", "Freund1", "email", Status.AVAILABLE, null, false, null, null, null))
-        friends.add(User("b", "Freund2", "email2", Status.BUSY, null, false, null, null, null))
-        friends_recyler_list_view.adapter = FriendListAdapter(friends, context)*/
-
         viewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ friends ->
-            if(friendsListAdapter == null){
+            friendsListAdapter = FriendListAdapter(ArrayList(friends.values), context)
+            friends_recyler_list_view.adapter = friendsListAdapter
+
+            //don't reuse old adapter
+            /*if(friendsListAdapter == null){
                 friendsListAdapter = FriendListAdapter(ArrayList(friends.values), context)
                 friends_recyler_list_view.adapter = friendsListAdapter
             }
             else{ //update old adapter with new data
                 friendsListAdapter?.updateData(ArrayList(friends.values))
-            }
+            }*/
 
             Log.d(TAG, "Observed friends: $friends")
         })

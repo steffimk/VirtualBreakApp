@@ -49,16 +49,6 @@
             android:layout_marginRight="16dp"
             android:gravity="center"
             android:orientation="horizontal">
-            <!--                <com.google.android.material.button.MaterialButton-->
-            <!--                    android:id="@+id/fitness_btn"-->
-            <!--                    android:layout_width="315dp"-->
-            <!--                    android:layout_height="58dp"-->
-            <!--                    android:backgroundTint="@color/mandarin"-->
-            <!--                    android:text="@string/getFitnessActivity"-->
-            <!--                    app:icon="@drawable/ic_sport"-->
-            <!--                    style="@style/Widget.MaterialComponents.Button.Icon"-->
-            <!--                    android:textAllCaps="true"-->
-            <!--                    android:textColor="@color/light_green"/>-->
             <ImageButton
                 android:id="@+id/fitness_previous_btn"
                 android:layout_width="40dp"
@@ -107,7 +97,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
                     <NumberPicker
                         android:id="@+id/min_picker"
                         android:layout_width="wrap_content"
@@ -130,13 +121,14 @@
                         android:textSize="20sp"
                         android:layout_marginLeft="10dp"/>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/timerView"
+                <Chronometer
+                    android:id="@+id/chronometer"
                     android:layout_width="wrap_content"
                     android:layout_height="58dp"
-                    android:text="00m 00s"
-                    android:textSize="58sp"
-                    android:visibility="gone"/>
+                    android:gravity="center"
+                    android:textSize="50sp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="visible"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

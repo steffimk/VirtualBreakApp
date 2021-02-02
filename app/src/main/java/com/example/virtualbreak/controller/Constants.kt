@@ -90,5 +90,7 @@ class Constants {
             "Rentierkutsche",
             "Schokoladenfabrikmitarbeiter"
         )
+
+        val HANGMAN_MAX_ERRORS = 7
     }
 }

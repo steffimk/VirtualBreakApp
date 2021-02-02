@@ -189,6 +189,7 @@ class BreakroomWidgetService : Service() {
             collapsedView.visibility = View.VISIBLE
             expandedView.visibility = View.GONE
         }
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

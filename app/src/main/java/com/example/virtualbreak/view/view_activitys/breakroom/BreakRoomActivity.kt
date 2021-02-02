@@ -177,57 +177,7 @@ class BreakRoomActivity : AppCompatActivity() {
             })
 
 
-            /*var defaultMessages: MutableList<Message> = ArrayList()
-            var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
-            defaultMessages.add(defaultM)
 
-            val layoutManager = LinearLayoutManager(this)
-            layoutManager.setStackFromEnd(true)
-            chat_messages_recycler_view.layoutManager = layoutManager
-
-            chatAdapter = ChatAdapter(this, defaultMessages, SharedPrefManager.instance.getRoomUsersHashmap())
-            chat_messages_recycler_view.adapter = chatAdapter
-            chatAdapter?.let{
-                chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
-            }
-
-            viewModel.getUser().observe(this, Observer<User> { observedUser ->
-                if (observedUser != null) {
-                    userName = observedUser.username
-                }
-            })
-
-
-
-            viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
-
-                room = observedRoom
-                //viewModel.loadUsersOfRoom()
-
-                if (observedRoom != null) {
-                    supportActionBar?.title = observedRoom.description
-                }
-                /*if (room != null && (room!!.users != observedRoom.users)) {
-                    viewModel.loadUsersOfRoom(this)
-                }*/
-                Log.d(TAG, "Observed room: $observedRoom")
-                if (observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()) {
-                    val messages = observedRoom.messages
-                    var messagesList = ArrayList(messages.values)
-                    messagesList.sortBy { it.timestamp }
-                    Log.i(TAG, "messagesList: $messagesList")
-
-                    if(chatAdapter == null){
-                        chatAdapter = ChatAdapter(this, messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
-                        chat_messages_recycler_view.adapter = chatAdapter
-                    } else{
-                        chatAdapter?.updateData(messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
-                    }
-                    chatAdapter?.let{
-                        chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
-                    }
-                }
-            })*/
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous

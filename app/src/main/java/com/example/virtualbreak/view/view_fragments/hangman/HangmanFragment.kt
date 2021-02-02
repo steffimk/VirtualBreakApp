@@ -79,6 +79,8 @@ class HangmanFragment : Fragment() {
                 if (observedGame.word == null) {
                     // TODO wait
                 } else {
+                    game_content_layout.visibility = View.VISIBLE
+                    game_ended.visibility = View.GONE
                     // game starts
                     word = observedGame.word!!
 

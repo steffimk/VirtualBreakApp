@@ -127,6 +127,7 @@ class SportRoomExtrasFragment : Fragment() {
             countDownTimer = getCountDownTimer(timerEndDate!!).start()
             if (viewModel.fitnessExercise == null) Log.d(TAG, "Fitness exercise is null")
         } else {
+            if (this.countDownTimer != null) this.countDownTimer?.cancel()
             binding.timePicker.visibility = View.VISIBLE
             binding.timerView.visibility = View.GONE
             binding.startTimerBtn.text = getString(R.string.startTimer)

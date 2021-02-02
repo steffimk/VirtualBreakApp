@@ -29,7 +29,7 @@ private constructor() {
     val USER_NAME: String = "userName"
     val ROOM_USER: String = "roomUser"
     val CURRENT_STATUS: String = "currentStatus"
-    val ISWIDGETOPEN: String = "isWidgetOpen"
+    val IS_ALLOWED_TO_OPEN_WIDGET: String = "isWidgetAllowedOpen"
 
 
     /**
@@ -44,7 +44,6 @@ private constructor() {
     }
 
     fun saveCurrentStatus(status: Status) {
-
         sharedPrefs?.let{
             it.edit().putString(CURRENT_STATUS, status.dbStr).apply()
             Log.d(TAG, "Status " + status.dbStr + " added to shared preferences")
@@ -169,17 +168,17 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
-    fun saveIsWidgetOpen(isWidgetOpen: Boolean) {
+    fun saveIsWidgetAllowedtoOpen(isWidgetallowedtoOpen: Boolean) {
         sharedPrefs?.let {
-            it.edit().putBoolean(ISWIDGETOPEN, isWidgetOpen).apply()
-            Log.d(TAG, "IswidgetOpen " + isWidgetOpen + " added to shared preferences")
+            it.edit().putBoolean(IS_ALLOWED_TO_OPEN_WIDGET, isWidgetallowedtoOpen).apply()
+            Log.d(TAG, "IswidgetOpen " + isWidgetallowedtoOpen + " added to shared preferences")
         }
         if (sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
     }
 
-    fun getIsWidgetOpen(): Boolean {
-        val isOpen = sharedPrefs?.getBoolean(ISWIDGETOPEN, false)
+    fun getIsWidgetAllowedtoOpen(): Boolean {
+        val isOpen = sharedPrefs?.getBoolean(IS_ALLOWED_TO_OPEN_WIDGET, false)
         if (isOpen != null) {
             return isOpen
         } else {

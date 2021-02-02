@@ -149,9 +149,7 @@ class SingleGroupRoomsFragment : Fragment() {
                     }
 
                     prepareAndInitBreakStatus() //before save roomId in SharedPrefs
-
                     SharedPrefManager.instance.saveRoomId(roomId)
-
                     if(roomtype == Roomtype.GAME){
                         val gameId = PushData.createGame(roomId)
                         intent.putExtra(Constants.GAME_ID, gameId)

@@ -69,6 +69,8 @@ class BreakRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
 
+        Log.d("Check", "onCreate " + SharedPrefManager.instance.getRoomId())
+
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
             userName = bundle.getString(Constants.USER_NAME)
@@ -146,6 +148,9 @@ class BreakRoomActivity : AppCompatActivity() {
         if (roomId != null) {
 
             viewModel.loadUsersOfRoom()
+            //Allowed the Widget to open
+            SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
+            Log.d("Check", "onCreate" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
 
             //bug moved to other places this can lead to too many messages when device screen turns on and off
             // PushData.joinRoom(this, roomId, userName)
@@ -163,14 +168,14 @@ class BreakRoomActivity : AppCompatActivity() {
                     if (observedRoom.callMembers != null) {
                         activeCall = true
                         // update menu only if call has changed
-                        if(callBefore != activeCall){
-                            invalidateOptionsMenu ()
+                        if (callBefore != activeCall) {
+                            invalidateOptionsMenu()
                         }
                     } else {
                         activeCall = false
                         // update menu only if call has changed
-                        if(callBefore != activeCall){
-                            invalidateOptionsMenu ()
+                        if (callBefore != activeCall) {
+                            invalidateOptionsMenu()
                         }
                     }
                 }
@@ -302,6 +307,7 @@ class BreakRoomActivity : AppCompatActivity() {
             true
         }
         R.id.action_videocall -> {
+            SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
             videocall()
             true
         }
@@ -319,24 +325,39 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Log.d("Check", "onBacll")
+        Log.d("Check", "onBacll" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         openWidget()
     }
 
     override fun onPause() {
-        Log.d("Check", "onPause")
+        Log.d("Check", "onPause" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         super.onPause()
-        if (SharedPrefManager.instance.getRoomId() != null) {
+        //if (SharedPrefManager.instance.getRoomId() != null) {
+        //    openWidget()
+        //}
+        if (!SharedPrefManager.instance.getIsWidgetAllowedtoOpen() && SharedPrefManager.instance.getRoomId() != null) {
             openWidget()
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.d("Check", "onStop" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("Check", "onStart" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("Check", "onResume " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("Check", "onDesroy ${!SharedPrefManager.instance.getIsWidgetOpen()}")
-        if (!SharedPrefManager.instance.getIsWidgetOpen()) {
-            leaveRoom()
-        }
+        Log.d("Check", "onDesroy ${!SharedPrefManager.instance.getIsWidgetAllowedtoOpen()}")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -366,7 +387,8 @@ class BreakRoomActivity : AppCompatActivity() {
         //automatically reset status to status before INBREAK
         PushData.resetStatusToBeforeBreak()
         stopService(Intent(this, BreakroomWidgetService::class.java))
-        SharedPrefManager.instance.saveIsWidgetOpen(false)
+        //Forbid the Widget to open
+        SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
 
         Log.d(TAG, "Left room $roomId")
         finish()
@@ -404,16 +426,19 @@ class BreakRoomActivity : AppCompatActivity() {
     private fun openWidget() {
         Log.d(TAG, "openwidget")
         if (Settings.canDrawOverlays(this)) {
-            //if(!SharedPrefManager.instance.getIsWidgetOpen()) {
-            Log.d(TAG, room?.description + room?.type?.dbStr)
-            SharedPrefManager.instance.saveIsWidgetOpen(true)
-            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
-            intent.putExtra(Constants.ROOM_NAME, room?.description)
-            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
-            intent.putExtra(Constants.USER_NAME, userName)
-            intent.putExtra(Constants.GAME_ID, gameId)
-            startService(intent)
-            finish()
+            if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
+                //if(!SharedPrefManager.instance.getIsWidgetOpen()) {
+                Log.d(TAG, room?.description + room?.type?.dbStr)
+                SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
+                Log.d("Check", "openWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+                val intent = Intent(this, BreakroomWidgetService::class.java)
+                intent.putExtra(Constants.ROOM_NAME, room?.description)
+                intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
+                intent.putExtra(Constants.USER_NAME, userName)
+                intent.putExtra(Constants.GAME_ID, gameId)
+                startService(intent)
+                finish()
+            }
             //}
         } else {
             askPermission()

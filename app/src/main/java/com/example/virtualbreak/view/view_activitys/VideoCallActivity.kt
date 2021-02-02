@@ -3,6 +3,7 @@ package com.example.virtualbreak.view.view_activitys
 import android.os.Bundle
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
@@ -57,5 +58,7 @@ class VideoCallActivity : JitsiMeetActivity() {
     override fun onDestroy() {
         super.onDestroy()
         PushData.removeCallMember(this, roomId)
+        //Allow the widget to open again aber leaving the call
+        SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
     }
 }

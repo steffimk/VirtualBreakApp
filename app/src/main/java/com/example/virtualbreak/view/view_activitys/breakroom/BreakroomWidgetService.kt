@@ -42,7 +42,7 @@ class BreakroomWidgetService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-
+        Log.d("Check", "onCreatewidget " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         setTheme(R.style.Theme_VirtualBreak)
 
         //Inflate the Layout
@@ -119,7 +119,9 @@ class BreakroomWidgetService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        SharedPrefManager.instance.saveIsWidgetOpen(false)
+        Log.d(TAG, "OnDestroy")
+        SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
+        Log.d("Check", "onDestroyWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         mWindowManager.removeView(mFloatingView)
         stopSelf()
     }
@@ -193,6 +195,10 @@ class BreakroomWidgetService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(
+            "Check",
+            "onStarCommandWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen()
+        )
         val bundle: Bundle? = intent?.extras
         if (bundle != null) {
             mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text =

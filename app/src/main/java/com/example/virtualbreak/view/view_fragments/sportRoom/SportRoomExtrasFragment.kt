@@ -57,7 +57,7 @@ class SportRoomExtrasFragment : Fragment() {
             onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
 
-        min_picker.maxValue = 30 // TODO: Maximum length
+        min_picker.maxValue = 20 // TODO: Maximum length
         val secPicker = sec_picker
         secPicker.maxValue = 5
         // Formatter to make steps of 10
@@ -87,14 +87,14 @@ class SportRoomExtrasFragment : Fragment() {
                     sport_base_view,
                     AutoTransition()
                 )
-                sport_content_layout.setVisibility(View.GONE)
+                sport_content_layout.visibility = View.GONE
                 expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
             } else {
                 TransitionManager.beginDelayedTransition(
                     sport_base_view,
                     AutoTransition()
                 )
-                sport_content_layout.setVisibility(View.VISIBLE)
+                sport_content_layout.visibility = View.VISIBLE
                 expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
             }
 

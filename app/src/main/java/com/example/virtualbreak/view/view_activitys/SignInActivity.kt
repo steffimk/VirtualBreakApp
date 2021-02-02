@@ -12,8 +12,6 @@ import com.example.virtualbreak.databinding.ActivitySignInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.example.virtualbreak.controller.isOnline
 
@@ -97,5 +95,27 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
+    private fun getGermanErrorMessage(errorCode: String, defaultMessage: String): String {
+        return when(errorCode) {
+            "ERROR_INVALID_CUSTOM_TOKEN" -> getString(R.string.ERROR_INVALID_CUSTOM_TOKEN)
+            "ERROR_CUSTOM_TOKEN_MISMATCH"-> getString(R.string.ERROR_CUSTOM_TOKEN_MISMATCH)
+            "ERROR_INVALID_CREDENTIAL" -> getString(R.string.ERROR_INVALID_CREDENTIAL)
+            "ERROR_INVALID_EMAIL" -> getString(R.string.ERROR_INVALID_EMAIL)
+            "ERROR_WRONG_PASSWORD" -> getString(R.string.ERROR_WRONG_PASSWORD)
+            "ERROR_USER_MISMATCH" -> getString(R.string.ERROR_USER_MISMATCH)
+            "ERROR_REQUIRES_RECENT_LOGIN" -> getString(R.string.ERROR_REQUIRES_RECENT_LOGIN)
+            "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> getString(R.string.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL)
+            "ERROR_EMAIL_ALREADY_IN_USE" -> getString(R.string.ERROR_EMAIL_ALREADY_IN_USE)
+            "ERROR_CREDENTIAL_ALREADY_IN_USE" -> getString(R.string.ERROR_CREDENTIAL_ALREADY_IN_USE)
+            "ERROR_USER_DISABLED" -> getString(R.string.ERROR_USER_DISABLED)
+            "ERROR_USER_TOKEN_EXPIRED" -> getString(R.string.ERROR_USER_TOKEN_EXPIRED)
+            "ERROR_USER_NOT_FOUND" -> getString(R.string.ERROR_USER_NOT_FOUND)
+            "ERROR_INVALID_USER_TOKEN" -> getString(R.string.ERROR_INVALID_USER_TOKEN)
+            "ERROR_OPERATION_NOT_ALLOWED" -> getString(R.string.ERROR_OPERATION_NOT_ALLOWED)
+            "ERROR_WEAK_PASSWORD" -> getString(R.string.ERROR_WEAK_PASSWORD)
+            "ERROR_MISSING_EMAIL" -> getString(R.string.ERROR_MISSING_EMAIL)
+            else -> defaultMessage
+        }
+    }
 
 }

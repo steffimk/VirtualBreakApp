@@ -99,27 +99,28 @@ class LogInActivity : AppCompatActivity() {
         }
 
     }
-}
 
-fun getGermanErrorMessage(errorCode: String, defaultMessage: String): String {
-    return when(errorCode) {
-        "ERROR_INVALID_CUSTOM_TOKEN" -> "Das benutzerdefinierte Token-Format ist falsch. Bitte prüfen Sie die Dokumentation."
-        "ERROR_CUSTOM_TOKEN_MISMATCH"-> "Das benutzerdefinierte Token korrespondiert mit einem anderen Adressaten."
-        "ERROR_INVALID_CREDENTIAL" -> "Der gelieferte Berechtigungsnachweis ist falsch formatiert oder abgelaufen."
-        "ERROR_INVALID_EMAIL" -> "Die Mailadresse ist falsch formatiert."
-        "ERROR_WRONG_PASSWORD" -> "Ungültiges Passwort."
-        "ERROR_USER_MISMATCH" -> "Die angegebenen Anmeldedaten stimmen nicht mit dem zuvor angemeldeten Benutzer überein."
-        "ERROR_REQUIRES_RECENT_LOGIN" -> "Dieser Vorgang ist sensibel und erfordert eine aktuelle Authentifizierung. Melden Sie sich erneut an, bevor Sie diese Anfrage versuchen."
-        "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> "Es existiert bereits ein Konto mit dieser Mailadresse"
-        "ERROR_EMAIL_ALREADY_IN_USE" -> "Es existiert bereits ein Konto mit dieser Mailadresse."
-        "ERROR_CREDENTIAL_ALREADY_IN_USE" -> "Dieser Zugangscode ist bereits mit einem anderen Benutzerkonto verknüpft."
-        "ERROR_USER_DISABLED" -> "Das Benutzerkonto wurde deaktiviert."
-        "ERROR_USER_TOKEN_EXPIRED" -> "Der Benutzer muss sich erneut anmelden."
-        "ERROR_USER_NOT_FOUND" -> "Benutzer nicht gefunden. Überprüfe die Mailadresse."
-        "ERROR_INVALID_USER_TOKEN" -> "Der Benutzer muss sich erneut anmelden."
-        "ERROR_OPERATION_NOT_ALLOWED" -> "Dieser Vorgang ist nicht erlaubt."
-        "ERROR_WEAK_PASSWORD" -> "Das Passwort ist zu kurz."
-        "ERROR_MISSING_EMAIL" -> "Mailadresse muss angegeben werden."
-        else -> defaultMessage
+    private fun getGermanErrorMessage(errorCode: String, defaultMessage: String): String {
+        return when(errorCode) {
+            "ERROR_INVALID_CUSTOM_TOKEN" -> getString(R.string.ERROR_INVALID_CUSTOM_TOKEN)
+            "ERROR_CUSTOM_TOKEN_MISMATCH"-> getString(R.string.ERROR_CUSTOM_TOKEN_MISMATCH)
+            "ERROR_INVALID_CREDENTIAL" -> getString(R.string.ERROR_INVALID_CREDENTIAL)
+            "ERROR_INVALID_EMAIL" -> getString(R.string.ERROR_INVALID_EMAIL)
+            "ERROR_WRONG_PASSWORD" -> getString(R.string.ERROR_WRONG_PASSWORD)
+            "ERROR_USER_MISMATCH" -> getString(R.string.ERROR_USER_MISMATCH)
+            "ERROR_REQUIRES_RECENT_LOGIN" -> getString(R.string.ERROR_REQUIRES_RECENT_LOGIN)
+            "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> getString(R.string.ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL)
+            "ERROR_EMAIL_ALREADY_IN_USE" -> getString(R.string.ERROR_EMAIL_ALREADY_IN_USE)
+            "ERROR_CREDENTIAL_ALREADY_IN_USE" -> getString(R.string.ERROR_CREDENTIAL_ALREADY_IN_USE)
+            "ERROR_USER_DISABLED" -> getString(R.string.ERROR_USER_DISABLED)
+            "ERROR_USER_TOKEN_EXPIRED" -> getString(R.string.ERROR_USER_TOKEN_EXPIRED)
+            "ERROR_USER_NOT_FOUND" -> getString(R.string.ERROR_USER_NOT_FOUND)
+            "ERROR_INVALID_USER_TOKEN" -> getString(R.string.ERROR_INVALID_USER_TOKEN)
+            "ERROR_OPERATION_NOT_ALLOWED" -> getString(R.string.ERROR_OPERATION_NOT_ALLOWED)
+            "ERROR_WEAK_PASSWORD" -> getString(R.string.ERROR_WEAK_PASSWORD)
+            "ERROR_MISSING_EMAIL" -> getString(R.string.ERROR_MISSING_EMAIL)
+            else -> defaultMessage
+        }
     }
 }
+

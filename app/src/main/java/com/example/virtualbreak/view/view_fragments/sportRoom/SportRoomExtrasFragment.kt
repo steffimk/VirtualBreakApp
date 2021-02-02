@@ -18,10 +18,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.databinding.FragmentSportRoomExtrasBinding
 import kotlinx.android.synthetic.main.fragment_sport_room_extras.*
-import kotlinx.android.synthetic.main.hangman_fragment.*
-import kotlinx.android.synthetic.main.hangman_fragment.expand_game_btn
 import java.util.*
 
 

@@ -60,7 +60,8 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
-    private var roomType : String = Roomtype.GAME.dbStr
+    // TODO: set default room to room which needs no extras
+    private var roomType : String = Roomtype.COFFEE.dbStr
 
     private var gameId : String? = null
 

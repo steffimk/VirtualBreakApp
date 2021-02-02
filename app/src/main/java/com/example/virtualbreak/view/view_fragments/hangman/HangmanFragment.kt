@@ -38,7 +38,7 @@ class HangmanFragment : Fragment() {
 
         //expand or close game fragment when click on expand arrow, textchat adapts to height
         expand_game_btn.setOnClickListener {
-            if (game_content_layout.getVisibility() === View.VISIBLE) {
+            if (hangman_content.getVisibility() === View.VISIBLE) {
 
                 // The transition of the hiddenView is carried out
                 //  by the TransitionManager class.
@@ -48,14 +48,14 @@ class HangmanFragment : Fragment() {
                     game_base_cardview,
                     AutoTransition()
                 )
-                game_content_layout.setVisibility(View.GONE)
+                hangman_content.setVisibility(View.GONE)
                 expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
             } else {
                 TransitionManager.beginDelayedTransition(
                     game_base_cardview,
                     AutoTransition()
                 )
-                game_content_layout.setVisibility(View.VISIBLE)
+                hangman_content.setVisibility(View.VISIBLE)
                 expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
             }
 

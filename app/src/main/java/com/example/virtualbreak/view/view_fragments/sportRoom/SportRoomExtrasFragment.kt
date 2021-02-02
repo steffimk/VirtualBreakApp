@@ -54,7 +54,7 @@ class SportRoomExtrasFragment : Fragment() {
             onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
 
-        min_picker.maxValue = 20 // TODO: Maximum length
+        min_picker.maxValue = 20
         val secPicker = sec_picker
         secPicker.maxValue = 5
         // Formatter to make steps of 10
@@ -108,7 +108,7 @@ class SportRoomExtrasFragment : Fragment() {
         this.timerIsRunning = (timerEndDate != null && timerEndDate > Date().time)
         if (timerIsRunning) {
             timePicker.visibility = View.GONE
-            timerView.visibility = View.VISIBLE
+            chronometer.visibility = View.VISIBLE
             startTimer_btn.text = getString(R.string.cancelTimer)
             fitness_next_btn.visibility = View.INVISIBLE
             fitness_previous_btn.visibility = View.INVISIBLE
@@ -118,7 +118,7 @@ class SportRoomExtrasFragment : Fragment() {
         } else {
             if (this.countDownTimer != null) this.countDownTimer?.cancel()
             timePicker.visibility = View.VISIBLE
-            timerView.visibility = View.GONE
+            chronometer.visibility = View.GONE
             startTimer_btn.text = getString(R.string.startTimer)
             fitness_next_btn.visibility = View.VISIBLE
             fitness_previous_btn.visibility = View.VISIBLE
@@ -144,9 +144,11 @@ class SportRoomExtrasFragment : Fragment() {
     }
 
     private fun secondsToTimerString(sec: Long): String{
-        val minutes = (sec/60).toInt().toString()
-        val seconds = (sec%60).toInt().toString()
-        return minutes + "m " + seconds + "s"
+        var minutes = (sec/60).toInt().toString()
+        var seconds = (sec%60).toInt().toString()
+        if (minutes.length == 1) minutes = "0$minutes"
+        if (seconds.length == 1) seconds = "0$seconds"
+        return minutes + ":" + seconds
     }
 
     private fun getCountDownTimer(timerEndDate: Long): CountDownTimer {
@@ -154,7 +156,7 @@ class SportRoomExtrasFragment : Fragment() {
         countDownTimer?.cancel()
         return object : CountDownTimer(remainingMilliSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
+                chronometer.text = (secondsToTimerString(millisUntilFinished / 1000))
             }
             override fun onFinish() {
                 MediaPlayer.create(context, R.raw.alarm_sound).start()

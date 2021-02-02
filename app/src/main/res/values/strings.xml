@@ -106,7 +106,8 @@
     <string name="breakroomtype">Pausenraum Typ</string>
     <string name="openRoom">Öffne Raum</string>
 
-    <string name="startTimer">Übung starten</string>
+    <string name="startTimer">Übung für alle starten</string>
+    <string name="cancelTimer">Übung für alle abbrechen</string>
     <string name="getFitnessActivity">Fitnessübung anzeigen</string>
 
     <!-- Search Friends -->

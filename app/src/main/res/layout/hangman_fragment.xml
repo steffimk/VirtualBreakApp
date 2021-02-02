@@ -1,251 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.view_fragments.hangman.HangmanFragment"
+    android:id="@+id/game_base_cardview"
+    android:layout_width="match_parent"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="5dp"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginHorizontal="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkblue"
+            android:layout_alignParentStart="true"
+            android:text="Hangman"/>
+        <ImageButton
+            android:id="@+id/expand_game_btn"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:tint="@color/darkblue"
+            android:src="@drawable/ic_baseline_expand_less_24"/>
+
+    </RelativeLayout>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/game_content_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.view_fragments.hangman.HangmanFragment">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/game_content"
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/hangman_game"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/input_buttons"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="visible">
+        android:weightSum="4"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/hangman_game"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="4"
-            app:layout_constraintBottom_toTopOf="@+id/input_buttons"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
-
-                <TextView
-                    android:id="@+id/hangman_word"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ImageView
-                android:id="@+id/fault_indicator"
+            <TextView
+                android:id="@+id/hangman_word"
+                android:fontFamily="@font/architects_daughter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@mipmap/ic_vb" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textAlignment="center"
+                android:text="Hel__lo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/fault_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/ic_vb"
+            />
+    </LinearLayout>
 
 
         <GridLayout
             android:id="@+id/input_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hangman_game"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:columnCount="7"
             android:rowCount="4"
-            android:useDefaultMargins="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hangman_game">
+            android:useDefaultMargins="true">
 
             <!-- Alphabet Buttons -->
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/a_input"
                 style="@style/AlphabetButton"
+                android:id="@+id/a_input"
                 android:layout_width="@dimen/alphabet_buttons_width"
                 android:layout_height="@dimen/alphabet_buttons_height"
                 android:text="A" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/b_input"
                 style="@style/AlphabetButton"
+                android:id="@+id/b_input"
                 android:layout_width="@dimen/alphabet_buttons_width"
                 android:layout_height="@dimen/alphabet_buttons_height"
                 android:text="B" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/c_input"
                 style="@style/AlphabetButton"
+                android:id="@+id/c_input"
                 android:layout_width="@dimen/alphabet_buttons_width"
                 android:layout_height="@dimen/alphabet_buttons_height"
                 android:text="C" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/d_input"
                 style="@style/AlphabetButton"
+                android:id="@+id/d_input"
                 android:layout_width="@dimen/alphabet_buttons_width"
                 android:layout_height="@dimen/alphabet_buttons_height"
                 android:text="D" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/e_input"
                 style="@style/AlphabetButton"
+                android:id="@+id/e_input"
                 android:layout_width="@dimen/alphabet_buttons_width"
                 android:layout_height="@dimen/alphabet_buttons_height"
                 android:text="E" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/f_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/f_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="F" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/g_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/g_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="G" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/h_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/h_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="H" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/i_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/i_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="I" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/j_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/j_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="J" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/k_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/k_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="K" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/l_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/l_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="L" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/m_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/m_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="M" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/n_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/n_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="N" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/o_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/o_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="O" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/p_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/p_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="P" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/q_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/q_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="Q" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/r_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/r_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="R" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/s_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/s_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="S" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/t_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/t_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="T" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/u_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/u_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="U" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/v_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/v_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="V" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/w_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/w_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="W" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/x_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/x_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="X" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/y_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/y_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="Y" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/z_input"
                 style="@style/AlphabetButton"
-                android:layout_width="@dimen/alphabet_buttons_width"
+                android:id="@+id/z_input"
                 android:layout_height="@dimen/alphabet_buttons_height"
+                android:layout_width="@dimen/alphabet_buttons_width"
                 android:text="Z" />
 
         </GridLayout>
@@ -280,4 +317,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

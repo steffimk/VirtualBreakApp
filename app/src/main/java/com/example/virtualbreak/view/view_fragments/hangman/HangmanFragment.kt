@@ -1,6 +1,8 @@
 package com.example.virtualbreak.view.view_fragments.hangman
 
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +15,7 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Game
 import kotlinx.android.synthetic.main.hangman_fragment.*
-import java.lang.StringBuilder
+
 
 class HangmanFragment : Fragment() {
 
@@ -34,6 +36,30 @@ class HangmanFragment : Fragment() {
         game_content.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
 
+        //expand or close game fragment when click on expand arrow, textchat adapts to height
+        expand_game_btn.setOnClickListener {
+            if (game_content_layout.getVisibility() === View.VISIBLE) {
+
+                // The transition of the hiddenView is carried out
+                //  by the TransitionManager class.
+                // Here we use an object of the AutoTransition
+                // Class to create a default transition.
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                game_content_layout.setVisibility(View.GONE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            } else {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                game_content_layout.setVisibility(View.VISIBLE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            }
+
+        }
 
         val viewModel: HangmanViewModel by viewModels {
             HangmanViewModelFactory(
@@ -49,10 +75,10 @@ class HangmanFragment : Fragment() {
             game = observedGame
             //context?.let { viewModel.loadUsersOfRoom(it) }
 
-            observedGame?.let{
-                if(observedGame.word == null){
+            observedGame?.let {
+                if (observedGame.word == null) {
                     // TODO wait
-                } else{
+                } else {
                     // game starts
                     word = observedGame.word!!
 
@@ -61,228 +87,228 @@ class HangmanFragment : Fragment() {
 
                         var wordFound = StringBuilder("")
 
-                        // initialising word found with _
-                        for (i in word.indices) {
-                            wordFound.insert(i, '_')
-                        }
+                    // initialising word found with _
+                    for (i in word.indices) {
+                        wordFound.insert(i, '_')
+                    }
 
-                        if (observedGame.letters != null) {
-                            observedGame.letters!!.forEach { (key, value) ->
-                                when (value) {
-                                    "A" -> {
-                                        a_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'a' || word.elementAt(i) == 'A') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                    if (observedGame.letters != null) {
+                        observedGame.letters!!.forEach { (key, value) ->
+                            when (value) {
+                                "A" -> {
+                                    a_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'a' || word.elementAt(i) == 'A') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "B" -> {
-                                        b_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'b' || word.elementAt(i) == 'B') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "B" -> {
+                                    b_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'b' || word.elementAt(i) == 'B') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "C" -> {
-                                        c_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'c' || word.elementAt(i) == 'C') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "C" -> {
+                                    c_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'c' || word.elementAt(i) == 'C') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "D" -> {
-                                        d_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'd' || word.elementAt(i) == 'D') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "D" -> {
+                                    d_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'd' || word.elementAt(i) == 'D') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "E" -> {
-                                        e_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'e' || word.elementAt(i) == 'E') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "E" -> {
+                                    e_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'e' || word.elementAt(i) == 'E') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "F" -> {
-                                        f_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'f' || word.elementAt(i) == 'F') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "F" -> {
+                                    f_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'f' || word.elementAt(i) == 'F') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "G" -> {
-                                        g_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'g' || word.elementAt(i) == 'G') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "G" -> {
+                                    g_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'g' || word.elementAt(i) == 'G') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "H" -> {
-                                        h_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'h' || word.elementAt(i) == 'H') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "H" -> {
+                                    h_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'h' || word.elementAt(i) == 'H') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "I" -> {
-                                        i_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'i' || word.elementAt(i) == 'I') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "I" -> {
+                                    i_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'i' || word.elementAt(i) == 'I') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "J" -> {
-                                        j_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'j' || word.elementAt(i) == 'J') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "J" -> {
+                                    j_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'j' || word.elementAt(i) == 'J') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "K" -> {
-                                        k_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'k' || word.elementAt(i) == 'K') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "K" -> {
+                                    k_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'k' || word.elementAt(i) == 'K') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "L" -> {
-                                        l_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'l' || word.elementAt(i) == 'L') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "L" -> {
+                                    l_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'l' || word.elementAt(i) == 'L') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "M" -> {
-                                        m_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'm' || word.elementAt(i) == 'M') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "M" -> {
+                                    m_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'm' || word.elementAt(i) == 'M') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "N" -> {
-                                        n_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'n' || word.elementAt(i) == 'N') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "N" -> {
+                                    n_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'n' || word.elementAt(i) == 'N') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "O" -> {
-                                        o_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'o' || word.elementAt(i) == 'O') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "O" -> {
+                                    o_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'o' || word.elementAt(i) == 'O') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "P" -> {
-                                        p_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'p' || word.elementAt(i) == 'P') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "P" -> {
+                                    p_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'p' || word.elementAt(i) == 'P') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "Q" -> {
-                                        q_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'q' || word.elementAt(i) == 'Q') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "Q" -> {
+                                    q_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'q' || word.elementAt(i) == 'Q') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "R" -> {
-                                        r_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'r' || word.elementAt(i) == 'R') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "R" -> {
+                                    r_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'r' || word.elementAt(i) == 'R') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "S" -> {
-                                        s_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 's' || word.elementAt(i) == 'S') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "S" -> {
+                                    s_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 's' || word.elementAt(i) == 'S') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "T" -> {
-                                        t_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 't' || word.elementAt(i) == 'T') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "T" -> {
+                                    t_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 't' || word.elementAt(i) == 'T') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "U" -> {
-                                        u_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'u' || word.elementAt(i) == 'U') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "U" -> {
+                                    u_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'u' || word.elementAt(i) == 'U') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "V" -> {
-                                        v_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'v' || word.elementAt(i) == 'V') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "V" -> {
+                                    v_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'v' || word.elementAt(i) == 'V') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "W" -> {
-                                        w_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'w' || word.elementAt(i) == 'W') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "W" -> {
+                                    w_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'w' || word.elementAt(i) == 'W') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "X" -> {
-                                        x_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'x' || word.elementAt(i) == 'X') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "X" -> {
+                                    x_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'x' || word.elementAt(i) == 'X') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "Y" -> {
-                                        y_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'y' || word.elementAt(i) == 'Y') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "Y" -> {
+                                    y_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'y' || word.elementAt(i) == 'Y') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    "Z" -> {
-                                        z_input.setEnabled(false)
-                                        for (i in word.indices) {
-                                            if (word.elementAt(i) == 'z' || word.elementAt(i) == 'Z') {
-                                                wordFound.setCharAt(i, word.elementAt(i))
-                                            }
+                                }
+                                "Z" -> {
+                                    z_input.setEnabled(false)
+                                    for (i in word.indices) {
+                                        if (word.elementAt(i) == 'z' || word.elementAt(i) == 'Z') {
+                                            wordFound.setCharAt(i, word.elementAt(i))
                                         }
                                     }
-                                    else -> { // Note the block
-                                        print("no letter matching")
-                                    }
+                                }
+                                else -> { // Note the block
+                                    print("no letter matching")
                                 }
                             }
                         }
+                    }
 
                         if (word == wordFound.toString()) {
                             game_content.visibility = View.GONE

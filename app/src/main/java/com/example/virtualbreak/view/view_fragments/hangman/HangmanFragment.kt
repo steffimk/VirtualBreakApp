@@ -33,7 +33,7 @@ class HangmanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gameId = requireArguments().getString(Constants.GAME_ID)
-        game_content.visibility = View.VISIBLE
+        game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
 
         //expand or close game fragment when click on expand arrow, textchat adapts to height
@@ -311,7 +311,7 @@ class HangmanFragment : Fragment() {
                     }
 
                         if (word == wordFound.toString()) {
-                            game_content.visibility = View.GONE
+                            game_content_layout.visibility = View.GONE
                             game_ended.visibility = View.VISIBLE
                             end_result.text = getString(R.string.win_game)
                             restart_game.setOnClickListener {
@@ -323,7 +323,7 @@ class HangmanFragment : Fragment() {
 
                         buttonClicks(word, error, gameId)
                     } else {
-                        game_content.visibility = View.GONE
+                        game_content_layout.visibility = View.GONE
                         game_ended.visibility = View.VISIBLE
                         end_result.text = getString(R.string.loose_game)
                         restart_game.setOnClickListener {

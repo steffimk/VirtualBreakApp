@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal">
 
     <EditText
@@ -50,17 +51,37 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:maxHeight="130dp"
-        android:hint="@string/question_placeholder"/>
+        android:hint="@string/question_placeholder" />
 
-        <ImageButton
-            android:id="@+id/save_question_btn"
-            android:background="@null"
-            android:tint="@color/sinopia"
-            android:src="@drawable/ic_round_push_pin_24"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:layout_width="50dp" />
+    <TextView
+        android:id="@+id/question_text"
+        android:layout_weight="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:maxHeight="150dp"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/save_question_btn"
+        android:background="@null"
+        android:tint="@color/sinopia"
+        android:src="@drawable/ic_round_push_pin_24"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:layout_width="50dp" />
+
+    <ImageButton
+        android:id="@+id/edit_question_btn"
+        android:background="@null"
+        android:tint="@color/sinopia"
+        android:src="@drawable/ic_action_edit"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:visibility="gone"/>
 
     </LinearLayout>
 

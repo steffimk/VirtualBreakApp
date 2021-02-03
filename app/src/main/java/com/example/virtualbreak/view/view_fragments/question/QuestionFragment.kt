@@ -1,6 +1,7 @@
 package com.example.virtualbreak.view.view_fragments.question
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.Log
@@ -34,11 +35,27 @@ class QuestionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        question_text.movementMethod = ScrollingMovementMethod()
         save_question_btn.setOnClickListener {
             onSaveQuestion(question_input.text.toString())
         }
+        edit_question_btn.setOnClickListener {
+            onEditQuestion(question_text.text.toString())
+        }
         viewModel.getQuestion().observe(viewLifecycleOwner, Observer<String?> { observedQuestion ->
-            if (observedQuestion != null) question_input.setText(observedQuestion)
+            if (observedQuestion != null) {
+                question_input.setText(observedQuestion)
+                question_input.visibility = View.GONE
+                question_text.text = observedQuestion
+                question_text.visibility = View.VISIBLE
+                save_question_btn.visibility = View.GONE
+                edit_question_btn.visibility = View.VISIBLE
+            } else {
+                question_input.visibility = View.VISIBLE
+                question_text.visibility = View.GONE
+                save_question_btn.visibility = View.VISIBLE
+                edit_question_btn.visibility = View.GONE
+            }
             Log.d(TAG, "Observed question " + observedQuestion)
         })
 
@@ -65,6 +82,18 @@ class QuestionFragment : Fragment() {
 
     private fun onSaveQuestion(question :String) {
         PushData.saveQuestion(SharedPrefManager.instance.getRoomId()?:"", question)
+        question_text.visibility = View.VISIBLE
+        question_input.visibility = View.GONE
+        edit_question_btn.visibility = View.VISIBLE
+        save_question_btn.visibility = View.GONE
+    }
+
+    private fun onEditQuestion(question :String) {
+        question_input.setText(question)
+        question_text.visibility = View.GONE
+        question_input.visibility = View.VISIBLE
+        edit_question_btn.visibility = View.GONE
+        save_question_btn.visibility = View.VISIBLE
     }
 
 }

@@ -110,10 +110,13 @@
     <string name="breakroomname">Pausenraum Name</string>
     <string name="breakroomtype">Pausenraum Typ</string>
     <string name="openRoom">Öffne Raum</string>
-
+    <!-- Sport Room -->
     <string name="startTimer">Übung für alle starten</string>
     <string name="cancelTimer">Übung für alle abbrechen</string>
     <string name="getFitnessActivity">Fitnessübung anzeigen</string>
+    <!-- Question Room -->
+    <string name="saveQuestion">Frage pinnen</string>
+    <string name="question_placeholder">Gebe deine Frage hier ein.</string>
 
     <!-- Search Friends -->
     <string name="search_friend_successful">Gefunden:</string>

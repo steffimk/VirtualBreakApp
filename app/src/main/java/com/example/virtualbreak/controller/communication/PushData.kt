@@ -337,6 +337,10 @@ class PushData {
             }
         }
 
+        fun saveQuestion(roomId: String, question: String) {
+            database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_QUESTION).setValue(question)
+        }
+
         /**
          * sends friend request: logic: id for user id - boolean: incoming (true) or outgoing (false)
          */

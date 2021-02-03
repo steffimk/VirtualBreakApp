@@ -39,6 +39,7 @@ import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import com.example.virtualbreak.view.view_fragments.boredapi.BoredApiFragment
 import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
+import com.example.virtualbreak.view.view_fragments.question.QuestionFragment
 import com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupRoomsFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
@@ -138,6 +139,20 @@ class BreakRoomActivity : AppCompatActivity() {
 
                     // if you don't need to pass info to fragment
                     replace<BoredApiFragment>(R.id.fragment_container_game_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+                }
+            } else if (roomType.equals(Roomtype.QUESTION.dbStr)){
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+
+                    // makes fragment visible
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    // if you don't need to pass info to fragment
+                    replace<QuestionFragment>(R.id.fragment_container_game_view)
                     replace<TextchatFragment>(R.id.fragment_container_chat_view)
 
                 }

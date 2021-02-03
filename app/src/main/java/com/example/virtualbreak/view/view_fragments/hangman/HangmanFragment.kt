@@ -86,8 +86,19 @@ class HangmanFragment : Fragment() {
 
                     val error = observedGame.errors
                     if (error < Constants.HANGMAN_MAX_ERRORS) {
+                        when(error){
+                            0 -> fault_indicator.setImageResource(R.drawable.hangman0)
+                            1 -> fault_indicator.setImageResource(R.drawable.hangman1)
+                            2 -> fault_indicator.setImageResource(R.drawable.hangman2)
+                            3 -> fault_indicator.setImageResource(R.drawable.hangman3)
+                            4 -> fault_indicator.setImageResource(R.drawable.hangman4)
+                            5 -> fault_indicator.setImageResource(R.drawable.hangman5)
+                            6 -> fault_indicator.setImageResource(R.drawable.hangman6)
+                            7 -> fault_indicator.setImageResource(R.drawable.hangman7)
+                            else -> fault_indicator.setImageResource(R.drawable.hangman0)
+                        }
 
-                        var wordFound = StringBuilder("")
+                        val wordFound = StringBuilder("")
 
                         // initialising word found with _
                         for (i in word.indices) {
@@ -316,35 +327,14 @@ class HangmanFragment : Fragment() {
                         }
 
                         if (word == wordFound.toString()) {
-                            game_content_layout.visibility = View.GONE
-                            game_ended.visibility = View.VISIBLE
-                            end_result.text = getString(R.string.win_game)
-                            var word_result_text = getString(R.string.word_result) + word
-                            word_result.text = word_result_text
-                            try_again.text = getString(R.string.retry_win)
-
-                            restart_game.setOnClickListener {
-                                PushData.updateGame(observedGame.uid, observedGame.roomId)
-                                game_content_layout.visibility = View.VISIBLE
-                                game_ended.visibility = View.GONE
-                            }
+                            gameEnded(true,word,observedGame)
                         }
                         hangman_word.setText(wordFound.toString())
 
 
-                        buttonClicks(word, error, gameId)
+                        alphabetButtonClicks(word, error, gameId)
                     } else {
-                        game_content_layout.visibility = View.GONE
-                        game_ended.visibility = View.VISIBLE
-                        end_result.text = getString(R.string.loose_game)
-                        var word_result_text = getString(R.string.word_result) + word
-                        word_result.text = word_result_text
-                        try_again.text = getString(R.string.retry_loose)
-                        restart_game.setOnClickListener {
-                            PushData.updateGame(observedGame.uid, observedGame.roomId)
-                            game_content_layout.visibility = View.VISIBLE
-                            game_ended.visibility = View.GONE
-                        }
+                        gameEnded(false, word, observedGame)
                     }
                 }
             }
@@ -352,7 +342,32 @@ class HangmanFragment : Fragment() {
         })
     }
 
-    private fun buttonClicks(word: String, error: Int, gameId: String?) {
+    private fun gameEnded(winning: Boolean, word: String, observedGame: Game) {
+        game_content_layout.visibility = View.GONE
+        game_ended.visibility = View.VISIBLE
+
+        if (winning) {
+            end_result.text = getString(R.string.win_game)
+            try_again.text = getString(R.string.retry_win)
+            game_ended_image.setImageResource(R.drawable.status_circle_available)
+        } else {
+            end_result.text = getString(R.string.loose_game)
+            try_again.text = getString(R.string.retry_loose)
+            game_ended_image.setImageResource(R.drawable.hangman7)
+        }
+        show_word.text = word
+        restart_game.setOnClickListener {
+            restartGame(observedGame)
+        }
+    }
+
+    private fun restartGame(observedGame: Game) {
+        PushData.updateGame(observedGame.uid, observedGame.roomId)
+        game_content_layout.visibility = View.VISIBLE
+        game_ended.visibility = View.GONE
+    }
+
+    private fun alphabetButtonClicks(word: String, error: Int, gameId: String?) {
         a_input.setOnClickListener {
             checkContaining(word, error, 'a', gameId)
             PushData.addLetterToGame(gameId!!, "A")

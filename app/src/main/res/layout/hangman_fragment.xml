@@ -88,10 +88,11 @@
 
                     <ImageView
                         android:id="@+id/fault_indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_weight="1"
-                        android:src="@mipmap/ic_vb" />
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/hangman0" />
                 </LinearLayout>
 
 

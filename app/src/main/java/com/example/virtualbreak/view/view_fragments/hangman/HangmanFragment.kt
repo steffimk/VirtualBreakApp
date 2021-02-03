@@ -86,6 +86,17 @@ class HangmanFragment : Fragment() {
 
                     val error = observedGame.errors
                     if (error < Constants.HANGMAN_MAX_ERRORS) {
+                        when(error){
+                            0 -> fault_indicator.setImageResource(R.drawable.hangman0)
+                            1 -> fault_indicator.setImageResource(R.drawable.hangman1)
+                            2 -> fault_indicator.setImageResource(R.drawable.hangman2)
+                            3 -> fault_indicator.setImageResource(R.drawable.hangman3)
+                            4 -> fault_indicator.setImageResource(R.drawable.hangman4)
+                            5 -> fault_indicator.setImageResource(R.drawable.hangman5)
+                            6 -> fault_indicator.setImageResource(R.drawable.hangman6)
+                            7 -> fault_indicator.setImageResource(R.drawable.hangman7)
+                            else -> fault_indicator.setImageResource(R.drawable.hangman0)
+                        }
 
                         var wordFound = StringBuilder("")
 
@@ -319,7 +330,7 @@ class HangmanFragment : Fragment() {
                             game_content_layout.visibility = View.GONE
                             game_ended.visibility = View.VISIBLE
                             end_result.text = getString(R.string.win_game)
-                            var word_result_text = getString(R.string.word_result) + word
+                            var word_result_text = getString(R.string.word_result) + " " + word
                             word_result.text = word_result_text
                             try_again.text = getString(R.string.retry_win)
 
@@ -337,7 +348,7 @@ class HangmanFragment : Fragment() {
                         game_content_layout.visibility = View.GONE
                         game_ended.visibility = View.VISIBLE
                         end_result.text = getString(R.string.loose_game)
-                        var word_result_text = getString(R.string.word_result) + word
+                        var word_result_text = getString(R.string.word_result) + " " + word
                         word_result.text = word_result_text
                         try_again.text = getString(R.string.retry_loose)
                         restart_game.setOnClickListener {

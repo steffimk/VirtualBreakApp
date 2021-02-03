@@ -55,6 +55,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 

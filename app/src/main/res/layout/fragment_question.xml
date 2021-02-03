@@ -60,6 +60,8 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:maxHeight="150dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
         android:visibility="gone"/>
 
     <ImageButton

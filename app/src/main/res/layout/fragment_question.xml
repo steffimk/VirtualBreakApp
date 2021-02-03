@@ -41,35 +41,26 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
     <EditText
         android:id="@+id/question_input"
-        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:maxHeight="130dp"
         android:hint="@string/question_placeholder"/>
 
-        <com.google.android.material.button.MaterialButton
+        <ImageButton
             android:id="@+id/save_question_btn"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:backgroundTint="@color/sinopia"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:text="@string/saveQuestion"
-            app:icon="@drawable/push_pin_white_24dp" />
-        <!--    <ImageButton-->
-<!--        android:id="@+id/save_question_btn"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:background="@null"-->
-<!--        android:tint="@color/sinopia"-->
-<!--        android:src="@drawable/push_pin_white_24dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:layout_height="58dp"-->
-<!--        android:layout_width="wrap_content" />-->
+            android:background="@null"
+            android:tint="@color/sinopia"
+            android:src="@drawable/ic_round_push_pin_24"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_width="50dp" />
 
     </LinearLayout>
 

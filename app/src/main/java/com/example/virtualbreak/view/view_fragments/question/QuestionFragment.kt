@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_fragments.question
 
+import android.content.Context
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.transition.AutoTransition
@@ -8,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,8 +18,6 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import kotlinx.android.synthetic.main.fragment_question.*
-import kotlinx.android.synthetic.main.fragment_sport_room_extras.*
-import kotlinx.android.synthetic.main.fragment_sport_room_extras.expand_sport_btn
 
 
 class QuestionFragment : Fragment() {
@@ -81,6 +82,7 @@ class QuestionFragment : Fragment() {
     }
 
     private fun onSaveQuestion(question :String) {
+        hideSoftKeyboard(save_question_btn)
         PushData.saveQuestion(SharedPrefManager.instance.getRoomId()?:"", question)
         question_text.visibility = View.VISIBLE
         question_input.visibility = View.GONE
@@ -94,6 +96,14 @@ class QuestionFragment : Fragment() {
         question_input.visibility = View.VISIBLE
         edit_question_btn.visibility = View.GONE
         save_question_btn.visibility = View.VISIBLE
+    }
+
+    /**
+     * Closes soft keyboard
+     */
+    private fun hideSoftKeyboard(button: ImageButton) {
+        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(button.windowToken, 0)
     }
 
 }

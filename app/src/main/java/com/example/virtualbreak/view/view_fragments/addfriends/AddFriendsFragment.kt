@@ -52,7 +52,6 @@ class AddFriendsFragment : Fragment() {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
             binding.tvWasSearchSuccessful.text = getString(R.string.searching_for_friend)
             binding.tvWasSearchSuccessful.visibility = View.VISIBLE
-            binding.friendEmail.text?.clear() //clear text field after press search
 
             hideSoftKeyboard(binding.friendEmail)
         }
@@ -77,6 +76,7 @@ class AddFriendsFragment : Fragment() {
                 binding.foundfriendCardview.visibility = View.VISIBLE
                 binding.foundfriendUsername.text = searchedUser.username
                 binding.foundfriendEmail.text = searchedUser.email
+                binding.friendEmail.text?.clear() //clear text field id user was found
 
                 loadProfilePicture(binding.foundfriendImg, searchedUser.uid)
 

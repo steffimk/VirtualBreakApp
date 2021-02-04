@@ -182,5 +182,6 @@
     <string name="ERROR_OPERATION_NOT_ALLOWED">Dieser Vorgang ist nicht erlaubt.</string>
     <string name="ERROR_WEAK_PASSWORD">Das Passwort ist zu kurz.</string>
     <string name="ERROR_MISSING_EMAIL">Mailadresse muss angegeben werden.</string>
+    <string name="ausloggen">Abmelden</string>
 
 </resources>

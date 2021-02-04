@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
@@ -24,6 +23,7 @@ class SingleGroupMembersFragment : Fragment() {
     private var groupId: String? = null
     val TAG = "SingleGroupMembersFragment"
     var memberListAdapter: SingleGroupMembersAdapter? = null
+    var singleGroupFragment: SingleGroupFragment? = null // reference to parent fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +61,13 @@ class SingleGroupMembersFragment : Fragment() {
 
 
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, { members ->
-                memberListAdapter = SingleGroupMembersAdapter(
-                    ArrayList(
-                        members.values
-                    ), context
-                )
+                singleGroupFragment?.let {
+                    memberListAdapter = SingleGroupMembersAdapter(
+                        ArrayList(
+                            members.values
+                        ), context, it
+                    )
+                }
                 singlegroup_members_recyclerlistview.adapter = memberListAdapter
                 //don't reuse old adapter
                 /*if(memberListAdapter== null){
@@ -96,11 +98,12 @@ class SingleGroupMembersFragment : Fragment() {
          * @return A new instance of fragment SingleGroupMembersFragment.
          */
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance(param1: String, singleGroupFragment: SingleGroupFragment) =
             SingleGroupMembersFragment().apply {
                 arguments = Bundle().apply {
                     putString(GROUP_ID, param1)
                 }
+                this.singleGroupFragment = singleGroupFragment
             }
     }
 }

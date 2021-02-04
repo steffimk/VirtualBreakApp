@@ -18,8 +18,8 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profileImg"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="44dp"
             android:contentDescription="profile picture"
             android:scaleType="centerCrop"
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             app:iconSize="15dp"
             app:icon="@drawable/exit"
-            android:text="Ausloggen"/>
+            android:text="@string/ausloggen"/>
 
 
     </LinearLayout>
@@ -138,7 +138,7 @@
         android:id="@+id/fab_editPic"
         android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="150dp"
         android:contentDescription="edit picture"
         android:src="@drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"

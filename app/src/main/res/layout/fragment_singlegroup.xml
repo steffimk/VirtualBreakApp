@@ -1,44 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:context=".view.view_fragments.singlegroup.SingleGroupRoomsFragment"
-    >
-<!--
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/singlegroup_toggleButton"
-        app:singleSelection="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/singlegroup_toggle_room"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pausenräume"
-            style="?attr/materialButtonOutlinedStyle"
-            />
-        <Button
-            android:id="@+id/singlegroup_toggle_members"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mitglieder"
-            style="?attr/materialButtonOutlinedStyle"
-            />
-    </com.google.android.material.button.MaterialButtonToggleGroup>-->
+    android:layout_height="match_parent"
+    tools:context=".view.view_fragments.singlegroup.SingleGroupRoomsFragment">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/singlegroup_containerview_members"
+    <LinearLayout
+        android:id="@+id/singlegroup_fragment_linearlayout"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        >
+    <!--
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/singlegroup_toggleButton"
+            app:singleSelection="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/singlegroup_toggle_room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pausenräume"
+                style="?attr/materialButtonOutlinedStyle"
+                />
+            <Button
+                android:id="@+id/singlegroup_toggle_members"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mitglieder"
+                style="?attr/materialButtonOutlinedStyle"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/singlegroup_containerview_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/singlegroup_containerview_rooms"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/singlegroup_containerview_rooms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <!--for friend popup-->
+    <View
+        android:id="@+id/member_card_scrim"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-57dp" />
 
-</LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/member_card_view"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="100dp"
+        android:visibility="invisible"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/member_profile_image_view"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:src="@drawable/ic_person_24"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/member_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:lines="1"
+                android:text="@string/username"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/account_profile_image_view"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/member_email_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:lines="1"
+                android:text="@string/login_email_hint"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/account_profile_image_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/member_status_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:text="Status"/>
+
+                <ImageView
+                    android:id="@+id/member_status_img"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:src="@drawable/ic_cup_black"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

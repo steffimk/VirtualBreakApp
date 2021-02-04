@@ -6,7 +6,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 tools:context=".view.view_fragments.boredapi.BoredApiFragment"
 android:id="@+id/boredapi_base_cardview"
-app:cardBackgroundColor="@color/beige"
+app:cardBackgroundColor="@color/lightbrown"
 android:layout_width="match_parent"
 app:cardCornerRadius="0dp"
 app:cardElevation="5dp"
@@ -15,7 +15,6 @@ android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gradient_bg"
     android:orientation="vertical">
 
     <RelativeLayout

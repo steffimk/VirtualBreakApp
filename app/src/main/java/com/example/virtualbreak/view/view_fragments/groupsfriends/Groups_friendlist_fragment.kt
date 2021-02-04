@@ -16,7 +16,9 @@ import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
 import com.example.virtualbreak.model.User
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 
-
+/**
+ * Friend list fragment in main fragment
+ */
 class Groups_friendlist_fragment : Fragment() {
 
     companion object {

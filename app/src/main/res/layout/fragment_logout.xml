@@ -26,8 +26,9 @@
 
     <Button
         android:id="@+id/logoutBtn"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_cornflower"
         android:text="@string/ja"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

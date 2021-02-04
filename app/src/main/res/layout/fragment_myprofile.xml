@@ -120,31 +120,17 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="30dp"
+            android:id="@+id/profile_logout_btn"
+            app:backgroundTint="@color/blue_cornflower"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:cardBackgroundColor="@color/darkblue"
-            app:cardCornerRadius="8dp">
+            app:iconSize="15dp"
+            app:icon="@drawable/exit"
+            android:text="Ausloggen"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/profile_logout_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:iconSize="15dp"
-                    app:icon="@drawable/exit"
-                    android:text="Ausloggen"/>
-
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

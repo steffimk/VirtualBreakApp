@@ -78,7 +78,7 @@ class Constants {
             "Rettungsschwimmer",
             "Gabelstapler",
             "Schlauchboot",
-            "Heissluftballonflug",
+            "Heissluftballonfahrt",
             "Fallschirmspringen",
             "Halsnasenohrenarztpraxis",
             "Regenbogenfarben",
@@ -89,7 +89,10 @@ class Constants {
             "Manati",
             "Zufallsgenerator",
             "Rentierkutsche",
-            "Schokoladenfabrikmitarbeiter"
+            "Schokoladenfabrikmitarbeiter",
+            "Kirschkernweitspuckwettbewerb",
+            "Arbeitsunfaehigkeitsbescheinigung",
+            "Renaturierung"
         )
 
         val HANGMAN_MAX_ERRORS = 7

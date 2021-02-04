@@ -46,13 +46,13 @@ class QuestionFragment : Fragment() {
         viewModel.getQuestion().observe(viewLifecycleOwner, Observer<String?> { observedQuestion ->
             if (observedQuestion != null) {
                 question_input.setText(observedQuestion)
-                question_input.visibility = View.GONE
+                input_layout.visibility = View.GONE
                 question_text.text = observedQuestion
                 question_text.visibility = View.VISIBLE
                 save_question_btn.visibility = View.GONE
                 edit_question_btn.visibility = View.VISIBLE
             } else {
-                question_input.visibility = View.VISIBLE
+                input_layout.visibility = View.VISIBLE
                 question_text.visibility = View.GONE
                 save_question_btn.visibility = View.VISIBLE
                 edit_question_btn.visibility = View.GONE
@@ -85,7 +85,7 @@ class QuestionFragment : Fragment() {
         hideSoftKeyboard(save_question_btn)
         PushData.saveQuestion(SharedPrefManager.instance.getRoomId()?:"", question)
         question_text.visibility = View.VISIBLE
-        question_input.visibility = View.GONE
+        input_layout.visibility = View.GONE
         edit_question_btn.visibility = View.VISIBLE
         save_question_btn.visibility = View.GONE
     }
@@ -93,7 +93,7 @@ class QuestionFragment : Fragment() {
     private fun onEditQuestion(question :String) {
         question_input.setText(question)
         question_text.visibility = View.GONE
-        question_input.visibility = View.VISIBLE
+        input_layout.visibility = View.VISIBLE
         edit_question_btn.visibility = View.GONE
         save_question_btn.visibility = View.VISIBLE
     }

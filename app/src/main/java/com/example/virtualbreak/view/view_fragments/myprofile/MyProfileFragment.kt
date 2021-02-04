@@ -28,9 +28,12 @@ import com.example.virtualbreak.controller.adapters.StatusSpinnerArrayAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
@@ -95,12 +98,6 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         })
 
-        //button to edit own profile picture
-        root.findViewById<FloatingActionButton>(R.id.fab_editPic).setOnClickListener {
-            //Snackbar.make(root, "Neues Profilbild", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-            chooseProfileImg()
-
-        }
 
         userNameButton.setOnClickListener {
             editOrSaveUsername()
@@ -109,6 +106,24 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         activity?.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate because sometimes bug then
         return root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //button to edit own profile picture
+        fab_editPic.setOnClickListener {
+            //Snackbar.make(root, "Neues Profilbild", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            chooseProfileImg()
+
+        }
+
+        profile_logout_btn.setOnClickListener {
+            //Sign out
+            Firebase.auth.signOut()
+            startActivity(Intent(activity, MainActivity::class.java)) //go back to sign up/login activity
+        }
+    }
+
 
     private fun initStatusSpinner(spinner: Spinner) {
         context?.let {

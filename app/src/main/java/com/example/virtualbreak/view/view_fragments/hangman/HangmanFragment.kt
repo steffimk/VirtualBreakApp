@@ -349,7 +349,7 @@ class HangmanFragment : Fragment() {
         if (winning) {
             end_result.text = getString(R.string.win_game)
             try_again.text = getString(R.string.retry_win)
-            game_ended_image.setImageResource(R.drawable.status_circle_available)
+            game_ended_image.setImageResource(R.drawable.hangmanwin)
         } else {
             end_result.text = getString(R.string.loose_game)
             try_again.text = getString(R.string.retry_loose)

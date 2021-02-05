@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.User
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -67,6 +68,7 @@ class PullData {
                 database.child(Constants.DATABASE_CHILD_USERS).child(userUid).addValueEventListener(valueEventListener)
             }
         }
+
 
     }
 }

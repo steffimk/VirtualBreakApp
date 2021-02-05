@@ -1,8 +1,10 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
 import android.app.Dialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +26,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
@@ -32,8 +35,8 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
+import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -55,15 +58,30 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
-    private var roomType : String = Roomtype.COFFEE.dbStr
+    private var roomType: String = Roomtype.COFFEE.dbStr
 
-    private var gameId : String? = null
+    private var gameId: String? = null
 
     private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
 
     private var activeCall = false
+
+    lateinit var localBroadcastManager: LocalBroadcastManager
+    val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            Log.d("CHECk", "recivedmessage ${intent?.action}")
+            when (intent?.action) {
+                BreakroomWidgetService.ACTION_LEAVE_ROOM -> leaveRoom()
+                BreakroomWidgetService.ACTION_VIDEO_CALL -> videoCall()
+                BreakroomWidgetService.ACTION_UNREGISTER -> localBroadcastManager.unregisterReceiver(
+                    this
+                )
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,68 +200,36 @@ class BreakRoomActivity : AppCompatActivity() {
             })
 
 
-
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous
             finish()
         }
 
-        // makes textview scrollable
-        //chat_messages_view.setMovementMethod(ScrollingMovementMethod())
-/*
-        send_message_button.setOnClickListener {
-            val input = chat_message_input.text
-            val message = input.toString()
-            if (!message.isEmpty()) {
-                if (roomId != null) {
-                    PushData.sendMessage(roomId, message)
-                }
-            } else{
-                Toast.makeText(
-                    this, R.string.toast_enter_message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            input.clear()
-        }*/
+        //Set up the communication with the service before starting the service
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
+        registerBroadcastRecvicers()
+
+        //now service is ready to start
 
 
     }
 
-    /*override fun onResume() {
-        super.onResume()
-        if (roomType.equals(Roomtype.GAME.dbStr)) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                if (gameId != null) {
-                    val fragment =
-                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
+    private fun registerBroadcastRecvicers() {
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_LEAVE_ROOM)
+        )
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_VIDEO_CALL)
+        )
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_UNREGISTER)
+        )
+    }
 
-                    //val bundle = Bundle()
-
-                    val bundle = bundleOf(Constants.GAME_ID to gameId)
-
-                    *//*if(gameId != null){
-                        bundle.putString(Constants.GAME_ID, gameId)
-                    }*//*
-                    add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
-                }
-
-                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
-
-                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
-                add<TextchatFragment>(R.id.fragment_container_chat_view)
-            }
-        } else {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<TextchatFragment>(R.id.fragment_container_chat_view)
-            }
-        }
-
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.breakroom_menu, menu)
@@ -294,10 +280,14 @@ class BreakRoomActivity : AppCompatActivity() {
 
             //save the new title in firebase
             if (roomId != null) {
-                if("".equals(newTitle)){
-                    Snackbar.make(editText, "Du hast keinen neuen Namen eingegeben!", Snackbar.LENGTH_LONG)
+                if ("".equals(newTitle)) {
+                    Snackbar.make(
+                        editText,
+                        "Du hast keinen neuen Namen eingegeben!",
+                        Snackbar.LENGTH_LONG
+                    )
                         .setAction("Action", null).show()
-                } else{
+                } else {
                     PushData.setRoomDescription(roomId, newTitle)
                     mtoolbar.title = newTitle
                 }
@@ -308,19 +298,23 @@ class BreakRoomActivity : AppCompatActivity() {
         }
         R.id.action_videocall -> {
             SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
-            videocall()
+            videoCall()
             true
         }
         R.id.action_leaveRoom -> {
-            if (room?.users?.size == 1) {
-                showDialog()
-            } else {
-                leaveRoom()
-            }
+            checkIfDialogIsNeeded()
             true
         }
         else -> {
             super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun checkIfDialogIsNeeded() {
+        if (room?.users?.size == 1) {
+            showDialog()
+        } else {
+            leaveRoom()
         }
     }
 
@@ -330,7 +324,7 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        Log.d("Check", "onPause" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+        Log.d("Check", "onPause " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         super.onPause()
         //if (SharedPrefManager.instance.getRoomId() != null) {
         //    openWidget()
@@ -342,12 +336,12 @@ class BreakRoomActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        Log.d("Check", "onStop" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+        Log.d("Check", "onStop " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("Check", "onStart" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+        Log.d("Check", "onStart " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
     }
 
     override fun onResume() {
@@ -357,6 +351,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        //localBroadcastManager.unregisterReceiver(broadCastReceiver)
         Log.d("Check", "onDesroy ${!SharedPrefManager.instance.getIsWidgetAllowedtoOpen()}")
     }
 
@@ -379,7 +374,7 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
-    fun leaveRoom() {
+    private fun leaveRoom() {
         viewModel.getRoom().removeObservers(this)
         PushData.leaveRoom(this, room, userName)
         SharedPrefManager.instance.removeRoomId()
@@ -395,7 +390,7 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
 
-    fun videocall() {
+    private fun videoCall() {
         val args = Bundle()
         args.putString(Constants.ROOM_ID, roomId)
         args.putString(Constants.USER_NAME, userName)
@@ -410,8 +405,6 @@ class BreakRoomActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.breakroom_alert_dialog)
-//        val body = dialog.findViewById(R.id.b) as TextView
-//        body.text = title
         val yesBtn = dialog.findViewById(R.id.room_alert_confirm_button) as Button
         val noBtn = dialog.findViewById(R.id.room_alert_dismiss_button) as Button
         yesBtn.setOnClickListener {
@@ -420,7 +413,6 @@ class BreakRoomActivity : AppCompatActivity() {
         }
         noBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
-
     }
 
     private fun openWidget() {

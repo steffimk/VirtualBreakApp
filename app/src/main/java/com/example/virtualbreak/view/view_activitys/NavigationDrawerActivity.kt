@@ -1,13 +1,16 @@
 package com.example.virtualbreak.view.view_activitys
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.Window
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,6 +20,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
@@ -43,11 +48,17 @@ class NavigationDrawerActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        if(Firebase.auth.currentUser == null){
+        if (Firebase.auth.currentUser == null) {
             startActivity(Intent(this, MainActivity::class.java))
             //if no user logged in, intent to MainActivity
         }
         PullData.attachListenerToCurrentUser()
+
+
+        if (SharedPrefManager.instance.getRoomId() != null) {
+            //Open the widget to signal user is still in break
+            openWidget()
+        }
 
         PullData.pullAndSaveOwnUserName()
         FCMService.addFCMTokenListener()
@@ -115,5 +126,47 @@ class NavigationDrawerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         stopService(Intent(this, BreakroomWidgetService::class.java))
+    }
+
+
+    private fun openWidget() {
+        Log.d(TAG, "openwidget")
+        if (Settings.canDrawOverlays(this)) {
+            if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
+                //if(!SharedPrefManager.instance.getIsWidgetOpen()) {
+                //Log.d(TAG, room?.description + room?.type?.dbStr)
+                SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
+                Log.d("Check", "openWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
+                val intent = Intent(this, BreakroomWidgetService::class.java)
+                intent.putExtra(Constants.ROOM_NAME, "test")
+                intent.putExtra(Constants.ROOM_TYPE, "test")
+                intent.putExtra(Constants.USER_NAME, "me")
+                //intent.putExtra(Constants.GAME_ID, gameId)
+                startService(intent)
+            }
+            //}
+        } else {
+            askPermission()
+            Toast.makeText(
+                this,
+                "You need System Alert Window Permission to do this",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+
+    private fun askPermission() {
+        Log.d(TAG, "askPermission")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName())
+            );
+            startActivityForResult(intent, 123);
+        }
     }
 }

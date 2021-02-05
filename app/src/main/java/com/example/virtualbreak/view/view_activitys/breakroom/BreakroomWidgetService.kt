@@ -1,7 +1,10 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
@@ -10,8 +13,8 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -34,7 +37,7 @@ class BreakroomWidgetService : Service() {
     private var gameId: String? = null
 
     private lateinit var params: WindowManager.LayoutParams
-
+    lateinit var localBroadcastManager: LocalBroadcastManager
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -51,6 +54,8 @@ class BreakroomWidgetService : Service() {
             null
         )
 
+        //register the coomunication to the Activity
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
 
         //Spefify parameters for the layout
         params = WindowManager.LayoutParams().apply {
@@ -95,11 +100,13 @@ class BreakroomWidgetService : Service() {
         val leaveRoomButton: ImageButton = mFloatingView.findViewById(R.id.widget_button_leaveroom)
         leaveRoomButton.setOnClickListener {
             Log.d(TAG, "Leave room")
+            localBroadcastManager.sendBroadcast(Intent(ACTION_LEAVE_ROOM))
         }
 
         val videoCall: ImageButton = mFloatingView.findViewById(R.id.widget_button_videocall)
         videoCall.setOnClickListener {
             Log.d(TAG, "Join Video call")
+            localBroadcastManager.sendBroadcast(Intent(ACTION_VIDEO_CALL))
         }
 
         val openRoomButton: Button = mFloatingView.findViewById(R.id.widget_button_open_room)
@@ -121,6 +128,7 @@ class BreakroomWidgetService : Service() {
         super.onDestroy()
         Log.d(TAG, "OnDestroy")
         SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
+        localBroadcastManager.sendBroadcast(Intent(ACTION_UNREGISTER))
         Log.d("Check", "onDestroyWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         mWindowManager.removeView(mFloatingView)
         stopSelf()
@@ -211,6 +219,13 @@ class BreakroomWidgetService : Service() {
             Log.d("BreakRoom3", roomName + roomType)
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+
+
+    companion object {
+        const val ACTION_VIDEO_CALL = "videocall"
+        const val ACTION_LEAVE_ROOM = "leave_room"
+        const val ACTION_UNREGISTER = "unregister"
     }
 
 }

@@ -88,6 +88,7 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
             }
         }
 
+
     }
 
     private fun prepareAndInitBreakStatus() {

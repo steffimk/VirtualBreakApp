@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -96,6 +93,8 @@ class BreakroomWidgetService : Service() {
         mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text = roomName
         mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text = roomType
 
+        val expandButton = mFloatingView.findViewById<ImageView>(R.id.widget_expanded_iv)
+
 
         val leaveRoomButton: ImageButton = mFloatingView.findViewById(R.id.widget_button_leaveroom)
         leaveRoomButton.setOnClickListener {
@@ -160,7 +159,6 @@ class BreakroomWidgetService : Service() {
                 // handleViewChange()
 
             }
-
             MotionEvent.ACTION_MOVE -> {
                 val deltaX = event.rawX.toInt() - lastX
                 val deltaY = event.rawY.toInt() - lastY

@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/widget_collapsed_iv"
@@ -30,12 +30,12 @@
                 android:src="@mipmap/ic_vb_alt_round" />
 
             <ImageView
-                android:id="@+id/widget_test_close"
+                android:id="@+id/widget_expanded_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="50dp"
-                android:src="@drawable/ic_action_leave"
-                android:background="@color/mandarin"
+                android:src="@drawable/ic_expand"
+                android:background="@drawable/rounded_corners_background_button"
                 android:visibility="visible" />
 
             <FrameLayout
@@ -66,7 +66,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
 
             <RelativeLayout
@@ -82,11 +82,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/widget_expanded_iv"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/widget_minimize_iv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@mipmap/ic_vb_alt_round" />
+                    app:srcCompat="@drawable/ic_minimize" />
 
                 <FrameLayout
                     android:layout_width="25dp"

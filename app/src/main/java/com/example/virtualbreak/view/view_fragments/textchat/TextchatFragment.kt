@@ -73,7 +73,7 @@ class TextchatFragment() : Fragment() {
         }
         chat_messages_recycler_view.adapter = chatAdapter
         chatAdapter?.let {
-            chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+            chat_messages_recycler_view.smoothScrollToPosition(it.itemCount-1)
         }
 
         /*viewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
@@ -111,7 +111,7 @@ class TextchatFragment() : Fragment() {
                     )
                 }
                 chatAdapter?.let {
-                    chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+                    chat_messages_recycler_view.smoothScrollToPosition(it.itemCount-1)
                 }
             }
         })

@@ -68,6 +68,7 @@ class TextchatViewModel(private val roomId: String) : ViewModel() {
                 val user = dataSnapshot.getValue(User::class.java)
                 val name = user!!.username
                 Log.d(TAG, "User added: "+name)
+                //TODO replace names when new names
                 if (usersOfRoom != null) {
                     if(!usersOfRoom.containsKey(dataSnapshot.key.toString()))
                         usersOfRoom.put(dataSnapshot.key.toString(), name)

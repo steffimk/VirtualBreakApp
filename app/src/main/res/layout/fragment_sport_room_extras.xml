@@ -13,26 +13,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_height="30dp"
         android:layout_marginHorizontal="8dp"
         android:orientation="horizontal"
-        >
+        android:padding="4dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_alignParentStart="true"
-            android:textColor="@color/darkblue"
-            android:text="Sport"/>
+            android:text="Sport"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/darkblue" />
+
         <ImageButton
             android:id="@+id/expand_sport_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:background="@null"
-            android:tint="@color/darkblue"
-            android:src="@drawable/ic_baseline_expand_less_24"/>
+            android:src="@drawable/ic_baseline_expand_less_24"
+            android:tint="@color/darkblue" />
 
     </RelativeLayout>
 
@@ -44,7 +45,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="42dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center"
@@ -83,7 +84,6 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
 
@@ -95,7 +95,7 @@
                 <LinearLayout
                     android:id="@+id/timePicker"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="120dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:visibility="gone">
@@ -135,7 +135,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/startTimer_btn"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/startTimer"

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -73,7 +74,7 @@ class TextchatFragment() : Fragment() {
         }
         chat_messages_recycler_view.adapter = chatAdapter
         chatAdapter?.let {
-            chat_messages_recycler_view.smoothScrollToPosition(it.itemCount-1)
+            chat_messages_recycler_view.scrollToPosition(it.itemCount-1)
         }
 
         /*viewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
@@ -110,8 +111,8 @@ class TextchatFragment() : Fragment() {
                         SharedPrefManager.instance.getRoomUsersHashmap()
                     )
                 }
-                chatAdapter?.let {
-                    chat_messages_recycler_view.smoothScrollToPosition(it.itemCount-1)
+                chat_messages_recycler_view.adapter?.let {
+                    chat_messages_recycler_view.scrollToPosition(it.itemCount-1)
                 }
             }
         })

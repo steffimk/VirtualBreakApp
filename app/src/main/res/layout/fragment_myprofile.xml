@@ -18,8 +18,8 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profileImg"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="44dp"
             android:contentDescription="profile picture"
             android:scaleType="centerCrop"
@@ -82,7 +82,7 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             app:cardBackgroundColor="@color/darkblue"
             app:cardCornerRadius="8dp">
 
@@ -120,13 +120,25 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="30dp"
+            android:id="@+id/profile_logout_btn"
+            app:backgroundTint="@color/blue_cornflower"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            app:iconSize="15dp"
+            app:icon="@drawable/exit"
+            android:text="@string/ausloggen"/>
+
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_editPic"
         android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="150dp"
         android:contentDescription="edit picture"
         android:src="@drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"

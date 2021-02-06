@@ -27,6 +27,7 @@ class Constants {
         const val DATABASE_CHILD_GAME_LETTERS = "letters"
         const val DATABASE_CHILD_GAME_ERRORS = "errors"
         const val DATABASE_CHILD_CALL_MEMBERS = "callMembers"
+        const val DATABASE_CHILD_QUESTION = "question"
 
         const val DEFAULT_TIME:Long = 0
 
@@ -77,7 +78,7 @@ class Constants {
             "Rettungsschwimmer",
             "Gabelstapler",
             "Schlauchboot",
-            "Heissluftballonflug",
+            "Heissluftballonfahrt",
             "Fallschirmspringen",
             "Halsnasenohrenarztpraxis",
             "Regenbogenfarben",
@@ -88,7 +89,12 @@ class Constants {
             "Manati",
             "Zufallsgenerator",
             "Rentierkutsche",
-            "Schokoladenfabrikmitarbeiter"
+            "Schokoladenfabrikmitarbeiter",
+            "Kirschkernweitspuckwettbewerb",
+            "Arbeitsunfaehigkeitsbescheinigung",
+            "Renaturierung"
         )
+
+        val HANGMAN_MAX_ERRORS = 7
     }
 }

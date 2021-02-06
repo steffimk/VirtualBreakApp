@@ -5,10 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -21,6 +24,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
@@ -35,10 +39,14 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
+import com.example.virtualbreak.view.view_fragments.boredapi.BoredApiFragment
 import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
+import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
+import com.example.virtualbreak.view.view_fragments.question.QuestionFragment
+import com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupRoomsFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.hangman_fragment.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -58,7 +66,8 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
-    private var roomType: String = Roomtype.COFFEE.dbStr
+    // TODO: set default room to room which needs no extras
+    private var roomType : String = Roomtype.COFFEE.dbStr
 
     private var gameId: String? = null
 
@@ -102,7 +111,9 @@ class BreakRoomActivity : AppCompatActivity() {
             }
         }
 
-        // TODO: depending on room type set fragments
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate
+
         //if (savedInstanceState == null) {
             if(roomType.equals(Roomtype.GAME.dbStr)){
                 supportFragmentManager.commit {
@@ -122,7 +133,6 @@ class BreakRoomActivity : AppCompatActivity() {
                     //add<TextchatFragment>(R.id.fragment_container_chat_view)
                 }
             } else if(roomType.equals(Roomtype.SPORT.dbStr)){
-                // TODO: add sport room fragment here
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
 
@@ -136,7 +146,38 @@ class BreakRoomActivity : AppCompatActivity() {
                     replace<TextchatFragment>(R.id.fragment_container_chat_view)
 
                 }
-            } else{
+            } else if(roomType.equals(Roomtype.COFFEE.dbStr)){
+                // add Bored API fragment here
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+
+                    // makes fragment visible
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    // if you don't need to pass info to fragment
+                    replace<BoredApiFragment>(R.id.fragment_container_game_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+                }
+            } else if (roomType.equals(Roomtype.QUESTION.dbStr)){
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+
+                    // makes fragment visible
+                    val fragment =
+                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                    fragment.setVisibility(View.VISIBLE)
+
+                    // if you don't need to pass info to fragment
+                    replace<QuestionFragment>(R.id.fragment_container_game_view)
+                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+                }
+            }
+
+            else{
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace<TextchatFragment>(R.id.fragment_container_chat_view)
@@ -210,10 +251,9 @@ class BreakRoomActivity : AppCompatActivity() {
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
         registerBroadcastRecvicers()
 
-        //now service is ready to start
-
 
     }
+
 
     private fun registerBroadcastRecvicers() {
         localBroadcastManager.registerReceiver(

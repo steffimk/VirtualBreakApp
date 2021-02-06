@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context=".view.view_fragments.boredapi.BoredApiFragment"
+android:id="@+id/boredapi_base_cardview"
+app:cardBackgroundColor="@color/lightbrown"
+android:layout_width="match_parent"
+app:cardCornerRadius="0dp"
+app:cardElevation="5dp"
+android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginHorizontal="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/very_dark_brown"
+            android:layout_alignParentStart="true"
+            android:text="@string/bored_api"/>
+        <ImageButton
+            android:id="@+id/expand_boredapi_btn"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:tint="@color/very_dark_brown"
+            android:src="@drawable/ic_baseline_expand_less_24"/>
+
+    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:id="@+id/content_boredapi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/input_buttons"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/random_activity_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/random_activity"
+                    android:backgroundTint="@color/sinopia"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/send_random_activity_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/coffee"
+                    android:visibility="invisible"
+                    android:text="@string/teilen"
+
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:padding="10dp"
+                android:id="@+id/display_random_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/coffee"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/boredapi_intro"/>
+
+        </LinearLayout>
+
+
+</LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

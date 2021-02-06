@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
 import kotlinx.android.synthetic.main.fragment_single_group_members.*
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val GROUP_ID = "groupId"
 
 /**
@@ -25,6 +23,7 @@ class SingleGroupMembersFragment : Fragment() {
     private var groupId: String? = null
     val TAG = "SingleGroupMembersFragment"
     var memberListAdapter: SingleGroupMembersAdapter? = null
+    var singleGroupFragment: SingleGroupFragment? = null // reference to parent fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +61,16 @@ class SingleGroupMembersFragment : Fragment() {
 
 
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, { members ->
-                if(memberListAdapter== null){
+                singleGroupFragment?.let {
+                    memberListAdapter = SingleGroupMembersAdapter(
+                        ArrayList(
+                            members.values
+                        ), context, it
+                    )
+                }
+                singlegroup_members_recyclerlistview.adapter = memberListAdapter
+                //don't reuse old adapter
+                /*if(memberListAdapter== null){
                     memberListAdapter = SingleGroupMembersAdapter(
                         ArrayList(
                             members.values
@@ -72,7 +80,7 @@ class SingleGroupMembersFragment : Fragment() {
                 }
                 else{ //update adapter with new data, if already exists
                     memberListAdapter?.updateData(ArrayList(members.values))
-                }
+                }*/
 
                 Log.d(TAG, "Observed friends: $members")
             })
@@ -87,15 +95,15 @@ class SingleGroupMembersFragment : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment SingleGroupMembersFragment.
          */
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance(param1: String, singleGroupFragment: SingleGroupFragment) =
             SingleGroupMembersFragment().apply {
                 arguments = Bundle().apply {
                     putString(GROUP_ID, param1)
                 }
+                this.singleGroupFragment = singleGroupFragment
             }
     }
 }

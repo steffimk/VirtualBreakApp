@@ -29,24 +29,24 @@
             android:layout_height="wrap_content"
             android:padding="8dp">
 
-            <EditText
-                android:id="@+id/friend_email"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
-                android:autofillHints="Email"
-                android:hint="@string/login_email_hint"
-                android:includeFontPadding="true"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:drawableEnd="@drawable/ic_cancel_24"
-                android:layout_marginTop="10dp"
-                android:paddingStart="20dp"
+                card_view:endIconMode="clear_text"
                 android:paddingTop="10dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="20dp"
-                android:singleLine="true"
-                android:imeOptions="actionSearch"/>
+                android:paddingBottom="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/friend_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="true"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:hint="@string/login_email_hint"
+                    android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/searchFriend_btn"
@@ -98,8 +98,8 @@
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/foundfriend_img"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
                         android:layout_marginTop="8dp"
                         android:src="@drawable/ic_person_24"
                         android:scaleType="centerCrop"

@@ -5,13 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@color/light_gray1"
+    card_view:cardCornerRadius="0dp"
     card_view:strokeWidth="0dp"
-    card_view:cardElevation="5dp"
-    card_view:cardBackgroundColor="@color/light_gray">
+    card_view:cardElevation="5dp">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
     tools:context=".view.view_fragments.singlegroup.SingleGroupMembersFragment"
     android:orientation="vertical">
 
@@ -21,13 +23,15 @@
         android:layout_marginTop="8dp"
         android:padding="8dp"
         android:text="Gruppenmitglieder:"
+        android:textColor="@color/darkblue"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/singlegroup_members_recyclerlistview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="3dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="10dp"
         android:scrollbars="horizontal"
         android:orientation="horizontal" />
 

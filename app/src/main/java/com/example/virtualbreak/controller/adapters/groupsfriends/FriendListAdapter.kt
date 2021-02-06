@@ -10,22 +10,18 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.User
-import com.makeramen.roundedimageview.RoundedImageView
 import com.example.virtualbreak.model.Status
+import com.example.virtualbreak.view.view_fragments.groupsfriends.Groups_friendlist_fragment
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_myprofile.*
-import java.io.IOException
 
 
 /**
  * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
  */
 
-class FriendListAdapter(friends: ArrayList<User>, private val context: Context?) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
+class FriendListAdapter(friends: ArrayList<User>, private val context: Context?, private val friendlistFragment: Groups_friendlist_fragment) : RecyclerView.Adapter<FriendListAdapter.ViewHolderFriends>() {
 
     lateinit var view: View
     var friends: ArrayList<User>
@@ -78,6 +74,7 @@ class FriendListAdapter(friends: ArrayList<User>, private val context: Context?)
             val friendId = friends[position].uid
             //evtl go to selected friend (evtl no need, if status shown in list) or show popup
             Log.d(TAG, "FriendId $friendId was clicked on")
+            friendlistFragment.expandChip(holder.textView, friends[position])
         }
 
     }

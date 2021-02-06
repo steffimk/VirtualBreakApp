@@ -16,7 +16,9 @@ import com.example.virtualbreak.model.Group
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewModel as GroupsViewModel
 
-
+/**
+ * Groups list fragment in home fragment
+ */
 class Groups_grouplist_fragment : Fragment() {
 
     private val TAG = "Group_GroupList_Fragment"

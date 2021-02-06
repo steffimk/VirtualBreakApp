@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.google.firebase.storage.FirebaseStorage
@@ -43,7 +42,7 @@ class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Co
 
     inner class ViewHolderFriends(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val username: TextView = itemView.findViewById(R.id.friend_list_name)
-        val profilePicture = itemView.findViewById<RoundedImageView>(R.id.friend_list_image)
+        val profilePicture = itemView.findViewById<ImageView>(R.id.friend_list_image)
         val selectBox = itemView.findViewById<CheckBox>(R.id.friends_select_box)
         val statusCircleImg: ImageView = itemView.findViewById(R.id.status_circle_img)
 
@@ -75,7 +74,6 @@ class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Co
         Log.d(TAG, "Friends ${friends}")
 
         viewHolder.username.text = friend.username
-        //ToDo set the profilpicture
 
         context?.let{
             when(friends[position].status){

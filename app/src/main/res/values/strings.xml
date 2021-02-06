@@ -15,6 +15,8 @@
     <string name="login_email_hint">Email</string>
     <string name="login_password_1_hint">Passwort</string>
     <string name="login_submit">Log In</string>
+    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="toast_sent_reset_mail">Du erhälst eine Mail, in der du dein Passwort zurücksetzen kannst.</string>
 
     <string name="login_with_google">Log In with Google</string>
     <string name="login_signin">Noch kein Account? Sign Up!</string>
@@ -88,6 +90,12 @@
     <string name="joined_call"> ist dem Call beigetreten</string>
     <string name="left_call"> hat den Call verlassen</string>
 
+    <string name="win_game">Super, ihr habt das Spiel gewonnen.</string>
+    <string name="retry_win">Gleich noch ne Runde...</string>
+    <string name="loose_game">Schade, ihr habt das Spiel verloren.</string>
+    <string name="retry_loose">Probiert es noch ein mal...</string>
+    <string name="word_result">Das Wort war: </string>
+
 
     <string name="annehmen">Annehmen</string>
     <string name="bekommen">Bekommen:</string>
@@ -102,9 +110,13 @@
     <string name="breakroomname">Pausenraum Name</string>
     <string name="breakroomtype">Pausenraum Typ</string>
     <string name="openRoom">Öffne Raum</string>
-
-    <string name="startTimer">Übung starten</string>
+    <!-- Sport Room -->
+    <string name="startTimer">Übung für alle starten</string>
+    <string name="cancelTimer">Übung für alle abbrechen</string>
     <string name="getFitnessActivity">Fitnessübung anzeigen</string>
+    <!-- Question Room -->
+    <string name="saveQuestion">Frage pinnen</string>
+    <string name="question_placeholder">Gebe deine Frage hier ein.</string>
 
     <!-- Search Friends -->
     <string name="search_friend_successful">Gefunden:</string>
@@ -144,8 +156,33 @@
     <string name="bilderquellen_list">- Tea by Vectorstall from the Noun Project\n
         - Game by Adrien Coquet from the Noun Project\n
         - Sport by iconixar from the Noun Project\n
-        - Question by Martin Delin from the Noun Project</string>
+        - Question by Martin Delin from the Noun Project\n
+        - <a href="https://storyset.com/people">Illustration by Freepik Storyset</a></string>
     <string name="confirm_leavegroup_text">Willst du die Gruppe wirklich verlassen? Wenn du der/die letzte bist, wird die Gruppe gelöscht.</string>
+    <string name="bored_api">Bored API</string>
+    <string name="random_activity">Zufällige Aktivität</string>
+    <string name="teilen">Teilen</string>
+    <string name="boredapi_intro">Langeweile? Probiere die BoredAPI!</string>
+    <string name="hangman">Hangman</string>
 
+    <!--LogIn/SignIn Error Messages -->
+    <string name="ERROR_INVALID_CUSTOM_TOKEN">Das benutzerdefinierte Token-Format ist falsch. Bitte prüfen Sie die Dokumentation.</string>
+    <string name="ERROR_CUSTOM_TOKEN_MISMATCH">Das benutzerdefinierte Token korrespondiert mit einem anderen Adressaten.</string>
+    <string name="ERROR_INVALID_CREDENTIAL">Der gelieferte Berechtigungsnachweis ist falsch formatiert oder abgelaufen.</string>
+    <string name="ERROR_INVALID_EMAIL">Die Mailadresse ist falsch formatiert.</string>
+    <string name="ERROR_WRONG_PASSWORD">Ungültiges Passwort.</string>
+    <string name="ERROR_USER_MISMATCH">Die angegebenen Anmeldedaten stimmen nicht mit dem zuvor angemeldeten Benutzer überein.</string>
+    <string name="ERROR_REQUIRES_RECENT_LOGIN">Dieser Vorgang ist sensibel und erfordert eine aktuelle Authentifizierung. Melden Sie sich erneut an, bevor Sie diese Anfrage versuchen.</string>
+    <string name="ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL">Es existiert bereits ein Konto mit dieser Mailadresse</string>
+    <string name="ERROR_EMAIL_ALREADY_IN_USE">Es existiert bereits ein Konto mit dieser Mailadresse.</string>
+    <string name="ERROR_CREDENTIAL_ALREADY_IN_USE">Dieser Zugangscode ist bereits mit einem anderen Benutzerkonto verknüpft.</string>
+    <string name="ERROR_USER_DISABLED">Das Benutzerkonto wurde deaktiviert.</string>
+    <string name="ERROR_USER_TOKEN_EXPIRED">Der Benutzer muss sich erneut anmelden.</string>
+    <string name="ERROR_USER_NOT_FOUND">Benutzer nicht gefunden. Überprüfe die Mailadresse.</string>
+    <string name="ERROR_INVALID_USER_TOKEN">Der Benutzer muss sich erneut anmelden.</string>
+    <string name="ERROR_OPERATION_NOT_ALLOWED">Dieser Vorgang ist nicht erlaubt.</string>
+    <string name="ERROR_WEAK_PASSWORD">Das Passwort ist zu kurz.</string>
+    <string name="ERROR_MISSING_EMAIL">Mailadresse muss angegeben werden.</string>
+    <string name="ausloggen">Abmelden</string>
 
 </resources>

@@ -73,8 +73,6 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: ChatAdapter.ViewHolder, position: Int) {
 
-        Log.d(TAG, "ChatAdapter onBindViewHolder")
-
         val message = messagesList.get(position)
         val messageSenderId = message.sender
 
@@ -96,13 +94,10 @@ class ChatAdapter(
             else{
                 if (roomUsers != null) {
                     val sender = roomUsers?.get(messageSenderId)
-                    Log.i(TAG, "senderName: " + sender)
                     if (sender != null) {
                         viewSender.setText(sender)
                         viewSender.visibility = View.VISIBLE
                     }
-                } else{
-                    Log.i(TAG, "RoomUsers is NULL")
                 }
             }
         }

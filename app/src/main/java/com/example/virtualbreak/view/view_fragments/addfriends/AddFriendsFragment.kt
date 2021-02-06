@@ -48,16 +48,10 @@ class AddFriendsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddFriendsBinding.inflate(inflater, container, false)
 
-        //cancel icon on right clears edittext email search
-        binding.friendEmail.onRightDrawableClicked {
-            it.text.clear()
-        }
-
         binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
             binding.tvWasSearchSuccessful.text = getString(R.string.searching_for_friend)
             binding.tvWasSearchSuccessful.visibility = View.VISIBLE
-            binding.friendEmail.text.clear() //clear text field after press search
 
             hideSoftKeyboard(binding.friendEmail)
         }
@@ -82,6 +76,7 @@ class AddFriendsFragment : Fragment() {
                 binding.foundfriendCardview.visibility = View.VISIBLE
                 binding.foundfriendUsername.text = searchedUser.username
                 binding.foundfriendEmail.text = searchedUser.email
+                binding.friendEmail.text?.clear() //clear text field id user was found
 
                 loadProfilePicture(binding.foundfriendImg, searchedUser.uid)
 
@@ -177,25 +172,6 @@ class AddFriendsFragment : Fragment() {
         }
 
     }
-
-    /**
-     * cancel icon on right clears edittext for email search
-     */
-    fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
-        this.setOnTouchListener { v, event ->
-            var hasConsumed = false
-            if (v is EditText) {
-                if (event.x >= v.width - v.totalPaddingRight) {
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        onClicked(this)
-                    }
-                    hasConsumed = true
-                }
-            }
-            hasConsumed
-        }
-    }
-
 
     private fun addTransition() {
         /*enterTransition = MaterialContainerTransform().apply {

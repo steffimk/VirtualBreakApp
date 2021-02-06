@@ -10,8 +10,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
                 <CheckBox
@@ -24,6 +23,14 @@
                     android:focusableInTouchMode="false"
                     />
 
+                <ImageView
+                    android:id="@+id/friend_list_image"
+                    android:layout_width="@dimen/group_list_height"
+                    android:layout_height="@dimen/group_list_height"
+                    android:backgroundTint="@color/brow_sugar"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person_24" />
+<!--
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/friend_list_image"
                     android:layout_width="@dimen/group_list_height"
@@ -32,14 +39,14 @@
                     android:layout_marginStart="10dp"
                     android:scaleType="centerCrop"
                     card_view:riv_corner_radius="6dp"
-                    android:src="@drawable/ic_person_24" />
+                    android:src="@drawable/ic_person_24" />-->
 
                 <ImageView
                     android:id="@+id/status_circle_img"
                     android:contentDescription="status circle"
+                    android:layout_marginStart="10dp"
                     android:layout_width="17dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
                     android:src="@drawable/status_circle_busy" />
 
                 <TextView

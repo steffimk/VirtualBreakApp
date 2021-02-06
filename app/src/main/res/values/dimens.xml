@@ -32,4 +32,6 @@
 
     <dimen name="alphabet_buttons_width">40dp</dimen>
     <dimen name="alphabet_buttons_height">30dp</dimen>
+
+    <dimen name="card_popup_elevation_compat">5dp</dimen>
 </resources>

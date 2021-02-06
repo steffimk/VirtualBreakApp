@@ -1,44 +1,28 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.Context
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.GridView
-import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainer
-import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionManager
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.adapters.SingleGroupRoomsAdapter
-import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
-import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.model.User
-import com.example.virtualbreak.view.view_activitys.NavigationDrawerActivity
-import com.example.virtualbreak.view.view_activitys.VideoCallActivity
-import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
-import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.nambimobile.widgets.efab.FabOption
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 import kotlinx.android.synthetic.main.fragment_singlegroup.*
 
 class SingleGroupFragment : Fragment() {
@@ -78,11 +62,13 @@ class SingleGroupFragment : Fragment() {
                 }
             })
 
+        val singleGroupMembersFragment = SingleGroupMembersFragment.newInstance(groupId, this)
+        //singleGroupMembersFragment.setParentFragment(this) // do this so child fragment has reference to this parent fragment, to show friend popup view ove this view
         //instantiate member list fragment and room grid fragment
         activity?.supportFragmentManager?.beginTransaction()?.let {
             it.replace(
                 R.id.singlegroup_containerview_members,
-                SingleGroupMembersFragment.newInstance(groupId)
+                singleGroupMembersFragment
             )
             //it.addToBackStack(null)
             it.commit()
@@ -100,27 +86,6 @@ class SingleGroupFragment : Fragment() {
             it.commit()
         }
 
-/*
-        root.findViewById<MaterialButtonToggleGroup>(R.id.singlegroup_toggleButton).addOnButtonCheckedListener {
-                group, checkedId, isChecked ->
-
-                when(checkedId){
-                    R.id.singlegroup_toggle_room ->
-                        activity?.supportFragmentManager?.beginTransaction()?.let {
-                            it.replace(R.id.singlegroup_fragment_containerview, SingleGroupRoomsFragment.newInstance(groupId))
-                            //it.addToBackStack(null)
-                            it.commit()
-                        }
-                    R.id.singlegroup_toggle_members ->
-                        activity?.supportFragmentManager?.beginTransaction()?.let {
-                            it.replace(R.id.singlegroup_fragment_containerview, SingleGroupMembersFragment.newInstance(groupId))
-                            //it.addToBackStack(null)
-                            it.commit()
-                        }
-                }
-
-
-        }*/
         var userName: String? = SharedPrefManager.instance.getUserName()
 
 
@@ -170,6 +135,90 @@ class SingleGroupFragment : Fragment() {
         }
 
 
+    }
+
+    /**
+     * Expand the friend [chip] into a popup with a profile picture and email and other info.
+     */
+    fun expandChip(chip: View, user: User) {
+        // Configure the analogous collapse transform back to the recipient chip. This should
+        // happen when the card is clicked, any region outside of the card (the card's transparent
+        // scrim) is clicked, or when the back button is pressed.
+        member_card_view.setOnClickListener { collapseChip(chip) }
+        member_card_scrim.visibility = View.VISIBLE
+        member_card_scrim.setOnClickListener { collapseChip(chip) }
+
+        // Set up MaterialContainerTransform beginDelayedTransition.
+        val transform = MaterialContainerTransform().apply {
+            startView = chip
+            endView = member_card_view
+            scrimColor = Color.TRANSPARENT
+            endElevation = requireContext().resources.getDimension(
+                R.dimen.card_popup_elevation_compat
+            )
+            addTarget(member_card_view)
+        }
+
+        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)
+
+
+        member_card_view.visibility = View.VISIBLE
+        member_name_text_view.text = user.username
+        member_email_text_view.text = user.email
+        member_status_text_view.text = user.status?.dbStr
+
+        context?.let{
+            when(user.status){
+                Status.AVAILABLE -> member_status_img.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_available))
+                Status.BUSY -> member_status_img.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_busy))
+                Status.STUDYING -> member_status_img.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_studying))
+                Status.INBREAK -> member_status_img.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_cup_black))
+                Status.ABSENT -> member_status_img.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
+                else -> member_status_img.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
+            }
+        }
+        loadProfilePicture(member_profile_image_view, user.uid)
+
+    }
+
+    /**
+     * Collapse the friend popup card back into its [chip] form.
+     */
+    private fun collapseChip(chip: View) {
+        // Remove the scrim view and on back pressed callbacks
+        member_card_scrim.visibility = View.GONE
+
+        // Set up MaterialContainerTransform beginDelayedTransition.
+        val transform = MaterialContainerTransform().apply {
+            startView = member_card_view
+            endView = chip
+            scrimColor = Color.TRANSPARENT
+            startElevation = requireContext().resources.getDimension(
+                R.dimen.card_popup_elevation_compat
+            )
+            addTarget(chip)
+        }
+
+        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)
+
+        member_card_view.visibility = View.INVISIBLE
+    }
+
+    private fun loadProfilePicture(imgView: ImageView, userId: String) {
+
+        val mStorageRef = FirebaseStorage.getInstance().getReference()
+        mStorageRef.child("img/profilePics/$userId").downloadUrl
+            .addOnSuccessListener { result ->
+                Picasso.get()
+                    .load(result)
+                    .fit()
+                    .centerCrop()
+                    .into(imgView)
+            }
+            .addOnFailureListener {
+                //Log.w(TAG, it) // exception is already printed in StorageException class
+                Log.d(TAG, "This user does not have a profile picture!")
+            }
     }
 
 }

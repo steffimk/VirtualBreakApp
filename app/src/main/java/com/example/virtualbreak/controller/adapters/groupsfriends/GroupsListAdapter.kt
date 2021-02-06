@@ -56,8 +56,6 @@ class GroupsListAdapter(groups: ArrayList<Group>, private val context: Context?)
         // Get pulled groups, transform HashMap in ArrayList, get group description
         holder.textView.text = groups[position].description
 
-        //TODO choose image for group
-        //holder.groupImg = ...
         groups[position].rooms?.let{
             if(it.size > 0){
                 //there are open rooms in this group

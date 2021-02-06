@@ -1,6 +1,7 @@
 package com.example.virtualbreak.view.view_fragments.textchat
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,6 +21,7 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import kotlinx.android.synthetic.main.textchat_fragment.*
+
 
 //class TextchatFragment(private var userName: String?) : Fragment() {
 class TextchatFragment() : Fragment() {
@@ -52,6 +53,7 @@ class TextchatFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "OnViewCreated")
 
         var defaultMessages: MutableList<Message> = ArrayList()
         var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
@@ -72,8 +74,11 @@ class TextchatFragment() : Fragment() {
             )
         }
         chat_messages_recycler_view.adapter = chatAdapter
-        chatAdapter?.let {
-            chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+
+        chat_messages_recycler_view.post { //post ensures that scoll is done when recyclerview is ready
+            chatAdapter?.let {
+                chat_messages_recycler_view.scrollToPosition(it.itemCount - 1)
+            }
         }
 
         /*viewModel.getUser().observe(viewLifecycleOwner, Observer<User> { observedUser ->
@@ -88,12 +93,13 @@ class TextchatFragment() : Fragment() {
             room = observedRoom
             //context?.let { viewModel.loadUsersOfRoom(it) }
 
-            Log.d(TAG, "Observed room: $observedRoom")
+            //Log.d(TAG, "Observed room: $observedRoom")
             if (observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()) {
+
                 val messages = observedRoom.messages
                 var messagesList = ArrayList(messages.values)
-                messagesList.sortBy { it.timestamp }
-                Log.i(TAG, "messagesList: $messages")
+                messagesList.sortBy { it.timestamp } //evtl this can be made more efficient by adding new messages and not updating whole list
+                //Log.i(TAG, "messagesList: $messages")
                 //chat_messages_recycler_view.adapter = context?.let { ChatAdapter(it, messagesList, SharedPrefManager.instance.getRoomUsersHashmap()) }
                 if (chatAdapter == null) {
                     chatAdapter = context?.let {
@@ -110,9 +116,12 @@ class TextchatFragment() : Fragment() {
                         SharedPrefManager.instance.getRoomUsersHashmap()
                     )
                 }
-                chatAdapter?.let {
-                    chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
+                chat_messages_recycler_view.post {
+                    chatAdapter?.let {
+                        chat_messages_recycler_view.scrollToPosition(it.itemCount - 1)
+                    }
                 }
+
             }
         })
 
@@ -130,6 +139,18 @@ class TextchatFragment() : Fragment() {
                 ).show()
             }
             input.clear()
+        }
+
+        if (Build.VERSION.SDK_INT >= 11) {
+            chat_messages_recycler_view.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+                if (bottom < oldBottom) {
+                    chat_messages_recycler_view.post {
+                        chatAdapter?.let {
+                            chat_messages_recycler_view.scrollToPosition(it.itemCount - 1)
+                        }
+                    }
+                }
+            })
         }
     }
 

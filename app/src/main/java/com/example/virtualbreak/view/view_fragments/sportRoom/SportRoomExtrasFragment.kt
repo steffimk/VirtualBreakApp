@@ -3,6 +3,8 @@ package com.example.virtualbreak.view.view_fragments.sportRoom
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +18,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
-import com.example.virtualbreak.databinding.FragmentSportRoomExtrasBinding
+import kotlinx.android.synthetic.main.fragment_sport_room_extras.*
 import java.util.*
 
 
@@ -27,9 +29,6 @@ class SportRoomExtrasFragment : Fragment() {
     private val viewModel: SportRoomExtrasViewModel by viewModels {
             SportRoomExtrasViewModelFactory(SharedPrefManager.instance.getRoomId() ?: "")}
 
-    private var _binding: FragmentSportRoomExtrasBinding? = null
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
 
     private var timerIsRunning = false
     private var countDownTimer: CountDownTimer? = null
@@ -39,24 +38,25 @@ class SportRoomExtrasFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_sport_room_extras, container, false)
+    }
 
-        // Inflate the layout for this fragment
-        _binding = FragmentSportRoomExtrasBinding.inflate(inflater, container, false)
-
-        binding.startTimerBtn.setOnClickListener { startNewTimer() }
-        binding.fitnessNextBtn.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        startTimer_btn.setOnClickListener { startNewTimer() }
+        fitness_next_btn.setOnClickListener {
             fitnessIndex = (fitnessIndex + 1) % Constants.FITNESS_IDEAS.size
             onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
-        binding.fitnessPreviousBtn.setOnClickListener {
+        fitness_previous_btn.setOnClickListener {
             if (fitnessIndex == 0) fitnessIndex = Constants.FITNESS_IDEAS.size
             fitnessIndex = (fitnessIndex - 1) % Constants.FITNESS_IDEAS.size
             onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
 
-        binding.minPicker.maxValue = 30 // TODO: Maximum length
-        val secPicker = binding.secPicker
-        secPicker.maxValue = 6
+        min_picker.maxValue = 20
+        val secPicker = sec_picker
+        secPicker.maxValue = 5
         // Formatter to make steps of 10
         val secFormatter = NumberPicker.Formatter { value ->
             var tmp = (value * 10).toString()
@@ -72,11 +72,31 @@ class SportRoomExtrasFragment : Fragment() {
             }
         }
         onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
-        return binding.root
-    }
+        //expand or close sport fragment when click on expand arrow, textchat adapts to height
+        expand_sport_btn.setOnClickListener {
+            if (sport_content_layout.getVisibility() === View.VISIBLE) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+                // The transition of the hiddenView is carried out
+                //  by the TransitionManager class.
+                // Here we use an object of the AutoTransition
+                // Class to create a default transition.
+                TransitionManager.beginDelayedTransition(
+                    sport_base_view,
+                    AutoTransition()
+                )
+                sport_content_layout.visibility = View.GONE
+                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            } else {
+                TransitionManager.beginDelayedTransition(
+                    sport_base_view,
+                    AutoTransition()
+                )
+                sport_content_layout.visibility = View.VISIBLE
+                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            }
+
+        }
+
         viewModel.startPullingExercise()
         viewModel.getTimerEndDate().observe(viewLifecycleOwner, Observer<Long?> { timerEndDate ->
             handleNewTimerEndDate(timerEndDate)
@@ -87,47 +107,48 @@ class SportRoomExtrasFragment : Fragment() {
     private fun handleNewTimerEndDate(timerEndDate: Long?) {
         this.timerIsRunning = (timerEndDate != null && timerEndDate > Date().time)
         if (timerIsRunning) {
-            binding.timePicker.visibility = View.GONE
-            binding.timerView.visibility = View.VISIBLE
-            binding.startTimerBtn.visibility = View.GONE
-            binding.fitnessNextBtn.visibility = View.INVISIBLE
-            binding.fitnessPreviousBtn.visibility = View.INVISIBLE
-            binding.fitnessText.text = viewModel.fitnessExercise?:"Fehler beim Laden der Übung"
+            timePicker.visibility = View.GONE
+            chronometer.visibility = View.VISIBLE
+            startTimer_btn.text = getString(R.string.cancelTimer)
+            fitness_next_btn.visibility = View.INVISIBLE
+            fitness_previous_btn.visibility = View.INVISIBLE
+            fitness_text.text = viewModel.fitnessExercise?:"Fehler beim Laden der Übung"
             countDownTimer = getCountDownTimer(timerEndDate!!).start()
             if (viewModel.fitnessExercise == null) Log.d(TAG, "Fitness exercise is null")
         } else {
-            binding.timePicker.visibility = View.VISIBLE
-            binding.timerView.visibility = View.GONE
-            binding.startTimerBtn.visibility = View.VISIBLE
-            binding.fitnessNextBtn.visibility = View.VISIBLE
-            binding.fitnessPreviousBtn.visibility = View.VISIBLE
+            if (this.countDownTimer != null) this.countDownTimer?.cancel()
+            timePicker.visibility = View.VISIBLE
+            chronometer.visibility = View.GONE
+            startTimer_btn.text = getString(R.string.startTimer)
+            fitness_next_btn.visibility = View.VISIBLE
+            fitness_previous_btn.visibility = View.VISIBLE
         }
     }
 
     private fun onSelectedNewExercise(exercise: Pair<String, Double>) {
-        binding.fitnessText.text = exercise.first
+        fitness_text.text = exercise.first
         val defaultTime = exercise.second as Double
-        binding.minPicker.value = defaultTime.toInt()
-        binding.secPicker.value = ((defaultTime - defaultTime.toInt()) * 10).toInt() // Get first decimal
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        min_picker.value = defaultTime.toInt()
+        sec_picker.value = ((defaultTime - defaultTime.toInt()) * 10).toInt() // Get first decimal
     }
 
     private fun startNewTimer() {
-        if (this.timerIsRunning) return
-        val mins = binding.minPicker.value
-        val secs = binding.secPicker.value * 10
         val roomId = SharedPrefManager.instance.getRoomId() ?: return
-        PushData.startNewTimer(roomId, mins, secs, binding.fitnessText.text.toString())
+        if (this.timerIsRunning) {
+            PushData.removeTimer(roomId)
+            return
+        }
+        val mins = min_picker.value
+        val secs = sec_picker.value * 10
+        PushData.startNewTimer(roomId, mins, secs, fitness_text.text.toString())
     }
 
     private fun secondsToTimerString(sec: Long): String{
-        val minutes = (sec/60).toInt().toString()
-        val seconds = (sec%60).toInt().toString()
-        return minutes + "m " + seconds + "s"
+        var minutes = (sec/60).toInt().toString()
+        var seconds = (sec%60).toInt().toString()
+        if (minutes.length == 1) minutes = "0$minutes"
+        if (seconds.length == 1) seconds = "0$seconds"
+        return minutes + ":" + seconds
     }
 
     private fun getCountDownTimer(timerEndDate: Long): CountDownTimer {
@@ -135,7 +156,7 @@ class SportRoomExtrasFragment : Fragment() {
         countDownTimer?.cancel()
         return object : CountDownTimer(remainingMilliSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                binding.timerView.text = (secondsToTimerString(millisUntilFinished / 1000))
+                chronometer.text = (secondsToTimerString(millisUntilFinished / 1000))
             }
             override fun onFinish() {
                 MediaPlayer.create(context, R.raw.alarm_sound).start()

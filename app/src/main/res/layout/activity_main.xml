@@ -17,30 +17,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/willkommen_bei"
-            android:textSize="20sp"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:fontFamily="@font/architects_daughter"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@string/virtualbreak"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textSize="40sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/starte_gemeinsame_virtuelle_pausen"
             android:textSize="20sp"
             android:gravity="center"/>
 
 
         <ImageView
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_marginVertical="8dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:src="@drawable/ic_coffee_break"/>
 
         <Button
@@ -59,7 +54,6 @@
             android:layout_height="wrap_content"
             android:text="@string/create_an_account"
             android:id="@+id/signupButton"
-            android:padding="10dp"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

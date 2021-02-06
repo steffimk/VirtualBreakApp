@@ -189,7 +189,7 @@ class SingleGroupFragment : Fragment() {
         member_card_scrim.visibility = View.GONE
 
         // Set up MaterialContainerTransform beginDelayedTransition.
-        val transform = MaterialContainerTransform().apply {
+        /*val transform = MaterialContainerTransform().apply {
             startView = member_card_view
             endView = chip
             scrimColor = Color.TRANSPARENT
@@ -199,7 +199,8 @@ class SingleGroupFragment : Fragment() {
             addTarget(chip)
         }
 
-        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)
+        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)*/
+        TransitionManager.beginDelayedTransition(member_card_view)
 
         member_card_view.visibility = View.INVISIBLE
     }

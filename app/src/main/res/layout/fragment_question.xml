@@ -12,10 +12,10 @@
     tools:context=".view.view_fragments.question.QuestionFragment">
 
     <RelativeLayout
+        android:id="@+id/expand_question_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:layout_marginHorizontal="8dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"

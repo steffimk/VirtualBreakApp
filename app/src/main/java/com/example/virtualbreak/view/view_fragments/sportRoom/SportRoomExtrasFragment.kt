@@ -72,8 +72,9 @@ class SportRoomExtrasFragment : Fragment() {
             }
         }
         onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
-        //expand or close sport fragment when click on expand arrow, textchat adapts to height
-        expand_sport_btn.setOnClickListener {
+
+        //expand or close sport fragment
+        expand_sport_relative_layout.setOnClickListener {
             if (sport_content_layout.getVisibility() === View.VISIBLE) {
 
                 // The transition of the hiddenView is carried out

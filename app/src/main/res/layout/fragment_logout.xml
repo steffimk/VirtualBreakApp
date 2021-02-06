@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/cuate_coffee_img"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_marginBottom="231dp"
         android:src="@drawable/ic_getting_coffee_cuate"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -17,9 +17,9 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/expand_game_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">

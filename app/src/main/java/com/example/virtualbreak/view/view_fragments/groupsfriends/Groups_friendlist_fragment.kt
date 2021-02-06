@@ -150,18 +150,26 @@ class Groups_friendlist_fragment : Fragment() {
         closePopupCardOnBackPressed.expandedChip = null
         closePopupCardOnBackPressed.isEnabled = false
 
-        // Set up MaterialContainerTransform beginDelayedTransition.
-        val transform = MaterialContainerTransform().apply {
-            startView = account_card_view
-            endView = chip
-            scrimColor = Color.TRANSPARENT
-            startElevation = requireContext().resources.getDimension(
-                R.dimen.card_popup_elevation_compat
-            )
-            addTarget(chip)
-        }
+        /*try{ // prevent exception when list view was updated underneath
+            // Set up MaterialContainerTransform beginDelayedTransition.
+            val transform = MaterialContainerTransform().apply {
+                startView = account_card_view
+                endView = chip
+                scrimColor = Color.TRANSPARENT
+                startElevation = requireContext().resources.getDimension(
+                    R.dimen.card_popup_elevation_compat
+                )
+                addTarget(chip)
+            }
 
-        TransitionManager.beginDelayedTransition(friends_recyler_list_view, transform)
+
+            TransitionManager.beginDelayedTransition(friends_recyler_list_view, transform)
+        }
+        catch(ex: IllegalArgumentException){
+            Log.d(TAG, "start view does not exist anymore, list probably was updated")
+        }*/
+        TransitionManager.beginDelayedTransition(account_card_view)
+
 
         account_card_view.visibility = View.INVISIBLE
     }

@@ -60,8 +60,8 @@ class QuestionFragment : Fragment() {
             Log.d(TAG, "Observed question " + observedQuestion)
         })
 
-        //expand or close sport fragment when click on expand arrow, textchat adapts to height
-        expand_question_btn.setOnClickListener {
+        //expand or close sport fragment
+        expand_question_relative_layout.setOnClickListener {
             if (question_content.getVisibility() === View.VISIBLE) {
                 TransitionManager.beginDelayedTransition(
                     question_base_view,

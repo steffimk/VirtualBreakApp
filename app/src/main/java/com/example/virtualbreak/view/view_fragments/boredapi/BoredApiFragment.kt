@@ -13,6 +13,7 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.squareup.okhttp.*
 import kotlinx.android.synthetic.main.fragment_bored_api.*
+import kotlinx.android.synthetic.main.fragment_singlegroup.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -20,9 +21,7 @@ import java.io.IOException
 private const val ROOM_ID = "roomId"
 
 /**
- * A simple [Fragment] subclass.
- * Use the [BoredApiFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Bored API extras fragment
  */
 class BoredApiFragment : Fragment() {
 
@@ -48,7 +47,7 @@ class BoredApiFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        expand_boredapi_btn.setOnClickListener {
+        expand_boredapi_relative_layout.setOnClickListener {
             if (content_boredapi.getVisibility() === View.VISIBLE) {
 
                 // The transition of the hiddenView is carried out
@@ -100,10 +99,12 @@ class BoredApiFragment : Fragment() {
                 try {
                     //example response body: {"activity":"Watch the sunset or the sunrise","type":"recreational","participants":1,"price":0,"link":"","key":"4748214","accessibility":1}
                     if(response != null && response.body()!= null){
-                        var json = JSONObject(response.body().string())
+                        val json = JSONObject(response.body().string())
                         activityString = json.getString("activity")
                         Log.d(TAG, "Request Successful!! "+activityString.toString())
                         activity?.runOnUiThread {
+                            //some animation
+                            TransitionManager.beginDelayedTransition(content_boredapi)
                             display_random_activity.text = activityString
                             send_random_activity_btn.visibility = View.VISIBLE
                         }

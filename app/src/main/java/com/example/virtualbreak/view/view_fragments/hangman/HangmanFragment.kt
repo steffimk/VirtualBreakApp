@@ -36,8 +36,8 @@ class HangmanFragment : Fragment() {
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
 
-        //expand or close game fragment when click on expand arrow, textchat adapts to height
-        expand_game_btn.setOnClickListener {
+        //expand or close game fragment
+        expand_game_relative_layout.setOnClickListener {
             if (hangman_content.getVisibility() === View.VISIBLE) {
 
                 // The transition of the hiddenView is carried out

@@ -37,10 +37,10 @@ class TextchatFragment() : Fragment() {
     }
 
     private var room: Room? = null
-    private val roomId: String? =
-        com.example.virtualbreak.controller.SharedPrefManager.instance.getRoomId()
+    private val roomId: String? = SharedPrefManager.instance.getRoomId()
     private val userName: String? = SharedPrefManager.instance.getUserName()
     private var chatAdapter: ChatAdapter? = null
+    private var messagesList = arrayListOf<Message>() //keep old messages saved to check for new ones
 
 
     override fun onCreateView(
@@ -55,14 +55,12 @@ class TextchatFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "OnViewCreated")
 
-        var defaultMessages: MutableList<Message> = ArrayList()
-        var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
+        val defaultMessages: MutableList<Message> = ArrayList()
+        val defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
         defaultMessages.add(defaultM)
 
         val layoutManager = LinearLayoutManager(context)
         layoutManager.setStackFromEnd(true)
-        //var chatMessageRecyclerView = root.findViewById(chat_messages_recycler_view)
-        //Log.i(TAG, "recyclerView " + chatMessageRecyclerView)
         chat_messages_recycler_view.layoutManager = layoutManager
 
 
@@ -96,26 +94,30 @@ class TextchatFragment() : Fragment() {
             //Log.d(TAG, "Observed room: $observedRoom")
             if (observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()) {
 
-                val messages = observedRoom.messages
-                var messagesList = ArrayList(messages.values)
-                messagesList.sortBy { it.timestamp } //evtl this can be made more efficient by adding new messages and not updating whole list
+                val newMessages = observedRoom.messages
+                var newMessagesList = ArrayList(newMessages.values)
+                newMessagesList.sortBy { it.timestamp } //evtl this can be made more efficient by adding new messages and not updating whole list
                 //Log.i(TAG, "messagesList: $messages")
-                //chat_messages_recycler_view.adapter = context?.let { ChatAdapter(it, messagesList, SharedPrefManager.instance.getRoomUsersHashmap()) }
                 if (chatAdapter == null) {
                     chatAdapter = context?.let {
                         ChatAdapter(
                             it,
-                            messagesList,
+                            newMessagesList,
                             SharedPrefManager.instance.getRoomUsersHashmap()
                         )
                     }
                     chat_messages_recycler_view.adapter = chatAdapter
-                } else {
-                    chatAdapter?.updateData(
-                        messagesList,
-                        SharedPrefManager.instance.getRoomUsersHashmap()
-                    )
                 }
+                else { //ChatAdapter already exists
+                    Log.d(TAG, "Old "+messagesList.size+" new: "+newMessagesList.size)
+                    if(messagesList.size < newMessagesList.size) {
+                        chatAdapter?.updateData(
+                            newMessagesList,
+                            SharedPrefManager.instance.getRoomUsersHashmap()
+                        )
+                    }
+                }
+                messagesList = newMessagesList
                 chat_messages_recycler_view.post {
                     chatAdapter?.let {
                         chat_messages_recycler_view.scrollToPosition(it.itemCount - 1)
@@ -141,12 +143,14 @@ class TextchatFragment() : Fragment() {
             input.clear()
         }
 
+        //if keyboard is opened or closed also scroll down
         if (Build.VERSION.SDK_INT >= 11) {
             chat_messages_recycler_view.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-                if (bottom < oldBottom) {
+                Log.d(TAG, "Layout CHANGE")
+                if (bottom < oldBottom || bottom > oldBottom) {
                     chat_messages_recycler_view.post {
                         chatAdapter?.let {
-                            chat_messages_recycler_view.scrollToPosition(it.itemCount - 1)
+                            chat_messages_recycler_view?.scrollToPosition(it.itemCount - 1)
                         }
                     }
                 }

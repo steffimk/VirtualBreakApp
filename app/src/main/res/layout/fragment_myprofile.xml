@@ -128,7 +128,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             app:iconSize="15dp"
-            app:icon="@drawable/exit"
+            app:icon="@drawable/ic_door_black"
             android:text="@string/ausloggen"/>
 
 

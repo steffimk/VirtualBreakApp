@@ -1,11 +1,13 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -22,6 +24,7 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.nambimobile.widgets.efab.ExpandableFab
 import com.nambimobile.widgets.efab.FabOption
 import kotlinx.android.synthetic.main.fragment_singlegroup_rooms.*
 
@@ -36,6 +39,12 @@ class SingleGroupRoomsFragment : Fragment() {
     private lateinit var groupUsers: HashMap<String, User>
     var customAdapter: SingleGroupRoomsAdapter? = null
     private lateinit var root: View
+    private lateinit var fabButton: ExpandableFab
+    private lateinit var fabOptionCoffee: FabOption
+    private lateinit var fabOptionQuestion: FabOption
+    private lateinit var fabOptionGame: FabOption
+    private lateinit var fabOptionSport: FabOption
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,33 +118,57 @@ class SingleGroupRoomsFragment : Fragment() {
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, {
                 groupUsers = it
             })
+            fabButton = root.findViewById(R.id.fab_singlegroup)
 
-
-            val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
-
-            val fabOptionCoffee: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
+            fabOptionCoffee = root.findViewById(R.id.fab_singlegroup_option1)
             fabOptionCoffee.setOnClickListener {
                 openBreakroom(Roomtype.COFFEE, singleGroupViewModel, userName)
             }
 
-            val fabOptionQuestion: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
+            fabOptionQuestion = root.findViewById(R.id.fab_singlegroup_option2)
             fabOptionQuestion.setOnClickListener {
                 openBreakroom(Roomtype.QUESTION, singleGroupViewModel, userName)
 
             }
 
-            val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
+            fabOptionGame = root.findViewById(R.id.fab_singlegroup_option3)
             fabOptionGame.setOnClickListener {
                 openBreakroom(Roomtype.GAME, singleGroupViewModel, userName)
             }
 
-            val fabOptionSport: FabOption = root.findViewById(R.id.fab_singlegroup_option4)
+            fabOptionSport = root.findViewById(R.id.fab_singlegroup_option4)
             fabOptionSport.setOnClickListener {
                 openBreakroom(Roomtype.SPORT, singleGroupViewModel, userName)
             }
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+
+        updateBreakButton()
+
+    }
+
+    fun updateBreakButton() {
+
+        if (SharedPrefManager.instance.getRoomId() != null) {
+            // fabButton.isEnabled = false
+            //fabButton.efabColor = R.color.disabled_gray
+            //fabButton.background = Color.parseColor("#bdbdbd"))
+            fabButton.setOnClickListener {
+                Toast.makeText(
+                    context, R.string.toast_already_in_break,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            fabOptionCoffee.isEnabled = false
+            fabOptionGame.isEnabled = false
+            fabOptionQuestion.isEnabled = false
+            fabOptionSport.isEnabled = false
+        }
+    }
 
     private fun openBreakroom(
         roomtype: Roomtype,

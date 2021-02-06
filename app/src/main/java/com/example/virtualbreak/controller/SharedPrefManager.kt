@@ -30,6 +30,7 @@ private constructor() {
     val ROOM_USER: String = "roomUser"
     val CURRENT_STATUS: String = "currentStatus"
     val IS_ALLOWED_TO_OPEN_WIDGET: String = "isWidgetAllowedOpen"
+    val WAS_OPEND_FROM_WIDGET: String = "wasOpendFromWidget"
 
 
     /**
@@ -181,6 +182,24 @@ private constructor() {
         val isOpen = sharedPrefs?.getBoolean(IS_ALLOWED_TO_OPEN_WIDGET, false)
         if (isOpen != null) {
             return isOpen
+        } else {
+            return false
+        }
+    }
+
+    fun saveWidgetVideoCallManager(wasOpendFromWidger: Boolean) {
+        sharedPrefs?.let {
+            it.edit().putBoolean(WAS_OPEND_FROM_WIDGET, wasOpendFromWidger).apply()
+            Log.d(TAG, "IswidgetOpen " + wasOpendFromWidger + " added to shared preferences")
+        }
+        if (sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun getWidgetVideoCallManager(): Boolean {
+        val wasOpendFromWidger = sharedPrefs?.getBoolean(WAS_OPEND_FROM_WIDGET, false)
+        if (wasOpendFromWidger != null) {
+            return wasOpendFromWidger
         } else {
             return false
         }

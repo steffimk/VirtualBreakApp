@@ -27,6 +27,8 @@ class BreakroomWidgetService : Service() {
     private lateinit var mFloatingView: View
     private lateinit var collapsedView: View
     private lateinit var expandedView: View
+    private lateinit var altertView: View
+    private lateinit var buttonView: View
     private var roomName = "RoomName"
     private var roomType = "RoomType"
     private var userName = "UserName"
@@ -35,10 +37,39 @@ class BreakroomWidgetService : Service() {
 
     private lateinit var params: WindowManager.LayoutParams
     lateinit var localBroadcastManager: LocalBroadcastManager
+    val widgetBroadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            Log.d("CHECk", "recivedmessage ${intent?.action}")
+            when (intent?.action) {
+                ACTION_SHOW_ALERT -> {
+                    buttonView.visibility = View.GONE
+                    altertView.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val bundle: Bundle? = intent?.extras
+        if (bundle != null) {
+            mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text =
+                bundle.getString(Constants.ROOM_NAME).toString()
+            mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text =
+                "Pausentyp  ${bundle.getString(Constants.ROOM_TYPE).toString()}"
+            userName = bundle.getString(Constants.USER_NAME).toString()
+            roomType = bundle.getString(Constants.ROOM_TYPE).toString()
+            gameId = bundle.getString(Constants.GAME_ID).toString()
+            Log.d("BreakRoom3", roomName + roomType)
+        }
+//        return super.onStartCommand(intent, flags, startId)
+//        startForegroundService()
+        return START_NOT_STICKY;
+    }
+
 
     override fun onCreate() {
         super.onCreate()
@@ -53,6 +84,10 @@ class BreakroomWidgetService : Service() {
 
         //register the coomunication to the Activity
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
+        localBroadcastManager.registerReceiver(
+            widgetBroadCastReceiver,
+            IntentFilter(ACTION_SHOW_ALERT)
+        )
 
         //Spefify parameters for the layout
         params = WindowManager.LayoutParams().apply {
@@ -74,16 +109,11 @@ class BreakroomWidgetService : Service() {
         mWindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         mWindowManager.addView(mFloatingView, params)
 
-
         //getting the collapsed and expanded view from the floating view
         collapsedView = mFloatingView.findViewById(R.id.widget_layoutCollapsed)
         expandedView = mFloatingView.findViewById(R.id.widget_layoutExpanded)
-
-
-//        var testClose: ImageView = mFloatingView.findViewById(R.id.widget_test_close)
-//        testClose.setOnClickListener {
-//            stopSelf()
-//        }
+        altertView = mFloatingView.findViewById(R.id.widget_leave_alert)
+        buttonView = mFloatingView.findViewById(R.id.widget_button_layout)
 
         //Set the OntouchListener for the rootParent
         val layoutParent = mFloatingView.findViewById<View>(R.id.widget_relativeLayoutParent)
@@ -93,32 +123,39 @@ class BreakroomWidgetService : Service() {
         mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text = roomName
         mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text = roomType
 
-        val expandButton = mFloatingView.findViewById<ImageView>(R.id.widget_expanded_iv)
-
-
-        val leaveRoomButton: ImageButton = mFloatingView.findViewById(R.id.widget_button_leaveroom)
-        leaveRoomButton.setOnClickListener {
-            Log.d(TAG, "Leave room")
-            localBroadcastManager.sendBroadcast(Intent(ACTION_LEAVE_ROOM))
+        mFloatingView.findViewById<ImageButton>(R.id.widget_expanded_iv).setOnClickListener {
+            Log.d(TAG, "click expand")
+            collapsedView.visibility = View.GONE
+            expandedView.visibility = View.VISIBLE
         }
 
-        val videoCall: ImageButton = mFloatingView.findViewById(R.id.widget_button_videocall)
-        videoCall.setOnClickListener {
+        mFloatingView.findViewById<ImageButton>(R.id.widget_minimize_iv).setOnClickListener {
+            Log.d(TAG, "click minimize")
+            collapsedView.visibility = View.VISIBLE
+            expandedView.visibility = View.GONE
+        }
+
+        mFloatingView.findViewById<ImageButton>(R.id.widget_button_leaveroom).setOnClickListener {
+            Log.d(TAG, "Leave room")
+            localBroadcastManager.sendBroadcast(Intent(ACTION_CHECK_USERS))
+        }
+
+        mFloatingView.findViewById<ImageButton>(R.id.widget_button_videocall).setOnClickListener {
             Log.d(TAG, "Join Video call")
+            SharedPrefManager.instance.saveWidgetVideoCallManager(true)
             localBroadcastManager.sendBroadcast(Intent(ACTION_VIDEO_CALL))
         }
 
-        val openRoomButton: Button = mFloatingView.findViewById(R.id.widget_button_open_room)
-        openRoomButton.setOnClickListener {
-            Log.d(TAG, "Open room")
-            val intent = Intent(this@BreakroomWidgetService, BreakRoomActivity::class.java)
-            intent.putExtra(Constants.USER_NAME, userName)
-            intent.putExtra(Constants.ROOM_TYPE, roomType)
-            intent.putExtra(Constants.GAME_ID, gameId)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            //close the service and remove view from the view hierarchy
-            stopSelf()
+        mFloatingView.findViewById<Button>(R.id.widget_button_open_room).setOnClickListener {
+            openRoom()
+        }
+
+        mFloatingView.findViewById<Button>(R.id.widget_button_leave_yes).setOnClickListener {
+            localBroadcastManager.sendBroadcast(Intent(ACTION_LEAVE_ROOM))
+        }
+        mFloatingView.findViewById<Button>(R.id.widget_button_leave_no).setOnClickListener {
+            altertView.visibility = View.GONE
+            buttonView.visibility = View.VISIBLE
         }
 
     }
@@ -128,8 +165,20 @@ class BreakroomWidgetService : Service() {
         Log.d(TAG, "OnDestroy")
         SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
         localBroadcastManager.sendBroadcast(Intent(ACTION_UNREGISTER))
+        localBroadcastManager.unregisterReceiver(widgetBroadCastReceiver)
         Log.d("Check", "onDestroyWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         mWindowManager.removeView(mFloatingView)
+        stopSelf()
+    }
+
+    private fun openRoom() {
+        val intent = Intent(this@BreakroomWidgetService, BreakRoomActivity::class.java)
+        intent.putExtra(Constants.USER_NAME, userName)
+        intent.putExtra(Constants.ROOM_TYPE, roomType)
+        intent.putExtra(Constants.GAME_ID, gameId)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        //close the service and remove view from the view hierarchy
         stopSelf()
     }
 
@@ -185,45 +234,14 @@ class BreakroomWidgetService : Service() {
         touchConsumedByMove
     }
 
-    private fun handleViewChange() {
-
-        if (mFloatingView == null || mFloatingView.findViewById<View>(R.id.widget_layoutCollapsed).visibility == View.VISIBLE) {
-            //When user clicks on the image view of the collapsed layout,
-            //visibility of the collapsed layout will be changed to "View.GONE"
-            //and expanded view will become visible.
-            collapsedView.visibility = View.GONE
-            expandedView.visibility = View.VISIBLE
-        } else {
-            collapsedView.visibility = View.VISIBLE
-            expandedView.visibility = View.GONE
-        }
-
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(
-            "Check",
-            "onStarCommandWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen()
-        )
-        val bundle: Bundle? = intent?.extras
-        if (bundle != null) {
-            mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text =
-                bundle.getString(Constants.ROOM_NAME).toString()
-            mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text =
-                "Pausentyp  ${bundle.getString(Constants.ROOM_TYPE).toString()}"
-            userName = bundle.getString(Constants.USER_NAME).toString()
-            roomType = bundle.getString(Constants.ROOM_TYPE).toString()
-            gameId = bundle.getString(Constants.GAME_ID).toString()
-            Log.d("BreakRoom3", roomName + roomType)
-        }
-        return super.onStartCommand(intent, flags, startId)
-    }
 
 
     companion object {
         const val ACTION_VIDEO_CALL = "videocall"
         const val ACTION_LEAVE_ROOM = "leave_room"
         const val ACTION_UNREGISTER = "unregister"
+        const val ACTION_CHECK_USERS = "checkUSers"
+        const val ACTION_SHOW_ALERT = "showAlter"
     }
 
 }

@@ -10,8 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -24,7 +22,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
@@ -40,13 +37,11 @@ import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import com.example.virtualbreak.view.view_fragments.boredapi.BoredApiFragment
-import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
 import com.example.virtualbreak.view.view_fragments.question.QuestionFragment
-import com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupRoomsFragment
+import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.hangman_fragment.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -66,7 +61,7 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
-    // TODO: set default room to room which needs no extras
+    //set default room to room which needs no extras
     private var roomType : String = Roomtype.COFFEE.dbStr
 
     private var gameId: String? = null
@@ -84,6 +79,10 @@ class BreakRoomActivity : AppCompatActivity() {
             when (intent?.action) {
                 BreakroomWidgetService.ACTION_LEAVE_ROOM -> leaveRoom()
                 BreakroomWidgetService.ACTION_VIDEO_CALL -> videoCall()
+                BreakroomWidgetService.ACTION_CHECK_USERS -> {
+                    Log.d("CHECK", "ACTION_CHECK_USERS")
+                    checkIfDialogIsNeededForWidget()
+                }
                 BreakroomWidgetService.ACTION_UNREGISTER -> localBroadcastManager.unregisterReceiver(
                     this
                 )
@@ -268,6 +267,10 @@ class BreakRoomActivity : AppCompatActivity() {
             broadCastReceiver,
             IntentFilter(BreakroomWidgetService.ACTION_UNREGISTER)
         )
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_CHECK_USERS)
+        )
     }
 
 
@@ -358,6 +361,15 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
+    fun checkIfDialogIsNeededForWidget() {
+        Log.d("CHECK", "checkWidetDialog: ${room?.users?.size}")
+        if (room?.users?.size == 1) {
+            localBroadcastManager.sendBroadcast(Intent(BreakroomWidgetService.ACTION_SHOW_ALERT))
+        } else {
+            leaveRoom()
+        }
+    }
+
     override fun onBackPressed() {
         Log.d("Check", "onBacll" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         openWidget()
@@ -366,10 +378,7 @@ class BreakRoomActivity : AppCompatActivity() {
     override fun onPause() {
         Log.d("Check", "onPause " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         super.onPause()
-        //if (SharedPrefManager.instance.getRoomId() != null) {
-        //    openWidget()
-        //}
-        if (!SharedPrefManager.instance.getIsWidgetAllowedtoOpen() && SharedPrefManager.instance.getRoomId() != null) {
+        if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen() && SharedPrefManager.instance.getRoomId() != null) {
             openWidget()
         }
     }
@@ -435,6 +444,13 @@ class BreakRoomActivity : AppCompatActivity() {
         args.putString(Constants.ROOM_ID, roomId)
         args.putString(Constants.USER_NAME, userName)
 
+        //Widget is open
+        if (SharedPrefManager.instance.getWidgetVideoCallManager()) {
+            stopService(Intent(this, BreakroomWidgetService::class.java))
+            args.putString(Constants.ROOM_NAME, room?.description)
+            args.putString(Constants.ROOM_TYPE, room?.type?.dbStr)
+            args.putString(Constants.GAME_ID, gameId)
+        }
         val intent = Intent(this, VideoCallActivity::class.java)
         intent.putExtras(args)
         this.startActivity(intent)

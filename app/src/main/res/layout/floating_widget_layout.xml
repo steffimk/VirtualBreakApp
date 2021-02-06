@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/widget_collapsed_iv"
@@ -29,13 +29,14 @@
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_vb_alt_round" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/widget_expanded_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginLeft="50dp"
+                android:layout_marginStart="50dp"
+                android:padding="5dp"
                 android:src="@drawable/ic_expand"
-                android:background="@drawable/rounded_corners_background_button"
+                android:background="@drawable/round_blue"
                 android:visibility="visible" />
 
             <FrameLayout
@@ -61,61 +62,25 @@
 
         <!-- expanded layout -->
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/widget_layoutExpanded"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
-
-
-            <RelativeLayout
-                android:id="@+id/widget_logo_expanded"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
-                android:padding="10dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/rounded_corners_background_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/widget_minimize_iv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_minimize" />
-
-                <FrameLayout
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="50dp"
-                    android:visibility="gone"
-                    android:background="@drawable/rounded_corners_orange">
-
-                    <TextView
-                        android:id="@+id/widget_expanded_notification_count"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:text="1" />
-
-                </FrameLayout>
-
-            </RelativeLayout>
-
+            android:background="@drawable/rounded_corners_background_button"
+            android:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners_background_button"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="8dp"
-                android:visibility="visible">
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <LinearLayout
@@ -146,105 +111,120 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-                    <ImageView
-                        android:id="@+id/widget_participan_pic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_person_white" />
-
-                    <TextView
-                        android:id="@+id/widget_participants_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="8dp"
-                        android:text="1"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/rounded_corners_background_button"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="DISPLAY LAST MESSAGE HERE?"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/widget_button_layout"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal"
+                android:layout_height="46dp"
                 android:gravity="center"
-                android:visibility="visible">
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:padding="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                 <ImageButton
                     android:id="@+id/widget_button_leaveroom"
-                    android:layout_width="45dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_action_leave"
-                    android:background="@drawable/rounded_corners_background_button"
-                    android:scaleType="fitCenter"
-                    android:paddingHorizontal="8dp"
                     android:layout_marginEnd="12dp"
+                    android:paddingVertical="3dp"
+                    android:background="@drawable/rounded_corners_orange"
+                    android:paddingHorizontal="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_door"
                     android:visibility="visible" />
 
                 <Button
                     android:id="@+id/widget_button_open_room"
+                    style="@style/ButtonStlyeOrange"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="12dp"
-                    style="@style/ButtonStlyeOrange"
                     android:text="@string/openRoom" />
                 <!--                    android:layout_marginEnd="12dp" />-->
 
                 <ImageButton
                     android:id="@+id/widget_button_videocall"
-                    android:layout_width="45dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/videocall_white"
+                    android:background="@drawable/rounded_corners_orange"
+                    android:paddingVertical="8dp"
                     android:scaleType="fitCenter"
-                    android:paddingVertical="12dp"
-                    android:background="@drawable/rounded_corners_background_button"
+                    android:src="@drawable/videocall_white"
                     android:visibility="visible" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/widget_leave_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/rounded_corners_background_button"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/widget_button_layout">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/breakroom_alert_text"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/widget_button_leave_no"
+                        style="@style/ButtonStlyeOrange"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:text="@string/bleiben" />
+
+                    <Button
+                        android:id="@+id/widget_button_leave_yes"
+                        style="@style/ButtonStlyeOrange"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:text="@string/verlassen" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/widget_minimize_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/rounded_corners_background_button"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_minimize"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </RelativeLayout>

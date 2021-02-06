@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.ktx.auth

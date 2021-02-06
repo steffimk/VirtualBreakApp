@@ -25,6 +25,7 @@
     <color name="very_dark_brown">#2e1e15</color>
     <color name="black">#FF000000</color>
     <color name="dark_gray">#545454</color>
+    <color name="disabled_gray">#bdbdbd</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#F4F4F4</color>
     <color name="light_gray1">#EFEFEF</color>

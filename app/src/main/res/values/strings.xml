@@ -78,6 +78,7 @@
     <string name="ja">Ja</string>
     <string name="status">Status setzen:</string>
     <string name="username">Username</string>
+    <string name="impressum">Impressum</string>
 
     <!-- BreakRoomActivity -->
     <string name="send_message">Senden</string>
@@ -144,6 +145,7 @@
     <string name="virtualbreak">VirtualBreak</string>
     <string name="starte_gemeinsame_virtuelle_pausen">Starte gemeinsame virtuelle Pausen!</string>
     <string name="status_busy_info">Bei \'Beschäftigt\' erhältst du keine Benachrichtigungen zu neuen Pausenräumen</string>
+    <string name="toast_already_in_break">Du bist momentan noch in einer Pause und kannst deswegen keine neue erstellen!</string>
 
     <!--Profile -->
     <string name="save_username">Benutzernamen speichern</string>

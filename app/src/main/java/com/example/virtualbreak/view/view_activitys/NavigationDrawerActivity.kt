@@ -24,9 +24,18 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
+import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Roomtype
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
+import com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
 /**
@@ -54,14 +63,14 @@ class NavigationDrawerActivity : AppCompatActivity() {
         }
         PullData.attachListenerToCurrentUser()
 
-
-        if (SharedPrefManager.instance.getRoomId() != null) {
-            //Open the widget to signal user is still in break
-            openWidget()
-        }
-
         PullData.pullAndSaveOwnUserName()
         FCMService.addFCMTokenListener()
+
+        //Check if user is currently in a Breakroom
+        Log.d("CHECK", "roomid: ${SharedPrefManager.instance.getRoomId()}")
+        if (SharedPrefManager.instance.getRoomId() != null) {
+            getCurrentRoom()
+        }
 
         setContentView(R.layout.activity_navigationdrawer)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -79,12 +88,18 @@ class NavigationDrawerActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
     //catches case when user logs out and then presses back
     override fun onResume() {
         super.onResume()
-        if(Firebase.auth.currentUser == null){
+        if (Firebase.auth.currentUser == null) {
             startActivity(Intent(this, MainActivity::class.java))
             //if no user logged in, intent to MainActivity
         }
@@ -97,7 +112,7 @@ class NavigationDrawerActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.action_settings -> showSettingsDialog()
         }
 
@@ -125,48 +140,45 @@ class NavigationDrawerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(TAG, "OnDestroy")
         stopService(Intent(this, BreakroomWidgetService::class.java))
     }
 
 
-    private fun openWidget() {
-        Log.d(TAG, "openwidget")
-        if (Settings.canDrawOverlays(this)) {
-            if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
-                //if(!SharedPrefManager.instance.getIsWidgetOpen()) {
-                //Log.d(TAG, room?.description + room?.type?.dbStr)
-                SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
-                Log.d("Check", "openWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
-                val intent = Intent(this, BreakroomWidgetService::class.java)
-                intent.putExtra(Constants.ROOM_NAME, "test")
-                intent.putExtra(Constants.ROOM_TYPE, "test")
-                intent.putExtra(Constants.USER_NAME, "me")
-                //intent.putExtra(Constants.GAME_ID, gameId)
-                startService(intent)
-            }
-            //}
-        } else {
-            askPermission()
-            Toast.makeText(
-                this,
-                "You need System Alert Window Permission to do this",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    private fun getCurrentRoom() {
+        PullData.database.child(Constants.DATABASE_CHILD_ROOMS)
+            .child(SharedPrefManager.instance.getRoomId() ?: "")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val pulledRoom = dataSnapshot.getValue<Room>()
+                    Log.d("CHECK", "Pulled currentRoom $pulledRoom")
+                    // if (pulledRoom == null) return
+                    PullData.currentRoom = pulledRoom
+                    openBreakroom()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("NAV", error.message)
+                }
+            })
     }
 
+    private fun openBreakroom() {
 
-    private fun askPermission() {
-        Log.d(TAG, "askPermission")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+        Log.d(TAG, "go to current Breakroom")
 
-            //If the draw over permission is not available open the settings screen
-            //to grant the permission.
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + getPackageName())
-            );
-            startActivityForResult(intent, 123);
+        val intent = Intent(this@NavigationDrawerActivity, BreakRoomActivity::class.java)
+
+        if (PullData.currentRoom?.type == Roomtype.GAME) {
+            intent.putExtra(Constants.GAME_ID, PullData.currentRoom?.gameId)
+        } else {
+            Log.w(TAG, "Room ID is null, can't open Breakroom")
         }
+
+        intent.putExtra(Constants.USER_NAME, SharedPrefManager.instance.getUserName())
+        intent.putExtra(Constants.ROOM_TYPE, PullData.currentRoom?.type?.dbStr)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        this@NavigationDrawerActivity.startActivity(intent)
+
     }
 }

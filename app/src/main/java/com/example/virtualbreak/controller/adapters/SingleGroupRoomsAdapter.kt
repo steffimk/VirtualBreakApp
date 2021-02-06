@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -20,6 +21,7 @@ import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 
 class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName:String?) : RecyclerView.Adapter<SingleGroupRoomsAdapter.ViewHolderRooms>() {
 
@@ -36,10 +38,10 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
         this.context = context
     }
 
-    class ViewHolderRooms(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val imageView = itemView.findViewById<ImageView>(R.id.room_imageview)
-        val roomName = itemView.findViewById<TextView>(R.id.room_text)
-        val participantCount = itemView.findViewById<TextView>(R.id.room_participants_count)
+    class ViewHolderRooms(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.room_imageview)
+        val roomName: TextView = itemView.findViewById(R.id.room_text)
+        val participantCount: TextView = itemView.findViewById(R.id.room_participants_count)
 
     }
 
@@ -59,12 +61,18 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
 
         // get the item using the  position param
         val item: Room = rooms_list[position]
+
+        //If room has no members: delete and don't show
+        if (item.users.size == 0) {
+            PushData.deleteRoom(item)
+        }
         holder.imageView.setImageResource(item.type.symbol)
         holder.roomName.text = item.description
         holder.participantCount.text = item.users.size.toString()
 
-        //check if user in still in Room, if yes deactivate Click on rooms
+        //check if user in still in Room, if yes deactivate Click on rooms except for current
         Log.d(TAG, "isUserinroom ${SharedPrefManager.instance.getRoomId()}")
+
         if (SharedPrefManager.instance.getRoomId() == null) {
             Log.d(TAG, "setclicklistener")
             view.setOnClickListener {
@@ -75,16 +83,29 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
                 val intent = Intent(context, BreakRoomActivity::class.java)
                 intent.putExtra(Constants.USER_NAME, username)
                 intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
-                if (item.type.equals(Roomtype.GAME)) {
+                if (item.type == Roomtype.GAME) {
                     intent.putExtra(Constants.GAME_ID, item.gameId)
                 }
                 context.startActivity(intent)
             }
         } else {
-            Log.d(TAG, "setNOclicklistener")
-            view.setBackgroundColor(Color.parseColor("#bdbdbd"))
-            view.setOnClickListener {
-                //Do Nothing and override existing onCLickListener
+            if (SharedPrefManager.instance.getRoomId() == item.uid) {
+                view.setOnClickListener {
+                    context.stopService(Intent(context, BreakroomWidgetService::class.java))
+                    val intent = Intent(context, BreakRoomActivity::class.java)
+                    intent.putExtra(Constants.USER_NAME, username)
+                    intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
+                    if (item.type == Roomtype.GAME) {
+                        intent.putExtra(Constants.GAME_ID, item.gameId)
+                    }
+                    context.startActivity(intent)
+                }
+            } else {
+                Log.d(TAG, "setNOclicklistener")
+                view.setBackgroundColor(Color.parseColor("#bdbdbd"))
+                view.setOnClickListener {
+                    //Do Nothing and override existing onCLickListener
+                }
             }
         }
 
@@ -108,5 +129,6 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
         rooms_list = rooms
         notifyDataSetChanged()
     }
+
 }
 

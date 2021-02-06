@@ -74,7 +74,6 @@ class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Co
         Log.d(TAG, "Friends ${friends}")
 
         viewHolder.username.text = friend.username
-        //ToDo set the profilpicture
 
         context?.let{
             when(friends[position].status){

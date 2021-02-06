@@ -78,7 +78,7 @@ class BoredApiFragment : Fragment() {
         send_random_activity_btn.setOnClickListener {
             if(activityString != null){
                 roomId?.let{
-                    PushData.sendMessage(it, SharedPrefManager.instance.getUserName()+" schlägt Bored-Aktivität vor: \n"+activityString)
+                    PushData.sendMessage(it, "Neue Bored-Aktivität: \n"+activityString)
                 }
             }
         }

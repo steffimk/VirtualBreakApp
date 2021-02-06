@@ -94,7 +94,6 @@ class BreakRoomActivity : AppCompatActivity() {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate
 
-        // TODO: depending on room type set fragments
         //if (savedInstanceState == null) {
             if(roomType.equals(Roomtype.GAME.dbStr)){
                 supportFragmentManager.commit {

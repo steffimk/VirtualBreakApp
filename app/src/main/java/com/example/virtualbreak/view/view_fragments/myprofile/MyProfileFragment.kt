@@ -33,7 +33,9 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
@@ -120,6 +122,10 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         profile_logout_btn.setOnClickListener {
             //Sign out
             Firebase.auth.signOut()
+            //Unregister from fcm push notifications
+            Firebase.messaging.isAutoInitEnabled = false
+            Firebase.messaging.deleteToken()
+            FirebaseInstallations.getInstance().delete()
             startActivity(Intent(activity, MainActivity::class.java)) //go back to sign up/login activity
         }
     }

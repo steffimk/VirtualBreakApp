@@ -1,8 +1,10 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
 import android.app.Dialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
@@ -25,6 +27,7 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
@@ -68,6 +71,26 @@ class BreakRoomActivity : AppCompatActivity() {
     private var activity = this
 
     private var activeCall = false
+
+    /**
+     * Set up the Coomunication to the Widget via a LocalBroadCastManager
+     */
+    lateinit var localBroadcastManager: LocalBroadcastManager
+    val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            Log.d(TAG, "recived message from Widget: ${intent?.action}")
+            when (intent?.action) {
+                BreakroomWidgetService.ACTION_LEAVE_ROOM -> leaveRoom()
+                BreakroomWidgetService.ACTION_VIDEO_CALL -> videoCall()
+                BreakroomWidgetService.ACTION_CHECK_USERS -> checkIfDialogIsNeededForWidget()
+                BreakroomWidgetService.ACTION_UNREGISTER -> localBroadcastManager.unregisterReceiver(
+                    this
+                )
+
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -163,7 +186,13 @@ class BreakRoomActivity : AppCompatActivity() {
 
         if (roomId != null) {
             viewModel.loadUsersOfRoom()
-
+            if (!SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
+                //Close Widget
+                stopService(Intent(this, BreakroomWidgetService::class.java))
+                SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
+            }
+            //Allowed the Widget to open
+            SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
             //bug moved to other places this can lead to too many messages when device screen turns on and off
             // PushData.joinRoom(this, roomId, userName)
 
@@ -196,14 +225,48 @@ class BreakRoomActivity : AppCompatActivity() {
             // ends activity and return to previous
             finish()
         }
+
+        //Set up the localBroadcastManager for the communication with the service before starting the service
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
+
+
     }
 
+
+    /**
+     * Register the BraodCastRecivers fro the Communication with the Widget
+     */
+    private fun registerBroadcastRecvicers() {
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_LEAVE_ROOM)
+        )
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_VIDEO_CALL)
+        )
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_UNREGISTER)
+        )
+        localBroadcastManager.registerReceiver(
+            broadCastReceiver,
+            IntentFilter(BreakroomWidgetService.ACTION_CHECK_USERS)
+        )
+    }
+
+    /**
+     * Set the menu toolbar
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.breakroom_menu, menu)
         return true
     }
 
-    // updating menu
+
+    /**
+     * Update the Menu Icons
+     */
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         super.onPrepareOptionsMenu(menu)
         // when there is an active call, highlight the call item
@@ -215,19 +278,13 @@ class BreakRoomActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * Set the Click-Events for the menu items
+     */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-//        For the Back Button
-//        android.R.id.home -> {
-//            // when leaving a room remove the roomId from preferences because it's not needed anymore and ends this activity
-//            //leaveRoom()
-//            openWidget()
-//            Log.d(TAG, "Back/home pressed")
-//            true
-//        }
-
-        // User wants to edit the room name
+        //Edit the RoomName
         R.id.action_edit -> {
-            //supportActionBar?.title = null // uncommented because otherwise old title not shown, if new text was empty
+            //User wants to edit the room name
             editText.visibility = View.VISIBLE
             //Show the keyboard
             val imm: InputMethodManager =
@@ -239,6 +296,7 @@ class BreakRoomActivity : AppCompatActivity() {
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = false
             true
         }
+        //Confirm the RoomName
         R.id.action_enter -> {
             val newTitle = editText.text.toString()
             editText.visibility = View.GONE
@@ -265,12 +323,13 @@ class BreakRoomActivity : AppCompatActivity() {
         }
         // User wants to start videocall
         R.id.action_videocall -> {
-            videocall()
+            SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
+            videoCall()
             true
         }
         // User wants to leave room
         R.id.action_leaveRoom -> {
-            leaveRoom()
+            checkIfDialogIsNeeded()
             true
         }
         else -> {
@@ -278,32 +337,48 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        //leaveRoom()
-        openWidget()
-    }
-    override fun onPause() {
-        super.onPause()
-        // To prevent starting the service if the required permission is NOT granted.
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) {
-//            startService(
-//                Intent(
-//                    this@BreakRoomActivity,
-//                    BreakroomWidgetService::class.java
-//                ).putExtra("activity_background", true)
-//            )
-//            finish()
-//        } else {
-//            Toast.makeText(
-//                this,
-//                "You need System Alert Window Permission to do this",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
+    /**
+     * Check if a alert dialog if the room gets deleted it needed
+     */
+    private fun checkIfDialogIsNeeded() {
+        if (room?.users?.size == 1) {
+            showDialog()
+        } else {
+            leaveRoom()
+        }
     }
 
+    /**
+     * Check if the AlertDiaglog if the room gets deleted is needed for the widget
+     */
+    fun checkIfDialogIsNeededForWidget() {
+        if (room?.users?.size == 1) {
+            localBroadcastManager.sendBroadcast(Intent(BreakroomWidgetService.ACTION_SHOW_ALERT))
+        } else {
+            leaveRoom()
+        }
+    }
+
+    /**
+     * Open the Widget when going Back
+     */
+    override fun onBackPressed() {
+        super.onBackPressed()
+        openWidget()
+    }
+
+    /**
+     * If the Widget is not currently open and the user is in a Breakroom, open the Widget
+     */
+    override fun onPause() {
+        super.onPause()
+        if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen() && SharedPrefManager.instance.getRoomId() != null) {
+            openWidget()
+        }
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d(TAG, "onACtivityREsult")
         if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this)) {
@@ -321,35 +396,55 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
+    private fun askPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName())
+            );
+            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
+        }
+    }
+
+
     /**
      * User wants to leave room,
      * so check if it's the last user and remove user from user list of room
      * And finish the activity
      */
     private fun leaveRoom() {
-        if (room?.users?.size == 1) {
-            showDialog()
-        } else {
-            viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(this, room, userName)
-            SharedPrefManager.instance.removeRoomId()
+        viewModel.getRoom().removeObservers(this)
+        PushData.leaveRoom(this, room, userName)
+        SharedPrefManager.instance.removeRoomId()
 
-            //automatically reset status to status before INBREAK
-            PushData.resetStatusToBeforeBreak()
+        //automatically reset status to status before INBREAK
+        PushData.resetStatusToBeforeBreak()
+        stopService(Intent(this, BreakroomWidgetService::class.java))
+        //Forbid the Widget to open
+        SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
 
-            Log.d(TAG, "Left room $roomId")
-            finish()
-        }
+        Log.d(TAG, "Left room $roomId")
+        finish()
+
     }
 
     /**
      * Opens videocall activity with current roomId and userName
      */
-    private fun videocall() {
+    private fun videoCall() {
         val args = Bundle()
         args.putString(Constants.ROOM_ID, roomId)
         args.putString(Constants.USER_NAME, userName)
 
+        //Widget is open
+        if (SharedPrefManager.instance.getWidgetVideoCallManager()) {
+            stopService(Intent(this, BreakroomWidgetService::class.java))
+            args.putString(Constants.ROOM_NAME, room?.description)
+            args.putString(Constants.ROOM_TYPE, room?.type?.dbStr)
+            args.putString(Constants.GAME_ID, gameId)
+        }
         val intent = Intent(this, VideoCallActivity::class.java)
         intent.putExtras(args)
         this.startActivity(intent)
@@ -363,25 +458,14 @@ class BreakRoomActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.breakroom_alert_dialog)
-//        val body = dialog.findViewById(R.id.b) as TextView
-//        body.text = title
         val yesBtn = dialog.findViewById(R.id.room_alert_confirm_button) as Button
         val noBtn = dialog.findViewById(R.id.room_alert_dismiss_button) as Button
         yesBtn.setOnClickListener {
             dialog.dismiss()
-            viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(this, room, userName)
-            SharedPrefManager.instance.removeRoomId()
-
-            //automatically set status to status before room id
-            PushData.resetStatusToBeforeBreak()
-
-            Log.d(TAG, "Left room $roomId")
-            finish()
+            leaveRoom()
         }
         noBtn.setOnClickListener { dialog.dismiss() }
         dialog.show()
-
     }
 
     /**
@@ -389,23 +473,20 @@ class BreakRoomActivity : AppCompatActivity() {
      */
     private fun openWidget() {
         Log.d(TAG, "openwidget")
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
-//            Log.d("BreakRoom1", room?.description + room?.type?.dbStr)
-//            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
-//            intent.putExtra(Constants.ROOM_NAME, room?.description)
-//            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
-//            startService(intent)
-//            finish()
-
         if (Settings.canDrawOverlays(this)) {
-            Log.d("BreakRoom2", room?.description + room?.type?.dbStr)
-            val intent: Intent = Intent(this, BreakroomWidgetService::class.java)
-            intent.putExtra(Constants.ROOM_NAME, room?.description)
-            intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
-            intent.putExtra(Constants.USER_NAME, userName)
-            intent.putExtra(Constants.GAME_ID, gameId)
-            startService(intent)
-            finish()
+            if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
+                //if(!SharedPrefManager.instance.getIsWidgetOpen()) {
+                SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
+                registerBroadcastRecvicers()
+                val intent = Intent(this, BreakroomWidgetService::class.java)
+                intent.putExtra(Constants.ROOM_NAME, room?.description)
+                intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)
+                intent.putExtra(Constants.USER_NAME, userName)
+                intent.putExtra(Constants.GAME_ID, gameId)
+                startService(intent)
+                finish()
+            }
+            //}
         } else {
             askPermission()
             Toast.makeText(
@@ -416,27 +497,6 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun askPermission() {
-//        val intent = Intent(
-//            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-//            Uri.parse("package:$packageName")
-//        )
-//        startActivityForResult(intent, SYSTEM_ALERT_WINDOW_PERMISSION)
-//    }
-
-        Log.d(TAG, "askPermission")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-
-            // If the draw over permission is not available open the settings screen
-            // to grant the permission.
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + getPackageName())
-            );
-            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION);
-        }
-    }
 
     /**
      * closes soft keyboard

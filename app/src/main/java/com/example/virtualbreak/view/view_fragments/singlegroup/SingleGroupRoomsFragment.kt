@@ -6,12 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
@@ -21,7 +21,7 @@ import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.nambimobile.widgets.efab.ExpandableFab
 import com.nambimobile.widgets.efab.FabOption
 import kotlinx.android.synthetic.main.fragment_singlegroup_rooms.*
 
@@ -36,6 +36,12 @@ class SingleGroupRoomsFragment : Fragment() {
     private lateinit var groupUsers: HashMap<String, User>
     var customAdapter: SingleGroupRoomsAdapter? = null
     private lateinit var root: View
+    private lateinit var fabButton: ExpandableFab
+    private lateinit var fabOptionCoffee: FabOption
+    private lateinit var fabOptionQuestion: FabOption
+    private lateinit var fabOptionGame: FabOption
+    private lateinit var fabOptionSport: FabOption
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,30 +115,44 @@ class SingleGroupRoomsFragment : Fragment() {
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, {
                 groupUsers = it
             })
+            fabButton = root.findViewById(R.id.fab_singlegroup)
 
-
-            val fab: FloatingActionButton = root.findViewById(R.id.fab_singlegroup)
-
-            val fabOptionCoffee: FabOption = root.findViewById(R.id.fab_singlegroup_option1)
+            fabOptionCoffee = root.findViewById(R.id.fab_singlegroup_option1)
             fabOptionCoffee.setOnClickListener {
-                openBreakroom(Roomtype.COFFEE, singleGroupViewModel, userName)
+                checkIfInBreakOrOpenBreakRoom(Roomtype.COFFEE, singleGroupViewModel, userName)
             }
 
-            val fabOptionQuestion: FabOption = root.findViewById(R.id.fab_singlegroup_option2)
+            fabOptionQuestion = root.findViewById(R.id.fab_singlegroup_option2)
             fabOptionQuestion.setOnClickListener {
-                openBreakroom(Roomtype.QUESTION, singleGroupViewModel, userName)
+                checkIfInBreakOrOpenBreakRoom(Roomtype.QUESTION, singleGroupViewModel, userName)
 
             }
 
-            val fabOptionGame: FabOption = root.findViewById(R.id.fab_singlegroup_option3)
+            fabOptionGame = root.findViewById(R.id.fab_singlegroup_option3)
             fabOptionGame.setOnClickListener {
-                openBreakroom(Roomtype.GAME, singleGroupViewModel, userName)
+                checkIfInBreakOrOpenBreakRoom(Roomtype.GAME, singleGroupViewModel, userName)
             }
 
-            val fabOptionSport: FabOption = root.findViewById(R.id.fab_singlegroup_option4)
+            fabOptionSport = root.findViewById(R.id.fab_singlegroup_option4)
             fabOptionSport.setOnClickListener {
-                openBreakroom(Roomtype.SPORT, singleGroupViewModel, userName)
+                checkIfInBreakOrOpenBreakRoom(Roomtype.SPORT, singleGroupViewModel, userName)
             }
+        }
+    }
+
+
+    fun checkIfInBreakOrOpenBreakRoom(
+        roomType: Roomtype,
+        singleGroupViewModel: SingleGroupViewModel,
+        userName: String?,
+    ) {
+        if (SharedPrefManager.instance.getRoomId() != null) {
+            Toast.makeText(
+                context, R.string.toast_already_in_break,
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            openBreakroom(roomType, singleGroupViewModel, userName)
         }
     }
 
@@ -159,9 +179,7 @@ class SingleGroupRoomsFragment : Fragment() {
                     }
 
                     prepareAndInitBreakStatus() //before save roomId in SharedPrefs
-
                     SharedPrefManager.instance.saveRoomId(roomId)
-
                     if(roomtype == Roomtype.GAME){
                         val gameId = PushData.createGame(roomId)
                         intent.putExtra(Constants.GAME_ID, gameId)

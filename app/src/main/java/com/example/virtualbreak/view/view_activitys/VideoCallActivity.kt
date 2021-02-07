@@ -1,9 +1,13 @@
 package com.example.virtualbreak.view.view_activitys
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
+import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
@@ -14,6 +18,10 @@ class VideoCallActivity : JitsiMeetActivity() {
 
     private val JITSI_URL = "https://meet.jit.si"
     var roomId: String? = null
+    var userName: String? = null
+    var roomName: String? = null
+    var roomType: String? = null
+    var gameID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +33,14 @@ class VideoCallActivity : JitsiMeetActivity() {
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
             roomId = bundle.getString(Constants.ROOM_ID)!!
-            val userName = bundle.getString(Constants.USER_NAME)
+            if (SharedPrefManager.instance.getWidgetVideoCallManager()) {
+                roomName = bundle.getString(Constants.ROOM_NAME)
+                roomType = bundle.getString(Constants.ROOM_TYPE)
+                gameID = bundle.getString(Constants.GAME_ID)
+            }
+            userName = bundle.getString(Constants.USER_NAME)
             if (userName != null) {
-                currentName = userName
+                currentName = userName as String
             }
         }
         val roomName: String = getString(R.string.app_name) + roomId
@@ -57,5 +70,18 @@ class VideoCallActivity : JitsiMeetActivity() {
     override fun onDestroy() {
         super.onDestroy()
         PushData.removeCallMember(this, roomId)
+        //Allow the widget to open again after leaving the call
+        SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
+        //Check if Videocall was started from Widget and if yes open it again
+        if (SharedPrefManager.instance.getWidgetVideoCallManager()) {
+            SharedPrefManager.instance.saveWidgetVideoCallManager(false)
+            SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
+            val intent = Intent(this, BreakroomWidgetService::class.java)
+            intent.putExtra(Constants.ROOM_NAME, roomName)
+            intent.putExtra(Constants.ROOM_TYPE, roomType)
+            intent.putExtra(Constants.USER_NAME, userName)
+            intent.putExtra(Constants.GAME_ID, gameID)
+            startService(intent)
+        }
     }
 }

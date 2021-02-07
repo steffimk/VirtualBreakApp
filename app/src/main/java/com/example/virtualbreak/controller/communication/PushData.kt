@@ -256,7 +256,10 @@ class PushData {
                     if(userName != null){
                         sendSystemMessage(room.uid,userName + " " + context.getString(R.string.left))
                     } else{
-                        sendSystemMessage(room.uid,currentUserId + " " + context.getString(R.string.left))
+                        sendSystemMessage(
+                            room.uid,
+                            currentUserId + " " + context.getString(R.string.left)
+                        )
                     }
 
                     Log.d(TAG, "Removed user from room")
@@ -266,13 +269,33 @@ class PushData {
             }
         }
 
-        fun setRoomDescription(roomId: String, description: String) {
-            database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
+        fun deleteRoom(room: Room?) {
+            if (room == null) {
+                return
+            }
+//            if (room.users.size == 0) {
+            else {
+                database.child(Constants.DATABASE_CHILD_GROUPS).child(room.groupId)
+                    .child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                database.child(Constants.DATABASE_CHILD_ROOMS).child(room.uid).removeValue()
+                if (room.type == Roomtype.GAME) {
+                    if (room.gameId != null) {
+                        database.child(Constants.DATABASE_CHILD_GAMES).child(room.gameId!!)
+                            .removeValue()
+                    }
+                }
+                Log.d(TAG, "Deleted empty room.")
+            }
         }
 
-        fun sendMessage(roomId: String, message: String){
+        fun setRoomDescription(roomId: String, description: String) {
+            database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+                .child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
+        }
+
+        fun sendMessage(roomId: String, message: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
-            if(currentUserId != null){
+            if (currentUserId != null) {
                 val date = Date()
                 val newChatMessage = Message(currentUserId, message, date.time)
                 database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)

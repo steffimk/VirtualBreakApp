@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 
 import android.content.SharedPreferences
+import android.text.BoringLayout
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.example.virtualbreak.R
@@ -28,6 +29,8 @@ private constructor() {
     val USER_NAME: String = "userName"
     val ROOM_USER: String = "roomUser"
     val CURRENT_STATUS: String = "currentStatus"
+    val IS_ALLOWED_TO_OPEN_WIDGET: String = "isWidgetAllowedOpen"
+    val WAS_OPEND_FROM_WIDGET: String = "wasOpendFromWidget"
 
 
     /**
@@ -42,7 +45,6 @@ private constructor() {
     }
 
     fun saveCurrentStatus(status: Status) {
-
         sharedPrefs?.let{
             it.edit().putString(CURRENT_STATUS, status.dbStr).apply()
             Log.d(TAG, "Status " + status.dbStr + " added to shared preferences")
@@ -163,8 +165,44 @@ private constructor() {
     fun saveRoomUsers(hashMapString: String) {
         Log.d(TAG, "saveRoomUsers()")
         sharedPrefs?.edit()?.putString(ROOM_USER, hashMapString)?.apply()
-        if(sharedPrefs == null)
+        if (sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun saveIsWidgetAllowedtoOpen(isWidgetallowedtoOpen: Boolean) {
+        sharedPrefs?.let {
+            it.edit().putBoolean(IS_ALLOWED_TO_OPEN_WIDGET, isWidgetallowedtoOpen).apply()
+            Log.d(TAG, "IswidgetOpen " + isWidgetallowedtoOpen + " added to shared preferences")
+        }
+        if (sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun getIsWidgetAllowedtoOpen(): Boolean {
+        val isOpen = sharedPrefs?.getBoolean(IS_ALLOWED_TO_OPEN_WIDGET, false)
+        if (isOpen != null) {
+            return isOpen
+        } else {
+            return false
+        }
+    }
+
+    fun saveWidgetVideoCallManager(wasOpendFromWidger: Boolean) {
+        sharedPrefs?.let {
+            it.edit().putBoolean(WAS_OPEND_FROM_WIDGET, wasOpendFromWidger).apply()
+            Log.d(TAG, "IswidgetOpen " + wasOpendFromWidger + " added to shared preferences")
+        }
+        if (sharedPrefs == null)
+            Log.w(TAG, "SharedPrefs is null")
+    }
+
+    fun getWidgetVideoCallManager(): Boolean {
+        val wasOpendFromWidger = sharedPrefs?.getBoolean(WAS_OPEND_FROM_WIDGET, false)
+        if (wasOpendFromWidger != null) {
+            return wasOpendFromWidger
+        } else {
+            return false
+        }
     }
 
     companion object {

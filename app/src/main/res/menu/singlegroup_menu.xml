@@ -24,7 +24,7 @@
     <item
         android:id="@+id/action_leave_group"
         android:title="@string/leave_group"
-        android:icon="@drawable/ic_action_leave"
+        android:icon="@drawable/ic_door"
         app:showAsAction="collapseActionView" />
 
 

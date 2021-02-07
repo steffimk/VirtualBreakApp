@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/info_base"
+    tools:context=".view.view_fragments.InfoFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/architects_daughter"
+                android:text="@string/virtualbreak"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
+
+            <RelativeLayout
+                android:id="@+id/expand_general_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/architects_daughter"
+                    android:text="@string/general"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+                <ImageButton
+                    android:id="@+id/expand_general_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_expand_less_24"
+                    android:tint="@color/darkblue" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/general_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/info_text"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:text="@string/settings_text"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/expand_about_us_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/architects_daughter"
+                    android:text="@string/info_about_us"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+                <ImageButton
+                    android:id="@+id/expand_about_us_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_expand_less_24"
+                    android:tint="@color/darkblue" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/about_us_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/team_member_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <TextView
+                            android:id="@+id/team1_text_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/architects_daughter"
+                            android:text="Manuela Eska"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            app:layout_constraintBottom_toTopOf="@id/team1_text_info"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/team1_text_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_eska"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/team1_text_header" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/team1_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/m_eska"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/team1_text"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/team_member_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <TextView
+                            android:id="@+id/team2_text_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/architects_daughter"
+                            android:text="Miriam Halsner"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            app:layout_constraintBottom_toTopOf="@id/team2_text_info"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/team2_text_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_halsner"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/team2_text_header" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/team2_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/m_halsner"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/team1_text"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/team_member_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <TextView
+                            android:id="@+id/team3_text_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/architects_daughter"
+                            android:text="Jenny Phu"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            app:layout_constraintBottom_toTopOf="@id/team3_text_info"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/team3_text_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_phu"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/team3_text_header" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/team3_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/j_phu"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/team1_text"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/team_member_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <TextView
+                            android:id="@+id/team4_text_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/architects_daughter"
+                            android:text="Stefanie Kloß"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            app:layout_constraintBottom_toTopOf="@id/team4_text_info"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/team4_text_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_kloss"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/team4_text_header" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/team4_image"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/s_kloss"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/team1_text"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/expand_sources_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/architects_daughter"
+                    android:text="@string/bilderquellen"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+                <ImageButton
+                    android:id="@+id/expand_sources_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_expand_less_24"
+                    android:tint="@color/darkblue" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/sources_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bilderquellen_list"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</FrameLayout>

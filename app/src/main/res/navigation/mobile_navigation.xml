@@ -57,6 +57,13 @@
         tools:layout="@layout/fragment_logout" />
 
     <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.virtualbreak.view.view_fragments.InfoFragment"
+        android:label="@string/info"
+        tools:layout="@layout/fragment_info"
+        />
+
+    <fragment
         android:id="@+id/addFriendsFragment"
         android:name="com.example.virtualbreak.view.view_fragments.addfriends.AddFriendsFragment"
         android:label="Freund hinzufügen"

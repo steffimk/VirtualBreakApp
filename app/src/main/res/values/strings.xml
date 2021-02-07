@@ -72,6 +72,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="home">Home</string>
     <string name="logout">Logout</string>
+    <string name="info">Info &amp; Über</string>
     <string name="new_group">Neue Gruppe</string>
     <string name="neuer_pausenraum">Neuer Pausenraum</string>
     <string name="willst_du_dich_wirklich_ausloggen">Willst du dich wirklich ausloggen?</string>
@@ -154,8 +155,12 @@
     <string name="pausenraum_name">Pausenraum Name</string>
     <string name="open_rooms">Offene Pausenräume:</string>
     <string name="settings_text">Viel Spaß in gemeinsamen virtuellen Pausen wünscht das VirtualBreak Team:\nManuela Eska, Miriam Halsner, Stefanie Kloß, Jenny Phu\n(MSP Gruppe 4)\n</string>
+    <string name="general">Allgemein:</string>
+    <string name="info_text">Diese App entstand im Rahmen des Praktikum Mobile und Verteilte Systeme (MSP) der LMU im WS20/21 unter der Leitung von Prof. Dr. Claudia Linnhoff-Popien, Steffen Illium &amp; Andreas Sedlmeier</string>
+    <string name="info_about_us">Über uns:</string>
     <string name="bilderquellen">Bilderquellen:</string>
-    <string name="bilderquellen_list">- Tea by Vectorstall from the Noun Project\n
+    <string name="bilderquellen_list">
+        - Tea by Vectorstall from the Noun Project\n
         - Game by Adrien Coquet from the Noun Project\n
         - Sport by iconixar from the Noun Project\n
         - Question by Martin Delin from the Noun Project\n
@@ -166,6 +171,26 @@
     <string name="teilen">Teilen</string>
     <string name="boredapi_intro">Langeweile? Probiere die BoredAPI!</string>
     <string name="hangman">Hangman</string>
+
+    <string name="info_eska">
+        - 23 Jahre alt\n
+        - 8. Fachsemester Bachelor Medieninformatik mit Anwendungsfach MMI\n
+        - Mein perfektes Heißgetränk: heiße Schokolade</string>
+
+    <string name="info_halsner">
+        - 23 Jahre alt\n
+        - 2. (offiziell 1.) Fachsemester Master Medieninformatik mit Anwendungsfach Gestaltung, davor Bachelor Medieninformatik an LMU\n
+        - Mein perfektes Heißgetränk: jede Art von Tee oder heiße Schokolade</string>
+
+    <string name="info_phu">
+        - 22 Jahre alt\n
+        - Übergang von Bachelor Medieninformatik zu Master Mensch-Computer-Interaktion (inoffiziell seit 2 Semestern Master)\n
+        - Mein perfektes Heißgetränk: Tee oder Kaffee</string>
+
+    <string name="info_kloss">
+        - 23 Jahre alt\n
+        - 2. (offiziell 1.) Fachsemester Master Informatik Bachelor in Informatik mit Nebenfach BWL an der LMU\n
+        - Mein perfektes Heißgetränk: English Breakfast mit Honig und Milch</string>
 
     <!--LogIn/SignIn Error Messages -->
     <string name="ERROR_INVALID_CUSTOM_TOKEN">Das benutzerdefinierte Token-Format ist falsch. Bitte prüfen Sie die Dokumentation.</string>

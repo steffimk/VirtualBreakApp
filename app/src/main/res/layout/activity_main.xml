@@ -18,9 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/architects_daughter"
+            android:textColor="@color/darkblue"
             android:gravity="center"
             android:text="@string/virtualbreak"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textSize="40sp" />
 
         <TextView

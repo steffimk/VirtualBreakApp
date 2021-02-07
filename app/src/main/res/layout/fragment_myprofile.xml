@@ -20,7 +20,7 @@
             android:id="@+id/profileImg"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="30dp"
             android:contentDescription="profile picture"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_person_24"
@@ -82,7 +82,7 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             app:cardBackgroundColor="@color/darkblue"
             app:cardCornerRadius="8dp">
 
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/status"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     android:textColor="@color/light_gray" />
 
                 <Spinner
@@ -122,7 +122,7 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/profile_logout_btn"
             app:backgroundTint="@color/blue_cornflower"
             android:layout_width="200dp"
@@ -138,7 +138,7 @@
         android:id="@+id/fab_editPic"
         android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="120dp"
         android:contentDescription="edit picture"
         android:src="@drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"

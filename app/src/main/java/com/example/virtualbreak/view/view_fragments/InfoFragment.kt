@@ -27,6 +27,11 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //at first close all fragments
+        expand_general()
+        expandAboutUs()
+        expandSources()
+
         //expand or close general fragment
         expand_general_relative_layout.setOnClickListener {
             expand_general()

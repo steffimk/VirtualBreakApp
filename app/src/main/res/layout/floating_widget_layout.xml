@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:animateLayoutChanges="true">
 
         <!-- collapsed layout -->
         <RelativeLayout
@@ -35,7 +36,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="50dp"
-                android:padding="5dp"
+                android:padding="12dp"
                 android:src="@drawable/ic_expand"
                 android:background="@drawable/round_blue"
                 android:visibility="visible" />
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/rounded_corners_background_button"
+            android:animateLayoutChanges="true"
             android:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout

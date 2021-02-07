@@ -59,6 +59,7 @@ class BreakroomWidgetService : Service() {
         }
     }
 
+    //Don't bind the Service to a activity
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -91,10 +92,22 @@ class BreakroomWidgetService : Service() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        //Set the Notification for the Foreground Service
-        val notificationIntent = Intent(this, BreakRoomActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        //Add the intent for the Click on the Notification
+        val notificationIntent = Intent(
+            this@BreakroomWidgetService,
+            BreakRoomActivity::class.java
+        ).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notificationIntent.putExtra(Constants.USER_NAME, userName)
+        notificationIntent.putExtra(Constants.ROOM_TYPE, roomType)
+        notificationIntent.putExtra(Constants.GAME_ID, gameId)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
+        //Set the Notification for the Foreground Service
         val notification = NotificationCompat.Builder(this, channelID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.notification_hint) + " " + roomName)
@@ -169,8 +182,10 @@ class BreakroomWidgetService : Service() {
         //Collapse widget
         mFloatingView.findViewById<ImageButton>(R.id.widget_minimize_iv).setOnClickListener {
             Log.d(TAG, "click minimize")
-            collapsedView.visibility = View.VISIBLE
+            expandedView.animate().alpha(0.0f)
             expandedView.visibility = View.GONE
+            collapsedView.animate().alpha(1.0f)
+            collapsedView.visibility = View.VISIBLE
         }
 
         //LeaveRoomButton
@@ -207,11 +222,10 @@ class BreakroomWidgetService : Service() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "OnDestroy")
+        Log.d(TAG, "Destroy Widget Service")
         SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
         localBroadcastManager.sendBroadcast(Intent(ACTION_UNREGISTER))
         localBroadcastManager.unregisterReceiver(widgetBroadCastReceiver)
-        Log.d("Check", "onDestroyWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         mWindowManager.removeView(mFloatingView)
         stopForeground(true)
         stopSelf()

@@ -85,9 +85,12 @@ class BreakRoomActivity : AppCompatActivity() {
                 BreakroomWidgetService.ACTION_CHECK_USERS -> {
                     checkIfDialogIsNeededForWidget()
                 }
-                BreakroomWidgetService.ACTION_UNREGISTER -> localBroadcastManager.unregisterReceiver(
-                    this
-                )
+                BreakroomWidgetService.ACTION_UNREGISTER -> {
+                    Log.d("CHeck", "Unregisterrecviers")
+                    localBroadcastManager.unregisterReceiver(
+                        this
+                    )
+                }
             }
         }
     }
@@ -227,9 +230,8 @@ class BreakRoomActivity : AppCompatActivity() {
             finish()
         }
 
-        //Set up the communication with the service before starting the service
+        //Set up the localBroadcastManager for the communication with the service before starting the service
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
-        registerBroadcastRecvicers()
 
 
     }
@@ -239,6 +241,7 @@ class BreakRoomActivity : AppCompatActivity() {
      * Register the BraodCastRecivers fro the Communication with the Widget
      */
     private fun registerBroadcastRecvicers() {
+        Log.d("CHeck", "registerrecviers")
         localBroadcastManager.registerReceiver(
             broadCastReceiver,
             IntentFilter(BreakroomWidgetService.ACTION_LEAVE_ROOM)
@@ -264,6 +267,7 @@ class BreakRoomActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.breakroom_menu, menu)
         return true
     }
+
 
     /**
      * Update the Menu Icons
@@ -378,6 +382,12 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("Check", "BreakroomACt ondestroy")
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -477,6 +487,7 @@ class BreakRoomActivity : AppCompatActivity() {
             if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
                 //if(!SharedPrefManager.instance.getIsWidgetOpen()) {
                 SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
+                registerBroadcastRecvicers()
                 val intent = Intent(this, BreakroomWidgetService::class.java)
                 intent.putExtra(Constants.ROOM_NAME, room?.description)
                 intent.putExtra(Constants.ROOM_TYPE, room?.type?.dbStr)

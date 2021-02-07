@@ -23,6 +23,18 @@ class HangmanFragment : Fragment() {
 
     private var game: Game? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setFragmentResultListener("requestKey") { requestKey, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported
+            val result = bundle.getString("bundleKey")
+            handleKeyboardFromChat(result)
+            // Do something with the result
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +44,8 @@ class HangmanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         val gameId = requireArguments().getString(Constants.GAME_ID)
         // by default: set content layout visible and end layout invisible
         game_content_layout.visibility = View.VISIBLE
@@ -359,6 +373,32 @@ class HangmanFragment : Fragment() {
 
         })
     }
+
+    fun handleKeyboardFromChat(focus: Boolean) {
+        val viewBefore = hangman_content.getVisibility()
+        if (focus) {
+            // when edit text is clicked, hide game fragment
+            if (viewBefore === View.VISIBLE) {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                hangman_content.setVisibility(View.GONE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        } else {
+            if (viewBefore === View.VISIBLE) {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                hangman_content.setVisibility(viewBefore)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        }
+    }
+
+
 
     /**
      * When game ended show other view

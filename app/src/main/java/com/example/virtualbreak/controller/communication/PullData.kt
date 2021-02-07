@@ -82,7 +82,6 @@ class PullData {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val pulledRoom = dataSnapshot.getValue<Room>()
                         Log.d(TAG, "Pulled username $pulledRoom")
-                        Log.d("CHECK", "Pulled currentRoom $pulledRoom")
                         // if (pulledRoom == null) return
                         currentRoom = pulledRoom
                     }

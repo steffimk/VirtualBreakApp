@@ -82,15 +82,11 @@ class BreakRoomActivity : AppCompatActivity() {
             when (intent?.action) {
                 BreakroomWidgetService.ACTION_LEAVE_ROOM -> leaveRoom()
                 BreakroomWidgetService.ACTION_VIDEO_CALL -> videoCall()
-                BreakroomWidgetService.ACTION_CHECK_USERS -> {
-                    checkIfDialogIsNeededForWidget()
-                }
-                BreakroomWidgetService.ACTION_UNREGISTER -> {
-                    Log.d("CHeck", "Unregisterrecviers")
-                    localBroadcastManager.unregisterReceiver(
-                        this
-                    )
-                }
+                BreakroomWidgetService.ACTION_CHECK_USERS -> checkIfDialogIsNeededForWidget()
+                BreakroomWidgetService.ACTION_UNREGISTER -> localBroadcastManager.unregisterReceiver(
+                    this
+                )
+
             }
         }
     }
@@ -241,7 +237,6 @@ class BreakRoomActivity : AppCompatActivity() {
      * Register the BraodCastRecivers fro the Communication with the Widget
      */
     private fun registerBroadcastRecvicers() {
-        Log.d("CHeck", "registerrecviers")
         localBroadcastManager.registerReceiver(
             broadCastReceiver,
             IntentFilter(BreakroomWidgetService.ACTION_LEAVE_ROOM)
@@ -382,11 +377,6 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("Check", "BreakroomACt ondestroy")
-
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION) {

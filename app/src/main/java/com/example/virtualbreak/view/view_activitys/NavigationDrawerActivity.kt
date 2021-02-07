@@ -67,7 +67,6 @@ class NavigationDrawerActivity : AppCompatActivity() {
         FCMService.addFCMTokenListener()
 
         //Check if user is currently in a Breakroom
-        Log.d("CHECK", "roomid: ${SharedPrefManager.instance.getRoomId()}")
         if (SharedPrefManager.instance.getRoomId() != null) {
             getCurrentRoom()
         }
@@ -151,7 +150,6 @@ class NavigationDrawerActivity : AppCompatActivity() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val pulledRoom = dataSnapshot.getValue<Room>()
-                    Log.d("CHECK", "Pulled currentRoom $pulledRoom")
                     // if (pulledRoom == null) return
                     PullData.currentRoom = pulledRoom
                     openBreakroom()

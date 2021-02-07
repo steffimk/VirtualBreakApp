@@ -49,7 +49,6 @@ class BreakroomWidgetService : Service() {
     lateinit var localBroadcastManager: LocalBroadcastManager
     val widgetBroadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
-            Log.d("CHECk", "recivedmessage ${intent?.action}")
             when (intent?.action) {
                 ACTION_SHOW_ALERT -> {
                     buttonView.visibility = View.GONE

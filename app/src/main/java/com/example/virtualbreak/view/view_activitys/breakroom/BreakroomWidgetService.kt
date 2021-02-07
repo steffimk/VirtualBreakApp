@@ -11,19 +11,19 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
-import kotlin.math.abs
 
 
 class BreakroomWidgetService : Service() {
 
     private val TAG = "BreakRoomWidgetService"
 
-    private lateinit var mWindowManager: WindowManager
     private lateinit var mFloatingView: View
     private lateinit var collapsedView: View
     private lateinit var expandedView: View
@@ -32,10 +32,14 @@ class BreakroomWidgetService : Service() {
     private var roomName = "RoomName"
     private var roomType = "RoomType"
     private var userName = "UserName"
-
     private var gameId: String? = null
 
+    private lateinit var mWindowManager: WindowManager
     private lateinit var params: WindowManager.LayoutParams
+
+    /**
+     * Set up the Communication with the Activity via a localBroadcastManager
+     */
     lateinit var localBroadcastManager: LocalBroadcastManager
     val widgetBroadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
@@ -56,18 +60,27 @@ class BreakroomWidgetService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val bundle: Bundle? = intent?.extras
         if (bundle != null) {
+            //Set the View up with all the Information
             mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text =
                 bundle.getString(Constants.ROOM_NAME).toString()
             mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text =
                 "Pausentyp  ${bundle.getString(Constants.ROOM_TYPE).toString()}"
+            // save other constants
             userName = bundle.getString(Constants.USER_NAME).toString()
             roomType = bundle.getString(Constants.ROOM_TYPE).toString()
             gameId = bundle.getString(Constants.GAME_ID).toString()
             Log.d("BreakRoom3", roomName + roomType)
         }
 //        return super.onStartCommand(intent, flags, startId)
-//        startForegroundService()
-        return START_NOT_STICKY;
+//        val notification: Notification =  NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
+//            .setContentTitle("VirtualBreak")
+//            .setContentText("Du bist noch in einer aktiven Pause!")
+//            .setSmallIcon(R.drawable.ic_vb_alt)
+//            .build();
+//            startForeground(2001,notification);
+        //startForegroundService()
+        return START_STICKY;
+
     }
 
 
@@ -89,7 +102,7 @@ class BreakroomWidgetService : Service() {
             IntentFilter(ACTION_SHOW_ALERT)
         )
 
-        //Spefify parameters for the layout
+        //Specify parameters for the layout
         params = WindowManager.LayoutParams().apply {
             format = PixelFormat.TRANSLUCENT
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -100,6 +113,7 @@ class BreakroomWidgetService : Service() {
                 else -> WindowManager.LayoutParams.TYPE_TOAST
             }
 
+            //specify the position and height of the floating widget
             gravity = Gravity.CENTER
             width = WindowManager.LayoutParams.WRAP_CONTENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
@@ -109,7 +123,7 @@ class BreakroomWidgetService : Service() {
         mWindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         mWindowManager.addView(mFloatingView, params)
 
-        //getting the collapsed and expanded view from the floating view
+        //getting the collapsed and expanded view as well as other View components from the floating view
         collapsedView = mFloatingView.findViewById(R.id.widget_layoutCollapsed)
         expandedView = mFloatingView.findViewById(R.id.widget_layoutExpanded)
         altertView = mFloatingView.findViewById(R.id.widget_leave_alert)
@@ -120,36 +134,40 @@ class BreakroomWidgetService : Service() {
         layoutParent.setOnTouchListener(onTouchListener)
 
 
-        mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text = roomName
-        mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text = roomType
-
+        //Set all the onClicklisteners for the Buttons
+        //Expand widget
         mFloatingView.findViewById<ImageButton>(R.id.widget_expanded_iv).setOnClickListener {
             Log.d(TAG, "click expand")
             collapsedView.visibility = View.GONE
             expandedView.visibility = View.VISIBLE
         }
 
+        //Collapse widget
         mFloatingView.findViewById<ImageButton>(R.id.widget_minimize_iv).setOnClickListener {
             Log.d(TAG, "click minimize")
             collapsedView.visibility = View.VISIBLE
             expandedView.visibility = View.GONE
         }
 
+        //LeaveRoomButton
         mFloatingView.findViewById<ImageButton>(R.id.widget_button_leaveroom).setOnClickListener {
             Log.d(TAG, "Leave room")
             localBroadcastManager.sendBroadcast(Intent(ACTION_CHECK_USERS))
         }
 
+        //VideoCallButton
         mFloatingView.findViewById<ImageButton>(R.id.widget_button_videocall).setOnClickListener {
             Log.d(TAG, "Join Video call")
             SharedPrefManager.instance.saveWidgetVideoCallManager(true)
             localBroadcastManager.sendBroadcast(Intent(ACTION_VIDEO_CALL))
         }
 
+        //Open Room Button
         mFloatingView.findViewById<Button>(R.id.widget_button_open_room).setOnClickListener {
             openRoom()
         }
 
+        //Yes and no button for alert when Room gets deleted
         mFloatingView.findViewById<Button>(R.id.widget_button_leave_yes).setOnClickListener {
             localBroadcastManager.sendBroadcast(Intent(ACTION_LEAVE_ROOM))
         }
@@ -160,6 +178,9 @@ class BreakroomWidgetService : Service() {
 
     }
 
+    /**
+     * When the Service gets destroyed, allowed widget to open, unregister the boradcastRecivers and stop Service
+     */
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "OnDestroy")
@@ -168,9 +189,13 @@ class BreakroomWidgetService : Service() {
         localBroadcastManager.unregisterReceiver(widgetBroadCastReceiver)
         Log.d("Check", "onDestroyWidget" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         mWindowManager.removeView(mFloatingView)
+        stopForeground(true)
         stopSelf()
     }
 
+    /**
+     * Open the current Breakroomactivity
+     */
     private fun openRoom() {
         val intent = Intent(this@BreakroomWidgetService, BreakRoomActivity::class.java)
         intent.putExtra(Constants.USER_NAME, userName)
@@ -178,64 +203,54 @@ class BreakroomWidgetService : Service() {
         intent.putExtra(Constants.GAME_ID, gameId)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-        //close the service and remove view from the view hierarchy
         stopSelf()
     }
 
 
-    //OnTouchListener
-    private var lastX: Int = 0
-    private var lastY: Int = 0
-    private var firstX: Int = 0
-    private var firstY: Int = 0
+    /**
+     * The OnTouchListener for the Widget to move around
+     */
 
-    private var touchConsumedByMove = false
+    //initial x and y coordinates
+    private var initialX = 0
+    private var initialY = 0
+
+    //new touch x and y coordinates
+    private var touchX = 0f
+    private var touchY = 0f
+
 
     private val onTouchListener = View.OnTouchListener { view, event ->
-        val totalDeltaX = lastX - firstX
-        val totalDeltaY = lastY - firstY
 
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                lastX = event.rawX.toInt()
-                lastY = event.rawY.toInt()
-                firstX = lastX
-                firstY = lastY
+                //Get the current Touch Location and save it
+                initialX = params.x;
+                initialY = params.y;
+                //get the current Touch location
+                touchX = event.rawX;
+                touchY = event.rawY;
+                return@OnTouchListener true
             }
             MotionEvent.ACTION_UP -> {
                 view.performClick()
-                ///Activate for View Change, not realy good
-                // handleViewChange()
-
+                return@OnTouchListener true
             }
             MotionEvent.ACTION_MOVE -> {
-                val deltaX = event.rawX.toInt() - lastX
-                val deltaY = event.rawY.toInt() - lastY
-                lastX = event.rawX.toInt()
-                lastY = event.rawY.toInt()
-                if (abs(totalDeltaX) >= 5 || abs(totalDeltaY) >= 5) {
-                    if (event.pointerCount == 1) {
-                        params.x += deltaX
-                        params.y += deltaY
-                        touchConsumedByMove = true
-                        mWindowManager?.apply {
-                            updateViewLayout(mFloatingView, params)
-                        }
-                    } else {
-                        touchConsumedByMove = false
-                    }
-                } else {
-                    touchConsumedByMove = false
-                }
-            }
-            else -> {
+                //Calculate the new x and y value and update the Widget on every move
+                params.x = initialX + (event.rawX - touchX).toInt();
+                params.y = initialY + (event.rawY - touchY).toInt();
+                mWindowManager.updateViewLayout(mFloatingView, params);
+                return@OnTouchListener true
             }
         }
-        touchConsumedByMove
+        return@OnTouchListener false
     }
 
 
-
+    /**
+     * ALL Communicatation Constatns for the localBroadCastManager
+     */
     companion object {
         const val ACTION_VIDEO_CALL = "videocall"
         const val ACTION_LEAVE_ROOM = "leave_room"

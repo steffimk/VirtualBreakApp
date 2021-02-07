@@ -1,5 +1,8 @@
 package com.example.virtualbreak.view.view_activitys.breakroom
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -14,6 +17,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -36,6 +40,8 @@ class BreakroomWidgetService : Service() {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var params: WindowManager.LayoutParams
+
+    private val channelID = "widget_channel"
 
     /**
      * Set up the Communication with the Activity via a localBroadcastManager
@@ -60,25 +66,44 @@ class BreakroomWidgetService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val bundle: Bundle? = intent?.extras
         if (bundle != null) {
-            //Set the View up with all the Information
-            mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text =
-                bundle.getString(Constants.ROOM_NAME).toString()
-            mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text =
-                "Pausentyp  ${bundle.getString(Constants.ROOM_TYPE).toString()}"
             // save other constants
+            roomName = bundle.getString(Constants.ROOM_NAME).toString()
             userName = bundle.getString(Constants.USER_NAME).toString()
             roomType = bundle.getString(Constants.ROOM_TYPE).toString()
             gameId = bundle.getString(Constants.GAME_ID).toString()
-            Log.d("BreakRoom3", roomName + roomType)
+            //Set the View up with all the Information
+            mFloatingView.findViewById<TextView>(R.id.widget_roomName_textview).text = roomName
+            mFloatingView.findViewById<TextView>(R.id.widget_roomtype_textview).text = roomType
+
         }
-//        return super.onStartCommand(intent, flags, startId)
-//        val notification: Notification =  NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
-//            .setContentTitle("VirtualBreak")
-//            .setContentText("Du bist noch in einer aktiven Pause!")
-//            .setSmallIcon(R.drawable.ic_vb_alt)
-//            .build();
-//            startForeground(2001,notification);
-        //startForegroundService()
+
+        //Open a notification Channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name: CharSequence = channelID
+            val description = getString(R.string.notification_Channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelID, name, importance)
+            channel.description = description
+
+            val notificationManager = getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        //Set the Notification for the Foreground Service
+        val notificationIntent = Intent(this, BreakRoomActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+
+        val notification = NotificationCompat.Builder(this, channelID)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(getString(R.string.notification_hint) + " " + roomName)
+            .setSmallIcon(R.drawable.ic_vb_alt)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        //Start the foreground service
+        startForeground(1, notification)
         return START_STICKY;
 
     }
@@ -86,7 +111,6 @@ class BreakroomWidgetService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("Check", "onCreatewidget " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         setTheme(R.style.Theme_VirtualBreak)
 
         //Inflate the Layout

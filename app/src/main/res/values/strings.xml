@@ -110,9 +110,13 @@
     <string name="edit">edit</string>
     <string name="rename_room">Rename Room</string>
 
+    <!-- Floating Widget -->
     <string name="breakroomname">Pausenraum Name</string>
     <string name="breakroomtype">Pausenraum Typ</string>
     <string name="openRoom">Öffne Raum</string>
+    <string name="notification_hint">Du bist in der Pause </string>
+    <string name="notification_Channel_description">"widget_Notification"</string>
+
     <!-- Sport Room -->
     <string name="startTimer">Übung für alle starten</string>
     <string name="cancelTimer">Übung für alle abbrechen</string>

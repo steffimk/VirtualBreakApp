@@ -187,6 +187,11 @@ class BreakRoomActivity : AppCompatActivity() {
 
         if (roomId != null) {
             viewModel.loadUsersOfRoom()
+            if (!SharedPrefManager.instance.getIsWidgetAllowedtoOpen()) {
+                //Close Widget
+                stopService(Intent(this, BreakroomWidgetService::class.java))
+                SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
+            }
             //Allowed the Widget to open
             SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
             //bug moved to other places this can lead to too many messages when device screen turns on and off

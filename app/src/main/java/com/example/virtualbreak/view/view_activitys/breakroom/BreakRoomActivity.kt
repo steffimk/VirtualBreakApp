@@ -405,24 +405,14 @@ class BreakRoomActivity : AppCompatActivity() {
 
 
     /**
-     * Leave the currentBreakroom
-     */
-    private fun leaveRoom() {
-        viewModel.getRoom().removeObservers(this)
-        PushData.leaveRoom(this, room, userName)
-        SharedPrefManager.instance.removeRoomId()
-    /**
      * User wants to leave room,
      * so check if it's the last user and remove user from user list of room
      * And finish the activity
      */
     private fun leaveRoom() {
-        if (room?.users?.size == 1) {
-            showDialog()
-        } else {
-            viewModel.getRoom().removeObservers(this)
-            PushData.leaveRoom(this, room, userName)
-            SharedPrefManager.instance.removeRoomId()
+        viewModel.getRoom().removeObservers(this)
+        PushData.leaveRoom(this, room, userName)
+        SharedPrefManager.instance.removeRoomId()
 
         //automatically reset status to status before INBREAK
         PushData.resetStatusToBeforeBreak()
@@ -432,12 +422,13 @@ class BreakRoomActivity : AppCompatActivity() {
 
         Log.d(TAG, "Left room $roomId")
         finish()
+
     }
 
     /**
      * Opens videocall activity with current roomId and userName
      */
-    private fun videocall() {
+    private fun videoCall() {
         val args = Bundle()
         args.putString(Constants.ROOM_ID, roomId)
         args.putString(Constants.USER_NAME, userName)
@@ -499,7 +490,6 @@ class BreakRoomActivity : AppCompatActivity() {
             ).show()
         }
     }
-
 
 
     /**

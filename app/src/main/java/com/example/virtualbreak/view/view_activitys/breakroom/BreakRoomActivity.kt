@@ -61,7 +61,7 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
-    //set default room to room which needs no extras
+    // default room type (which needs no extras)
     private var roomType: String = Roomtype.COFFEE.dbStr
 
     private var gameId: String? = null
@@ -97,7 +97,7 @@ class BreakRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
 
-
+        // get intent extras
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
             userName = bundle.getString(Constants.USER_NAME)
@@ -114,82 +114,65 @@ class BreakRoomActivity : AppCompatActivity() {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate
 
-        //if (savedInstanceState == null) {
-            if(roomType.equals(Roomtype.GAME.dbStr)){
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    if (gameId != null) {
-                        val fragment =
-                            findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                        fragment.setVisibility(View.VISIBLE)
-
-                        val bundle = bundleOf(Constants.GAME_ID to gameId)
-
-                        replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
-                        //add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
-                    }
-
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
-                }
-            } else if(roomType.equals(Roomtype.SPORT.dbStr)){
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-
-                    // makes fragment visible
+        if (roomType.equals(Roomtype.GAME.dbStr)) {
+            // add Game fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                if (gameId != null) {
                     val fragment =
                         findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
                     fragment.setVisibility(View.VISIBLE)
 
-                    // if you don't need to pass info to fragment
-                    replace<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-
+                    // passing extras to fragment
+                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+                    replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
                 }
-            } else if(roomType.equals(Roomtype.COFFEE.dbStr)){
-                // add Bored API fragment here
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
 
-                    // makes fragment visible
-                    val fragment =
-                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
-
-                    // if you don't need to pass info to fragment
-                    replace<BoredApiFragment>(R.id.fragment_container_game_view)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-
-                }
-            } else if (roomType.equals(Roomtype.QUESTION.dbStr)){
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-
-                    // makes fragment visible
-                    val fragment =
-                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
-
-                    // if you don't need to pass info to fragment
-                    replace<QuestionFragment>(R.id.fragment_container_game_view)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-
-                }
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
             }
+        } else if (roomType.equals(Roomtype.SPORT.dbStr)) {
+            // add Sport fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
-            else{
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
-                }
+                replace<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
             }
-        //}
+        } else if (roomType.equals(Roomtype.COFFEE.dbStr)) {
+            // add Bored API fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
+                replace<BoredApiFragment>(R.id.fragment_container_game_view)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
 
+            }
+        } else if (roomType.equals(Roomtype.QUESTION.dbStr)) {
+            // add Question fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
-        //val roomId = SharedPrefManager.instance.getRoomId()
-        //var userName : String? = null
+                replace<QuestionFragment>(R.id.fragment_container_game_view)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+            }
+        } else {
+            // when nothing matchs, add only chat fragment
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             askPermission();
@@ -202,22 +185,16 @@ class BreakRoomActivity : AppCompatActivity() {
         //For the Back Button
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-
         if (roomId != null) {
-
             viewModel.loadUsersOfRoom()
             //Allowed the Widget to open
             SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
-            Log.d("Check", "onCreate" + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
-
             //bug moved to other places this can lead to too many messages when device screen turns on and off
             // PushData.joinRoom(this, roomId, userName)
 
             viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
 
                 room = observedRoom
-                //viewModel.loadUsersOfRoom()
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
@@ -239,8 +216,6 @@ class BreakRoomActivity : AppCompatActivity() {
                     }
                 }
             })
-
-
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous
@@ -253,6 +228,7 @@ class BreakRoomActivity : AppCompatActivity() {
 
 
     }
+
 
     /**
      * Register the BraodCastRecivers fro the Communication with the Widget
@@ -311,6 +287,7 @@ class BreakRoomActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             editText.requestFocus()
+
             mtoolbar.menu.findItem(R.id.action_enter).isVisible = true
             mtoolbar.menu.findItem(R.id.action_edit).isVisible = false
             true
@@ -340,13 +317,13 @@ class BreakRoomActivity : AppCompatActivity() {
             hideSoftKeyboard(editText)
             true
         }
-        //Join a videocall
+        // User wants to start videocall
         R.id.action_videocall -> {
             SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)
             videoCall()
             true
         }
-        //Leave the Room
+        // User wants to leave room
         R.id.action_leaveRoom -> {
             checkIfDialogIsNeeded()
             true
@@ -390,37 +367,12 @@ class BreakRoomActivity : AppCompatActivity() {
      * If the Widget is not currently open and the user is in a Breakroom, open the Widget
      */
     override fun onPause() {
-        Log.d("Check", "onPause " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
         super.onPause()
         if (SharedPrefManager.instance.getIsWidgetAllowedtoOpen() && SharedPrefManager.instance.getRoomId() != null) {
             openWidget()
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("Check", "onStop " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("Check", "onStart " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("Check", "onResume " + SharedPrefManager.instance.getIsWidgetAllowedtoOpen())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //localBroadcastManager.unregisterReceiver(broadCastReceiver)
-        Log.d("Check", "onDesroy ${!SharedPrefManager.instance.getIsWidgetAllowedtoOpen()}")
-    }
-
-    /**
-     * Check for the Permissions, that the Widget can draw over other Apps
-     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -459,6 +411,18 @@ class BreakRoomActivity : AppCompatActivity() {
         viewModel.getRoom().removeObservers(this)
         PushData.leaveRoom(this, room, userName)
         SharedPrefManager.instance.removeRoomId()
+    /**
+     * User wants to leave room,
+     * so check if it's the last user and remove user from user list of room
+     * And finish the activity
+     */
+    private fun leaveRoom() {
+        if (room?.users?.size == 1) {
+            showDialog()
+        } else {
+            viewModel.getRoom().removeObservers(this)
+            PushData.leaveRoom(this, room, userName)
+            SharedPrefManager.instance.removeRoomId()
 
         //automatically reset status to status before INBREAK
         PushData.resetStatusToBeforeBreak()
@@ -471,9 +435,9 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     /**
-     * Join a Videocall
+     * Opens videocall activity with current roomId and userName
      */
-    private fun videoCall() {
+    private fun videocall() {
         val args = Bundle()
         args.putString(Constants.ROOM_ID, roomId)
         args.putString(Constants.USER_NAME, userName)
@@ -491,7 +455,7 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     /**
-     * Show the AlertDialog if the room gets deleted
+     * Asks the user if he really wants to continue leaving the room
      */
     private fun showDialog() {
         val dialog = Dialog(activity)
@@ -509,7 +473,7 @@ class BreakRoomActivity : AppCompatActivity() {
     }
 
     /**
-     * Open the Floating Widget
+     * Opens an overlaay which indicates that user is in a room with all necessary intent extras
      */
     private fun openWidget() {
         Log.d(TAG, "openwidget")
@@ -543,7 +507,8 @@ class BreakRoomActivity : AppCompatActivity() {
      * editText: View
      */
     private fun hideSoftKeyboard(editText: EditText) {
-        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        val imm: InputMethodManager? =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 }

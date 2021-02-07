@@ -8,8 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -22,7 +20,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.commit
@@ -37,13 +34,11 @@ import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import com.example.virtualbreak.view.view_activitys.VideoCallActivity
 import com.example.virtualbreak.view.view_fragments.boredapi.BoredApiFragment
-import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
 import com.example.virtualbreak.view.view_fragments.question.QuestionFragment
-import com.example.virtualbreak.view.view_fragments.singlegroup.SingleGroupRoomsFragment
+import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFragment
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.hangman_fragment.*
 
 
 class BreakRoomActivity : AppCompatActivity() {
@@ -63,10 +58,10 @@ class BreakRoomActivity : AppCompatActivity() {
     private var userName: String? = null
     private val roomId: String? = SharedPrefManager.instance.getRoomId()
 
-    // TODO: set default room to room which needs no extras
-    private var roomType : String = Roomtype.COFFEE.dbStr
+    // default room type (which needs no extras)
+    private var roomType: String = Roomtype.COFFEE.dbStr
 
-    private var gameId : String? = null
+    private var gameId: String? = null
 
     private var chatAdapter: ChatAdapter? = null
 
@@ -78,6 +73,7 @@ class BreakRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_break_room)
 
+        // get intent extras
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
             userName = bundle.getString(Constants.USER_NAME)
@@ -94,82 +90,65 @@ class BreakRoomActivity : AppCompatActivity() {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate
 
-        //if (savedInstanceState == null) {
-            if(roomType.equals(Roomtype.GAME.dbStr)){
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    if (gameId != null) {
-                        val fragment =
-                            findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                        fragment.setVisibility(View.VISIBLE)
-
-                        val bundle = bundleOf(Constants.GAME_ID to gameId)
-
-                        replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
-                        //add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
-                    }
-
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
-                }
-            } else if(roomType.equals(Roomtype.SPORT.dbStr)){
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-
-                    // makes fragment visible
+        if (roomType.equals(Roomtype.GAME.dbStr)) {
+            // add Game fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                if (gameId != null) {
                     val fragment =
                         findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
                     fragment.setVisibility(View.VISIBLE)
 
-                    // if you don't need to pass info to fragment
-                    replace<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-
+                    // passing extras to fragment
+                    val bundle = bundleOf(Constants.GAME_ID to gameId)
+                    replace<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
                 }
-            } else if(roomType.equals(Roomtype.COFFEE.dbStr)){
-                // add Bored API fragment here
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
 
-                    // makes fragment visible
-                    val fragment =
-                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
-
-                    // if you don't need to pass info to fragment
-                    replace<BoredApiFragment>(R.id.fragment_container_game_view)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-
-                }
-            } else if (roomType.equals(Roomtype.QUESTION.dbStr)){
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-
-                    // makes fragment visible
-                    val fragment =
-                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
-
-                    // if you don't need to pass info to fragment
-                    replace<QuestionFragment>(R.id.fragment_container_game_view)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-
-                }
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
             }
+        } else if (roomType.equals(Roomtype.SPORT.dbStr)) {
+            // add Sport fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
-            else{
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace<TextchatFragment>(R.id.fragment_container_chat_view)
-                    //add<TextchatFragment>(R.id.fragment_container_chat_view)
-                }
+                replace<SportRoomExtrasFragment>(R.id.fragment_container_game_view)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
             }
-        //}
+        } else if (roomType.equals(Roomtype.COFFEE.dbStr)) {
+            // add Bored API fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
+                replace<BoredApiFragment>(R.id.fragment_container_game_view)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
 
+            }
+        } else if (roomType.equals(Roomtype.QUESTION.dbStr)) {
+            // add Question fragment here
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                val fragment =
+                    findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
+                fragment.setVisibility(View.VISIBLE)
 
-        //val roomId = SharedPrefManager.instance.getRoomId()
-        //var userName : String? = null
+                replace<QuestionFragment>(R.id.fragment_container_game_view)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
+
+            }
+        } else {
+            // when nothing matchs, add only chat fragment
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace<TextchatFragment>(R.id.fragment_container_chat_view)
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             askPermission();
@@ -182,10 +161,7 @@ class BreakRoomActivity : AppCompatActivity() {
         //For the Back Button
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-
         if (roomId != null) {
-
             viewModel.loadUsersOfRoom()
 
             //bug moved to other places this can lead to too many messages when device screen turns on and off
@@ -194,7 +170,6 @@ class BreakRoomActivity : AppCompatActivity() {
             viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
 
                 room = observedRoom
-                //viewModel.loadUsersOfRoom()
 
                 if (observedRoom != null) {
                     supportActionBar?.title = observedRoom.description
@@ -204,132 +179,24 @@ class BreakRoomActivity : AppCompatActivity() {
                     if (observedRoom.callMembers != null) {
                         activeCall = true
                         // update menu only if call has changed
-                        if(callBefore != activeCall){
-                            invalidateOptionsMenu ()
+                        if (callBefore != activeCall) {
+                            invalidateOptionsMenu()
                         }
                     } else {
                         activeCall = false
                         // update menu only if call has changed
-                        if(callBefore != activeCall){
-                            invalidateOptionsMenu ()
+                        if (callBefore != activeCall) {
+                            invalidateOptionsMenu()
                         }
                     }
                 }
             })
-
-
-            /*var defaultMessages: MutableList<Message> = ArrayList()
-            var defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
-            defaultMessages.add(defaultM)
-
-            val layoutManager = LinearLayoutManager(this)
-            layoutManager.setStackFromEnd(true)
-            chat_messages_recycler_view.layoutManager = layoutManager
-
-            chatAdapter = ChatAdapter(this, defaultMessages, SharedPrefManager.instance.getRoomUsersHashmap())
-            chat_messages_recycler_view.adapter = chatAdapter
-            chatAdapter?.let{
-                chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
-            }
-
-            viewModel.getUser().observe(this, Observer<User> { observedUser ->
-                if (observedUser != null) {
-                    userName = observedUser.username
-                }
-            })
-
-
-
-            viewModel.getRoom().observe(this, Observer<Room> { observedRoom ->
-
-                room = observedRoom
-                //viewModel.loadUsersOfRoom()
-
-                if (observedRoom != null) {
-                    supportActionBar?.title = observedRoom.description
-                }
-                /*if (room != null && (room!!.users != observedRoom.users)) {
-                    viewModel.loadUsersOfRoom(this)
-                }*/
-                Log.d(TAG, "Observed room: $observedRoom")
-                if (observedRoom != null && observedRoom.messages != null && observedRoom.messages.isNotEmpty()) {
-                    val messages = observedRoom.messages
-                    var messagesList = ArrayList(messages.values)
-                    messagesList.sortBy { it.timestamp }
-                    Log.i(TAG, "messagesList: $messagesList")
-
-                    if(chatAdapter == null){
-                        chatAdapter = ChatAdapter(this, messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
-                        chat_messages_recycler_view.adapter = chatAdapter
-                    } else{
-                        chatAdapter?.updateData(messagesList, SharedPrefManager.instance.getRoomUsersHashmap())
-                    }
-                    chatAdapter?.let{
-                        chat_messages_recycler_view.smoothScrollToPosition(it.itemCount)
-                    }
-                }
-            })*/
         } else {
             Toast.makeText(this, R.string.something_wrong, Toast.LENGTH_LONG).show()
             // ends activity and return to previous
             finish()
         }
-
-        // makes textview scrollable
-        //chat_messages_view.setMovementMethod(ScrollingMovementMethod())
-/*
-        send_message_button.setOnClickListener {
-            val input = chat_message_input.text
-            val message = input.toString()
-            if (!message.isEmpty()) {
-                if (roomId != null) {
-                    PushData.sendMessage(roomId, message)
-                }
-            } else{
-                Toast.makeText(
-                    this, R.string.toast_enter_message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            input.clear()
-        }*/
-
-
     }
-
-    /*override fun onResume() {
-        super.onResume()
-        if (roomType.equals(Roomtype.GAME.dbStr)) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                if (gameId != null) {
-                    val fragment =
-                        findViewById<FragmentContainerView>(R.id.fragment_container_game_view)
-                    fragment.setVisibility(View.VISIBLE)
-
-                    //val bundle = Bundle()
-
-                    val bundle = bundleOf(Constants.GAME_ID to gameId)
-
-                    *//*if(gameId != null){
-                        bundle.putString(Constants.GAME_ID, gameId)
-                    }*//*
-                    add<HangmanFragment>(R.id.fragment_container_game_view, args = bundle)
-                }
-
-                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
-
-                //add<HangmanFragment>(R.id.fragment_container_game_view, bundle)
-                add<TextchatFragment>(R.id.fragment_container_chat_view)
-            }
-        } else {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<TextchatFragment>(R.id.fragment_container_chat_view)
-            }
-        }
-
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.breakroom_menu, menu)
@@ -340,9 +207,9 @@ class BreakRoomActivity : AppCompatActivity() {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         super.onPrepareOptionsMenu(menu)
         // when there is an active call, highlight the call item
-        if(activeCall){
+        if (activeCall) {
             menu?.findItem(R.id.action_videocall)?.setIcon(R.drawable.videocall_white_call)
-        } else{
+        } else {
             menu?.findItem(R.id.action_videocall)?.setIcon(R.drawable.videocall_white)
         }
         return true
@@ -358,8 +225,8 @@ class BreakRoomActivity : AppCompatActivity() {
 //            true
 //        }
 
+        // User wants to edit the room name
         R.id.action_edit -> {
-            //User wants to edit the room name
             //supportActionBar?.title = null // uncommented because otherwise old title not shown, if new text was empty
             editText.visibility = View.VISIBLE
             //Show the keyboard
@@ -380,10 +247,14 @@ class BreakRoomActivity : AppCompatActivity() {
 
             //save the new title in firebase
             if (roomId != null) {
-                if("".equals(newTitle)){
-                    Snackbar.make(editText, "Du hast keinen neuen Namen eingegeben!", Snackbar.LENGTH_LONG)
+                if ("".equals(newTitle)) {
+                    Snackbar.make(
+                        editText,
+                        "Du hast keinen neuen Namen eingegeben!",
+                        Snackbar.LENGTH_LONG
+                    )
                         .setAction("Action", null).show()
-                } else{
+                } else {
                     PushData.setRoomDescription(roomId, newTitle)
                     mtoolbar.title = newTitle
                 }
@@ -392,10 +263,12 @@ class BreakRoomActivity : AppCompatActivity() {
             hideSoftKeyboard(editText)
             true
         }
+        // User wants to start videocall
         R.id.action_videocall -> {
             videocall()
             true
         }
+        // User wants to leave room
         R.id.action_leaveRoom -> {
             leaveRoom()
             true
@@ -448,7 +321,12 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
-    fun leaveRoom() {
+    /**
+     * User wants to leave room,
+     * so check if it's the last user and remove user from user list of room
+     * And finish the activity
+     */
+    private fun leaveRoom() {
         if (room?.users?.size == 1) {
             showDialog()
         } else {
@@ -464,7 +342,10 @@ class BreakRoomActivity : AppCompatActivity() {
         }
     }
 
-    fun videocall() {
+    /**
+     * Opens videocall activity with current roomId and userName
+     */
+    private fun videocall() {
         val args = Bundle()
         args.putString(Constants.ROOM_ID, roomId)
         args.putString(Constants.USER_NAME, userName)
@@ -474,6 +355,9 @@ class BreakRoomActivity : AppCompatActivity() {
         this.startActivity(intent)
     }
 
+    /**
+     * Asks the user if he really wants to continue leaving the room
+     */
     private fun showDialog() {
         val dialog = Dialog(activity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -500,6 +384,9 @@ class BreakRoomActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Opens an overlaay which indicates that user is in a room with all necessary intent extras
+     */
     private fun openWidget() {
         Log.d(TAG, "openwidget")
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this@BreakRoomActivity)) {
@@ -541,8 +428,8 @@ class BreakRoomActivity : AppCompatActivity() {
         Log.d(TAG, "askPermission")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
 
-            //If the draw over permission is not available open the settings screen
-            //to grant the permission.
+            // If the draw over permission is not available open the settings screen
+            // to grant the permission.
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:" + getPackageName())
@@ -556,7 +443,8 @@ class BreakRoomActivity : AppCompatActivity() {
      * editText: View
      */
     private fun hideSoftKeyboard(editText: EditText) {
-        val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        val imm: InputMethodManager? =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 }

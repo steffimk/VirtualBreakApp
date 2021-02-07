@@ -33,6 +33,7 @@ class HangmanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val gameId = requireArguments().getString(Constants.GAME_ID)
+        // by default: set content layout visible and end layout invisible
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
 
@@ -67,26 +68,42 @@ class HangmanFragment : Fragment() {
             )
         }
 
-        var word: String =""
+        var word: String = ""
 
         viewModel.getGame().observe(viewLifecycleOwner, Observer<Game>
         { observedGame ->
 
             game = observedGame
-            //context?.let { viewModel.loadUsersOfRoom(it) }
 
             observedGame?.let {
                 if (observedGame.word == null) {
-                    // TODO wait
+                    // when something went wrong and game has no word
+                    game_content_layout.visibility = View.GONE
+                    game_ended.visibility = View.VISIBLE
+
+                    end_result.text = getString(R.string.no_game)
+                    try_again.text = getString(R.string.retry_no_game)
+                    game_ended_image.setImageResource(R.drawable.hangmanwin)
+
+                    show_word.visibility = View.GONE
+                    word_result.visibility = View.GONE
+
+                    restart_game.setOnClickListener {
+                        restartGame(observedGame)
+                    }
                 } else {
                     game_content_layout.visibility = View.VISIBLE
                     game_ended.visibility = View.GONE
+
                     // game starts
                     word = observedGame.word!!
 
                     val error = observedGame.errors
+
+                    // game not failed
                     if (error < Constants.HANGMAN_MAX_ERRORS) {
-                        when(error){
+                        // setting images depending of error state of game
+                        when (error) {
                             0 -> fault_indicator.setImageResource(R.drawable.hangman0)
                             1 -> fault_indicator.setImageResource(R.drawable.hangman1)
                             2 -> fault_indicator.setImageResource(R.drawable.hangman2)
@@ -105,7 +122,9 @@ class HangmanFragment : Fragment() {
                             wordFound.insert(i, '_')
                         }
 
+                        // when already some letters guessed
                         if (observedGame.letters != null) {
+                            // depending on letters disable buttons and set parts of wordFound
                             observedGame.letters!!.forEach { (key, value) ->
                                 when (value) {
                                     "A" -> {
@@ -321,16 +340,15 @@ class HangmanFragment : Fragment() {
                                     }
                                 }
                             }
-                        }
-                        else{
+                        } else {
                             enableAllButtons()
                         }
 
+                        // all letters of word were found
                         if (word == wordFound.toString()) {
-                            gameEnded(true,word,observedGame)
+                            gameEnded(true, word, observedGame)
                         }
                         hangman_word.setText(wordFound.toString())
-
 
                         alphabetButtonClicks(word, error, gameId)
                     } else {
@@ -342,6 +360,13 @@ class HangmanFragment : Fragment() {
         })
     }
 
+    /**
+     * When game ended show other view
+     *
+     * @param winning If word was found
+     * @param word The word of the game
+     * @param observedGame Object of current game
+     */
     private fun gameEnded(winning: Boolean, word: String, observedGame: Game) {
         game_content_layout.visibility = View.GONE
         game_ended.visibility = View.VISIBLE
@@ -361,12 +386,25 @@ class HangmanFragment : Fragment() {
         }
     }
 
+    /**
+     * Restarting game changes visible view
+     * Have to change the game object
+     *
+     * @param observedGame Object of current game
+     */
     private fun restartGame(observedGame: Game) {
         PushData.updateGame(observedGame.uid, observedGame.roomId)
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
     }
 
+    /**
+     * Reacts on button clicks
+     *
+     * @param word The current word of the game
+     * @param error Amount of already false guessed letters
+     * @param gameId Id of the current game
+     */
     private fun alphabetButtonClicks(word: String, error: Int, gameId: String?) {
         a_input.setOnClickListener {
             checkContaining(word, error, 'a', gameId)
@@ -474,6 +512,14 @@ class HangmanFragment : Fragment() {
         }
     }
 
+    /**
+     * Check if the word contains letter
+     *
+     * @param word The current word of the game
+     * @param error Amount of already false guessed letters
+     * @param char The char that has to be checked
+     * @param gameId Id of the current game
+     */
     private fun checkContaining(
         word: String,
         error: Int,
@@ -483,14 +529,17 @@ class HangmanFragment : Fragment() {
         Log.i(TAG, "word: " + word)
         if (word.contains(char, ignoreCase = true)) {
             Log.i(TAG, "contains " + char)
-        } else{
+        } else {
             Log.i(TAG, "contains not " + char)
             val errors = error + 1
             PushData.addError(gameId!!, errors)
         }
     }
 
-    private fun enableAllButtons(){
+    /**
+     * Enables all alphabet buttons
+     */
+    private fun enableAllButtons() {
         a_input.setEnabled(true)
         b_input.setEnabled(true)
         c_input.setEnabled(true)

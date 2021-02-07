@@ -95,6 +95,8 @@
     <string name="loose_game">Schade, ihr habt das Spiel verloren.</string>
     <string name="retry_loose">Probiert es noch ein mal...</string>
     <string name="word_result">Das Wort war: </string>
+    <string name="no_game">Es gibt noch kein Spiel</string>
+    <string name="retry_no_game">Starte ein Spiel...</string>
 
 
     <string name="annehmen">Annehmen</string>

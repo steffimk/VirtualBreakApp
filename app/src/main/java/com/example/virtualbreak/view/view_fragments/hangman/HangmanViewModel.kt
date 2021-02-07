@@ -34,10 +34,17 @@ class HangmanViewModel(private val gameId: String) : ViewModel() {
         }
     }
 
+    /**
+     * Getting the current game
+     * @return the Game object
+     */
     fun getGame(): LiveData<Game> {
         return game
     }
 
+    /**
+     * onDataChange listener on game
+     */
     private val gameValueEventListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             val pulledGame = dataSnapshot.getValue<Game>()

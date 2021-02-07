@@ -11,7 +11,9 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 
 class LogoutFragment : Fragment() {
 
@@ -28,6 +30,10 @@ class LogoutFragment : Fragment() {
             activity?.stopService(Intent(activity, BreakroomWidgetService::class.java))
             //Sign out
             Firebase.auth.signOut()
+            //Unregister from fcm push notifications
+            Firebase.messaging.isAutoInitEnabled = false
+            Firebase.messaging.deleteToken()
+            FirebaseInstallations.getInstance().delete()
             startActivity(
                 Intent(
                     activity,

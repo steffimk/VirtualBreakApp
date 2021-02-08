@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
@@ -32,10 +34,25 @@ class HangmanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // when receiving focus of edittext in chat fragment do something
+        parentFragmentManager.setFragmentResultListener(
+            Constants.REQUEST_KEY_GAME_FRAGMENT,
+            this,
+            FragmentResultListener { requestKey, bundle ->
+                val result = bundle.getBoolean(Constants.BUNDLE_KEY_GAME_FRAGMENT)
+                Log.i(TAG, "receiving edittext event  " + result)
+                handleKeyboardFromChat(result)
+            })
+
         val gameId = requireArguments().getString(Constants.GAME_ID)
         // by default: set content layout visible and end layout invisible
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
+
+        game_base_cardview.setOnClickListener {
+            sendFragmentResultClick()
+        }
 
         //expand or close game fragment
         expand_game_relative_layout.setOnClickListener {
@@ -59,7 +76,7 @@ class HangmanFragment : Fragment() {
                 hangman_content.setVisibility(View.VISIBLE)
                 expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
             }
-
+            sendFragmentResultClick()
         }
 
         val viewModel: HangmanViewModel by viewModels {
@@ -356,9 +373,9 @@ class HangmanFragment : Fragment() {
                     }
                 }
             }
-
         })
     }
+
 
     /**
      * When game ended show other view
@@ -568,4 +585,42 @@ class HangmanFragment : Fragment() {
         z_input.setEnabled(true)
     }
 
+    /**
+     * Set click value to fragment result
+     */
+    private fun sendFragmentResultClick() {
+        Log.i(TAG, "sending game event")
+        parentFragmentManager.setFragmentResult(
+            Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
+            bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK to Constants.CLICK)
+        )
+    }
+
+    /**
+     * When focus is on Edittext in chat, hide hangman fragment
+     *
+     * @param focus If it's focused
+     */
+    private fun handleKeyboardFromChat(focus: Boolean) {
+        if (focus) {
+            // when edit text is clicked, hide game fragment
+            if (hangman_content.visibility === View.VISIBLE) {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                hangman_content.setVisibility(View.GONE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        } else {
+            if (hangman_content.visibility === View.GONE) {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                hangman_content.setVisibility(View.VISIBLE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        }
+    }
 }

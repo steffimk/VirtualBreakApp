@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +22,7 @@ import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
+import com.example.virtualbreak.model.Roomtype
 import kotlinx.android.synthetic.main.textchat_fragment.*
 
 
@@ -52,6 +55,17 @@ class TextchatFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "OnViewCreated")
+
+        // when receiving that hangman is clicked, remove focus of edittext
+        parentFragmentManager.setFragmentResultListener(
+            Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
+            this,
+            FragmentResultListener { requestKey, bundle ->
+                val result = bundle.getString(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK)
+                if(result.equals(Constants.CLICK)){
+                    chat_message_input.clearFocus()
+                }
+            })
 
         val defaultMessages: MutableList<Message> = ArrayList()
         val defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)
@@ -115,6 +129,26 @@ class TextchatFragment() : Fragment() {
 
             }
         })
+
+        // when edittext is focused send info to close hangman fragment
+        chat_message_input.setOnFocusChangeListener { view, b ->
+            if(room != null){
+                if(room!!.type.equals(Roomtype.GAME)){
+                    val result = b
+                    Log.i(TAG, "sending edittext event " + b)
+                    parentFragmentManager.setFragmentResult(
+                        Constants.REQUEST_KEY_GAME_FRAGMENT,
+                        bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT to result)
+                    )
+                    if(!b){
+                        Log.i(TAG, "edit text lose focus")
+                        val imm =
+                            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                        imm!!.hideSoftInputFromWindow(chat_message_input.getWindowToken(), 0)
+                    }
+                }
+            }
+        }
 
         // sends entered message if not empty
         send_message_button.setOnClickListener {

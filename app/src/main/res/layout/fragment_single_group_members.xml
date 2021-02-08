@@ -41,17 +41,19 @@
             android:src="@drawable/ic_baseline_expand_less_24"/>
     </RelativeLayout>
 
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/singlegroup_member_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <ImageButton
             android:id="@+id/singlegroup_add_members"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/singlegroup_members_recyclerlistview"
             android:src="@drawable/ic_plus_white_24dp"
             android:backgroundTint="@color/mandarin"/>
 
@@ -59,12 +61,16 @@
             android:id="@+id/singlegroup_members_recyclerlistview"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            card_view:layout_constraintStart_toEndOf="@+id/singlegroup_add_members"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="10dp"
             android:scrollbars="horizontal"
             android:orientation="horizontal" />
-    </LinearLayout>
 
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
 

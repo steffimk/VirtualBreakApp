@@ -19,6 +19,7 @@ class Constants {
         const val DATABASE_CHILD_DESCRIPTION = "description"
         const val DATABASE_CHILD_MESSAGES = "messages"
         const val DATABASE_CHILD_STATUS = "status"
+        const val DATABASE_CHILD_EMAIL = "email"
         const val DATABASE_CHILD_FCM_TOKEN: String = "fcmToken"
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DATABASE_CHILD_USERNAME = "username"

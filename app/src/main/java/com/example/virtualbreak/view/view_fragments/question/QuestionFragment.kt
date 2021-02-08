@@ -24,7 +24,7 @@ class QuestionFragment : Fragment() {
 
     private val TAG = "QuestionFragment"
 
-    private val viewModel: QuestionFragmentViewModel by viewModels {
+    private val viewModel: QuestionViewModel by viewModels {
         QuestionFragmentViewModelFactory(SharedPrefManager.instance.getRoomId() ?: "")}
 
     override fun onCreateView(

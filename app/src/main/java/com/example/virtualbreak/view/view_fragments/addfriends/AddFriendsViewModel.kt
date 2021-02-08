@@ -14,7 +14,9 @@ import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
-
+/**
+ * ViewModel of the AddFriendsFragment
+ */
 class AddFriendsViewModel : ViewModel() {
 
     private val TAG = "AddFriendsViewModel"
@@ -27,14 +29,26 @@ class AddFriendsViewModel : ViewModel() {
     }
     private val searchedUser: MutableLiveData<User?> = MutableLiveData(null)
 
+    /**
+     * Returns an instance of LiveData containing the user found when looking for the entered mail address
+     * @return LiveData containing the searched user if it was found. Contains null if there is no user with this mail
+     */
     fun getSearchedUser(): LiveData<User?> {
         return searchedUser
     }
 
+    /**
+     * Returns an instance of LiveData containing the own user
+     * @return LiveData containing the own user
+     */
     fun getCurrentUser(): LiveData<User> {
         return currentUser
     }
 
+    /**
+     * Searches the database for a user with a mail matching the passed String
+     * @param email The mail of the user that is to be searched
+     */
     fun searchForUserWithFullEmail(email: String) {
 
         val valueEventListener = object : ValueEventListener {
@@ -59,11 +73,13 @@ class AddFriendsViewModel : ViewModel() {
         }
 
         searchedUser.value = null
-        PullData.database.child(Constants.DATABASE_CHILD_USERS).orderByChild("email").equalTo(email).limitToFirst(1).addListenerForSingleValueEvent(
-            valueEventListener
-        )
+        PullData.database.child(Constants.DATABASE_CHILD_USERS).orderByChild(Constants.DATABASE_CHILD_EMAIL)
+            .equalTo(email).limitToFirst(1).addListenerForSingleValueEvent(valueEventListener)
     }
 
+    /**
+     * Saves pulled data in currentUser
+     */
     private val userValueEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -79,6 +95,9 @@ class AddFriendsViewModel : ViewModel() {
 
     }
 
+    /**
+     * Remove all event listeners
+     */
     override fun onCleared() {
         super.onCleared()
         PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")

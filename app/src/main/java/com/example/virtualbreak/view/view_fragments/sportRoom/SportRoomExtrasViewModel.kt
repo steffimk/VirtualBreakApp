@@ -12,12 +12,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
-
+/**
+ * ViewModel of the SportRoomExtras Fragment
+ */
 class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
 
     private val TAG = "SportRoomExtrasViewModel"
     private val roomId = roomId
 
+    /**
+     * LiveData containing the timerEndDate
+     */
     private val timerEndDate: MutableLiveData<Long?> by lazy {
         MutableLiveData<Long?>(null).also {
             PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_TIMER_END)
@@ -25,18 +30,31 @@ class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
         }
     }
 
+    /**
+     * The fitness exercise that is currently displayed
+     */
     var fitnessExercise: String? = null
 
+    /**
+     * Adds a value event listener to the exercise of the room
+     */
     fun startPullingExercise() {
         if (fitnessExercise != null) return
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_EXERCISE)
             .addValueEventListener(exerciseEventListener)
     }
 
+    /**
+     * Returns LiveData containing the end date of the timer
+     * @return Instance of LiveData containing the end date of the timer
+     */
     fun getTimerEndDate(): LiveData<Long?> {
         return timerEndDate
     }
 
+    /**
+     * Saves the pulled timer in timerEndDate
+     */
     private val timerEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -52,6 +70,9 @@ class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
 
     }
 
+    /**
+     * Saves the pulled exercise in fitnessExercise
+     */
     private val exerciseEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -67,6 +88,9 @@ class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
 
     }
 
+    /**
+     * Removes all event listeners
+     */
     override fun onCleared() {
         super.onCleared()
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_TIMER_END)
@@ -76,6 +100,9 @@ class SportRoomExtrasViewModel(roomId: String) : ViewModel() {
     }
 }
 
+/**
+ * Use this factory to get a new instance of SportRoomExtrasViewModel
+ */
 class SportRoomExtrasViewModelFactory(private val roomId: String) :
     ViewModelProvider.Factory {
 

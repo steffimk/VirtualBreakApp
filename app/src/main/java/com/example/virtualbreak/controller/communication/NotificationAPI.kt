@@ -11,6 +11,10 @@ import retrofit2.http.POST
 
 interface NotificationAPI {
 
+    /**
+     * Interface of the API to send the post request of a notification to https://fcm.googleapis.com
+     * @param notification The notification one wants to send
+     */
     @Headers("Authorization: key=$SERVER_KEY", "Content-Type:$CONTENT_TYPE")
     @POST("fcm/send")
     suspend fun postNotification(@Body notification: PushNotification): Response<ResponseBody>

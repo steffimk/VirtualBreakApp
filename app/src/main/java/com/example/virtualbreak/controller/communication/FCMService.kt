@@ -30,11 +30,17 @@ import kotlin.random.Random
 
 private const val CHANNEL_ID = "vb-channel"
 
-// FirebaseCloudMessagingService
+/**
+ * FirebaseCloudMessagingServic
+ */
 class FCMService : FirebaseMessagingService() {
 
     private val TAG = "FCMService"
 
+    /**
+     * When notification is received: create notification channel, build notification, notify NotificationManager
+     * @param msg The received message
+     */
     override fun onMessageReceived(msg: RemoteMessage) {
         super.onMessageReceived(msg)
         Log.d(TAG, "Received message with data " + msg.data + "" + msg.notification)
@@ -70,6 +76,7 @@ class FCMService : FirebaseMessagingService() {
 
     /**
      * If the FCMToken of a user gets replaced by a new one: Save new one in database
+     * @param newToken The new FCmToken
      */
     override fun onNewToken(newToken: String) {
         super.onNewToken(newToken)
@@ -77,6 +84,10 @@ class FCMService : FirebaseMessagingService() {
         Log.d(TAG, "NewFCMToken: $newToken")
     }
 
+    /**
+     * Creates Notification Channel with specific settings
+     * @param notificationManager The notification manager
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {
         val soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.dilin_ringtone)
@@ -96,9 +107,13 @@ class FCMService : FirebaseMessagingService() {
 
         private val TAG: String = "FCMService Companion"
 
+        /**
+         * Builds a new POST-request containing the notification to 'https://fcm.googleapis.com'.
+         * @param notification The Notification one wants to send
+         */
         fun sendNotification(notification: PushNotification) = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitInstance.api.postNotification((notification))
+                val response = RetrofitInstance.postNotificationApi.postNotification((notification))
                 if (response.isSuccessful) {
                     Log.d(TAG, "Successfully sent notification")
                 } else {

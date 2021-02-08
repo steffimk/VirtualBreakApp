@@ -39,6 +39,7 @@ class HangmanFragment : Fragment() {
             this,
             FragmentResultListener { requestKey, bundle ->
                 val result = bundle.getBoolean(Constants.BUNDLE_KEY_GAME_FRAGMENT)
+                Log.i(TAG, "receiving edittext event  " +  result)
                 handleKeyboardFromChat(result)
             })
 
@@ -371,10 +372,9 @@ class HangmanFragment : Fragment() {
     }
 
     fun handleKeyboardFromChat(focus: Boolean) {
-        val viewBefore = hangman_content.getVisibility()
         if (focus) {
             // when edit text is clicked, hide game fragment
-            if (viewBefore === View.VISIBLE) {
+            if (hangman_content.visibility === View.VISIBLE) {
                 TransitionManager.beginDelayedTransition(
                     game_base_cardview,
                     AutoTransition()
@@ -383,12 +383,12 @@ class HangmanFragment : Fragment() {
                 expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
             }
         } else {
-            if (viewBefore === View.VISIBLE) {
+            if (hangman_content.visibility === View.GONE) {
                 TransitionManager.beginDelayedTransition(
                     game_base_cardview,
                     AutoTransition()
                 )
-                hangman_content.setVisibility(viewBefore)
+                hangman_content.setVisibility(View.VISIBLE)
                 expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
             }
         }

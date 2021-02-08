@@ -3,8 +3,6 @@ package com.example.virtualbreak.view.view_fragments.textchat
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +22,6 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Message
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
-import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
-import com.example.virtualbreak.view.view_fragments.hangman.HangmanViewModel
-import kotlinx.android.synthetic.main.hangman_fragment.*
 import kotlinx.android.synthetic.main.textchat_fragment.*
 
 
@@ -123,32 +118,22 @@ class TextchatFragment() : Fragment() {
             }
         })
 
-        /*chat_message_input.setOnClickListener {
-            if(room != null){
-                if(room!!.type.equals(Roomtype.GAME)){
-                    // when edit text is clicked, hide game fragment
-                    val viewBefore = hangman_content.getVisibility()
-                    if(viewBefore === View.VISIBLE){
-                        TransitionManager.beginDelayedTransition(
-                            game_base_cardview,
-                            AutoTransition()
-                        )
-                        hangman_content.setVisibility(View.GONE)
-                        expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-                    }
-                }
-            }
-        }*/
-
         chat_message_input.setOnFocusChangeListener { view, b ->
 
             if(room != null){
                 if(room!!.type.equals(Roomtype.GAME)){
                     val result = b
+                    Log.i(TAG, "sending edittext event " + b)
                     parentFragmentManager.setFragmentResult(
                         Constants.REQUEST_KEY_GAME_FRAGMENT,
                         bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT to result)
                     )
+                    if(!b){
+                        Log.i(TAG, "edit text lose focus")
+                        val imm =
+                            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                        imm!!.hideSoftInputFromWindow(chat_message_input.getWindowToken(), 0)
+                    }
                 }
             }
 

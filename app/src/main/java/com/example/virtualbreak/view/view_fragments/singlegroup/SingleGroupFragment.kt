@@ -8,9 +8,8 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentResultListener
-import androidx.fragment.app.viewModels
+import androidx.core.os.bundleOf
+import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -21,6 +20,8 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
 import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_fragments.hangman.HangmanFragment
+import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
@@ -80,34 +81,46 @@ class SingleGroupFragment : Fragment() {
 
         var addMember = false
 
-        parentFragmentManager.setFragmentResultListener(
+        var manager = activity?.supportFragmentManager
+
+        manager?.beginTransaction()?.let {
+            it.replace(
+                R.id.singlegroup_containerview_rooms,
+                SingleGroupRoomsFragment.newInstance(groupId)
+            )
+            //it.addToBackStack(null)
+            it.commit()
+        }
+
+        manager?.setFragmentResultListener(
             Constants.REQUEST_KEY_ADD_MEMBER,
             this,
             FragmentResultListener { requestKey, bundle ->
                 addMember = bundle.getBoolean(Constants.BUNDLE_KEY_ADD_MEMBER)
-            })
+                Log.i(TAG, "received add member click " + addMember)
 
-        if (addMember) {
-            activity?.supportFragmentManager?.beginTransaction()?.let {
-                it.replace(
-                    R.id.singlegroup_containerview_rooms,
-                    AddMemberToGroupFragment.newInstance(groupId)
-                    //SingleGroupRoomsFragment.newInstance(groupId)
-                )
-                //it.addToBackStack(null)
-                it.commit()
-            }
-        } else {
-            // display rooms
-            activity?.supportFragmentManager?.beginTransaction()?.let {
-                it.replace(
-                    R.id.singlegroup_containerview_rooms,
-                    SingleGroupRoomsFragment.newInstance(groupId)
-                )
-                //it.addToBackStack(null)
-                it.commit()
-            }
-        }
+                if (addMember) {
+
+                    manager?.beginTransaction()?.let {
+                        it.replace(
+                            R.id.singlegroup_containerview_rooms,
+                            AddMemberToGroupFragment.newInstance(groupId)
+                        )
+                        it.commit()
+                    }
+                } else {
+                    Log.i(TAG, "else add member")
+                    // display rooms
+                    manager?.beginTransaction()?.let {
+                        it.replace(
+                            R.id.singlegroup_containerview_rooms,
+                            SingleGroupRoomsFragment.newInstance(groupId)
+                        )
+                        //it.addToBackStack(null)
+                        it.commit()
+                    }
+                }
+            })
 
         var userName: String? = SharedPrefManager.instance.getUserName()
 

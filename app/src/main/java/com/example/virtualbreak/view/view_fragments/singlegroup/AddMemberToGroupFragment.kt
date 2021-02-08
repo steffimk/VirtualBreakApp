@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.adapters.groupsfriends.SearchFriendListAdapter
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
@@ -95,7 +97,10 @@ class AddMemberToGroupFragment : Fragment() {
             }else{
                 Toast.makeText(activity, getString(R.string.Error_no_friends), Toast.LENGTH_SHORT).show()
             }
-            // TODO send add done
+            parentFragmentManager.setFragmentResult(
+                Constants.REQUEST_KEY_ADD_MEMBER,
+                bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to false)
+            )
         }
     }
 
@@ -137,6 +142,7 @@ class AddMemberToGroupFragment : Fragment() {
                 arguments = Bundle().apply {
                     putString(GROUP_ID, groupId)
                 }
+                    Log.i(TAG , "created")
             }
     }
 }

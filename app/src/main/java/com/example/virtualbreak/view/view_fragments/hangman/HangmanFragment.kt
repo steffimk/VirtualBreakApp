@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
@@ -23,18 +24,6 @@ class HangmanFragment : Fragment() {
 
     private var game: Game? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setFragmentResultListener("requestKey") { requestKey, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported
-            val result = bundle.getString("bundleKey")
-            handleKeyboardFromChat(result)
-            // Do something with the result
-        }
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +34,13 @@ class HangmanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentFragmentManager.setFragmentResultListener(
+            Constants.REQUEST_KEY_GAME_FRAGMENT,
+            this,
+            FragmentResultListener { requestKey, bundle ->
+                val result = bundle.getBoolean(Constants.BUNDLE_KEY_GAME_FRAGMENT)
+                handleKeyboardFromChat(result)
+            })
 
         val gameId = requireArguments().getString(Constants.GAME_ID)
         // by default: set content layout visible and end layout invisible

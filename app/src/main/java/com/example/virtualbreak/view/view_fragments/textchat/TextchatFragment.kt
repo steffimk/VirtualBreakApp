@@ -145,8 +145,10 @@ class TextchatFragment() : Fragment() {
             if(room != null){
                 if(room!!.type.equals(Roomtype.GAME)){
                     val result = b
-                    // Use the Kotlin extension in the fragment-ktx artifact
-                    setFragmentResult("requestKey", bundleOf("bundleKey" to result))
+                    parentFragmentManager.setFragmentResult(
+                        Constants.REQUEST_KEY_GAME_FRAGMENT,
+                        bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT to result)
+                    )
                 }
             }
 

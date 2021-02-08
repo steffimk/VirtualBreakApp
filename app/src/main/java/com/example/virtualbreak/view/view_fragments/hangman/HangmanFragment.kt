@@ -35,12 +35,13 @@ class HangmanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // when receiving focus of edittext in chat fragment do something
         parentFragmentManager.setFragmentResultListener(
             Constants.REQUEST_KEY_GAME_FRAGMENT,
             this,
             FragmentResultListener { requestKey, bundle ->
                 val result = bundle.getBoolean(Constants.BUNDLE_KEY_GAME_FRAGMENT)
-                Log.i(TAG, "receiving edittext event  " +  result)
+                Log.i(TAG, "receiving edittext event  " + result)
                 handleKeyboardFromChat(result)
             })
 
@@ -49,12 +50,8 @@ class HangmanFragment : Fragment() {
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
 
-        // TODO maybe remove
         game_base_cardview.setOnClickListener {
-            parentFragmentManager.setFragmentResult(
-                Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
-                bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK to Constants.CLICK)
-            )
+            sendFragmentResultClick()
         }
 
         //expand or close game fragment
@@ -79,7 +76,7 @@ class HangmanFragment : Fragment() {
                 hangman_content.setVisibility(View.VISIBLE)
                 expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
             }
-
+            sendFragmentResultClick()
         }
 
         val viewModel: HangmanViewModel by viewModels {
@@ -376,33 +373,8 @@ class HangmanFragment : Fragment() {
                     }
                 }
             }
-
         })
     }
-
-    fun handleKeyboardFromChat(focus: Boolean) {
-        if (focus) {
-            // when edit text is clicked, hide game fragment
-            if (hangman_content.visibility === View.VISIBLE) {
-                TransitionManager.beginDelayedTransition(
-                    game_base_cardview,
-                    AutoTransition()
-                )
-                hangman_content.setVisibility(View.GONE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-            }
-        } else {
-            if (hangman_content.visibility === View.GONE) {
-                TransitionManager.beginDelayedTransition(
-                    game_base_cardview,
-                    AutoTransition()
-                )
-                hangman_content.setVisibility(View.VISIBLE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-            }
-        }
-    }
-
 
 
     /**
@@ -611,6 +583,45 @@ class HangmanFragment : Fragment() {
         x_input.setEnabled(true)
         y_input.setEnabled(true)
         z_input.setEnabled(true)
+    }
+
+    /**
+     * Set click value to fragment result
+     */
+    private fun sendFragmentResultClick() {
+        Log.i(TAG, "sending game event")
+        parentFragmentManager.setFragmentResult(
+            Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
+            bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK to Constants.CLICK)
+        )
+    }
+
+    /**
+     * When focus is on Edittext in chat, hide hangman fragment
+     *
+     * @param focus If it's focused
+     */
+    private fun handleKeyboardFromChat(focus: Boolean) {
+        if (focus) {
+            // when edit text is clicked, hide game fragment
+            if (hangman_content.visibility === View.VISIBLE) {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                hangman_content.setVisibility(View.GONE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        } else {
+            if (hangman_content.visibility === View.GONE) {
+                TransitionManager.beginDelayedTransition(
+                    game_base_cardview,
+                    AutoTransition()
+                )
+                hangman_content.setVisibility(View.VISIBLE)
+                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

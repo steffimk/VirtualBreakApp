@@ -56,13 +56,12 @@ class TextchatFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "OnViewCreated")
 
-        // TODO maybe remove
+        // when receiving that hangman is clicked, remove focus of edittext
         parentFragmentManager.setFragmentResultListener(
             Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
             this,
             FragmentResultListener { requestKey, bundle ->
                 val result = bundle.getString(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK)
-                Log.i(TAG, "receiving edittext event  " +  result)
                 if(result.equals(Constants.CLICK)){
                     chat_message_input.clearFocus()
                 }
@@ -131,8 +130,8 @@ class TextchatFragment() : Fragment() {
             }
         })
 
+        // when edittext is focused send info to close hangman fragment
         chat_message_input.setOnFocusChangeListener { view, b ->
-
             if(room != null){
                 if(room!!.type.equals(Roomtype.GAME)){
                     val result = b
@@ -149,9 +148,7 @@ class TextchatFragment() : Fragment() {
                     }
                 }
             }
-
         }
-
 
         // sends entered message if not empty
         send_message_button.setOnClickListener {

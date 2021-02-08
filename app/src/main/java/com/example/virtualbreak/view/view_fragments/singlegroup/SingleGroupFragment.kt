@@ -188,18 +188,6 @@ class SingleGroupFragment : Fragment() {
         // Remove the scrim view and on back pressed callbacks
         member_card_scrim.visibility = View.GONE
 
-        // Set up MaterialContainerTransform beginDelayedTransition.
-        /*val transform = MaterialContainerTransform().apply {
-            startView = member_card_view
-            endView = chip
-            scrimColor = Color.TRANSPARENT
-            startElevation = requireContext().resources.getDimension(
-                R.dimen.card_popup_elevation_compat
-            )
-            addTarget(chip)
-        }
-
-        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)*/
         TransitionManager.beginDelayedTransition(member_card_view)
 
         member_card_view.visibility = View.INVISIBLE

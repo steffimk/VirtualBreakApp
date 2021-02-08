@@ -62,22 +62,29 @@ class QuestionFragment : Fragment() {
 
         //expand or close sport fragment
         expand_question_relative_layout.setOnClickListener {
-            if (question_content.getVisibility() === View.VISIBLE) {
-                TransitionManager.beginDelayedTransition(
-                    question_base_view,
-                    AutoTransition()
-                )
-                question_content.visibility = View.GONE
-                expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-            } else {
-                TransitionManager.beginDelayedTransition(
-                    question_base_view,
-                    AutoTransition()
-                )
-                question_content.visibility = View.VISIBLE
-                expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
-            }
+            toggleQuestionFragmentVisibility()
+        }
 
+        expand_question_btn.setOnClickListener {
+            toggleQuestionFragmentVisibility()
+        }
+    }
+
+    private fun toggleQuestionFragmentVisibility(){
+        if (question_content.getVisibility() === View.VISIBLE) {
+            TransitionManager.beginDelayedTransition(
+                question_base_view,
+                AutoTransition()
+            )
+            question_content.visibility = View.GONE
+            expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        } else {
+            TransitionManager.beginDelayedTransition(
+                question_base_view,
+                AutoTransition()
+            )
+            question_content.visibility = View.VISIBLE
+            expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
         }
     }
 

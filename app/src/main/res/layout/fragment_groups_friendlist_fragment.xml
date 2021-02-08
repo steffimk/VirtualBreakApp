@@ -7,6 +7,31 @@
     android:layout_height="match_parent"
     tools:context=".view.view_fragments.groupsfriends.Groups_friendlist_fragment">
 
+    <LinearLayout
+        android:id="@+id/no_friends_yet_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/friends_add_friends_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/no_friends_yet_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:visibility="visible"
+            android:textAlignment="center"
+            android:text="@string/no_friends_yet"
+            />
+        <ImageView
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:src="@drawable/ic_online_friends_pana"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friends_recyler_list_view"

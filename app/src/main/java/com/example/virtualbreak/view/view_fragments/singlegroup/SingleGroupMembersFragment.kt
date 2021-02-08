@@ -69,18 +69,6 @@ class SingleGroupMembersFragment : Fragment() {
                     )
                 }
                 singlegroup_members_recyclerlistview.adapter = memberListAdapter
-                //don't reuse old adapter
-                /*if(memberListAdapter== null){
-                    memberListAdapter = SingleGroupMembersAdapter(
-                        ArrayList(
-                            members.values
-                        ), context
-                    )
-                    singlegroup_members_recyclerlistview.adapter = memberListAdapter
-                }
-                else{ //update adapter with new data, if already exists
-                    memberListAdapter?.updateData(ArrayList(members.values))
-                }*/
 
                 Log.d(TAG, "Observed friends: $members")
             })

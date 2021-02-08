@@ -105,7 +105,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             editOrSaveUsername()
         }
 
-        activity?.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//disable rotate because sometimes bug then
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//disable rotate because sometimes bug then
         return root
     }
 

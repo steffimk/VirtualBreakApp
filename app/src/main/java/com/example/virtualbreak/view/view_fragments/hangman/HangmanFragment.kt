@@ -39,27 +39,10 @@ class HangmanFragment : Fragment() {
 
         //expand or close game fragment
         expand_game_relative_layout.setOnClickListener {
-            if (hangman_content.getVisibility() === View.VISIBLE) {
-
-                // The transition of the hiddenView is carried out
-                //  by the TransitionManager class.
-                // Here we use an object of the AutoTransition
-                // Class to create a default transition.
-                TransitionManager.beginDelayedTransition(
-                    game_base_cardview,
-                    AutoTransition()
-                )
-                hangman_content.setVisibility(View.GONE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-            } else {
-                TransitionManager.beginDelayedTransition(
-                    game_base_cardview,
-                    AutoTransition()
-                )
-                hangman_content.setVisibility(View.VISIBLE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
-            }
-
+            toggleGameFragmentVisibility()
+        }
+        expand_game_btn.setOnClickListener {
+            toggleGameFragmentVisibility()
         }
 
         val viewModel: HangmanViewModel by viewModels {
@@ -358,6 +341,29 @@ class HangmanFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun toggleGameFragmentVisibility(){
+        if (hangman_content.getVisibility() === View.VISIBLE) {
+
+            // The transition of the hiddenView is carried out
+            //  by the TransitionManager class.
+            // Here we use an object of the AutoTransition
+            // Class to create a default transition.
+            TransitionManager.beginDelayedTransition(
+                game_base_cardview,
+                AutoTransition()
+            )
+            hangman_content.setVisibility(View.GONE)
+            expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        } else {
+            TransitionManager.beginDelayedTransition(
+                game_base_cardview,
+                AutoTransition()
+            )
+            hangman_content.setVisibility(View.VISIBLE)
+            expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+        }
     }
 
     /**

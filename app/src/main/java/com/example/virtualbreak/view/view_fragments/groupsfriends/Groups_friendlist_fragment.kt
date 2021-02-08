@@ -22,6 +22,7 @@ import com.example.virtualbreak.model.User
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_friend_requests.*
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.account_status_text_view
 import kotlinx.android.synthetic.main.fragment_singlegroup.*
@@ -73,17 +74,14 @@ class Groups_friendlist_fragment : Fragment() {
         friends_recyler_list_view.setItemViewCacheSize(20)
 
         viewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ friends ->
-            friendsListAdapter = FriendListAdapter(ArrayList(friends.values), context, this)
-            friends_recyler_list_view.adapter = friendsListAdapter
 
-            //don't reuse old adapter
-            /*if(friendsListAdapter == null){
-                friendsListAdapter = FriendListAdapter(ArrayList(friends.values), context)
+            if(friends.size == 0){
+                no_friends_yet_linearlayout.visibility = View.VISIBLE //display text that no friends were added yet
+            } else{
+                no_friends_yet_linearlayout.visibility = View.GONE
+                friendsListAdapter = FriendListAdapter(ArrayList(friends.values), context, this)
                 friends_recyler_list_view.adapter = friendsListAdapter
             }
-            else{ //update old adapter with new data
-                friendsListAdapter?.updateData(ArrayList(friends.values))
-            }*/
 
             Log.d(TAG, "Observed friends: $friends")
         })
@@ -150,24 +148,6 @@ class Groups_friendlist_fragment : Fragment() {
         closePopupCardOnBackPressed.expandedChip = null
         closePopupCardOnBackPressed.isEnabled = false
 
-        /*try{ // prevent exception when list view was updated underneath
-            // Set up MaterialContainerTransform beginDelayedTransition.
-            val transform = MaterialContainerTransform().apply {
-                startView = account_card_view
-                endView = chip
-                scrimColor = Color.TRANSPARENT
-                startElevation = requireContext().resources.getDimension(
-                    R.dimen.card_popup_elevation_compat
-                )
-                addTarget(chip)
-            }
-
-
-            TransitionManager.beginDelayedTransition(friends_recyler_list_view, transform)
-        }
-        catch(ex: IllegalArgumentException){
-            Log.d(TAG, "start view does not exist anymore, list probably was updated")
-        }*/
         TransitionManager.beginDelayedTransition(account_card_view)
 
 

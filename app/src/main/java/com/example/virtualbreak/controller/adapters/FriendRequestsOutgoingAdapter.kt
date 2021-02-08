@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_fragments.friendrequests.FriendRequestsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
-class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsOutgoingAdapter.ViewHolderFriendRequests>() {
+class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>): RecyclerView.Adapter<FriendRequestsOutgoingAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View
     val TAG = "FriendRequestsOutgoingAdapter"

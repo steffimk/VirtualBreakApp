@@ -17,11 +17,12 @@ import com.example.virtualbreak.model.NotificationBody
 import com.example.virtualbreak.model.NotificationData
 import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
+import com.example.virtualbreak.view.view_fragments.friendrequests.FriendRequestsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
-class FriendRequestsAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsAdapter.ViewHolderFriendRequests>() {
+class FriendRequestsAdapter(private val friendRequests: ArrayList<User>): RecyclerView.Adapter<FriendRequestsAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View
     val TAG = "FriendRequestsAdapter"

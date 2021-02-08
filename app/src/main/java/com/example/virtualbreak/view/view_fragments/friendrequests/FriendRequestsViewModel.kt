@@ -55,17 +55,17 @@ class FriendRequestsViewModel : ViewModel() {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             val friendRequests = dataSnapshot.getValue<HashMap<String,Boolean>>()
 
+            incomingFriendRequests.value?.clear()
+            incomingFriendRequests.value = incomingFriendRequests.value
+            outgoingFriendRequests.value?.clear()
+            outgoingFriendRequests.value = outgoingFriendRequests.value
+
             if (friendRequests == null) {
                 Log.d(TAG, "Pulled FriendRequests are null")
                 return
             }
 
             Log.d(TAG, "Pulled FriendRequests $friendRequests")
-
-            incomingFriendRequests.value?.clear()
-            incomingFriendRequests.value = incomingFriendRequests.value
-            outgoingFriendRequests.value?.clear()
-            outgoingFriendRequests.value = outgoingFriendRequests.value
 
             friendRequests.forEach {
                     (userId, isIncoming) -> pullUserWithId(userId, isIncoming)

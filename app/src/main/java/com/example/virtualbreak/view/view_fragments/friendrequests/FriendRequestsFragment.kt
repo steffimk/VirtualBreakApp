@@ -51,11 +51,11 @@ class FriendRequestsFragment() : Fragment() {
             }
             //pass list of users who sent you a friend request
             friendrequests_recyler_list_view.adapter =
-                FriendRequestsAdapter(ArrayList(incomingFriendRequests.values))
+                FriendRequestsAdapter(ArrayList(incomingFriendRequests.values), viewModel)
         })
 
         viewModel.getOutgoingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ outgoingFriendRequests ->
-            Log.d(TAG, "Observed the following incomingFriendRequests: $outgoingFriendRequests")
+            Log.d(TAG, "Observed the following outgoingFriendRequests: $outgoingFriendRequests")
 
             if(outgoingFriendRequests.size == 0){
                 text_no_outgoing_friendrequests.visibility = View.VISIBLE
@@ -64,7 +64,7 @@ class FriendRequestsFragment() : Fragment() {
             }
             //pass list of users who sent you a friend request
             outgoing_friendrequests_recyler_list_view.adapter =
-                FriendRequestsOutgoingAdapter(ArrayList(outgoingFriendRequests.values))
+                FriendRequestsOutgoingAdapter(ArrayList(outgoingFriendRequests.values), viewModel)
         })
 
 

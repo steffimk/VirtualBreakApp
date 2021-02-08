@@ -31,7 +31,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.adapters.ChatAdapter
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
@@ -65,8 +64,6 @@ class BreakRoomActivity : AppCompatActivity() {
     private var roomType: String = Roomtype.COFFEE.dbStr
 
     private var gameId: String? = null
-
-    private var chatAdapter: ChatAdapter? = null
 
     private var activity = this
 

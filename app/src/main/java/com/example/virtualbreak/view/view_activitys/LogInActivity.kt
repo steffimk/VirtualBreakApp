@@ -4,6 +4,7 @@ package com.example.virtualbreak.view.view_activitys
 //import com.google.android.gms.auth.api.signin.GoogleSignInClient
 //import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -65,6 +66,8 @@ class LogInActivity : AppCompatActivity() {
                     }
                 }
         }
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//disable rotate
     }
 
     override fun onStart() {

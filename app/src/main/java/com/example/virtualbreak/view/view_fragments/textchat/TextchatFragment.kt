@@ -61,14 +61,17 @@ class TextchatFragment() : Fragment() {
         layoutManager.setStackFromEnd(true)
         chat_messages_recycler_view.layoutManager = layoutManager
 
-
-        chatAdapter = context?.let {
-            ChatAdapter(
-                it,
-                defaultMessages,
-                SharedPrefManager.instance.getRoomUsersHashmap()
-            )
+        SharedPrefManager.instance.getRoomUsersHashmap()?.let{
+            val roomUsers = it
+            chatAdapter = context?.let {
+                ChatAdapter(
+                    it,
+                    defaultMessages,
+                    roomUsers
+                )
+            }
         }
+
         chat_messages_recycler_view.adapter = chatAdapter
 
         chat_messages_recycler_view.post { //post ensures that scroll is done when recyclerview is ready
@@ -89,20 +92,24 @@ class TextchatFragment() : Fragment() {
                 var newMessagesList = ArrayList(newMessages.values)
                 newMessagesList.sortBy { it.timestamp } //evtl this can be made more efficient by adding new messages and not updating whole list
                 if (chatAdapter == null) {
-                    chatAdapter = context?.let {
-                        ChatAdapter(
-                            it,
-                            newMessagesList,
-                            SharedPrefManager.instance.getRoomUsersHashmap()
-                        )
+                    //prevent empty usernames
+                    SharedPrefManager.instance.getRoomUsersHashmap()?.let{
+                        val roomUsers = it
+                        chatAdapter = context?.let {
+                            ChatAdapter(
+                                it,
+                                newMessagesList,
+                                roomUsers
+                            )
+                        }
+                        chat_messages_recycler_view.adapter = chatAdapter
                     }
-                    chat_messages_recycler_view.adapter = chatAdapter
                 } else { //ChatAdapter already exists
                     Log.d(TAG, "Old " + messagesList.size + " new: " + newMessagesList.size)
-                    if (messagesList.size < newMessagesList.size) {
+                    SharedPrefManager.instance.getRoomUsersHashmap()?.let{
                         chatAdapter?.updateData(
                             newMessagesList,
-                            SharedPrefManager.instance.getRoomUsersHashmap()
+                            it
                         )
                     }
                 }

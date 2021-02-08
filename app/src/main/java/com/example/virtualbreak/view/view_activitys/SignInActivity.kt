@@ -73,10 +73,23 @@ class SignInActivity : AppCompatActivity() {
                             Log.d(TAG, "createUserWithEmail:success")
                             val user = auth.currentUser
                             if (user != null) {
-                                // Save userId in shared preferences
-                                SharedPrefManager.instance.saveUserId(user.uid)
-                                SharedPrefManager.instance.saveUserName(name)
                                 PushData.saveUser(user, name)
+                                auth.useAppLanguage()
+                                user.sendEmailVerification()
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            Log.d(TAG, "Email sent.")
+                                            Toast.makeText(
+                                                baseContext, getString(R.string.verification_mail_sent),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            auth.signOut()
+                                            startActivity(Intent(this, NavigationDrawerActivity::class.java))
+                                        }
+                                    }
+                                // Save userId in shared preferences
+//                                SharedPrefManager.instance.saveUserId(user.uid)
+//                                SharedPrefManager.instance.saveUserName(name)
                             }
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {

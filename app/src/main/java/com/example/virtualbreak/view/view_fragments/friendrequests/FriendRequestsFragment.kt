@@ -51,7 +51,7 @@ class FriendRequestsFragment() : Fragment() {
             }
             //pass list of users who sent you a friend request
             friendrequests_recyler_list_view.adapter =
-                FriendRequestsAdapter(ArrayList(incomingFriendRequests.values), viewModel)
+                FriendRequestsAdapter(ArrayList(incomingFriendRequests.values))
         })
 
         viewModel.getOutgoingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ outgoingFriendRequests ->
@@ -64,7 +64,7 @@ class FriendRequestsFragment() : Fragment() {
             }
             //pass list of users who sent you a friend request
             outgoing_friendrequests_recyler_list_view.adapter =
-                FriendRequestsOutgoingAdapter(ArrayList(outgoingFriendRequests.values), viewModel)
+                FriendRequestsOutgoingAdapter(ArrayList(outgoingFriendRequests.values))
         })
 
 

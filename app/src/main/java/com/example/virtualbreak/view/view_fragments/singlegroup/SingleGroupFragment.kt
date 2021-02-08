@@ -105,7 +105,6 @@ class SingleGroupFragment : Fragment() {
             showLeaveDialog()
             true
         }
-        //TODO edit group name? maybe in extra fragment
         else -> {
             super.onOptionsItemSelected(item)
         }

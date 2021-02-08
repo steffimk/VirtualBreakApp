@@ -1,7 +1,5 @@
 package com.example.virtualbreak.controller.adapters
 
-
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.User
-import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
-import java.io.IOException
 
 class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>) : RecyclerView.Adapter<FriendRequestsOutgoingAdapter.ViewHolderFriendRequests>() {
 

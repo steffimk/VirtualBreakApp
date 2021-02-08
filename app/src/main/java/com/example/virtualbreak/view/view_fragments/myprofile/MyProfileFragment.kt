@@ -7,10 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,17 +29,14 @@ import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_myprofile.*
-import java.io.IOException
 
 
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -221,13 +216,6 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             e.printStackTrace()
         }
 
-
-        /*
-        val intentLoadImage = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.INTERNAL_CONTENT_URI
-        )
-        startActivityForResult(intentLoadImage, RESULT_LOAD_IMAGE)*/
     }
 
     override fun onRequestPermissionsResult(

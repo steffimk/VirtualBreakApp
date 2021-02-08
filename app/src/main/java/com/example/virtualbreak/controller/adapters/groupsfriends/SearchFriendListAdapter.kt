@@ -14,10 +14,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
-import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
-import java.io.IOException
 
 /**
  * This adapter manages the friend list in AddGroupFragment, when choosing friends to make a group

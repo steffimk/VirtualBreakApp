@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
@@ -20,8 +19,6 @@ import kotlinx.android.synthetic.main.fragment_friend_requests.*
 class FriendRequestsFragment() : Fragment() {
 
     private val TAG = "FriendRequestsFragment"
-
-//    var friendrequestsTest: ArrayList<User> = ArrayList()
 
     companion object {
         fun newInstance() = FriendRequestsFragment()
@@ -74,11 +71,6 @@ class FriendRequestsFragment() : Fragment() {
         friendrequests_search_friends_btn.setOnClickListener{
             view.findNavController().navigate(R.id.action_friendrequests_to_addfriends)
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
 }

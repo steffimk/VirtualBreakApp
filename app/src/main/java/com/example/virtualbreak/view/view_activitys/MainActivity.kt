@@ -3,16 +3,11 @@ package com.example.virtualbreak.view.view_activitys
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.communication.PullData
-import com.example.virtualbreak.controller.communication.PushData
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,9 +42,5 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    /*override fun onBackPressed() { //not needed, because redirect NavigationDrawerActivity when user not logged in
-        // Do nothing, to prevent going back to NavigationDrawerActivity after Logout
-    }*/
 
 }

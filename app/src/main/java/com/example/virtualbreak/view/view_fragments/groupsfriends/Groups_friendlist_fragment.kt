@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.accoun
 import kotlinx.android.synthetic.main.fragment_singlegroup.*
 
 /**
- * Friend list fragment in main fragment
+ * Friend list fragment in main fragment right tab view
  */
 class Groups_friendlist_fragment : Fragment() {
 
@@ -168,6 +168,9 @@ class Groups_friendlist_fragment : Fragment() {
             .addOnFailureListener {
                 //Log.w(TAG, it) // exception is already printed in StorageException class
                 Log.d(TAG, "This user does not have a profile picture!")
+                context?.let{
+                    imgView.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_person_24))
+                }
             }
     }
 

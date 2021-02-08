@@ -207,6 +207,9 @@ class SingleGroupFragment : Fragment() {
             .addOnFailureListener {
                 //Log.w(TAG, it) // exception is already printed in StorageException class
                 Log.d(TAG, "This user does not have a profile picture!")
+                context?.let{
+                    imgView.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_person_24))
+                }
             }
     }
 

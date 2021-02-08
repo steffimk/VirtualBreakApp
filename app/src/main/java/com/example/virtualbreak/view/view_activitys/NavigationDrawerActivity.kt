@@ -2,6 +2,9 @@ package com.example.virtualbreak.view.view_activitys
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -82,6 +85,7 @@ class NavigationDrawerActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//disable rotate
     }
 
     override fun onStart() {

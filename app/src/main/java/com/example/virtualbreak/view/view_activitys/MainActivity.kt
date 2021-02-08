@@ -1,6 +1,7 @@
 package com.example.virtualbreak.view.view_activitys
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             startActivity(Intent(this, LogInActivity::class.java))
         }
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//disable rotate
 
     }
 

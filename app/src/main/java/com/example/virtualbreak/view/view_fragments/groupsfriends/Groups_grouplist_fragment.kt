@@ -11,8 +11,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import androidx.navigation.findNavController
+import com.example.virtualbreak.controller.adapters.FriendListAdapter
 import com.example.virtualbreak.controller.adapters.groupsfriends.GroupsListAdapter
 import com.example.virtualbreak.model.Group
+import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 import kotlinx.android.synthetic.main.fragment_groups_grouplist_fragment.*
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsViewModel as GroupsViewModel
 
@@ -43,18 +45,18 @@ class Groups_grouplist_fragment : Fragment() {
 
         viewModel.getGroups()
             .observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groups ->
-                var groupslist = ArrayList(groups.values)
-                groupslist.sortBy{it.description}
-                groupsListAdapter = GroupsListAdapter(groupslist, context)
-                groups_recyler_list_view.adapter = groupsListAdapter
 
-                //uncommented this update, because sometimes bug when clicking on group other group is opened
-                /*if(groupsListAdapter == null){
+                if(groups.size == 0){
+                    no_groups_yet_linearlayout.visibility = View.VISIBLE //display text that no groups were added yet
+                } else{
+                    no_groups_yet_linearlayout.visibility = View.GONE
+
+                    //initialise/update list
+                    var groupslist = ArrayList(groups.values)
+                    groupslist.sortBy{it.description}
                     groupsListAdapter = GroupsListAdapter(groupslist, context)
                     groups_recyler_list_view.adapter = groupsListAdapter
-                } else{
-                    groupsListAdapter?.updateData(groupslist)
-                }*/
+                }
 
                 Log.d(TAG, "Observed groups: $groups")
             })

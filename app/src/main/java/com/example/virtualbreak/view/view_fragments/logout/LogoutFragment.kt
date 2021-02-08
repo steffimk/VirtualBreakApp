@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.communication.PushData
+import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.firebase.auth.ktx.auth
@@ -26,6 +28,7 @@ class LogoutFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_logout, container, false)
 
         root.findViewById<Button>(R.id.logoutBtn).setOnClickListener {
+            PushData.setStatus(Status.ABSENT)
             //close Widget
             activity?.stopService(Intent(activity, BreakroomWidgetService::class.java))
             //Sign out

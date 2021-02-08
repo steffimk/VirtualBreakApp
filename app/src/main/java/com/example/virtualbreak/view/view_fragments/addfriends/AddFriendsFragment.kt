@@ -173,16 +173,10 @@ class AddFriendsFragment : Fragment() {
 
     }
 
+    /**
+     * adds return transition on friends items in friends list fragment
+     */
     private fun addTransition() {
-        /*enterTransition = MaterialContainerTransform().apply {
-            startView = requireActivity().findViewById(R.id.friends_add_friends_button)
-            endView = view
-            duration = resources.getInteger(R.integer.reply_motion_duration_small).toLong()
-            scrimColor = Color.TRANSPARENT
-            containerColor = requireContext().getColor(R.color.white)
-            startContainerColor = requireContext().getColor(R.color.white)
-            endContainerColor = requireContext().getColor(R.color.white)
-        }*/
         returnTransition = Slide().apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
             addTarget(R.id.friends_recyler_list_view)

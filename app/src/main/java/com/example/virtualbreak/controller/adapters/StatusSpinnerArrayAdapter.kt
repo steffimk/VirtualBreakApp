@@ -11,7 +11,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.virtualbreak.model.Status
 
-
+/**
+ * Status Spinner popup in MyProfileFragment
+ */
 class StatusSpinnerArrayAdapter(context: Context, resource: Int, objects: Array<out Status>) :
     ArrayAdapter<Status>(context, resource, objects) {
 

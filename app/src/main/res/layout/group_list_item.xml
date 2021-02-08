@@ -21,7 +21,9 @@
                 android:scaleType="fitCenter"
                 android:layout_width="@dimen/group_list_height"
                 android:layout_height="@dimen/group_list_height"
-                android:src="@drawable/ic_group_24" />
+                android:padding="5dp"
+                android:src="@drawable/ic_groups_white"
+                android:background="@color/blue_Dark_cornflower" />
 
             <TextView
                     android:layout_gravity="center_vertical"

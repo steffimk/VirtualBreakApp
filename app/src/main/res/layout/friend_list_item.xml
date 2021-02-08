@@ -27,9 +27,9 @@
                     android:id="@+id/friend_list_image"
                     android:layout_width="@dimen/group_list_height"
                     android:layout_height="@dimen/group_list_height"
-                    android:backgroundTint="@color/brow_sugar"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_person_24" />
+                    android:background="@color/blue_Dark_cornflower"
+                    android:src="@drawable/ic_person_white" />
 
                 <ImageView
                     android:id="@+id/status_circle_img"

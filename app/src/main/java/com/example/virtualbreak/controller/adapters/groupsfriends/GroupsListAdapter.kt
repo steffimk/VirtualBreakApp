@@ -59,13 +59,13 @@ class GroupsListAdapter(groups: ArrayList<Group>, private val context: Context?)
                     holder.groupImg.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
-                            R.drawable.ic_cup_white_clock
+                            R.drawable.ic_cup_clock_white
                         )
                     )
-                    holder.cardView.setCardBackgroundColor(
+                    holder.groupImg.setBackgroundColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.darkblue_ripple_full
+                            R.color.mandarin
                         )
                     )
                 }

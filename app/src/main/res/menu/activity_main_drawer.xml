@@ -24,7 +24,7 @@
 
        <item
             android:id="@+id/nav_logout"
-           android:icon="@drawable/ic_door"
+           android:icon="@drawable/ic_exit"
            android:title="@string/logout" />
 
 
@@ -35,7 +35,7 @@
         <!-- TODO change icon -->
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_cup_black"
+            android:icon="@drawable/ic_info"
             android:title="@string/impressum"/>
     </group>
 </menu>

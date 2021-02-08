@@ -56,11 +56,18 @@ class GroupsListAdapter(groups: ArrayList<Group>, private val context: Context?)
             if(it.size > 0){
                 //there are open rooms in this group
                 context?.let{
-                    holder.groupImg.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cup_black))
-                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(
-                        context,
-                        R.color.tea_green2
-                    ))
+                    holder.groupImg.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ic_cup_white_clock
+                        )
+                    )
+                    holder.cardView.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.darkblue_ripple_full
+                        )
+                    )
                 }
             }
         }
@@ -87,19 +94,6 @@ class GroupsListAdapter(groups: ArrayList<Group>, private val context: Context?)
         this.groups = groups
         notifyDataSetChanged()
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -82,7 +82,6 @@ class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Co
                 else -> holder.statusCircleImg.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.status_circle_unknown))
             }
         }
-        //viewHolder.status.visibility = View.GONE
 
         if (onClick != null) viewHolder.itemView.setOnClickListener{
             friend.isSelected = !friend.isSelected
@@ -95,7 +94,6 @@ class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Co
             )
             //notifyDataSetChanged()
             onClick!!.onItemClick(friend)
-
         }
 
         viewHolder.selectBox.setOnCheckedChangeListener{

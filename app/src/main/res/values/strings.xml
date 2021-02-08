@@ -109,7 +109,7 @@
 
     <string name="video_call">Video Call</string>
     <string name="edit">edit</string>
-    <string name="rename_room">Rename Room</string>
+    <string name="rename_room">Pausenname</string>
 
     <!-- Floating Widget -->
     <string name="breakroomname">Pausenraum Name</string>

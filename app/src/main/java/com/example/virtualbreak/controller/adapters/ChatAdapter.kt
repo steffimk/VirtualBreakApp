@@ -47,7 +47,7 @@ class ChatAdapter(
         val chatBubble: CardView
         val timestampView: TextView
         val chatItemWhole: LinearLayout
-        val callIndicator : ImageView
+        val callIndicator: ImageView
         private val TAG: String = "ChatAdapter_ViewHolder"
 
         init {
@@ -76,14 +76,10 @@ class ChatAdapter(
         val message = messagesList.get(position)
         val messageSenderId = message.sender
 
-        val viewMessage = holder.messageView
         val viewSender = holder.senderView
-        val viewTimestamp = holder.timestampView
-        val chatBubbleView = holder.chatBubble
 
-
-        //show sender logic
-
+        // show sender logic
+        // only show uername when the current message is not from the same person as the previous
         if (position > 0) {
             val previousMessageSenderId = messagesList.get(position - 1).sender
             //same sender:
@@ -91,7 +87,7 @@ class ChatAdapter(
                 viewSender.visibility = View.GONE
             }
             // not same sender, display username:
-            else{
+            else {
                 if (roomUsers != null) {
                     val sender = roomUsers?.get(messageSenderId)
                     if (sender != null) {
@@ -107,6 +103,11 @@ class ChatAdapter(
     }
 
 
+    /**
+     * Handles setting messages
+     *
+     * @param holder
+     */
     private fun setMessage(
         holder: ChatAdapter.ViewHolder, message: Message
     ) {
@@ -116,19 +117,19 @@ class ChatAdapter(
 
         //show date
         val date = message.timestamp
-        if(date !=  Constants.DEFAULT_TIME){
+        if (date != Constants.DEFAULT_TIME) {
             val timestamp = Timestamp(date)
 
             val currentDate = SimpleDateFormat("dd.MM.yyyy").format(Date())
             val timestampDate = SimpleDateFormat("dd.MM.yyyy").format(timestamp)
 
             val sdf: SimpleDateFormat
-            if(currentDate.equals(timestampDate)){ //message was sent on same day, only show hour and minute
+            if (currentDate.equals(timestampDate)) { //message was sent on same day, only show hour and minute
                 sdf = SimpleDateFormat(
                     "HH:mm",//"dd.MM.yyyy HH:mm",
                     Locale.getDefault()
                 )
-            } else{ // message was sent on different day, also show date
+            } else { // message was sent on different day, also show date
                 sdf = SimpleDateFormat(
                     "HH:mm, dd.MM.yyyy",//"dd.MM.yyyy HH:mm", // MMM d, ''yy
                     Locale.getDefault()
@@ -152,24 +153,27 @@ class ChatAdapter(
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Body1)
 
         }
-        //system messages
-        else if(message.sender.equals(Constants.DEFAULT_MESSAGE_SENDER)){
+
+        // system messages - not from user
+        else if (message.sender.equals(Constants.DEFAULT_MESSAGE_SENDER)) {
             holder.chatBubble.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
             //holder.chatBubble.cardElevation = 0.0f
             holder.chatItemWhole.gravity = Gravity.CENTER //system messages are aligned in center
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Caption) // smaller and grey text
             holder.senderView.visibility = View.GONE
-            //call messages
-            if(message.message.endsWith(context.getString(R.string.joined_call))){
-                holder.callIndicator.visibility =View.VISIBLE
+
+            // for call messages add image to indicate call
+            if (message.message.endsWith(context.getString(R.string.joined_call))) {
+                holder.callIndicator.visibility = View.VISIBLE
                 holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_start))
-            } else if(message.message.endsWith(context.getString(R.string.left_call))){
-                holder.callIndicator.visibility =View.VISIBLE
+            } else if (message.message.endsWith(context.getString(R.string.left_call))) {
+                holder.callIndicator.visibility = View.VISIBLE
                 holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_end))
             }
         }
-        //other people's messages
-        else{
+
+        // other people's messages
+        else {
             holder.chatItemWhole.gravity = Gravity.START
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Body1)
             holder.chatBubble.setCardBackgroundColor(
@@ -182,6 +186,12 @@ class ChatAdapter(
 
     }
 
+    /**
+     * Updates chat
+     *
+     * @param messages List of messages to display
+     * @param roomUsernames Users of the room
+     */
     fun updateData(messages: MutableList<Message>, roomUsernames: HashMap<String, String>?) {
         roomUsers = roomUsernames
         messagesList = messages

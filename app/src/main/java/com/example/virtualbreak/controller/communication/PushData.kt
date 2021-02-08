@@ -23,6 +23,12 @@ class PushData {
 
         //------------------------  Methods concerning user ------------------------
 
+        /**
+         * Creates user on firebase
+         *
+         * @param user
+         * @param name Username
+         */
         fun saveUser(user: FirebaseUser, name: String) {
             if (user?.email != null) {
                   val userData = User(user.uid, name, user.email!!, Status.AVAILABLE)
@@ -33,6 +39,11 @@ class PushData {
             }
         }
 
+        /**
+         * Setting the username of a user
+         *
+         * @param name Username that should be set
+         */
         fun saveUserName(name: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -44,6 +55,11 @@ class PushData {
             }
         }
 
+        /**
+         * Set status of user
+         *
+         * @param status Status to be set
+         */
         fun setStatus(status: Status) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -53,6 +69,9 @@ class PushData {
             }
         }
 
+        /**
+         * Set status of user
+         */
         fun resetStatusToBeforeBreak() {
             val currentUserId = Firebase.auth.currentUser?.uid
             val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
@@ -64,8 +83,28 @@ class PushData {
             }
         }
 
+        /**
+         * Store Fcm Token to user
+         *
+         * @param fcmToken Token to be set
+         */
+        fun setFcmToken(fcmToken: String) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FCM_TOKEN).setValue(fcmToken)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot set fcmToken.")
+            }
+        }
+
         //------------------------  Methods concerning group ------------------------
 
+        /**
+         * Creates a group
+         *
+         * @param description Group description
+         * @param userIds Users which should be added to grou
+         */
         fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -86,6 +125,12 @@ class PushData {
             }
         }
 
+        /**
+         * When user wants to join group
+         *
+         * @param groupId Id of the group that should be joined
+         * @param userId User that joins the group
+         */
         fun joinGroup(groupId: String, userId: String) {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
                 .child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
@@ -94,6 +139,12 @@ class PushData {
             Log.d(TAG, "User $userId joined group $groupId")
         }
 
+        /**
+         * When leaving a group, remove user from group and group from user
+         * Also check if it's the last user to delete groups that are not needed anymore
+         *
+         * @param group Group object that should be left
+         */
         fun leaveGroup(group: Group) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -124,6 +175,11 @@ class PushData {
             }
         }
 
+        /**
+         * Deleting a group and all its corresponding content
+         *
+         * @param group Group object that should be deleted
+         */
         fun deleteGroup(group: Group) {
             for (user in group.users) { //remove group from internal users group lists
                 database.child(Constants.DATABASE_CHILD_USERS).child(user.key).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
@@ -141,6 +197,12 @@ class PushData {
 
         //------------------------  Methods concerning game ------------------------
 
+        /**
+         * Updating the game with a new game
+         *
+         * @param gameId Id of the current game
+         * @param roomId Id of the current room
+         */
         fun updateGame(gameId: String, roomId: String): String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -159,6 +221,11 @@ class PushData {
             }
         }
 
+        /**
+         * Creating and adding a new game in the current room
+         *
+         * @param roomId Id of the current room
+         */
         fun createGame(roomId: String): String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -180,11 +247,23 @@ class PushData {
             }
         }
 
+        /**
+         * Updating the letter list of the game
+         *
+         * @param gameId Id of the current game
+         * @param letter Letter that should be added to letter list of game
+         */
         fun addLetterToGame(gameId: String, letter: String) {
             database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).child(Constants.DATABASE_CHILD_GAME_LETTERS).child(letter).setValue(letter)
             Log.d(TAG, "added letter to game")
         }
 
+        /**
+         * Updating the errors of the game
+         *
+         * @param gameId Id of the current game
+         * @param errors Number of errors that should be set
+         */
         fun addError(gameId: String, errors: Int) {
             database.child(Constants.DATABASE_CHILD_GAMES).child(gameId).child(Constants.DATABASE_CHILD_GAME_ERRORS).setValue(errors)
             Log.d(TAG, "added error to game")
@@ -192,6 +271,12 @@ class PushData {
 
         //------------------------  Methods concerning call ------------------------
 
+        /**
+         * Add user to the call member list of the room
+         *
+         * @param context
+         * @param roomId Id of the current room
+         */
         fun addCallMember(context:Context, roomId: String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
             val userName = SharedPrefManager.instance.getUserName()
@@ -210,6 +295,12 @@ class PushData {
             }
         }
 
+        /**
+         * Remove user from the call member list of the room
+         *
+         * @param context
+         * @param roomId Id of the current room
+         */
         fun removeCallMember(context:Context,roomId: String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
             val userName = SharedPrefManager.instance.getUserName()
@@ -230,6 +321,13 @@ class PushData {
 
         //------------------------  Methods concerning room and chat ------------------------
 
+        /**
+         * Saving a new room
+         *
+         * @param groupId Id of the group where the room belongs to
+         * @param roomType Type of the room
+         * @param roomDescription Description of room that should be set
+         */
         fun saveRoom(groupId: String, roomType: Roomtype, roomDescription: String) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -247,6 +345,13 @@ class PushData {
             }
         }
 
+        /**
+         * When user joins room
+         *
+         * @param context
+         * @param roomId Id of the current room
+         * @param userName Name of the user that wants to join
+         */
         fun joinRoom(context:Context, roomId: String, userName : String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -267,6 +372,14 @@ class PushData {
             }
         }
 
+        /**
+         * When leaving a room
+         * Also check if it's the last user to delete rooms that are not needed anymore
+         *
+         * @param context
+         * @param room Room that should be left
+         * @param userName Name of the user that wants to leave
+         */
         fun leaveRoom(context: Context, room: Room?, userName: String?) {
             if (room == null) return
 
@@ -300,6 +413,11 @@ class PushData {
             }
         }
 
+        /**
+         * Deleting a room and all its corresponding content
+         *
+         * @param room Room to delete
+         */
         fun deleteRoom(room: Room?) {
             if (room == null) {
                 return
@@ -319,11 +437,23 @@ class PushData {
             }
         }
 
+        /**
+         * Setting the description of a room
+         *
+         * @param roomId Id of the current room
+         * @param description New description that should be set
+         */
         fun setRoomDescription(roomId: String, description: String) {
             database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
                 .child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }
 
+        /**
+         * Store sended message
+         *
+         * @param roomId Id of the current room
+         * @param message Message that should be stored to room
+         */
         fun sendMessage(roomId: String, message: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -335,21 +465,28 @@ class PushData {
             }
         }
 
+        /**
+         * Store messages that comes from the app
+         *
+         * @param roomId Id of the current room
+         * @param message Message that should be stored to room
+         */
         private fun sendSystemMessage(roomId: String, message: String){
             val date = Date()
             val newChatMessage = Message(Constants.DEFAULT_MESSAGE_SENDER, message, date.time)
             database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
         }
 
-        fun setFcmToken(fcmToken: String) {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FCM_TOKEN).setValue(fcmToken)
-            } else {
-                Log.d(TAG, "No user logged in. Cannot set fcmToken.")
-            }
-        }
+        //------------------------  Methods concerning sports room  ------------------------
 
+        /**
+         * Add sport to room
+         *
+         * @param roomId Id of the current room
+         * @param minutes Minute amount of timer
+         * @param seconds Seconds amount of timer
+         * @param exercise Sport exercise
+         */
         fun startNewTimer(roomId: String, minutes: Int, seconds: Int, exercise: String){
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -362,6 +499,11 @@ class PushData {
             }
         }
 
+        /**
+         * Remove timer from room
+         *
+         * @param roomId Id of the current room
+         */
         fun removeTimer(roomId: String){
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -371,9 +513,19 @@ class PushData {
             }
         }
 
+        //------------------------  Methods concerning question room  ------------------------
+
+        /**
+         * Add question to room
+         *
+         * @param roomId Id of the current room
+         * @param question Question to add
+         */
         fun saveQuestion(roomId: String, question: String) {
             database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_QUESTION).setValue(question)
         }
+
+        //------------------------  Methods concerning friends and friend requests  ------------------------
 
         /**
          * sends friend request: logic: id for user id - boolean: incoming (true) or outgoing (false)

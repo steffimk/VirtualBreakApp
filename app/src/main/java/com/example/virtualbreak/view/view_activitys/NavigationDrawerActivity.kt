@@ -150,13 +150,12 @@ class NavigationDrawerActivity : AppCompatActivity() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val pulledRoom = dataSnapshot.getValue<Room>()
-                    // if (pulledRoom == null) return
                     PullData.currentRoom = pulledRoom
                     openBreakroom()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.d("NAV", error.message)
+                    Log.d(TAG, error.message)
                 }
             })
     }
@@ -164,7 +163,6 @@ class NavigationDrawerActivity : AppCompatActivity() {
     private fun openBreakroom() {
 
         Log.d(TAG, "go to current Breakroom")
-
         val intent = Intent(this@NavigationDrawerActivity, BreakRoomActivity::class.java)
 
         if (PullData.currentRoom?.type == Roomtype.GAME) {

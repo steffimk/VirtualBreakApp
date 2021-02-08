@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.model.User
@@ -29,12 +28,6 @@ class GroupsViewModel : ViewModel() {
             }
 
             Log.d(TAG, "Pulled Friends $pulledFriends")
-            /*friends.value?.clear()
-            friends.value = friends.value
-
-            pulledFriends.forEach() { (key, userId) ->
-                pullUserWithId(userId)
-            }*/
 
             //check for removes and new friends
             friends.value?.let{

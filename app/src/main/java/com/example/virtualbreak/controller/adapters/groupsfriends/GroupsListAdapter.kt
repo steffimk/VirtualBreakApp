@@ -10,14 +10,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualbreak.R
-import com.example.virtualbreak.controller.SharedPrefManager
-import com.example.virtualbreak.controller.communication.PullData
 import com.example.virtualbreak.model.Group
 import com.example.virtualbreak.view.view_fragments.groupsfriends.GroupsFriendsFragmentDirections
-import kotlinx.android.synthetic.main.group_list_item.*
 
 
 /**

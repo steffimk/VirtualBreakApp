@@ -1,6 +1,5 @@
 package com.example.virtualbreak.model
 
-import com.example.virtualbreak.controller.Constants
 
 data class Game (
     var uid: String = "",

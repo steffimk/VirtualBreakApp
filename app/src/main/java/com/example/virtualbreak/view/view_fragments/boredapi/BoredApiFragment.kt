@@ -13,12 +13,9 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.squareup.okhttp.*
 import kotlinx.android.synthetic.main.fragment_bored_api.*
-import kotlinx.android.synthetic.main.fragment_singlegroup.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-
-private const val ROOM_ID = "roomId"
 
 /**
  * Bored API extras fragment

@@ -286,7 +286,7 @@ class BreakroomWidgetService : Service() {
 
 
     /**
-     * ALL Communicatation Constatns for the localBroadCastManager
+     * ALL Communicatation Constants for the localBroadCastManager
      */
     companion object {
         const val ACTION_VIDEO_CALL = "videocall"

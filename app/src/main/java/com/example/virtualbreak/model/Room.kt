@@ -10,6 +10,5 @@ data class Room(var uid: String = "",
                 var exercise: String? = null,
                 var question: String? = null,
                 var callMembers : HashMap<String, String>? = null,
-                // TODO: when changing variable here, also change in constants "DATABASE_CHILD_ROOM_GAME"
                 var gameId: String? = null) {
 }

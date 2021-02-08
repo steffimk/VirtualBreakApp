@@ -30,22 +30,11 @@ class AddGroupFragment : Fragment() {
 
     val selectFriendsIds = ArrayList<String>()
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_group, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,11 +79,9 @@ class AddGroupFragment : Fragment() {
 
         val createGroupButton: FloatingActionButton = view.findViewById(R.id.make_group_button)
         createGroupButton.setOnClickListener{
-            //TODO change with freindlist, need to pull updated function, check if groupname is added, check if at least one friend is selected, go to overview again
 
             if (groupName.text.toString() != ""){
                 if(selectFriendsIds.isNotEmpty()){
-                    //TODO PushData.saveGroup(groupName.text.toString(), selectedFriendsIds), convert mutable list to array?
                     this.createNewGroup(groupName.text.toString(), selectFriendsIds.toTypedArray())
                     view.findNavController().navigate(R.id.action_addGroupFragment_to_navHome)
                 }else{

@@ -37,6 +37,15 @@ class Constants {
         const val SERVER_KEY = "AAAAq1RP918:APA91bG34UvpK6BFYE1DGNlaHxOFVnuOFTj37u-mob6AbJsTPyVILdksD9XUzt6TSwmY-WyWLEuBe-NCjwIweJWqdqlfriUlOFfNA-dZiz8PLgun4Rj3AUnxwJuB4D7t_na-FVSxhOIl"
         const val CONTENT_TYPE = "application/json"
 
+        const val REQUEST_KEY_GAME_FRAGMENT = "requestKey"
+        const val BUNDLE_KEY_GAME_FRAGMENT = "bundleKey"
+
+        const val REQUEST_KEY_GAME_FRAGMENT_CLICK = "requestKeyClick"
+        const val BUNDLE_KEY_GAME_FRAGMENT_CLICK = "bundleKeyClick"
+        const val CLICK = "click"
+
+
+
         val FITNESS_IDEAS = arrayOf(
             Pair("Liegestützen",1.3), Pair("Hampelmänner",2.0), Pair("Sit-Ups",1.0), Pair("Plank",2.0), Pair("Kniebeugen",1.0),
             Pair("Mountain Climber",1.0), Pair("Superman",0.3), Pair("Dehnen",2.0), Pair("Burpees",2.0), Pair("Side Plank",1.0),

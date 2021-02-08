@@ -21,6 +21,8 @@ class PushData {
         private val database : DatabaseReference = Firebase.database.reference
         private const val TAG: String = "PushData"
 
+        //------------------------  Methods concerning user ------------------------
+
         fun saveUser(user: FirebaseUser, name: String) {
             if (user?.email != null) {
                   val userData = User(user.uid, name, user.email!!, Status.AVAILABLE)
@@ -34,12 +36,35 @@ class PushData {
         fun saveUserName(name: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_USERNAME).setValue(name)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_USERNAME)
+                    .setValue(name)
                 Log.d(TAG, "Saved username")
             } else {
                 Log.d(TAG, "No user logged in. Cannot save user.")
             }
         }
+
+        fun setStatus(status: Status) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot change status.")
+            }
+        }
+
+        fun resetStatusToBeforeBreak() {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
+            Log.d(TAG, "resetStatusToBeforeBreak "+statusBeforeBreak.dbStr)
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(statusBeforeBreak)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot change status.")
+            }
+        }
+
+        //------------------------  Methods concerning group ------------------------
 
         fun saveGroup(description: String, userIds: Array<String>?) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
@@ -114,6 +139,8 @@ class PushData {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }
 
+        //------------------------  Methods concerning game ------------------------
+
         fun updateGame(gameId: String, roomId: String): String? {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
@@ -163,6 +190,8 @@ class PushData {
             Log.d(TAG, "added error to game")
         }
 
+        //------------------------  Methods concerning call ------------------------
+
         fun addCallMember(context:Context, roomId: String?) {
             val currentUserId = Firebase.auth.currentUser?.uid
             val userName = SharedPrefManager.instance.getUserName()
@@ -198,6 +227,8 @@ class PushData {
                 Log.d(TAG, "No user logged in. Cannot remove call member.")
             }
         }
+
+        //------------------------  Methods concerning room and chat ------------------------
 
         fun saveRoom(groupId: String, roomType: Roomtype, roomDescription: String) : String? {
             val currentUserId = Firebase.auth.currentUser?.uid
@@ -308,26 +339,6 @@ class PushData {
             val date = Date()
             val newChatMessage = Message(Constants.DEFAULT_MESSAGE_SENDER, message, date.time)
             database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
-        }
-
-        fun setStatus(status: Status) {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
-            } else {
-                Log.d(TAG, "No user logged in. Cannot change status.")
-            }
-        }
-
-        fun resetStatusToBeforeBreak() {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
-            Log.d(TAG, "resetStatusToBeforeBreak "+statusBeforeBreak.dbStr)
-            if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(statusBeforeBreak)
-            } else {
-                Log.d(TAG, "No user logged in. Cannot change status.")
-            }
         }
 
         fun setFcmToken(fcmToken: String) {

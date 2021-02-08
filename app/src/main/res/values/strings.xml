@@ -37,7 +37,8 @@
     <string name="toast_signIn_Failed">Sign Up fehlgeschlagen. Versuche es nochmal.</string>
     <string name="toast_enter_data">Bitte fülle alle Felder aus.</string>
     <string name="toast_pw_different">Die Passwörter stimmen nicht überein.</string>
-    <string name="verification_mail_sent">\"Bitte verifiziere deine Mailadresse. Dann kannst du dich einloggen.\"</string>
+    <string name="verification_mail_sent">Bitte verifiziere deine Mailadresse. Dann kannst du dich einloggen.</string>
+    <string name="verification_mail_failure">Es konnte keine Verifikationsmail versendet werden. Probiere es nochmal.</string>
 
     <!-- MainActivity -->
     <string name="title_activity_signin">SigninActivity</string>

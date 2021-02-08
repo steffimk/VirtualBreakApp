@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.virtualbreak.controller.isOnline
+import com.google.firebase.auth.FirebaseUser
 
 class SignInActivity : AppCompatActivity() {
 
@@ -73,25 +74,8 @@ class SignInActivity : AppCompatActivity() {
                             Log.d(TAG, "createUserWithEmail:success")
                             val user = auth.currentUser
                             if (user != null) {
-                                PushData.saveUser(user, name)
-                                auth.useAppLanguage()
-                                user.sendEmailVerification()
-                                    .addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            Log.d(TAG, "Email sent.")
-                                            Toast.makeText(
-                                                baseContext, getString(R.string.verification_mail_sent),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            auth.signOut()
-                                            startActivity(Intent(this, NavigationDrawerActivity::class.java))
-                                        }
-                                    }
-                                // Save userId in shared preferences
-//                                SharedPrefManager.instance.saveUserId(user.uid)
-//                                SharedPrefManager.instance.saveUserName(name)
+                                sendVerificationMail(user,name)
                             }
-                            startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -109,6 +93,33 @@ class SignInActivity : AppCompatActivity() {
             ).show()
         }
 
+    }
+
+    private fun sendVerificationMail(user: FirebaseUser, userName: String){
+        auth.useAppLanguage()
+        user.sendEmailVerification()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    PushData.saveUser(user, userName)
+                    Log.d(TAG, "Verification email sent.")
+                    Toast.makeText(
+                        baseContext, getString(R.string.verification_mail_sent),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    auth.signOut()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    Log.d(TAG, "Could not sent verification email.")
+                    user.delete()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) Log.d(TAG, "User account deleted.")
+                        }
+                    Toast.makeText(
+                        baseContext, getString(R.string.verification_mail_failure),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
     private fun getGermanErrorMessage(errorCode: String, defaultMessage: String): String {

@@ -57,6 +57,7 @@
     <string name="hint_group_name">Gruppen Name</string>
     <string name="search_friends">Suche Freunde</string>
     <string name="select_friends">2. Füge ein paar Freunde hinzu:</string>
+    <string name="add_select_friends">Füge Freunde hinzu:</string>
     <string name="Error_no_friends">Bitte wähle mindestens einen Freund aus!</string>
     <string name="Error_no_groupname">Bitte legen einen Gruppennamen fest!</string>
 

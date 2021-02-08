@@ -44,6 +44,9 @@ class Constants {
         const val BUNDLE_KEY_GAME_FRAGMENT_CLICK = "bundleKeyClick"
         const val CLICK = "click"
 
+        const val REQUEST_KEY_ADD_MEMBER = "requestKeyAddMember"
+        const val BUNDLE_KEY_ADD_MEMBER = "bundleKeyAddMember"
+
 
 
         val FITNESS_IDEAS = arrayOf(

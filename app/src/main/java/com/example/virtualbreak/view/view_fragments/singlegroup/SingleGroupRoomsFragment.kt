@@ -144,7 +144,7 @@ class SingleGroupRoomsFragment : Fragment() {
     fun checkIfInBreakOrOpenBreakRoom(
         roomType: Roomtype,
         singleGroupViewModel: SingleGroupViewModel,
-        userName: String?,
+        userName: String?
     ) {
         if (SharedPrefManager.instance.getRoomId() != null) {
             Toast.makeText(

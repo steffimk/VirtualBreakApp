@@ -9,12 +9,14 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionManager
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
@@ -76,14 +78,35 @@ class SingleGroupFragment : Fragment() {
 
         //check if user is in room and widget is open, when yes disabled rooms
 
-        // display rooms
-        activity?.supportFragmentManager?.beginTransaction()?.let {
-            it.replace(
-                R.id.singlegroup_containerview_rooms,
-                SingleGroupRoomsFragment.newInstance(groupId)
-            )
-            //it.addToBackStack(null)
-            it.commit()
+        var addMember = false
+
+        parentFragmentManager.setFragmentResultListener(
+            Constants.REQUEST_KEY_ADD_MEMBER,
+            this,
+            FragmentResultListener { requestKey, bundle ->
+                addMember = bundle.getBoolean(Constants.BUNDLE_KEY_ADD_MEMBER)
+            })
+
+        if (addMember) {
+            activity?.supportFragmentManager?.beginTransaction()?.let {
+                it.replace(
+                    R.id.singlegroup_containerview_rooms,
+                    AddMemberToGroupFragment.newInstance(groupId)
+                    //SingleGroupRoomsFragment.newInstance(groupId)
+                )
+                //it.addToBackStack(null)
+                it.commit()
+            }
+        } else {
+            // display rooms
+            activity?.supportFragmentManager?.beginTransaction()?.let {
+                it.replace(
+                    R.id.singlegroup_containerview_rooms,
+                    SingleGroupRoomsFragment.newInstance(groupId)
+                )
+                //it.addToBackStack(null)
+                it.commit()
+            }
         }
 
         var userName: String? = SharedPrefManager.instance.getUserName()

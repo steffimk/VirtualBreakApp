@@ -5,12 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
+import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
 import kotlinx.android.synthetic.main.fragment_single_group_members.*
+import kotlinx.android.synthetic.main.textchat_fragment.*
 
 private const val GROUP_ID = "groupId"
 
@@ -84,6 +89,14 @@ class SingleGroupMembersFragment : Fragment() {
 
                 Log.d(TAG, "Observed friends: $members")
             })
+
+
+            singlegroup_add_members.setOnClickListener {
+                parentFragmentManager.setFragmentResult(
+                    Constants.REQUEST_KEY_ADD_MEMBER,
+                    bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to true)
+                )
+            }
 
 
         }

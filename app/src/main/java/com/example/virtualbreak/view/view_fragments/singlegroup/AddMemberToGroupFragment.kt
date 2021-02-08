@@ -69,8 +69,6 @@ class AddMemberToGroupFragment : Fragment() {
             add_select_friends_recylerlist.setHasFixedSize(true)
             add_select_friends_recylerlist.setItemViewCacheSize(20)
 
-            val usersOfGroup = singleGroupViewModel.getGroupUsers()
-
             var groupName = ""
             singleGroupViewModel.getCurrentGroup()
                 .observe(viewLifecycleOwner, Observer<Group?> { currentGroup ->
@@ -86,23 +84,24 @@ class AddMemberToGroupFragment : Fragment() {
 
                         var notAddedFriends: HashMap<String, User> = HashMap()
 
-                        usersOfGroup.observe(
+                        singleGroupViewModel.getGroupUsers().observe(
                             viewLifecycleOwner,
                             Observer<HashMap<String, User>> { usersMap ->
-                                friendsMap.forEach() { (key, user) ->
-                                    if (usersMap.contains(key)) {
-                                        // already in list
-                                    } else {
-                                        notAddedFriends.put(key, user)
+                                if (usersMap != null) {
+                                    Log.i(TAG, "Users in group: " + usersMap)
+                                    Log.i(TAG, "friends allg " + friendsMap)
+                                    friendsMap.forEach() { (key, user) ->
+                                        if (usersMap.contains(key)) {
+                                            // already in list
+                                        } else {
+                                            notAddedFriends.put(key, user)
+                                        }
                                     }
                                 }
                             })
 
-                        if (notAddedFriends.isEmpty()) {
-                            adapter.updateData(ArrayList(friendsMap.values))
-                        } else {
-                            adapter.updateData(ArrayList(notAddedFriends.values))
-                        }
+
+                        adapter.updateData(ArrayList(notAddedFriends.values))
 
                         //adapter = SearchFriendListAdapter(ArrayList(friendsMap.values), context)
                         add_select_friends_recylerlist.adapter = adapter

@@ -74,24 +74,6 @@ class PullData {
             }
         }
 
-        fun pullcurrentRoom() {
-
-            database.child(Constants.DATABASE_CHILD_ROOMS)
-                .child(SharedPrefManager.instance.getRoomId() ?: "")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val pulledRoom = dataSnapshot.getValue<Room>()
-                        Log.d(TAG, "Pulled username $pulledRoom")
-                        // if (pulledRoom == null) return
-                        currentRoom = pulledRoom
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d(TAG, error.message)
-                    }
-                })
-        }
-
     }
 }
 

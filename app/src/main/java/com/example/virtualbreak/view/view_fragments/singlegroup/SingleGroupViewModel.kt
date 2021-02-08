@@ -184,7 +184,7 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
                 var group = dataSnapshot.getValue(Group::class.java)
                 if (group != null) {
                     currentGroup.value = group
-                } else{
+                } else {
                     Log.d(TAG, "Current Group is null!")
                 }
                 Log.d(TAG, "Pulled Current Group")

@@ -88,12 +88,18 @@ class SingleGroupMembersFragment : Fragment() {
                 toggleGroupMembersVisibility()
             }
 
+            singlegroup_add_members.setOnClickListener {
+                parentFragmentManager.setFragmentResult(
+                    Constants.REQUEST_KEY_ADD_MEMBER,
+                    bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to true)
+                )
+            }
 
         }
     }
 
     private fun toggleGroupMembersVisibility() {
-        if (singlegroup_members_recyclerlistview.getVisibility() === View.VISIBLE) {
+        if (singlegroup_member_content.getVisibility() === View.VISIBLE) {
 
             // The transition of the hiddenView is carried out
             //  by the TransitionManager class.
@@ -103,22 +109,15 @@ class SingleGroupMembersFragment : Fragment() {
                 singlegroup_members_base_cardview,
                 AutoTransition()
             )
-            singlegroup_members_recyclerlistview.setVisibility(View.GONE)
+            singlegroup_member_content.setVisibility(View.GONE)
             expand_singlegroup_members_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
         } else {
             TransitionManager.beginDelayedTransition(
                 singlegroup_members_base_cardview,
                 AutoTransition()
             )
-            singlegroup_members_recyclerlistview.setVisibility(View.VISIBLE)
+            singlegroup_member_content.setVisibility(View.VISIBLE)
             expand_singlegroup_members_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
-            singlegroup_add_members.setOnClickListener {
-                parentFragmentManager.setFragmentResult(
-                    Constants.REQUEST_KEY_ADD_MEMBER,
-                    bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to true)
-                )
-            }
-
 
         }
     }

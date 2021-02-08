@@ -209,5 +209,7 @@
     <string name="ERROR_WEAK_PASSWORD">Das Passwort ist zu kurz.</string>
     <string name="ERROR_MISSING_EMAIL">Mailadresse muss angegeben werden.</string>
     <string name="ausloggen">Abmelden</string>
+    <string name="noch_keine_gruppen_vorhanden">Noch keine Gruppen gefunden</string>
+    <string name="no_friends_yet">Noch keine Freunde gefunden</string>
 
 </resources>

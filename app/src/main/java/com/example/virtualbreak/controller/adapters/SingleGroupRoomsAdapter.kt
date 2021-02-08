@@ -113,8 +113,9 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
 
     private fun prepareAndInitBreakStatus() {
         //save current status (before break) in SharedPrefs
-        PullData.currentUser.value?.status?.let { it ->
+        PullData.currentStatus?.let { it ->
             if(SharedPrefManager.instance.getRoomId() == null || "".equals(SharedPrefManager.instance.getRoomId())){ //only save status before going in breakroom if about to enter new room (not reenter)
+                Log.d(TAG, "saveCurrentStatus "+it.dbStr)
                 SharedPrefManager.instance.saveCurrentStatus(
                     it
                 )

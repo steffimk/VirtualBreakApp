@@ -12,10 +12,16 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
+/**
+ * The ViewModel of the SingleGroupFragment
+ */
 class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
     private val TAG = "SingleGroupViewModel"
 
+    /**
+     * LiveData containing a HashMap of roomIds and the respective room
+     */
     private val rooms : MutableLiveData<HashMap<String,Room>> =
         object : MutableLiveData<HashMap<String,Room>>(HashMap()) {
             private val queryRooms = PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
@@ -32,10 +38,17 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             }
         }
 
+    /**
+     * Returns LiveData containing a HashMap of roomIds and the respective room
+     * @return An instance of LiveData containing a HashMap of roomIds and the respective room
+     */
     fun getRooms(): LiveData<HashMap<String, Room>> {
         return rooms
     }
 
+    /**
+     * Receives the roomIds and pulls the corresponding rooms
+     */
     private val roomsValueEventListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             val pulledRooms = dataSnapshot.getValue<HashMap<String,String>>()
@@ -55,6 +68,10 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         }
     }
 
+    /**
+     * Pulls a room and saves it in rooms
+     * @param roomId The id of the room to be pulled
+     */
     private fun pullRoomWithId(roomId: String) {
         val valueEventListener = object : ValueEventListener {
 
@@ -74,7 +91,9 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
     }
 
-
+    /**
+     * LiveData containing a hashmap with the ids and users of the group
+     */
     private val usersOfGroup : MutableLiveData<HashMap<String,User>> =
         object : MutableLiveData<HashMap<String,User>>(HashMap()) {
             private val queryUsers = PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
@@ -91,6 +110,10 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             }
         }
 
+    /**
+     * Returns the LiveData containing a hashmap with the ids and users of the group
+     * @return An instance of LiveData containing a hashmap with the ids and users of the group
+     */
     fun getGroupUsers(): LiveData<HashMap<String, User>> {
         return this.usersOfGroup
     }
@@ -134,6 +157,9 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
 
     }
 
+    /**
+     * Saves the pulled Users to usersOfGroup
+     */
     private val userListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -152,6 +178,46 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         }
 
     }
+
+    /**
+     * LiveData containing the currentGroup
+     */
+    private val currentGroup: MutableLiveData<Group?> by lazy { MutableLiveData<Group?>().also{
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+            .addValueEventListener(currentGroupListener)
+    } }
+
+    /**
+     * Returns the LiveData containing the currentGroup
+     * @return An instance of LiveData containing the currentGroup
+     */
+    fun getCurrentGroup(): LiveData<Group?> {
+        return currentGroup
+    }
+
+    /**
+     * Saves the pulled group in currentGroup
+     */
+    private val currentGroupListener = object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var group = dataSnapshot.getValue(Group::class.java)
+                if (group != null) {
+                    currentGroup.value = group
+                } else {
+                    Log.d(TAG, "Current Group is null!")
+                }
+                Log.d(TAG, "Pulled Current Group")
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, databaseError.message)
+            }
+        }
+
+    /**
+     * Removes all event listeners
+     */
     override fun onCleared() {
         super.onCleared()
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(Constants.DATABASE_CHILD_USERS)
@@ -168,31 +234,5 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
             }
         }
     }
-
-    private val currentGroup: MutableLiveData<Group?> by lazy { MutableLiveData<Group?>().also{
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
-            .addValueEventListener(currentGroupListener)
-    } }
-
-    fun getCurrentGroup(): LiveData<Group?> {
-        return currentGroup
-    }
-
-    private val currentGroupListener = object : ValueEventListener {
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var group = dataSnapshot.getValue(Group::class.java)
-                if (group != null) {
-                    currentGroup.value = group
-                } else{
-                    Log.d(TAG, "Current Group is null!")
-                }
-                Log.d(TAG, "Pulled Current Group")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d(TAG, databaseError.message)
-            }
-        }
 
 }

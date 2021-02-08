@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/top_navigation_drawer"
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_home"
@@ -25,6 +27,11 @@
            android:icon="@drawable/ic_door"
            android:title="@string/logout" />
 
+
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/bottom_navigation_drawer" >
         <!-- TODO change icon -->
         <item
             android:id="@+id/nav_settings"

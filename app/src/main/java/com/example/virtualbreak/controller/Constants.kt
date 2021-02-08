@@ -3,6 +3,7 @@ package com.example.virtualbreak.controller
 class Constants {
     companion object {
 
+        //--------------- Constants concerning Shared Preferences ---------------
         const val ROOM_ID = "roomId"
         const val USER_NAME = "userName"
         const val DISPLAY_NAME = "displayName"
@@ -10,6 +11,7 @@ class Constants {
         const val ROOM_TYPE = "roomType"
         const val GAME_ID = "gameId"
 
+        //--------------- Constants concerning Database ---------------
         const val DATABASE_CHILD_USERS = "users"
         const val DATABASE_CHILD_GROUPS = "groups"
         const val DATABASE_CHILD_ROOMS = "rooms"
@@ -17,6 +19,7 @@ class Constants {
         const val DATABASE_CHILD_DESCRIPTION = "description"
         const val DATABASE_CHILD_MESSAGES = "messages"
         const val DATABASE_CHILD_STATUS = "status"
+        const val DATABASE_CHILD_EMAIL = "email"
         const val DATABASE_CHILD_FCM_TOKEN: String = "fcmToken"
         const val DATABASE_CHILD_FRIEND_REQUESTS = "friendRequests"
         const val DATABASE_CHILD_USERNAME = "username"
@@ -33,10 +36,12 @@ class Constants {
 
         const val DEFAULT_MESSAGE_SENDER = "defaultSender"
 
+        //--------------- Constants concerning FCM Notifications ---------------
         const val BASE_URL = "https://fcm.googleapis.com"
         const val SERVER_KEY = "AAAAq1RP918:APA91bG34UvpK6BFYE1DGNlaHxOFVnuOFTj37u-mob6AbJsTPyVILdksD9XUzt6TSwmY-WyWLEuBe-NCjwIweJWqdqlfriUlOFfNA-dZiz8PLgun4Rj3AUnxwJuB4D7t_na-FVSxhOIl"
         const val CONTENT_TYPE = "application/json"
 
+        //--------------- Constants concerning Game ---------------
         const val REQUEST_KEY_GAME_FRAGMENT = "requestKey"
         const val BUNDLE_KEY_GAME_FRAGMENT = "bundleKey"
 
@@ -46,13 +51,6 @@ class Constants {
 
         const val REQUEST_KEY_ADD_MEMBER = "requestKeyAddMember"
         const val BUNDLE_KEY_ADD_MEMBER = "bundleKeyAddMember"
-
-
-
-        val FITNESS_IDEAS = arrayOf(
-            Pair("Liegestützen",1.3), Pair("Hampelmänner",2.0), Pair("Sit-Ups",1.0), Pair("Plank",2.0), Pair("Kniebeugen",1.0),
-            Pair("Mountain Climber",1.0), Pair("Superman",0.3), Pair("Dehnen",2.0), Pair("Burpees",2.0), Pair("Side Plank",1.0),
-            Pair("Ausfallschritt",1.0), Pair("Crunches",1.3), Pair("Donkey Kicks",1.0), Pair("Seilspringen",3.0))
 
         val HANGMAN_WORDS = listOf<String>(
             "Chrysantheme",
@@ -108,5 +106,12 @@ class Constants {
         )
 
         val HANGMAN_MAX_ERRORS = 7
+
+        //--------------- Constants concerning Sports Room ---------------
+        val FITNESS_IDEAS = arrayOf(
+            Pair("Liegestützen",1.3), Pair("Hampelmänner",2.0), Pair("Sit-Ups",1.0), Pair("Plank",2.0), Pair("Kniebeugen",1.0),
+            Pair("Mountain Climber",1.0), Pair("Superman",0.3), Pair("Dehnen",2.0), Pair("Burpees",2.0), Pair("Side Plank",1.0),
+            Pair("Ausfallschritt",1.0), Pair("Crunches",1.3), Pair("Donkey Kicks",1.0), Pair("Seilspringen",3.0))
+
     }
 }

@@ -44,6 +44,10 @@ private constructor() {
         }
     }
 
+    /**
+     * Saves status of own user
+     * @param status Status to be saved
+     */
     fun saveCurrentStatus(status: Status) {
         sharedPrefs?.let{
             it.edit().putString(CURRENT_STATUS, status.dbStr).apply()
@@ -55,6 +59,7 @@ private constructor() {
 
     /**
      * gets last status that was set in MyProfileFragment, used to revert to old status automatically after leave break room
+     * @return The status set last by user in MyProfilFragment
      */
     fun getSavedStatus(): Status{
         var status: Status? = null
@@ -64,11 +69,15 @@ private constructor() {
             Status.STUDYING.dbStr -> status = Status.STUDYING
             Status.INBREAK.dbStr -> status = Status.INBREAK
             Status.ABSENT.dbStr -> status = Status.ABSENT
-            else -> status = Status.ABSENT
+            else -> status = Status.AVAILABLE
         }
         return status
     }
 
+    /**
+     * Saves roomId
+     * @param roomId RoomID to be saved
+     */
     fun saveRoomId(roomId: String) {
 
         sharedPrefs?.let{
@@ -79,16 +88,27 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Gets the id of the room the user is in
+     * @return The id of the room the user is currently in, null if the user is in no room
+     */
     fun getRoomId(): String?{
         return sharedPrefs?.getString(ROOM_ID, null)
     }
 
+    /**
+     * Sets the room id to null. Call when leaving a room.
+     */
     fun removeRoomId(){
         sharedPrefs?.edit()?.remove(ROOM_ID)?.apply()
         if(sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Saves the userId of the own user (database uid)
+     * @param userId The ID of the own user
+     */
     fun saveUserId(userId: String) {
 
         sharedPrefs?.let{
@@ -99,16 +119,26 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Returns the id of the own user
+     */
     fun getUserId(): String?{
         return sharedPrefs?.getString(USER_ID, null)
     }
 
+    /**
+     * Removes the user id
+     */
     fun removeUserId(){
         sharedPrefs?.edit()?.remove(USER_ID)?.apply()
         if(sharedPrefs == null)
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Saves the own user name
+     * @param userName The own user name
+     */
     fun saveUserName(userName: String) {
 
         sharedPrefs?.let{
@@ -119,10 +149,17 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Returns the own user name
+     * @return The own user name
+     */
     fun getUserName(): String?{
         return sharedPrefs?.getString(USER_NAME, null)
     }
 
+    /**
+     * Removes the own user name
+     */
     fun removeUserName(){
         sharedPrefs?.edit()?.remove(USER_NAME)?.apply()
         if(sharedPrefs == null)
@@ -130,7 +167,8 @@ private constructor() {
     }
 
     /**
-     * for saving hashmap with user ids and usernames
+     * for saving hashmap with user ids and user names
+     * @return Hashmap containing the ids of the user and the respective user name
      */
     fun getRoomUsersHashmap(): HashMap<String, String>? {
         Log.d(TAG, "getRoomUsersHashmap")
@@ -155,6 +193,9 @@ private constructor() {
         return null
     }
 
+    /**
+     * Empties the room users
+     */
     fun removeRoomUsers() {
         Log.d(TAG, "removeRoomUsers()")
         sharedPrefs?.edit()?.remove(ROOM_USER)?.apply()
@@ -162,6 +203,10 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Saves the user names of the room users
+     * @param hashMapString The Hashmap containing user ids and user names as String
+     */
     fun saveRoomUsers(hashMapString: String) {
         Log.d(TAG, "saveRoomUsers()")
         sharedPrefs?.edit()?.putString(ROOM_USER, hashMapString)?.apply()
@@ -169,6 +214,10 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Saves whether opening the widget is allowed at the moment
+     * @param isWidgetallowedtoOpen Is opening the widget allowed at the moment?
+     */
     fun saveIsWidgetAllowedtoOpen(isWidgetallowedtoOpen: Boolean) {
         sharedPrefs?.let {
             it.edit().putBoolean(IS_ALLOWED_TO_OPEN_WIDGET, isWidgetallowedtoOpen).apply()
@@ -178,6 +227,10 @@ private constructor() {
             Log.w(TAG, "SharedPrefs is null")
     }
 
+    /**
+     * Returns whether opening the widget is allowed at the moment
+     * @return Is opening the widget allowed at the moment?
+     */
     fun getIsWidgetAllowedtoOpen(): Boolean {
         val isOpen = sharedPrefs?.getBoolean(IS_ALLOWED_TO_OPEN_WIDGET, false)
         if (isOpen != null) {

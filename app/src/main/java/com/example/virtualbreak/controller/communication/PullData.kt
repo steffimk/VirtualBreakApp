@@ -1,11 +1,10 @@
 package com.example.virtualbreak.controller.communication
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.model.Room
-import com.example.virtualbreak.model.User
+import com.example.virtualbreak.model.Status
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,10 +23,12 @@ class PullData {
 
         val database: DatabaseReference = Firebase.database.reference
 
-        var currentUser: MutableLiveData<User?> = MutableLiveData(null)
-
+        var currentStatus: Status? = null
         var currentRoom: Room? = null
 
+        /**
+         * Pulls own user name once from database and saves it in shared preferences
+         */
         fun pullAndSaveOwnUserName() {
 
             val userNameListener = object : ValueEventListener {
@@ -50,16 +51,19 @@ class PullData {
                 .addListenerForSingleValueEvent(userNameListener)
         }
 
-        fun attachListenerToCurrentUser() {
-            if (currentUser.value != null) {
+        /**
+         * Attaches permanent event listener to status of own user and saves it in currentStatus
+         */
+        fun attachListenerToStatus() {
+            if (currentStatus != null) {
                 return // Listener already attached
             }
 
             val valueEventListener = object : ValueEventListener {
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    currentUser.value = dataSnapshot.getValue(User::class.java)
-                    Log.d(TAG, "Pulled User: " + currentUser.value)
+                    currentStatus = dataSnapshot.getValue(Status::class.java)
+                    Log.d(TAG, "Pulled Status: " + currentStatus)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -70,7 +74,7 @@ class PullData {
             val userUid = Firebase.auth.currentUser?.uid
             if (userUid != null) {
                 database.child(Constants.DATABASE_CHILD_USERS).child(userUid)
-                    .addValueEventListener(valueEventListener)
+                    .child(Constants.DATABASE_CHILD_STATUS).addValueEventListener(valueEventListener)
             }
         }
 

@@ -21,6 +21,8 @@ class PushData {
         private val database : DatabaseReference = Firebase.database.reference
         private const val TAG: String = "PushData"
 
+        //------------------------  Methods concerning user ------------------------
+
         /**
          * Creates user on firebase
          *
@@ -45,12 +47,57 @@ class PushData {
         fun saveUserName(name: String) {
             val currentUserId = Firebase.auth.currentUser?.uid
             if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_USERNAME).setValue(name)
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_USERNAME)
+                    .setValue(name)
                 Log.d(TAG, "Saved username")
             } else {
                 Log.d(TAG, "No user logged in. Cannot save user.")
             }
         }
+
+        /**
+         * Set status of user
+         *
+         * @param status Status to be set
+         */
+        fun setStatus(status: Status) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot change status.")
+            }
+        }
+
+        /**
+         * Set status of user
+         */
+        fun resetStatusToBeforeBreak() {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
+            Log.d(TAG, "resetStatusToBeforeBreak "+statusBeforeBreak.dbStr)
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(statusBeforeBreak)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot change status.")
+            }
+        }
+
+        /**
+         * Store Fcm Token to user
+         *
+         * @param fcmToken Token to be set
+         */
+        fun setFcmToken(fcmToken: String) {
+            val currentUserId = Firebase.auth.currentUser?.uid
+            if (currentUserId != null) {
+                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FCM_TOKEN).setValue(fcmToken)
+            } else {
+                Log.d(TAG, "No user logged in. Cannot set fcmToken.")
+            }
+        }
+
+        //------------------------  Methods concerning group ------------------------
 
         /**
          * Creates a group
@@ -148,6 +195,8 @@ class PushData {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }
 
+        //------------------------  Methods concerning game ------------------------
+
         /**
          * Updating the game with a new game
          *
@@ -220,6 +269,8 @@ class PushData {
             Log.d(TAG, "added error to game")
         }
 
+        //------------------------  Methods concerning call ------------------------
+
         /**
          * Add user to the call member list of the room
          *
@@ -267,6 +318,8 @@ class PushData {
                 Log.d(TAG, "No user logged in. Cannot remove call member.")
             }
         }
+
+        //------------------------  Methods concerning room and chat ------------------------
 
         /**
          * Saving a new room
@@ -424,47 +477,7 @@ class PushData {
             database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_MESSAGES).push().setValue(newChatMessage)
         }
 
-        /**
-         * Set status of user
-         *
-         * @param status Status to be set
-         */
-        fun setStatus(status: Status) {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(status)
-            } else {
-                Log.d(TAG, "No user logged in. Cannot change status.")
-            }
-        }
-
-        /**
-         * Set status of user
-         */
-        fun resetStatusToBeforeBreak() {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            val statusBeforeBreak = SharedPrefManager.instance.getSavedStatus()
-            Log.d(TAG, "resetStatusToBeforeBreak "+statusBeforeBreak.dbStr)
-            if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_STATUS).setValue(statusBeforeBreak)
-            } else {
-                Log.d(TAG, "No user logged in. Cannot change status.")
-            }
-        }
-
-        /**
-         * Store Fcm Token to user
-         *
-         * @param fcmToken Token to be set
-         */
-        fun setFcmToken(fcmToken: String) {
-            val currentUserId = Firebase.auth.currentUser?.uid
-            if (currentUserId != null) {
-                database.child(Constants.DATABASE_CHILD_USERS).child(currentUserId).child(Constants.DATABASE_CHILD_FCM_TOKEN).setValue(fcmToken)
-            } else {
-                Log.d(TAG, "No user logged in. Cannot set fcmToken.")
-            }
-        }
+        //------------------------  Methods concerning sports room  ------------------------
 
         /**
          * Add sport to room
@@ -500,6 +513,8 @@ class PushData {
             }
         }
 
+        //------------------------  Methods concerning question room  ------------------------
+
         /**
          * Add question to room
          *
@@ -509,6 +524,8 @@ class PushData {
         fun saveQuestion(roomId: String, question: String) {
             database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_QUESTION).setValue(question)
         }
+
+        //------------------------  Methods concerning friends and friend requests  ------------------------
 
         /**
          * sends friend request: logic: id for user id - boolean: incoming (true) or outgoing (false)

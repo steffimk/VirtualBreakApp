@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
 
-class QuestionFragmentViewModel(roomId: String) : ViewModel() {
+class QuestionViewModel(roomId: String) : ViewModel() {
 
     private val TAG = "QuestionFragmentViewModel"
     private val roomId = roomId
@@ -55,7 +55,7 @@ class QuestionFragmentViewModelFactory(private val roomId: String) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return QuestionFragmentViewModel(roomId) as T
+        return QuestionViewModel(roomId) as T
     }
 
 }

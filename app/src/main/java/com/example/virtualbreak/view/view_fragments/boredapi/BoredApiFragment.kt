@@ -45,26 +45,10 @@ class BoredApiFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         expand_boredapi_relative_layout.setOnClickListener {
-            if (content_boredapi.getVisibility() === View.VISIBLE) {
-
-                // The transition of the hiddenView is carried out
-                //  by the TransitionManager class.
-                // Here we use an object of the AutoTransition
-                // Class to create a default transition.
-                TransitionManager.beginDelayedTransition(
-                    boredapi_base_cardview,
-                    AutoTransition()
-                )
-                content_boredapi.setVisibility(View.GONE)
-                expand_boredapi_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-            } else {
-                TransitionManager.beginDelayedTransition(
-                    boredapi_base_cardview,
-                    AutoTransition()
-                )
-                content_boredapi.setVisibility(View.VISIBLE)
-                expand_boredapi_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
-            }
+            toggleBoredApiVisibility()
+        }
+        expand_boredapi_btn.setOnClickListener {
+            toggleBoredApiVisibility()
         }
 
         random_activity_btn.setOnClickListener {
@@ -77,6 +61,29 @@ class BoredApiFragment : Fragment() {
                     PushData.sendMessage(it, "Neue Bored-Aktivität: \n"+activityString)
                 }
             }
+        }
+    }
+
+    private fun toggleBoredApiVisibility() {
+        if (content_boredapi.getVisibility() === View.VISIBLE) {
+
+            // The transition of the hiddenView is carried out
+            //  by the TransitionManager class.
+            // Here we use an object of the AutoTransition
+            // Class to create a default transition.
+            TransitionManager.beginDelayedTransition(
+                boredapi_base_cardview,
+                AutoTransition()
+            )
+            content_boredapi.setVisibility(View.GONE)
+            expand_boredapi_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        } else {
+            TransitionManager.beginDelayedTransition(
+                boredapi_base_cardview,
+                AutoTransition()
+            )
+            content_boredapi.setVisibility(View.VISIBLE)
+            expand_boredapi_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
         }
     }
 

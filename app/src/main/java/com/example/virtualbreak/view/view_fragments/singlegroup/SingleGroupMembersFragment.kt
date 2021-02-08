@@ -1,6 +1,8 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.adapters.SingleGroupMembersAdapter
+import kotlinx.android.synthetic.main.fragment_bored_api.*
 import kotlinx.android.synthetic.main.fragment_single_group_members.*
 import kotlinx.android.synthetic.main.textchat_fragment.*
 
@@ -74,23 +77,41 @@ class SingleGroupMembersFragment : Fragment() {
                     )
                 }
                 singlegroup_members_recyclerlistview.adapter = memberListAdapter
-                //don't reuse old adapter
-                /*if(memberListAdapter== null){
-                    memberListAdapter = SingleGroupMembersAdapter(
-                        ArrayList(
-                            members.values
-                        ), context
-                    )
-                    singlegroup_members_recyclerlistview.adapter = memberListAdapter
-                }
-                else{ //update adapter with new data, if already exists
-                    memberListAdapter?.updateData(ArrayList(members.values))
-                }*/
 
                 Log.d(TAG, "Observed friends: $members")
             })
 
+            expand_singlegroup_members_btn.setOnClickListener {
+                toggleGroupMembersVisibility()
+            }
+            expand_singlegroup_members_relative_layout.setOnClickListener {
+                toggleGroupMembersVisibility()
+            }
 
+
+        }
+    }
+
+    private fun toggleGroupMembersVisibility() {
+        if (singlegroup_members_recyclerlistview.getVisibility() === View.VISIBLE) {
+
+            // The transition of the hiddenView is carried out
+            //  by the TransitionManager class.
+            // Here we use an object of the AutoTransition
+            // Class to create a default transition.
+            TransitionManager.beginDelayedTransition(
+                singlegroup_members_base_cardview,
+                AutoTransition()
+            )
+            singlegroup_members_recyclerlistview.setVisibility(View.GONE)
+            expand_singlegroup_members_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        } else {
+            TransitionManager.beginDelayedTransition(
+                singlegroup_members_base_cardview,
+                AutoTransition()
+            )
+            singlegroup_members_recyclerlistview.setVisibility(View.VISIBLE)
+            expand_singlegroup_members_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
             singlegroup_add_members.setOnClickListener {
                 parentFragmentManager.setFragmentResult(
                     Constants.REQUEST_KEY_ADD_MEMBER,

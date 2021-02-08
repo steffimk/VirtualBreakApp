@@ -55,7 +55,7 @@ class FriendRequestsFragment() : Fragment() {
         })
 
         viewModel.getOutgoingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ outgoingFriendRequests ->
-            Log.d(TAG, "Observed the following incomingFriendRequests: $outgoingFriendRequests")
+            Log.d(TAG, "Observed the following outgoingFriendRequests: $outgoingFriendRequests")
 
             if(outgoingFriendRequests.size == 0){
                 text_no_outgoing_friendrequests.visibility = View.VISIBLE

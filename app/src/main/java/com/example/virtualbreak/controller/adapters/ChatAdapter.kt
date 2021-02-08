@@ -1,6 +1,7 @@
 package com.example.virtualbreak.controller.adapters
 
 import android.content.Context
+import android.text.Layout
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -24,12 +25,12 @@ import java.util.*
 class ChatAdapter(
     context: Context,
     messages: MutableList<Message>,
-    roomUsernames: HashMap<String, String>?
+    roomUsernames: HashMap<String, String>
 ) :
     RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
     var messagesList: MutableList<Message> = mutableListOf()
-    var roomUsers: HashMap<String, String>?
+    var roomUsers: HashMap<String, String>
     var context: Context
     private val TAG: String = "ChatAdapter"
 
@@ -47,7 +48,8 @@ class ChatAdapter(
         val chatBubble: CardView
         val timestampView: TextView
         val chatItemWhole: LinearLayout
-        val callIndicator: ImageView
+        val chatMsgLayout: LinearLayout
+        val callIndicator : ImageView
         private val TAG: String = "ChatAdapter_ViewHolder"
 
         init {
@@ -57,6 +59,7 @@ class ChatAdapter(
             timestampView = itemView.findViewById(R.id.show_message_timestamp)
             chatItemWhole = itemView.findViewById(R.id.chatitem_whole)
             callIndicator = itemView.findViewById(R.id.message_call_indicator)
+            chatMsgLayout = itemView.findViewById(R.id.chatitem_message_linearlayout)
         }
     }
 
@@ -87,14 +90,13 @@ class ChatAdapter(
                 viewSender.visibility = View.GONE
             }
             // not same sender, display username:
-            else {
-                if (roomUsers != null) {
-                    val sender = roomUsers?.get(messageSenderId)
-                    if (sender != null) {
-                        viewSender.setText(sender)
-                        viewSender.visibility = View.VISIBLE
-                    }
+            else{
+                val sender = roomUsers.get(messageSenderId)
+                if (sender != null) {
+                    viewSender.setText(sender)
+                    viewSender.visibility = View.VISIBLE
                 }
+
             }
         }
 
@@ -143,22 +145,17 @@ class ChatAdapter(
         // highlight own sended messages
         val ownId = SharedPrefManager.instance.getUserId() ?: ""
         if (message.sender.equals(ownId)) {
-            holder.chatBubble.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.lightish_blue
-                )
-            )
+            holder.chatBubble.setCardBackgroundColor(ContextCompat.getColor(context, R.color.lightish_blue))
             holder.chatItemWhole.gravity = Gravity.END //own sent messages are aligned right
+            holder.chatMsgLayout.gravity = Gravity.END // sender name right
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Body1)
-
         }
 
         // system messages - not from user
         else if (message.sender.equals(Constants.DEFAULT_MESSAGE_SENDER)) {
             holder.chatBubble.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            //holder.chatBubble.cardElevation = 0.0f
             holder.chatItemWhole.gravity = Gravity.CENTER //system messages are aligned in center
+            holder.chatMsgLayout.gravity = Gravity.START
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Caption) // smaller and grey text
             holder.senderView.visibility = View.GONE
 
@@ -171,17 +168,12 @@ class ChatAdapter(
                 holder.callIndicator.setImageDrawable(context.getDrawable(R.drawable.call_end))
             }
         }
-
         // other people's messages
         else {
+            holder.chatBubble.setCardBackgroundColor(ContextCompat.getColor(context, R.color.tea_green2))
             holder.chatItemWhole.gravity = Gravity.START
+            holder.chatMsgLayout.gravity = Gravity.START //sender name left
             holder.messageView.setTextAppearance(android.R.style.TextAppearance_Material_Body1)
-            holder.chatBubble.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.tea_green2
-                )
-            )
         }
 
     }
@@ -192,7 +184,7 @@ class ChatAdapter(
      * @param messages List of messages to display
      * @param roomUsernames Users of the room
      */
-    fun updateData(messages: MutableList<Message>, roomUsernames: HashMap<String, String>?) {
+    fun updateData(messages: MutableList<Message>, roomUsernames: HashMap<String, String>) {
         roomUsers = roomUsernames
         messagesList = messages
         notifyDataSetChanged()

@@ -11,9 +11,7 @@ import com.example.virtualbreak.R
 import kotlinx.android.synthetic.main.fragment_info.*
 
 /**
- * A simple [Fragment] subclass.
- * Use the [InfoFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Impressum Fragment, reachable through Navigation Drawer
  */
 class InfoFragment : Fragment() {
     override fun onCreateView(

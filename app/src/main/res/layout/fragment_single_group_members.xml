@@ -3,6 +3,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/singlegroup_members_base_cardview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,18 +15,32 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="5dp"
     tools:context=".view.view_fragments.singlegroup.SingleGroupMembersFragment"
     android:orientation="vertical">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/expand_singlegroup_members_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
-        android:text="Gruppenmitglieder:"
-        android:textColor="@color/darkblue"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+        android:padding="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gruppenmitglieder:"
+            android:textColor="@color/darkblue"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+        <ImageButton
+            android:id="@+id/expand_singlegroup_members_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:tint="@color/darkblue"
+            android:src="@drawable/ic_baseline_expand_less_24"/>
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -18,11 +18,9 @@ class MyProfileViewModel : ViewModel() {
 
     private val TAG = "MyProfileViewModel"
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is MyProfile Fragment"
-    }
-    val text: LiveData<String> = _text
-
+    /**
+     * LiveData containing the own user
+     */
     private val user: MutableLiveData<User> = object : MutableLiveData<User>() {
         private val userQuery = PullData.database.child(Constants.DATABASE_CHILD_USERS).child(SharedPrefManager.instance.getUserId() ?: "")
 
@@ -37,10 +35,17 @@ class MyProfileViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Returns an instance of LiveData containing the own user
+     * @return LiveData containing the own user
+     */
     fun getUser(): LiveData<User> {
         return user
     }
 
+    /**
+     * Saves the pulled user in user
+     */
     private val userValueEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {

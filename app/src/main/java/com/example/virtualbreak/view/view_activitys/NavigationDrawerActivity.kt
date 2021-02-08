@@ -2,6 +2,9 @@ package com.example.virtualbreak.view.view_activitys
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -55,8 +58,8 @@ class NavigationDrawerActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             //if no user logged in, intent to MainActivity
         }
-        PullData.attachListenerToCurrentUser()
 
+        PullData.attachListenerToStatus()
         PullData.pullAndSaveOwnUserName()
         FCMService.addFCMTokenListener()
 
@@ -82,6 +85,7 @@ class NavigationDrawerActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT//disable rotate
     }
 
     override fun onStart() {
@@ -124,10 +128,6 @@ class NavigationDrawerActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
 

@@ -75,27 +75,10 @@ class SportRoomExtrasFragment : Fragment() {
 
         //expand or close sport fragment
         expand_sport_relative_layout.setOnClickListener {
-            if (sport_content_layout.getVisibility() === View.VISIBLE) {
-
-                // The transition of the hiddenView is carried out
-                //  by the TransitionManager class.
-                // Here we use an object of the AutoTransition
-                // Class to create a default transition.
-                TransitionManager.beginDelayedTransition(
-                    sport_base_view,
-                    AutoTransition()
-                )
-                sport_content_layout.visibility = View.GONE
-                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
-            } else {
-                TransitionManager.beginDelayedTransition(
-                    sport_base_view,
-                    AutoTransition()
-                )
-                sport_content_layout.visibility = View.VISIBLE
-                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
-            }
-
+            toggleSportFragmentVisibility()
+        }
+        expand_sport_btn.setOnClickListener {
+            toggleSportFragmentVisibility()
         }
 
         viewModel.startPullingExercise()
@@ -103,6 +86,29 @@ class SportRoomExtrasFragment : Fragment() {
             handleNewTimerEndDate(timerEndDate)
             Log.d(TAG, "Observed timerEndDate " + timerEndDate)
         })
+    }
+
+    private fun toggleSportFragmentVisibility() {
+        if (sport_content_layout.getVisibility() === View.VISIBLE) {
+
+            // The transition of the hiddenView is carried out
+            //  by the TransitionManager class.
+            // Here we use an object of the AutoTransition
+            // Class to create a default transition.
+            TransitionManager.beginDelayedTransition(
+                sport_base_view,
+                AutoTransition()
+            )
+            sport_content_layout.visibility = View.GONE
+            expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        } else {
+            TransitionManager.beginDelayedTransition(
+                sport_base_view,
+                AutoTransition()
+            )
+            sport_content_layout.visibility = View.VISIBLE
+            expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+        }
     }
 
     private fun handleNewTimerEndDate(timerEndDate: Long?) {

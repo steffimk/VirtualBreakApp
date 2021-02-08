@@ -7,6 +7,32 @@
     android:layout_height="match_parent"
     tools:context=".view.view_fragments.groupsfriends.Groups_grouplist_fragment">
 
+    <LinearLayout
+        android:id="@+id/no_groups_yet_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/groups_add_group_button"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/no_groups_yet_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:text="@string/noch_keine_gruppen_vorhanden"
+            />
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/ic_team_work_rafiki"/>
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/groups_recyler_list_view"
         android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.Slide
 import androidx.transition.TransitionManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
@@ -128,6 +129,12 @@ class SingleGroupFragment : Fragment() {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        addTransition()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.singlegroup_menu, menu)
@@ -223,18 +230,6 @@ class SingleGroupFragment : Fragment() {
         // Remove the scrim view and on back pressed callbacks
         member_card_scrim.visibility = View.GONE
 
-        // Set up MaterialContainerTransform beginDelayedTransition.
-        /*val transform = MaterialContainerTransform().apply {
-            startView = member_card_view
-            endView = chip
-            scrimColor = Color.TRANSPARENT
-            startElevation = requireContext().resources.getDimension(
-                R.dimen.card_popup_elevation_compat
-            )
-            addTarget(chip)
-        }
-
-        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)*/
         TransitionManager.beginDelayedTransition(member_card_view)
 
         member_card_view.visibility = View.INVISIBLE
@@ -254,7 +249,21 @@ class SingleGroupFragment : Fragment() {
             .addOnFailureListener {
                 //Log.w(TAG, it) // exception is already printed in StorageException class
                 Log.d(TAG, "This user does not have a profile picture!")
+                context?.let{
+                    imgView.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_person_24))
+                }
             }
+    }
+
+    /**
+     * adds return transition when return to groupslist fragment to animate group list items
+     */
+    private fun addTransition() {
+        returnTransition = Slide().apply {
+            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
+            addTarget(R.id.groups_recyler_list_view)
+        }
+
     }
 
 }

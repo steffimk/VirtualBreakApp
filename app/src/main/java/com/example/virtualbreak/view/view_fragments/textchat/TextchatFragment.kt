@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +55,18 @@ class TextchatFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "OnViewCreated")
+
+        // TODO maybe remove
+        parentFragmentManager.setFragmentResultListener(
+            Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
+            this,
+            FragmentResultListener { requestKey, bundle ->
+                val result = bundle.getString(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK)
+                Log.i(TAG, "receiving edittext event  " +  result)
+                if(result.equals(Constants.CLICK)){
+                    chat_message_input.clearFocus()
+                }
+            })
 
         val defaultMessages: MutableList<Message> = ArrayList()
         val defaultM = Message("default", "Keine Nachricht", Constants.DEFAULT_TIME)

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
@@ -47,6 +48,14 @@ class HangmanFragment : Fragment() {
         // by default: set content layout visible and end layout invisible
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
+
+        // TODO maybe remove
+        game_base_cardview.setOnClickListener {
+            parentFragmentManager.setFragmentResult(
+                Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
+                bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK to Constants.CLICK)
+            )
+        }
 
         //expand or close game fragment
         expand_game_relative_layout.setOnClickListener {

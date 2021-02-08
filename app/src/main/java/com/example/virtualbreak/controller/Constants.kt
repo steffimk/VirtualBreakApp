@@ -40,6 +40,10 @@ class Constants {
         const val REQUEST_KEY_GAME_FRAGMENT = "requestKey"
         const val BUNDLE_KEY_GAME_FRAGMENT = "bundleKey"
 
+        const val REQUEST_KEY_GAME_FRAGMENT_CLICK = "requestKeyClick"
+        const val BUNDLE_KEY_GAME_FRAGMENT_CLICK = "bundleKeyClick"
+        const val CLICK = "click"
+
 
 
         val FITNESS_IDEAS = arrayOf(

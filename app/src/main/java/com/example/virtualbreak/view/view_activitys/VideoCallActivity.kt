@@ -2,7 +2,6 @@ package com.example.virtualbreak.view.view_activitys
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
@@ -15,6 +14,13 @@ import java.net.URL
 
 
 class VideoCallActivity : JitsiMeetActivity() {
+    // Handbook/Documentation: https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk
+
+    // build.gradle (root): add maven repository - https://github.com/jitsi/jitsi-maven-repository/raw/master/releases
+    // build.gradle (module): add dependency - org.jitsi.react:jitsi-meet-sdk
+
+    // extend Activity from JitsiMeetActivity
+    // -> "will be automatically terminated (finish() will be called on the activity) when the conference ends or fails"
 
     private val JITSI_URL = "https://meet.jit.si"
     var roomId: String? = null
@@ -25,7 +31,6 @@ class VideoCallActivity : JitsiMeetActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         var currentName = "user"
 
@@ -69,10 +74,13 @@ class VideoCallActivity : JitsiMeetActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // Remove member when leaving the call
         PushData.removeCallMember(this, roomId)
-        //Allow the widget to open again after leaving the call
+
+        // --- widget ---
+        // Allow the widget to open again after leaving the call
         SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(true)
-        //Check if Videocall was started from Widget and if yes open it again
+        // Check if Videocall was started from Widget and if yes open it again
         if (SharedPrefManager.instance.getWidgetVideoCallManager()) {
             SharedPrefManager.instance.saveWidgetVideoCallManager(false)
             SharedPrefManager.instance.saveIsWidgetAllowedtoOpen(false)

@@ -568,8 +568,4 @@ class HangmanFragment : Fragment() {
         z_input.setEnabled(true)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
 }

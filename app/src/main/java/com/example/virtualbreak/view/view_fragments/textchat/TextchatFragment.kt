@@ -157,8 +157,6 @@ class TextchatFragment() : Fragment() {
      * editText: View
      */
     private fun hideSoftKeyboard(button: View) {
-        /*val imm: InputMethodManager? = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.hideSoftInputFromWindow(button.getWindowToken(), 0)*/
 
         val view: View? = activity?.getCurrentFocus()
 

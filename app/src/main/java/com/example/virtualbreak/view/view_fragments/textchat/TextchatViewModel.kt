@@ -83,7 +83,6 @@ class TextchatViewModel(private val roomId: String) : ViewModel() {
                 val gson = Gson()
                 val hashMapString = gson.toJson(usersOfRoom)
 
-                //SharedPrefManager.instance.removeRoomUsers()
                 SharedPrefManager.instance.saveRoomUsers(hashMapString) //save hashmap in shared prefs
                 room.value = room.value // notify observers of room to change
             }

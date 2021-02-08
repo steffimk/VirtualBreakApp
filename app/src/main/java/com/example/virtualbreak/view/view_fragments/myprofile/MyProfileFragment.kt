@@ -29,6 +29,7 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.model.User
 import com.example.virtualbreak.view.view_activitys.MainActivity
+import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -120,6 +121,9 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         profile_logout_btn.setOnClickListener {
+            PushData.setStatus(Status.ABSENT)
+            //close Widget
+            activity?.stopService(Intent(activity, BreakroomWidgetService::class.java))
             //Sign out
             Firebase.auth.signOut()
             //Unregister from fcm push notifications

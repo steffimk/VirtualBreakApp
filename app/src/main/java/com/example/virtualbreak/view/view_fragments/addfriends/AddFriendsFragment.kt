@@ -173,6 +173,9 @@ class AddFriendsFragment : Fragment() {
 
     }
 
+    /**
+     * adds return transition on friends items in friends list fragment
+     */
     private fun addTransition() {
         returnTransition = Slide().apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()

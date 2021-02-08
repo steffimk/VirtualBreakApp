@@ -12,12 +12,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.SharedPrefManager
+import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.databinding.ActivityLogInBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.virtualbreak.controller.isOnline
+import com.example.virtualbreak.model.Status
 import kotlinx.android.synthetic.main.activity_log_in.*
 
 class LogInActivity : AppCompatActivity() {
@@ -102,6 +104,7 @@ class LogInActivity : AppCompatActivity() {
                             Log.d(TAG, "signInWithEmail:success")
                             // Save userId in shared preferences
                             SharedPrefManager.instance.saveUserId(auth.currentUser!!.uid)
+                            PushData.setStatus(Status.AVAILABLE)
                             startActivity(Intent(this, NavigationDrawerActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.

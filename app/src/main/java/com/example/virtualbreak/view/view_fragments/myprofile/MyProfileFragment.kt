@@ -191,6 +191,7 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         if(arg1 != null && position != null){
             currentStatus = status_array[position]
             PushData.setStatus(currentStatus)
+            SharedPrefManager.instance.saveCurrentStatus(currentStatus)
         }
     }
 

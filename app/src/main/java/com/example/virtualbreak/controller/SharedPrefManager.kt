@@ -69,7 +69,7 @@ private constructor() {
             Status.STUDYING.dbStr -> status = Status.STUDYING
             Status.INBREAK.dbStr -> status = Status.INBREAK
             Status.ABSENT.dbStr -> status = Status.ABSENT
-            else -> status = Status.ABSENT
+            else -> status = Status.AVAILABLE
         }
         return status
     }

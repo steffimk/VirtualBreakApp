@@ -15,15 +15,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.01">
 
-        <TextView
-            android:id="@+id/text_view_add_member"
+        <RelativeLayout
+            android:id="@+id/expand_game_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="10dp"
-            android:gravity="start"
-            android:text="@string/add_select_friends"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/text_view_add_member"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:text="@string/add_select_friends"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+            <!-- TODO change image to x -->
+            <ImageButton
+                android:id="@+id/exit_add_members_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:src="@drawable/ic_baseline_expand_less_24"
+                android:tint="@color/darkblue" />
+        </RelativeLayout>
+
+
 
 
         <androidx.recyclerview.widget.RecyclerView

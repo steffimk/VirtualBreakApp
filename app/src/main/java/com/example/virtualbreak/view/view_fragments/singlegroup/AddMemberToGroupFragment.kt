@@ -123,9 +123,20 @@ class AddMemberToGroupFragment : Fragment() {
                     }
                 })
 
+            exit_add_members_button.setOnClickListener {
+                parentFragmentManager.setFragmentResult(
+                    Constants.REQUEST_KEY_ADD_MEMBER,
+                    bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to false)
+                )
+            }
+
             add_member_button.setOnClickListener {
                 if (selectFriendsIds.isNotEmpty()) {
                     this.joinGroup(selectFriendsIds.toTypedArray(), groupName)
+                    parentFragmentManager.setFragmentResult(
+                        Constants.REQUEST_KEY_ADD_MEMBER,
+                        bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to false)
+                    )
                 } else {
                     Toast.makeText(
                         activity,
@@ -133,10 +144,7 @@ class AddMemberToGroupFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                parentFragmentManager.setFragmentResult(
-                    Constants.REQUEST_KEY_ADD_MEMBER,
-                    bundleOf(Constants.BUNDLE_KEY_ADD_MEMBER to false)
-                )
+
             }
         }
     }

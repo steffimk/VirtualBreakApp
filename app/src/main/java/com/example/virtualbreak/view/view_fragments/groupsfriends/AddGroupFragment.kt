@@ -39,12 +39,10 @@ class AddGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //select_friends_recylerlist.setHasFixedSize(true)
 
         addTransition()
 
         adapter = SearchFriendListAdapter(ArrayList(), context)
-        //select_friends_recylerlist.adapter = SearchFriendListAdapter(friends, context)
         select_friends_recylerlist.adapter = adapter
 
         //for faster image loadig
@@ -80,6 +78,7 @@ class AddGroupFragment : Fragment() {
         val createGroupButton: FloatingActionButton = view.findViewById(R.id.make_group_button)
         createGroupButton.setOnClickListener{
 
+            //Check if A groupname and friends are selected and create a group
             if (groupName.text.toString() != ""){
                 if(selectFriendsIds.isNotEmpty()){
                     this.createNewGroup(groupName.text.toString(), selectFriendsIds.toTypedArray())

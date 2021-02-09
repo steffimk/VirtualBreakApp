@@ -13,16 +13,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_gravity="center_vertical"
                 android:id="@+id/group_list_img"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_group_24" />
+                android:scaleType="fitCenter"
+                android:layout_width="@dimen/group_list_height"
+                android:layout_height="@dimen/group_list_height"
+                android:padding="5dp"
+                android:src="@drawable/ic_groups_white"
+                android:background="@color/blue_Dark_cornflower" />
 
             <TextView
                     android:layout_gravity="center_vertical"

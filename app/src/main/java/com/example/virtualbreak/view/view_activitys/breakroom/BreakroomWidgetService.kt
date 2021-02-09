@@ -110,7 +110,7 @@ class BreakroomWidgetService : Service() {
         val notification = NotificationCompat.Builder(this, channelID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.notification_hint) + " " + roomName)
-            .setSmallIcon(R.drawable.ic_vb_alt)
+            .setSmallIcon(R.drawable.ic_cup_black)
             .setContentIntent(pendingIntent)
             .build()
 

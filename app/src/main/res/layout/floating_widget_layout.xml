@@ -16,51 +16,36 @@
         android:animateLayoutChanges="true">
 
         <!-- collapsed layout -->
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/widget_layoutCollapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:background="@drawable/rounded_corners_background_button"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/widget_collapsed_iv"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="8dp"
+                android:layout_margin="12dp"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/ic_vb_alt_round" />
+                android:src="@drawable/ic_vb_alt_playstore"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/widget_expanded_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="50dp"
-                android:padding="12dp"
-                android:src="@drawable/ic_expand"
                 android:background="@drawable/round_blue"
-                android:visibility="visible" />
+                android:src="@drawable/ic_expand"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/widget_notification_container"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="50dp"
-                android:visibility="gone"
-                android:background="@drawable/rounded_corners_orange">
-
-                <TextView
-                    android:id="@+id/widget_notification_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:text="1" />
-
-            </FrameLayout>
-
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- expanded layout -->
 

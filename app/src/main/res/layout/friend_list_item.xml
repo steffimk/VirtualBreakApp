@@ -27,19 +27,9 @@
                     android:id="@+id/friend_list_image"
                     android:layout_width="@dimen/group_list_height"
                     android:layout_height="@dimen/group_list_height"
-                    android:backgroundTint="@color/brow_sugar"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_person_24" />
-<!--
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/friend_list_image"
-                    android:layout_width="@dimen/group_list_height"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="@color/brow_sugar"
-                    android:layout_marginStart="10dp"
-                    android:scaleType="centerCrop"
-                    card_view:riv_corner_radius="6dp"
-                    android:src="@drawable/ic_person_24" />-->
+                    android:background="@color/blue_Dark_cornflower"
+                    android:src="@drawable/ic_person_white" />
 
                 <ImageView
                     android:id="@+id/status_circle_img"

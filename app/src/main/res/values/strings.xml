@@ -18,13 +18,13 @@
     <string name="reset_password">Passwort zurücksetzen</string>
     <string name="toast_sent_reset_mail">Du erhälst eine Mail, in der du dein Passwort zurücksetzen kannst.</string>
 
-    <string name="login_with_google">Log In with Google</string>
     <string name="login_signin">Noch kein Account? Sign Up!</string>
     <string name="signin_login">Du hast bereits einen Account? Log in!</string>
     <string name="toast_loginFailed">LogIn nicht geklappt. Versuch es nochmal.</string>
     <string name="error_wrongPassword">Falsches Passwort. Versuche es nochmal.</string>
     <string name="toast_enter_mail">Bitte gebe deine Mailadresse ein.</string>
     <string name="toast_enter_pw">Bitte gebe dein Passwort ein.</string>
+    <string name="mail_not_verified">Bitte verifiziere deine Mailadresse.</string>
 
     <!-- Singin -->
     <string name="signin">SignUp</string>
@@ -37,7 +37,8 @@
     <string name="toast_signIn_Failed">Sign Up fehlgeschlagen. Versuche es nochmal.</string>
     <string name="toast_enter_data">Bitte fülle alle Felder aus.</string>
     <string name="toast_pw_different">Die Passwörter stimmen nicht überein.</string>
-
+    <string name="verification_mail_sent">Bitte verifiziere deine Mailadresse. Dann kannst du dich einloggen.</string>
+    <string name="verification_mail_failure">Es konnte keine Verifikationsmail versendet werden. Probiere es nochmal.</string>
 
     <!-- MainActivity -->
     <string name="title_activity_signin">SigninActivity</string>
@@ -109,7 +110,7 @@
 
     <string name="video_call">Video Call</string>
     <string name="edit">edit</string>
-    <string name="rename_room">Rename Room</string>
+    <string name="rename_room">Pausenname</string>
 
     <!-- Floating Widget -->
     <string name="breakroomname">Pausenraum Name</string>

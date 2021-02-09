@@ -111,6 +111,10 @@ class SportRoomExtrasFragment : Fragment() {
         }
     }
 
+    /**
+     * Handles the observation of a new timer end date in the database.
+     * Starts a new count down.
+     */
     private fun handleNewTimerEndDate(timerEndDate: Long?) {
         this.timerIsRunning = (timerEndDate != null && timerEndDate > Date().time)
         if (timerIsRunning) {
@@ -132,6 +136,9 @@ class SportRoomExtrasFragment : Fragment() {
         }
     }
 
+    /**
+     * Call when the user selects another exercise. Shows the new exercise and sets the timer to the default value.
+     */
     private fun onSelectedNewExercise(exercise: Pair<String, Double>) {
         fitness_text.text = exercise.first
         val defaultTime = exercise.second as Double
@@ -139,6 +146,10 @@ class SportRoomExtrasFragment : Fragment() {
         sec_picker.value = ((defaultTime - defaultTime.toInt()) * 10).toInt() // Get first decimal
     }
 
+    /**
+     * Call when user wants to start a new timer.
+     * Pushes the new exerceise and timerEndDate to the database
+     */
     private fun startNewTimer() {
         val roomId = SharedPrefManager.instance.getRoomId() ?: return
         if (this.timerIsRunning) {
@@ -150,6 +161,9 @@ class SportRoomExtrasFragment : Fragment() {
         PushData.startNewTimer(roomId, mins, secs, fitness_text.text.toString())
     }
 
+    /**
+     * Transforms seconds to a string of the form 'xx:xx'
+     */
     private fun secondsToTimerString(sec: Long): String{
         var minutes = (sec/60).toInt().toString()
         var seconds = (sec%60).toInt().toString()
@@ -158,6 +172,9 @@ class SportRoomExtrasFragment : Fragment() {
         return minutes + ":" + seconds
     }
 
+    /**
+     * Gets a new count down timer with the passed in end date
+     */
     private fun getCountDownTimer(timerEndDate: Long): CountDownTimer {
         val remainingMilliSeconds = timerEndDate - Date().time
         countDownTimer?.cancel()
@@ -172,12 +189,18 @@ class SportRoomExtrasFragment : Fragment() {
         }
     }
 
+    /**
+     * Cancels the count down when the fragment is paused
+     */
     override fun onPause() {
         super.onPause()
         if(countDownTimer == null) return
         countDownTimer?.cancel()
     }
 
+    /**
+     * Resumes the count down (if there is one) when the fragment is resumed
+     */
     override fun onResume() {
         super.onResume()
         handleNewTimerEndDate(viewModel.getTimerEndDate().value)

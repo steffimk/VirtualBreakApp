@@ -51,6 +51,9 @@ class SignInActivity : AppCompatActivity() {
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
     }
 
+    /**
+     * Check whether info was entered correctly, register a new user in firebase and send a verification mail
+     */
     private fun tryAndSignUp(name: String, email: String, password1: String, password2: String) {
         if (name.isEmpty() || email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
             Toast.makeText(
@@ -95,6 +98,9 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Try to send a verification mail to the new user. Delete user if not successful.
+     */
     private fun sendVerificationMail(user: FirebaseUser, userName: String){
         auth.useAppLanguage()
         user.sendEmailVerification()

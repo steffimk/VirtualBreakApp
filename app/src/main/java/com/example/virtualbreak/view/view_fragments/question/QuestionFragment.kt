@@ -43,6 +43,7 @@ class QuestionFragment : Fragment() {
         edit_question_btn.setOnClickListener {
             onEditQuestion(question_text.text.toString())
         }
+        // observation of new questions
         viewModel.getQuestion().observe(viewLifecycleOwner, Observer<String?> { observedQuestion ->
             if (observedQuestion != null) {
                 question_input.setText(observedQuestion)
@@ -88,6 +89,9 @@ class QuestionFragment : Fragment() {
         }
     }
 
+    /**
+     * Call when user entered a new question. Saves it in the database.
+     */
     private fun onSaveQuestion(question :String) {
         hideSoftKeyboard(save_question_btn)
         PushData.saveQuestion(SharedPrefManager.instance.getRoomId()?:"", question)
@@ -97,6 +101,9 @@ class QuestionFragment : Fragment() {
         save_question_btn.visibility = View.GONE
     }
 
+    /**
+     * Call when user wants to edit the question.
+     */
     private fun onEditQuestion(question :String) {
         question_input.setText(question)
         question_text.visibility = View.GONE

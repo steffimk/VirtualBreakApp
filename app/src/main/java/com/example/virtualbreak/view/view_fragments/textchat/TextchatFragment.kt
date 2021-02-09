@@ -140,19 +140,25 @@ class TextchatFragment() : Fragment() {
         // when edittext is focused send info to close hangman fragment
         chat_message_input.setOnFocusChangeListener { view, b ->
             if(room != null){
+                if(!b){
+                    Log.i(TAG, "edit text lose focus -> hide keyboard")
+                    val imm =
+                        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                    imm!!.hideSoftInputFromWindow(chat_message_input.getWindowToken(), 0)
+                }
+
                 if(room!!.type.equals(Roomtype.GAME)){
-                    val result = b
-                    Log.i(TAG, "sending edittext event " + b)
+                    Log.i(TAG, "sending edittext event game " + b)
                     parentFragmentManager.setFragmentResult(
                         Constants.REQUEST_KEY_GAME_FRAGMENT,
-                        bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT to result)
+                        bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT to b)
                     )
-                    if(!b){
-                        Log.i(TAG, "edit text lose focus")
-                        val imm =
-                            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                        imm!!.hideSoftInputFromWindow(chat_message_input.getWindowToken(), 0)
-                    }
+                } else if(room!!.type.equals(Roomtype.SPORT)){
+                    Log.i(TAG, "sending edittext event sport " + b)
+                    parentFragmentManager.setFragmentResult(
+                        Constants.REQUEST_KEY_SPORT_FRAGMENT,
+                        bundleOf(Constants.BUNDLE_KEY_SPORT_FRAGMENT to b)
+                    )
                 }
             }
         }

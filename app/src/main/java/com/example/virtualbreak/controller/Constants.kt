@@ -42,8 +42,8 @@ class Constants {
         const val CONTENT_TYPE = "application/json"
 
         //--------------- Constants concerning Game ---------------
-        const val REQUEST_KEY_GAME_FRAGMENT = "requestKey"
-        const val BUNDLE_KEY_GAME_FRAGMENT = "bundleKey"
+        const val REQUEST_KEY_GAME_FRAGMENT = "requestKeyGame"
+        const val BUNDLE_KEY_GAME_FRAGMENT = "bundleKeyGame"
 
         const val REQUEST_KEY_GAME_FRAGMENT_CLICK = "requestKeyClick"
         const val BUNDLE_KEY_GAME_FRAGMENT_CLICK = "bundleKeyClick"
@@ -110,5 +110,7 @@ class Constants {
             Pair("Mountain Climber",1.0), Pair("Superman",0.3), Pair("Dehnen",2.0), Pair("Burpees",2.0), Pair("Side Plank",1.0),
             Pair("Ausfallschritt",1.0), Pair("Crunches",1.3), Pair("Donkey Kicks",1.0), Pair("Seilspringen",3.0))
 
+        const val REQUEST_KEY_SPORT_FRAGMENT = "requestKeySport"
+        const val BUNDLE_KEY_SPORT_FRAGMENT = "bundleKeySport"
     }
 }

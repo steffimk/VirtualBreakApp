@@ -10,6 +10,9 @@ import com.example.virtualbreak.controller.SharedPrefManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * First view shown after app launch - shows welcome message and buttons to go to login or sign up
+ */
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"

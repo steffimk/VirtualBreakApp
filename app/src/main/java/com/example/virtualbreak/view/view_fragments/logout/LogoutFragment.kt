@@ -17,6 +17,9 @@ import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 
+/**
+ * Fragment with logout button
+ */
 class LogoutFragment : Fragment() {
 
     override fun onCreateView(

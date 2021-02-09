@@ -23,6 +23,9 @@ import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakRoomActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 
+/**
+ * This adapter manages the grid view of open Breakrooms in a group
+ */
 class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName:String?) : RecyclerView.Adapter<SingleGroupRoomsAdapter.ViewHolderRooms>() {
 
     lateinit var view: View

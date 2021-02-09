@@ -22,6 +22,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
+/**
+ * This Adapter manages the list of incoming Friend requests in FriendRequestsFragment
+ */
 class FriendRequestsAdapter(private val friendRequests: ArrayList<User>): RecyclerView.Adapter<FriendRequestsAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View

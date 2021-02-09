@@ -18,9 +18,7 @@ import kotlinx.android.synthetic.main.fragment_single_group_members.*
 private const val GROUP_ID = "groupId"
 
 /**
- * A simple [Fragment] subclass.
- * Use the [SingleGroupMembersFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment shows users that are part of this group in a horizontal swipe view
  */
 class SingleGroupMembersFragment : Fragment() {
     private var groupId: String? = null

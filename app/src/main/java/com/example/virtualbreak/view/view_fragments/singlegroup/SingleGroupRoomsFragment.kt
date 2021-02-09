@@ -95,20 +95,6 @@ class SingleGroupRoomsFragment : Fragment() {
                             )
                         }
                     grid_view.adapter = customAdapter
-                    //don't reuse old adapter
-                    /*if (customAdapter == null) {
-                        customAdapter =
-                            context?.let {
-                                SingleGroupRoomsAdapter(
-                                    it,
-                                    ArrayList(roomsMap.values),
-                                    userName
-                                )
-                            }
-                        grid_view.adapter = customAdapter
-                    } else { // reuse old adapter
-                        customAdapter?.updateData(ArrayList(roomsMap.values))
-                    }*/
 
                 })
 

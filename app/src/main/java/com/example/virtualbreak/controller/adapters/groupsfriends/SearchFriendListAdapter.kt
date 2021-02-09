@@ -84,15 +84,15 @@ class SearchFriendListAdapter (friends: ArrayList<User>, private val context: Co
         }
 
         if (onClick != null) viewHolder.itemView.setOnClickListener{
+            //Set the selected value and the checkbox
             friend.isSelected = !friend.isSelected
             viewHolder.selectBox.isChecked = friend.isSelected
-
+            //Notify that the item selection has changed
             notifyItemChanged(position)
             Log.d(
                 TAG,
                 "onClick $position ${friend.isSelected}  ${viewHolder.username.text} ${viewHolder.selectBox.isChecked}"
             )
-            //notifyDataSetChanged()
             onClick!!.onItemClick(friend)
         }
 

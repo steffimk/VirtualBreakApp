@@ -55,7 +55,6 @@ class AddGroupFragment : Fragment() {
             if (friendsMap != null){
 
                 adapter.updateData(ArrayList(friendsMap.values))
-                //adapter = SearchFriendListAdapter(ArrayList(friendsMap.values), context)
                 select_friends_recylerlist.adapter = adapter
 
                 //Set the clicklistener to select friends and recive selected friends ids
@@ -66,7 +65,6 @@ class AddGroupFragment : Fragment() {
                         }else{
                             selectFriendsIds.remove(friend.uid)
                         }
-                        //adapter.notifyDataSetChanged()
                         Log.d(TAG, "selectedFriends $selectFriendsIds")
                     }
                 })

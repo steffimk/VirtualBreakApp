@@ -47,7 +47,7 @@ class BreakroomWidgetService : Service() {
      * Set up the Communication with the Activity via a localBroadcastManager
      */
     lateinit var localBroadcastManager: LocalBroadcastManager
-    val widgetBroadCastReceiver = object : BroadcastReceiver() {
+    private val widgetBroadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             when (intent?.action) {
                 ACTION_SHOW_ALERT -> {
@@ -261,7 +261,7 @@ class BreakroomWidgetService : Service() {
 
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                //Get the current Touch Location and save it
+                //Get the initial Touch Location and save it
                 initialX = params.x;
                 initialY = params.y;
                 //get the current Touch location

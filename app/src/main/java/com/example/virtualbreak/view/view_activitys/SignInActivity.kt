@@ -47,7 +47,7 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if ( auth.currentUser != null)
+        if ( auth.currentUser != null && auth.currentUser!!.isEmailVerified)
             startActivity(Intent(this, NavigationDrawerActivity::class.java))
     }
 
@@ -106,13 +106,13 @@ class SignInActivity : AppCompatActivity() {
         user.sendEmailVerification()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    PushData.saveUser(user, userName)
                     Log.d(TAG, "Verification email sent.")
+                    PushData.saveUser(user, userName)
                     Toast.makeText(
                         baseContext, getString(R.string.verification_mail_sent),
                         Toast.LENGTH_SHORT
                     ).show()
-                    auth.signOut()
+//                    auth.signOut()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     Log.d(TAG, "Could not sent verification email.")

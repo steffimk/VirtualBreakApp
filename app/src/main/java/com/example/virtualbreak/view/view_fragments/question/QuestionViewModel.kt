@@ -12,12 +12,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
-
+/**
+ * ViewModel of the QuestionFragment
+ */
 class QuestionViewModel(roomId: String) : ViewModel() {
 
     private val TAG = "QuestionFragmentViewModel"
     private val roomId = roomId
 
+    /**
+     * LiveData of the question of the current room
+     */
     private val question: MutableLiveData<String?> by lazy {
         MutableLiveData<String?>(null).also {
             PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).child(Constants.DATABASE_CHILD_QUESTION)
@@ -25,10 +30,17 @@ class QuestionViewModel(roomId: String) : ViewModel() {
         }
     }
 
+    /**
+     * Gets the LiveData containing the question
+     * @return An instance of LiveData containing the question
+     */
     fun getQuestion(): LiveData<String?> {
         return question
     }
 
+    /**
+     * Saves the pulled question in question
+     */
     private val questionEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -51,6 +63,9 @@ class QuestionViewModel(roomId: String) : ViewModel() {
     }
 }
 
+/**
+ * Factory of the QuestionViewModel. Use this to get a new instance of QuestionViewModel.
+ */
 class QuestionFragmentViewModelFactory(private val roomId: String) :
     ViewModelProvider.Factory {
 

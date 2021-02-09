@@ -66,7 +66,7 @@ class LogInActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (auth.currentUser != null) {
+        if (auth.currentUser != null && Firebase.auth.currentUser!!.isEmailVerified) {
             SharedPrefManager.instance.saveUserId(auth.currentUser!!.uid)
             Log.d(TAG, "User angemeldet uid: " + auth.currentUser!!.uid)
             startActivity(Intent(this, NavigationDrawerActivity::class.java))

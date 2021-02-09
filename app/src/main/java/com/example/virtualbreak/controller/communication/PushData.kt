@@ -34,6 +34,7 @@ class PushData {
                   val userData = User(user.uid, name, user.email!!, Status.AVAILABLE)
                   database.child(Constants.DATABASE_CHILD_USERS).child(user.uid).setValue(userData)
                 Log.d(TAG, "Saved user to realtime database")
+                Log.d(TAG, "User: $userData")
             } else {
                 Log.d(TAG, "No user logged in. Cannot save user.")
             }
@@ -131,7 +132,7 @@ class PushData {
          * @param groupId Id of the group that should be joined
          * @param userId User that joins the group
          */
-        fun joinGroup(groupId: String, userId: String) {
+        private fun joinGroup(groupId: String, userId: String) {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
                 .child(Constants.DATABASE_CHILD_USERS).child(userId).setValue(userId)
             database.child(Constants.DATABASE_CHILD_USERS).child(userId)
@@ -180,7 +181,7 @@ class PushData {
          *
          * @param group Group object that should be deleted
          */
-        fun deleteGroup(group: Group) {
+        private fun deleteGroup(group: Group) {
             for (user in group.users) { //remove group from internal users group lists
                 database.child(Constants.DATABASE_CHILD_USERS).child(user.key).child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
             }

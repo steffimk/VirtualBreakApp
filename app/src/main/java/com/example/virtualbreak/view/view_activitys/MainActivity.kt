@@ -21,9 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         SharedPrefManager.instance.init(applicationContext)
-
         // If user is logged in, redirect to navigation drawer activity
-        if (Firebase.auth.currentUser != null) {
+        if (Firebase.auth.currentUser != null && Firebase.auth.currentUser!!.isEmailVerified) {
             // Save userId in shared preferences
             SharedPrefManager.instance.saveUserId(Firebase.auth.currentUser!!.uid)
             startActivity(Intent(this, NavigationDrawerActivity::class.java))

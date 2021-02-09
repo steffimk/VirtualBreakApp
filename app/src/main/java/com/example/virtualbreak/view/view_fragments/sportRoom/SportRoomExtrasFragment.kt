@@ -21,7 +21,9 @@ import com.example.virtualbreak.controller.communication.PushData
 import kotlinx.android.synthetic.main.fragment_sport_room_extras.*
 import java.util.*
 
-
+/**
+ * Fragment added on top of a sports room. Shows timer and fitness exercise.
+ */
 class SportRoomExtrasFragment : Fragment() {
 
     private val TAG = "SportRoomExtrasFragment"

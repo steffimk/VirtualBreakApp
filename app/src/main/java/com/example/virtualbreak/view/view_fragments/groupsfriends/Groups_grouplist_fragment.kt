@@ -46,7 +46,7 @@ class Groups_grouplist_fragment : Fragment() {
         viewModel.getGroups()
             .observe(viewLifecycleOwner, Observer<HashMap<String, Group>> { groups ->
 
-                if(groups.size == 0){
+                if(groups == null || groups.isEmpty() || groups.size == 0){
                     no_groups_yet_linearlayout.visibility = View.VISIBLE //display text that no groups were added yet
                 } else{
                     no_groups_yet_linearlayout.visibility = View.GONE

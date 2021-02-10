@@ -18,7 +18,9 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Game
 import kotlinx.android.synthetic.main.hangman_fragment.*
 
-
+/**
+ * Fragment contains game: Hangman, game can be restarted
+ */
 class HangmanFragment : Fragment() {
 
     private val TAG = "HangmanFragment"
@@ -348,6 +350,7 @@ class HangmanFragment : Fragment() {
                         if (word == wordFound.toString()) {
                             gameEnded(true, word, observedGame)
                         }
+                        TransitionManager.beginDelayedTransition(hangman_game)
                         hangman_word.setText(wordFound.toString())
 
                         alphabetButtonClicks(word, error, gameId)
@@ -395,6 +398,7 @@ class HangmanFragment : Fragment() {
         game_content_layout.visibility = View.GONE
         game_ended.visibility = View.VISIBLE
 
+        TransitionManager.beginDelayedTransition(game_ended_content)
         if (winning) {
             end_result.text = getString(R.string.win_game)
             try_again.text = getString(R.string.retry_win)
@@ -418,6 +422,8 @@ class HangmanFragment : Fragment() {
      */
     private fun restartGame(observedGame: Game) {
         PushData.updateGame(observedGame.uid, observedGame.roomId)
+
+        TransitionManager.beginDelayedTransition(game_content_layout)
         game_content_layout.visibility = View.VISIBLE
         game_ended.visibility = View.GONE
     }

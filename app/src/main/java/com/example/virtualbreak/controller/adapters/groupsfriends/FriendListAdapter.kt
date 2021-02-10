@@ -74,7 +74,7 @@ class FriendListAdapter(friends: ArrayList<User>, private val context: Context?,
             val friendId = friends[position].uid
             //evtl go to selected friend (evtl no need, if status shown in list) or show popup
             Log.d(TAG, "FriendId $friendId was clicked on")
-            friendlistFragment.expandChip(holder.textView, friends[position])
+            friendlistFragment.expandFriendPopup(holder.textView, friends[position])
         }
 
     }

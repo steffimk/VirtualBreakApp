@@ -28,6 +28,10 @@ import kotlinx.android.synthetic.main.fragment_singlegroup_rooms.*
 
 private const val GROUP_ID = "groupId"
 
+/**
+ * Fragment shows open rooms in this group as a grid view and a button to open a new break room.
+ * When the user is already in a break, the rooms are greyed out and cannot be entered
+ */
 class SingleGroupRoomsFragment : Fragment() {
 
     private val TAG: String = "SingleGroupFragment"

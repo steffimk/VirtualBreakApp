@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.example.virtualbreak.model.Status
 
 /**
- * Status Spinner popup in MyProfileFragment
+ * Status Spinner popup in MyProfileFragment, to show status options to set status
  */
 class StatusSpinnerArrayAdapter(context: Context, resource: Int, objects: Array<out Status>) :
     ArrayAdapter<Status>(context, resource, objects) {

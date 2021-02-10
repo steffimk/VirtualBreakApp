@@ -15,7 +15,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
 /**
- * Pulls data independent of any view
+ * Pulls data from realtime database independent of any view
  */
 class PullData {
 

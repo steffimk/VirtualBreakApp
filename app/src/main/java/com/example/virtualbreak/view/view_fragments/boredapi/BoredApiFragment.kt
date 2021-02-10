@@ -18,7 +18,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 /**
- * Bored API extras fragment
+ * Bored API extras fragment for a random activity that can be shared with others in break room group chat
  */
 class BoredApiFragment : Fragment() {
 

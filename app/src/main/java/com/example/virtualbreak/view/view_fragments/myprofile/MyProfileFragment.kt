@@ -38,8 +38,14 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_myprofile.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-
+/**
+ * Fragment that shows profile picture, which can be edited
+ * also shows Status spinner to show current status which can be changed
+ * with logout button
+ */
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private val myProfileViewModel: MyProfileViewModel by viewModels()
@@ -116,16 +122,33 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         profile_logout_btn.setOnClickListener {
-            PushData.setStatus(Status.ABSENT)
-            //close Widget
-            activity?.stopService(Intent(activity, BreakroomWidgetService::class.java))
-            //Sign out
-            Firebase.auth.signOut()
-            //Unregister from fcm push notifications
-            Firebase.messaging.isAutoInitEnabled = false
-            Firebase.messaging.deleteToken()
-            FirebaseInstallations.getInstance().delete()
-            startActivity(Intent(activity, MainActivity::class.java)) //go back to sign up/login activity
+            logout()
+        }
+    }
+
+    /**
+     * Logs out the user and unregisters him from fcm push notifications
+     */
+    private fun logout() {
+        PushData.setStatus(Status.ABSENT)
+        //close Widget
+        activity?.stopService(Intent(activity, BreakroomWidgetService::class.java))
+        //Unregister from fcm push notifications
+        Firebase.messaging.isAutoInitEnabled = false
+        Firebase.messaging.deleteToken().addOnCompleteListener{ task ->
+            if (task.isSuccessful) {
+                Log.d("LogoutFragment", "Token successfully deleted")
+                //Sign out
+                Firebase.auth.signOut()
+                Log.d("LogoutFragment", "Signed out")
+                GlobalScope.launch {
+                    FirebaseInstallations.getInstance().delete()
+                }
+                startActivity(Intent(activity, MainActivity::class.java)) // go back to sign up/login activity
+            } else {
+                Log.d("LogoutFragment", "Problem deleting token")
+                // do nothing
+            }
         }
     }
 

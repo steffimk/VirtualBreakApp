@@ -5,7 +5,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.virtualbreak.view.view_fragments.groupsfriends.Groups_friendlist_fragment
 import com.example.virtualbreak.view.view_fragments.groupsfriends.Groups_grouplist_fragment
 
-
+/**
+ * This Adapter manages the Tabs layout in GroupsFriendsFragment
+ */
 class ViewPagerAdapter(fragmentActivity: FragmentActivity?) :
     FragmentStateAdapter(fragmentActivity!!) {
 

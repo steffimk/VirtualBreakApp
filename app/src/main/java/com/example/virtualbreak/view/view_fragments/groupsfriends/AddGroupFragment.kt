@@ -20,7 +20,10 @@ import com.example.virtualbreak.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_add_group.select_friends_recylerlist
 
-
+/**
+ * Fragment is opened from Groups_groupslist_fragment
+ * to create a new group with name and add friends to group
+ */
 class AddGroupFragment : Fragment() {
 
     private val TAG = "AddGroupFragment"

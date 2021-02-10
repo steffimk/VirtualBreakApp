@@ -42,7 +42,9 @@ import com.example.virtualbreak.view.view_fragments.sportRoom.SportRoomExtrasFra
 import com.example.virtualbreak.view.view_fragments.textchat.TextchatFragment
 import com.google.android.material.snackbar.Snackbar
 
-
+/**
+ * Breakroom Activity that contains TextchatFragment at bottom and specific room fragment on top depending on room type
+ */
 class BreakRoomActivity : AppCompatActivity() {
 
     private val TAG = "BreakRoomActivity"

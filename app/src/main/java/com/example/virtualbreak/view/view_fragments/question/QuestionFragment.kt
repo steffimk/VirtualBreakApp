@@ -20,7 +20,7 @@ import com.example.virtualbreak.controller.communication.PushData
 import kotlinx.android.synthetic.main.fragment_question.*
 
 /**
- * Fragment added on top of a questions room. Shows an editable question.
+ * Fragment added on top of a questions room. Shows an editable question that is pinned on top of chat
  */
 class QuestionFragment : Fragment() {
 

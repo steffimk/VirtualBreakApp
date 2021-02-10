@@ -25,7 +25,9 @@ import com.example.virtualbreak.model.Room
 import com.example.virtualbreak.model.Roomtype
 import kotlinx.android.synthetic.main.textchat_fragment.*
 
-
+/**
+ * Fragment to show chat messages
+ */
 class TextchatFragment() : Fragment() {
 
     private val TAG = "TextchatFragment"

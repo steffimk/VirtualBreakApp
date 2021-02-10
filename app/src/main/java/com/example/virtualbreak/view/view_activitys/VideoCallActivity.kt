@@ -12,7 +12,9 @@ import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL
 
-
+/**
+ * VideoCallActivity reachable when click on Videocall icon in BreakroomActivity
+ */
 class VideoCallActivity : JitsiMeetActivity() {
     // Handbook/Documentation: https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk
 

@@ -14,6 +14,9 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.HashMap
 
+/**
+ * Static methods to save data in the realtime database
+ */
 class PushData {
 
     companion object {
@@ -33,8 +36,7 @@ class PushData {
             if (user?.email != null) {
                   val userData = User(user.uid, name, user.email!!, Status.AVAILABLE)
                   database.child(Constants.DATABASE_CHILD_USERS).child(user.uid).setValue(userData)
-                Log.d(TAG, "Saved user to realtime database")
-                Log.d(TAG, "User: $userData")
+                Log.d(TAG, "Saved user $userData to realtime database")
             } else {
                 Log.d(TAG, "No user logged in. Cannot save user.")
             }
@@ -192,6 +194,9 @@ class PushData {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
         }
 
+        /**
+         * to rename a group
+         */
         fun setGroupDescription(groupId: String, description: String) {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }

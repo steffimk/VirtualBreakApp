@@ -16,6 +16,9 @@ import com.example.virtualbreak.controller.adapters.FriendRequestsOutgoingAdapte
 import com.example.virtualbreak.model.User
 import kotlinx.android.synthetic.main.fragment_friend_requests.*
 
+/**
+ * Fragment shows incoming and outgoing friend requests
+ */
 class FriendRequestsFragment() : Fragment() {
 
     private val TAG = "FriendRequestsFragment"

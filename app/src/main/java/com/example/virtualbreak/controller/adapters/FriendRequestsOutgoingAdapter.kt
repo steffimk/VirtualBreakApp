@@ -16,6 +16,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
+/**
+ * This Adapter manages the list of outgoing Friend requests in FriendRequestsFragment
+ */
 class FriendRequestsOutgoingAdapter(private val friendRequests: ArrayList<User>): RecyclerView.Adapter<FriendRequestsOutgoingAdapter.ViewHolderFriendRequests>() {
 
     lateinit var view: View

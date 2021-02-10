@@ -13,27 +13,6 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         >
-    <!--
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/singlegroup_toggleButton"
-            app:singleSelection="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/singlegroup_toggle_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pausenräume"
-                style="?attr/materialButtonOutlinedStyle"
-                />
-            <Button
-                android:id="@+id/singlegroup_toggle_members"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mitglieder"
-                style="?attr/materialButtonOutlinedStyle"
-                />
-        </com.google.android.material.button.MaterialButtonToggleGroup>-->
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/singlegroup_containerview_members"
@@ -122,7 +101,7 @@
                     android:layout_margin="5dp"
                     android:layout_marginBottom="10dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:text="Status"/>
+                    android:text="@string/status"/>
 
                 <ImageView
                     android:id="@+id/member_status_img"

@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
 
 
 /**
- * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
+ * This Adapter manages the content of the Friendlist in the SingleGroupFragment to show the members of a group
  */
 
 class SingleGroupMembersAdapter(
@@ -78,7 +78,7 @@ class SingleGroupMembersAdapter(
             val friendId = friends[position].uid
             //evtl go to selected friend (evtl no need, if status shown in list) or show popup
             Log.d(TAG, "FriendId $friendId was clicked on")
-            singleGroupFragment.expandChip(holder.textView, friends[position])
+            singleGroupFragment.expandFriendPopUp(holder.textView, friends[position])
 
         }
 

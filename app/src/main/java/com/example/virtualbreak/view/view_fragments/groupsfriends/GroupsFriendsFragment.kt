@@ -13,6 +13,9 @@ import com.example.virtualbreak.controller.adapters.groupsfriends.ViewPagerAdapt
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_groups_friends_list.*
 
+/**
+ * This fragment is the first fragment shown in NavigationDrawerActivity and shows an overview of groups and friends in a TabLayout
+ */
 class GroupsFriendsFragment : Fragment() {
 
     override fun onCreateView(

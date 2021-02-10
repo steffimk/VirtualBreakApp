@@ -112,7 +112,6 @@ class SignInActivity : AppCompatActivity() {
                         baseContext, getString(R.string.verification_mail_sent),
                         Toast.LENGTH_SHORT
                     ).show()
-//                    auth.signOut()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     Log.d(TAG, "Could not sent verification email.")

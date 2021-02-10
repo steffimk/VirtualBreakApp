@@ -31,7 +31,7 @@ import kotlin.random.Random
 private const val CHANNEL_ID = "vb-channel"
 
 /**
- * FirebaseCloudMessagingServic
+ * FirebaseCloudMessagingService
  */
 class FCMService : FirebaseMessagingService() {
 

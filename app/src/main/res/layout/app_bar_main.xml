@@ -16,7 +16,22 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.VirtualBreak.PopupOverlay" />
+            app:popupTheme="@style/Theme.VirtualBreak.PopupOverlay">
+
+            <!--to change group name in SingleGroupFragment -->
+            <EditText
+                android:id="@+id/changeGroupName_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/mandarin"
+                android:hint="@string/neuer_name"
+                android:maxLength="22"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/light_gray"
+                android:visibility="gone" />
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

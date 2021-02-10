@@ -9,14 +9,13 @@
     <!--        app:showAsAction="never" />-->
 
     <item
-        android:id="@+id/action_edit"
+        android:id="@+id/action_edit_group_name"
         android:icon="@drawable/ic_action_edit"
         android:title="@string/edit"
-        android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_enter"
+        android:id="@+id/action_enter_group_name"
         android:icon="@drawable/ic_action_check"
         android:visible="false"
         app:showAsAction="ifRoom" />

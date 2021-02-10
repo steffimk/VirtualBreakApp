@@ -22,10 +22,8 @@ import com.example.virtualbreak.model.User
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_friend_requests.*
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.*
 import kotlinx.android.synthetic.main.fragment_groups_friendlist_fragment.account_status_text_view
-import kotlinx.android.synthetic.main.fragment_singlegroup.*
 
 /**
  * Friend list fragment in main fragment right tab view
@@ -42,13 +40,6 @@ class Groups_friendlist_fragment : Fragment() {
 
     var friendsListAdapter: FriendListAdapter? = null
 
-    // Handle closing an expanded recipient card when on back is pressed
-    private val closePopupCardOnBackPressed = object : OnBackPressedCallback(false) {
-        var expandedChip: View? = null
-        override fun handleOnBackPressed() {
-            expandedChip?.let { collapseChip(it) }
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -86,17 +77,15 @@ class Groups_friendlist_fragment : Fragment() {
     }
 
     /**
-     * Expand the friend [chip] into a popup with a profile picture and email and other info.
+     * Expand the friend cardview into a popup with a profile picture and email and other info.
      */
-    fun expandChip(chip: View, user: User) {
+    fun expandFriendPopup(chip: View, user: User) {
         // Configure the analogous collapse transform back to the recipient chip. This should
         // happen when the card is clicked, any region outside of the card (the card's transparent
         // scrim) is clicked, or when the back button is pressed.
-        account_card_view.setOnClickListener { collapseChip(chip) }
+        account_card_view.setOnClickListener { collapseFriendPopup() }
         account_card_scrim.visibility = View.VISIBLE
-        account_card_scrim.setOnClickListener { collapseChip(chip) }
-        closePopupCardOnBackPressed.expandedChip = chip
-        closePopupCardOnBackPressed.isEnabled = true
+        account_card_scrim.setOnClickListener { collapseFriendPopup() }
 
         // Set up MaterialContainerTransform beginDelayedTransition.
         val transform = MaterialContainerTransform().apply {
@@ -110,7 +99,6 @@ class Groups_friendlist_fragment : Fragment() {
         }
 
         TransitionManager.beginDelayedTransition(friends_recyler_list_view, transform)
-
 
         account_card_view.visibility = View.VISIBLE
         account_name_text_view.text = user.username
@@ -132,17 +120,12 @@ class Groups_friendlist_fragment : Fragment() {
     }
 
     /**
-     * Collapse the friend popup card back into its [chip] form.
+     * Collapse the friend popup card back, fade away
      */
-    private fun collapseChip(chip: View) {
+    private fun collapseFriendPopup() {
         // Remove the scrim view and on back pressed callbacks
         account_card_scrim.visibility = View.GONE
-        closePopupCardOnBackPressed.expandedChip = null
-        closePopupCardOnBackPressed.isEnabled = false
-
         TransitionManager.beginDelayedTransition(account_card_view)
-
-
         account_card_view.visibility = View.INVISIBLE
     }
 

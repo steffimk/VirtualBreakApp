@@ -194,6 +194,9 @@ class PushData {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(group.uid).removeValue()
         }
 
+        /**
+         * to rename a group
+         */
         fun setGroupDescription(groupId: String, description: String) {
             database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId).child(Constants.DATABASE_CHILD_DESCRIPTION).setValue(description)
         }

@@ -61,7 +61,6 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
 
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolderRooms, position: Int) {
-
         // get the item using the  position param
         val item: Room = rooms_list[position]
 
@@ -74,10 +73,8 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
         holder.participantCount.text = item.users.size.toString()
 
         //check if user in still in Room, if yes deactivate Click on rooms except for current
-        Log.d(TAG, "isUserinroom ${SharedPrefManager.instance.getRoomId()}")
 
         if (SharedPrefManager.instance.getRoomId() == null) {
-            Log.d(TAG, "setclicklistener")
             view.setOnClickListener {
                 prepareAndInitBreakStatus() //before saving roomid in SharedPrefs
                 PushData.joinRoom(context, item.uid, username)
@@ -95,6 +92,7 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
             if (SharedPrefManager.instance.getRoomId() == item.uid) {
                 view.setOnClickListener {
                     context.stopService(Intent(context, BreakroomWidgetService::class.java))
+
                     val intent = Intent(context, BreakRoomActivity::class.java)
                     intent.putExtra(Constants.USER_NAME, username)
                     intent.putExtra(Constants.ROOM_TYPE, item.type.dbStr)
@@ -104,7 +102,6 @@ class SingleGroupRoomsAdapter(context: Context, rooms: ArrayList<Room>, userName
                     context.startActivity(intent)
                 }
             } else {
-                Log.d(TAG, "setNOclicklistener")
                 val card = view as CardView
                 card.setCardBackgroundColor(Color.parseColor("#bdbdbd"))
                 view.setOnClickListener {

@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.virtualbreak.controller.Constants
@@ -22,8 +23,8 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
     /**
      * LiveData containing a HashMap of roomIds and the respective room
      */
-    private val rooms : MutableLiveData<HashMap<String,Room>> =
-        object : MutableLiveData<HashMap<String,Room>>(HashMap()) {
+    private val rooms: MutableLiveData<HashMap<String, Room>> =
+        object : MutableLiveData<HashMap<String, Room>>(HashMap()) {
             private val queryRooms = PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
                 .child(groupId).child(Constants.DATABASE_CHILD_ROOMS)
 
@@ -51,15 +52,15 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
      */
     private val roomsValueEventListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            val pulledRooms = dataSnapshot.getValue<HashMap<String,String>>()
+            val pulledRooms = dataSnapshot.getValue<HashMap<String, String>>()
 
             Log.d(TAG, "Pulled Rooms $pulledRooms")
 
             rooms.value?.clear()
             rooms.value = rooms.value
 
-            pulledRooms?.forEach() {
-                    (key, roomId) -> pullRoomWithId(roomId)
+            pulledRooms?.forEach() { (key, roomId) ->
+                pullRoomWithId(roomId)
             }
         }
 
@@ -88,16 +89,18 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
                 Log.d(TAG, databaseError.message)
             }
         }
-        PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId).addListenerForSingleValueEvent(valueEventListener)
+        PullData.database.child(Constants.DATABASE_CHILD_ROOMS).child(roomId)
+            .addListenerForSingleValueEvent(valueEventListener)
     }
 
     /**
      * LiveData containing a hashmap with the ids and users of the group
      */
-    private val usersOfGroup : MutableLiveData<HashMap<String,User>> =
-        object : MutableLiveData<HashMap<String,User>>(HashMap()) {
-            private val queryUsers = PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
-                .child(Constants.DATABASE_CHILD_USERS)
+    private val usersOfGroup: MutableLiveData<HashMap<String, User>> =
+        object : MutableLiveData<HashMap<String, User>>(HashMap()) {
+            private val queryUsers =
+                PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+                    .child(Constants.DATABASE_CHILD_USERS)
 
             override fun onActive() {
                 super.onActive()
@@ -121,29 +124,29 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
     private val groupUsersEventListener = object : ValueEventListener {
 
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            val pulledUsers = dataSnapshot.getValue<HashMap<String,String>>()
+            val pulledUsers = dataSnapshot.getValue<HashMap<String, String>>()
             Log.d(TAG, "Pulled Users $pulledUsers")
 
             if (pulledUsers == null) return
 
-            usersOfGroup.value?.let{
+            usersOfGroup.value?.let {
                 // Pull new users in group
-                for(userId in pulledUsers.keys){
-                    if(it.containsKey(userId)) return // fcmToken already saved
+                for (userId in pulledUsers.keys) {
+                    if (it.containsKey(userId)) return // fcmToken already saved
                     else PullData.database.child(Constants.DATABASE_CHILD_USERS)
                         .child(userId).addValueEventListener(userListener)
                 }
 
                 // Delete users that left group
                 for (userId in it) {
-                    if (!pulledUsers.keys.contains(userId)){
+                    if (!pulledUsers.keys.contains(userId)) {
                         it.remove(userId)
                     }
                 }
             }
 
-            if(usersOfGroup == null){
-                for(userId in pulledUsers.keys){
+            if (usersOfGroup == null) {
+                for (userId in pulledUsers.keys) {
                     PullData.database.child(Constants.DATABASE_CHILD_USERS)
                         .child(userId).addValueEventListener(userListener)
                 }
@@ -182,10 +185,12 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
     /**
      * LiveData containing the currentGroup
      */
-    private val currentGroup: MutableLiveData<Group?> by lazy { MutableLiveData<Group?>().also{
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
-            .addValueEventListener(currentGroupListener)
-    } }
+    private val currentGroup: MutableLiveData<Group?> by lazy {
+        MutableLiveData<Group?>().also {
+            PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
+                .addValueEventListener(currentGroupListener)
+        }
+    }
 
     /**
      * Returns the LiveData containing the currentGroup
@@ -200,39 +205,91 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
      */
     private val currentGroupListener = object : ValueEventListener {
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var group = dataSnapshot.getValue(Group::class.java)
-                if (group != null) {
-                    currentGroup.value = group
-                } else {
-                    Log.d(TAG, "Current Group is null!")
-                }
-                Log.d(TAG, "Pulled Current Group")
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            var group = dataSnapshot.getValue(Group::class.java)
+            if (group != null) {
+                currentGroup.value = group
+            } else {
+                Log.d(TAG, "Current Group is null!")
             }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d(TAG, databaseError.message)
-            }
+            Log.d(TAG, "Pulled Current Group")
         }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d(TAG, databaseError.message)
+        }
+    }
 
     /**
      * Removes all event listeners
      */
     override fun onCleared() {
         super.onCleared()
-        PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(Constants.DATABASE_CHILD_USERS)
+        PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
+            .child(Constants.DATABASE_CHILD_USERS)
             .removeEventListener(groupUsersEventListener)
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS)
-            .child(groupId).child(Constants.DATABASE_CHILD_ROOMS).removeEventListener(roomsValueEventListener)
+            .child(groupId).child(Constants.DATABASE_CHILD_ROOMS)
+            .removeEventListener(roomsValueEventListener)
         PullData.database.child(Constants.DATABASE_CHILD_GROUPS).child(groupId)
             .removeEventListener(currentGroupListener)
 
-        usersOfGroup.value?.let{
-            it.keys.forEach{
+        usersOfGroup.value?.let {
+            it.keys.forEach {
                 PullData.database.child(Constants.DATABASE_CHILD_USERS)
                     .child(it).removeEventListener(userListener)
             }
         }
+    }
+
+    /**
+     * Make the CurrentRoomId in the SharedPreferences Obserable to update the rooms when leaving the room over the widget
+     */
+    abstract class SharedPreferenceLiveData<T>(
+        val sharedPrefs: SharedPreferences,
+        val key: String,
+        val defValue: T
+    ) : LiveData<T>() {
+
+        private val preferenceChangeListener =
+            SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+                if (key == this.key) {
+                    value = getValueFromPreferences(key, defValue)
+                }
+            }
+
+        abstract fun getValueFromPreferences(key: String, defValue: T): T
+
+        override fun onActive() {
+            super.onActive()
+            value = getValueFromPreferences(key, defValue)
+            sharedPrefs.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+        }
+
+        override fun onInactive() {
+            sharedPrefs.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
+            super.onInactive()
+
+
+        }
+    }
+
+    class SharedPreferenceStringLiveData(
+        sharedPrefs: SharedPreferences,
+        key: String,
+        defValue: String
+    ) :
+        SharedPreferenceLiveData<String>(sharedPrefs, key, defValue) {
+        override fun getValueFromPreferences(key: String, defValue: String): String =
+            sharedPrefs.getString(key, defValue).toString()
+    }
+
+    fun getStringLiveData(
+        sharedPrefs: SharedPreferences,
+        key: String,
+        defValue: String
+    ): SharedPreferenceLiveData<String> {
+        return SharedPreferenceStringLiveData(sharedPrefs, key, defValue)
     }
 
 }

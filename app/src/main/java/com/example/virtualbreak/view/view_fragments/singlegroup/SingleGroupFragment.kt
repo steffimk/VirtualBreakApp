@@ -86,8 +86,6 @@ class SingleGroupFragment : Fragment() {
             it.commit()
         }
 
-        //check if user is in room and widget is open, when yes disabled rooms
-
         // display rooms
         activity?.supportFragmentManager?.beginTransaction()?.let {
             it.replace(

@@ -1,5 +1,6 @@
 package com.example.virtualbreak.view.view_fragments.singlegroup
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -102,9 +103,22 @@ class SingleGroupRoomsFragment : Fragment() {
 
                 })
 
+            // Observe if group users have changed
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, {
                 groupUsers = it
             })
+
+            SharedPrefManager.instance.getPreferences()?.let { it1 ->
+                singleGroupViewModel.getStringLiveData(it1, "roomId", "room")
+                    .observe(viewLifecycleOwner, {
+                        //look if Roomid changed if yes update the rooms
+                        grid_view.adapter = customAdapter
+                        Log.d("CHECK", "observer roomid changes, $customAdapter")
+                    })
+            }
+
+
+
             fabButton = root.findViewById(R.id.fab_singlegroup)
 
             fabOptionCoffee = root.findViewById(R.id.fab_singlegroup_option1)

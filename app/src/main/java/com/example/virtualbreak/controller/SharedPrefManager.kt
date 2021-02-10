@@ -47,12 +47,16 @@ private constructor() {
         }
     }
 
+    fun getPreferences(): SharedPreferences? {
+        return sharedPrefs
+    }
+
     /**
      * Saves status of own user
      * @param status Status to be saved
      */
     fun saveCurrentStatus(status: Status) {
-        sharedPrefs?.let{
+        sharedPrefs?.let {
             it.edit().putString(CURRENT_STATUS, status.dbStr).apply()
             Log.d(TAG, "Status " + status.dbStr + " added to shared preferences")
         }

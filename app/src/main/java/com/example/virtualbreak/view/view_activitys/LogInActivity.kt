@@ -19,6 +19,9 @@ import com.example.virtualbreak.controller.isOnline
 import com.example.virtualbreak.model.Status
 import kotlinx.android.synthetic.main.activity_log_in.*
 
+/**
+ * Activity that shows Login view
+ */
 class LogInActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth

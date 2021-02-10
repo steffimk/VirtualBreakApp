@@ -16,6 +16,9 @@ import com.example.virtualbreak.controller.adapters.FriendRequestsOutgoingAdapte
 import com.example.virtualbreak.model.User
 import kotlinx.android.synthetic.main.fragment_friend_requests.*
 
+/**
+ * Fragment shows incoming and outgoing friend requests
+ */
 class FriendRequestsFragment() : Fragment() {
 
     private val TAG = "FriendRequestsFragment"
@@ -44,7 +47,7 @@ class FriendRequestsFragment() : Fragment() {
         viewModel.getIncomingFriendRequests().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ incomingFriendRequests ->
             Log.d(TAG, "Observed the following incomingFriendRequests: $incomingFriendRequests")
 
-            if(incomingFriendRequests.size == 0){
+            if(incomingFriendRequests == null || incomingFriendRequests.isEmpty() || incomingFriendRequests.size == 0){
                 text_no_incoming_friendrequests.visibility = View.VISIBLE
             } else{
                 text_no_incoming_friendrequests.visibility = View.GONE

@@ -21,7 +21,9 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/**
+ * This adapter displays and styles the chat messages in BreakroomActivity TextchatFragment
+ */
 class ChatAdapter(
     context: Context,
     messages: MutableList<Message>,

@@ -41,7 +41,11 @@ import kotlinx.android.synthetic.main.fragment_myprofile.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
+/**
+ * Fragment that shows profile picture, which can be edited
+ * also shows Status spinner to show current status which can be changed
+ * with logout button
+ */
 class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private val myProfileViewModel: MyProfileViewModel by viewModels()

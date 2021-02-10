@@ -67,7 +67,7 @@ class Groups_friendlist_fragment : Fragment() {
 
         viewModel.getFriends().observe(viewLifecycleOwner, Observer<HashMap<String,User>>{ friends ->
 
-            if(friends.size == 0){
+            if(friends.isEmpty() || friends == null || friends.size == 0){
                 no_friends_yet_linearlayout.visibility = View.VISIBLE //display text that no friends were added yet
             } else{
                 no_friends_yet_linearlayout.visibility = View.GONE

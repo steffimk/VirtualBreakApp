@@ -21,6 +21,9 @@ import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment with logout button
+ */
 class LogoutFragment : Fragment() {
 
     override fun onCreateView(

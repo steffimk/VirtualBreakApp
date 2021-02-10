@@ -26,6 +26,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_singlegroup.*
 
+/**
+ * Fragment that contains SingleGroupMembersFragment (show group members) and SingleGroupRoomsFragment (show open rooms in group)
+ */
 class SingleGroupFragment : Fragment() {
 
     private val TAG: String = "SingleGroupFragment"

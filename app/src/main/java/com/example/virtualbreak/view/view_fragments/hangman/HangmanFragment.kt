@@ -18,7 +18,9 @@ import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.Game
 import kotlinx.android.synthetic.main.hangman_fragment.*
 
-
+/**
+ * Fragment contains game: Hangman, game can be restarted
+ */
 class HangmanFragment : Fragment() {
 
     private val TAG = "HangmanFragment"

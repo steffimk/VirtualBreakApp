@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.NumberPicker
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.virtualbreak.R
@@ -19,6 +21,7 @@ import com.example.virtualbreak.controller.Constants
 import com.example.virtualbreak.controller.SharedPrefManager
 import com.example.virtualbreak.controller.communication.PushData
 import kotlinx.android.synthetic.main.fragment_sport_room_extras.*
+import kotlinx.android.synthetic.main.hangman_fragment.*
 import java.util.*
 
 /**
@@ -45,6 +48,22 @@ class SportRoomExtrasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // when receiving focus of edittext in chat fragment do something
+        parentFragmentManager.setFragmentResultListener(
+            Constants.REQUEST_KEY_SPORT_FRAGMENT,
+            this,
+            FragmentResultListener { requestKey, bundle ->
+                val result = bundle.getBoolean(Constants.BUNDLE_KEY_SPORT_FRAGMENT)
+                Log.i(TAG, "receiving edittext event  " + result)
+                handleKeyboardFromChat(result)
+            })
+
+        sport_base_view.setOnClickListener {
+            sendFragmentResultClick()
+        }
+
+
         startTimer_btn.setOnClickListener { startNewTimer() }
         fitness_next_btn.setOnClickListener {
             fitnessIndex = (fitnessIndex + 1) % Constants.FITNESS_IDEAS.size
@@ -111,6 +130,7 @@ class SportRoomExtrasFragment : Fragment() {
             sport_content_layout.visibility = View.VISIBLE
             expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
         }
+        sendFragmentResultClick()
     }
 
     /**
@@ -206,6 +226,45 @@ class SportRoomExtrasFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         handleNewTimerEndDate(viewModel.getTimerEndDate().value)
+    }
+
+    /**
+     * When focus is on Edittext in chat, hide hangman fragment
+     *
+     * @param focus If it's focused
+     */
+    private fun handleKeyboardFromChat(focus: Boolean) {
+        if (focus) {
+            // when edit text is clicked, hide game fragment
+            if (sport_content_layout.visibility === View.VISIBLE) {
+                TransitionManager.beginDelayedTransition(
+                    sport_base_view,
+                    AutoTransition()
+                )
+                sport_content_layout.visibility = View.GONE
+                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            }
+        } else {
+            if (sport_content_layout.visibility === View.GONE) {
+                TransitionManager.beginDelayedTransition(
+                    sport_base_view,
+                    AutoTransition()
+                )
+                sport_content_layout.visibility = View.VISIBLE
+                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            }
+        }
+    }
+
+    /**
+     * Set click value to fragment result
+     */
+    private fun sendFragmentResultClick() {
+        Log.i(TAG, "sending game event")
+        parentFragmentManager.setFragmentResult(
+            Constants.REQUEST_KEY_GAME_FRAGMENT_CLICK,
+            bundleOf(Constants.BUNDLE_KEY_GAME_FRAGMENT_CLICK to Constants.CLICK)
+        )
     }
 
 }

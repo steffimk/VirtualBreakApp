@@ -13,7 +13,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
-
+/**
+ * Shared Preferences Manager that can be accessed from anywhere as instance
+ */
 class SharedPrefManager
 
 
@@ -24,6 +26,7 @@ class SharedPrefManager
 private constructor() {
     private var sharedPrefs: SharedPreferences? = null
 
+    //SharedPreferences string parameters
     val ROOM_ID: String = "roomId"
     val USER_ID: String = "userId"
     val USER_NAME: String = "userName"

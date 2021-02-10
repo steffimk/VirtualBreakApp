@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
 
 
 /**
- * This Adapter manages the content of the Friendlist in the groups_friendlist_fragment
+ * This Adapter manages the content of the Friendlist in the SingleGroupFragment to show the members of a group
  */
 
 class SingleGroupMembersAdapter(

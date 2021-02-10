@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso
 
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment shows a view to search for users and add them as friends
  */
 class AddFriendsFragment : Fragment() {
 

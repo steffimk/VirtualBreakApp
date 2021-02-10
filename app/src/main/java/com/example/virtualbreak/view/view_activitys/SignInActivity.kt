@@ -17,6 +17,9 @@ import com.google.firebase.ktx.Firebase
 import com.example.virtualbreak.controller.isOnline
 import com.google.firebase.auth.FirebaseUser
 
+/**
+ * Activity that allows user to create a new account, sends email to verify email address
+ */
 class SignInActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth

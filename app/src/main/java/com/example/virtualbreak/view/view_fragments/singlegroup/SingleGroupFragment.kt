@@ -211,7 +211,7 @@ class SingleGroupFragment : Fragment() {
     /**
      * Expand the friend [chip] into a popup with a profile picture and email and other info.
      */
-    fun expandFriendPopUp(chip: View, user: User) {
+    fun expandFriendPopUp(clickedView: View, user: User) {
         // Configure the analogous collapse transform back to the recipient chip. This should
         // happen when the card is clicked, any region outside of the card (the card's transparent
         // scrim) is clicked, or when the back button is pressed.
@@ -221,7 +221,7 @@ class SingleGroupFragment : Fragment() {
 
         // Set up MaterialContainerTransform beginDelayedTransition.
         val transform = MaterialContainerTransform().apply {
-            startView = chip
+            startView = clickedView
             endView = member_card_view
             scrimColor = Color.TRANSPARENT
             endElevation = requireContext().resources.getDimension(
@@ -229,8 +229,6 @@ class SingleGroupFragment : Fragment() {
             )
             addTarget(member_card_view)
         }
-
-        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)
 
         member_card_view.visibility = View.VISIBLE
         member_name_text_view.text = user.username
@@ -248,6 +246,8 @@ class SingleGroupFragment : Fragment() {
             }
         }
         loadProfilePicture(member_profile_image_view, user.uid)
+
+        TransitionManager.beginDelayedTransition(singlegroup_fragment_linearlayout, transform)
 
     }
 

@@ -32,7 +32,7 @@ class PushData {
          * @param user
          * @param name Username
          */
-        fun saveUser(user: FirebaseUser, name: String, signOutAFterCompletion: Boolean) {
+        fun saveUser(user: FirebaseUser, name: String) {
             if (user?.email != null) {
                   val userData = User(user.uid, name, user.email!!, Status.AVAILABLE)
                   database.child(Constants.DATABASE_CHILD_USERS).child(user.uid).setValue(userData)

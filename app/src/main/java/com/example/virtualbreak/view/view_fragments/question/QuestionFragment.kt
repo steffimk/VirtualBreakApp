@@ -36,6 +36,9 @@ class QuestionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_question, container, false)
     }
 
+    /**
+     * Set on click listeners and observe LiveData of view model
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         question_text.movementMethod = ScrollingMovementMethod()
@@ -73,6 +76,9 @@ class QuestionFragment : Fragment() {
         }
     }
 
+    /**
+     * Hide and show question fragment on click
+     */
     private fun toggleQuestionFragmentVisibility(){
         if (question_content.getVisibility() === View.VISIBLE) {
             TransitionManager.beginDelayedTransition(

@@ -46,6 +46,9 @@ class SportRoomExtrasFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_sport_room_extras, container, false)
     }
 
+    /**
+     * Set on click listeners
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -63,8 +66,9 @@ class SportRoomExtrasFragment : Fragment() {
             sendFragmentResultClick()
         }
 
-
-        startTimer_btn.setOnClickListener { startNewTimer() }
+        startTimer_btn.setOnClickListener {
+            startNewTimer()
+        }
         fitness_next_btn.setOnClickListener {
             fitnessIndex = (fitnessIndex + 1) % Constants.FITNESS_IDEAS.size
             onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
@@ -75,23 +79,8 @@ class SportRoomExtrasFragment : Fragment() {
             onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
         }
 
-        min_picker.maxValue = 20
-        val secPicker = sec_picker
-        secPicker.maxValue = 5
-        // Formatter to make steps of 10
-        val secFormatter = NumberPicker.Formatter { value ->
-            var tmp = (value * 10).toString()
-            if (tmp == "0") tmp = "00"
-            tmp
-        }
-        secPicker.setFormatter(secFormatter)
-        // Following code fixes bug that formatter does not format on first render
-        for(index in secPicker.minValue..secPicker.maxValue) {
-            val edit = secPicker.getChildAt(index-secPicker.minValue)
-            if (edit != null && edit is EditText) {
-                edit.filters = arrayOfNulls(0)
-            }
-        }
+        prepareMinAndSecPickerOfTimer()
+        // Set first exercise
         onSelectedNewExercise(Constants.FITNESS_IDEAS[fitnessIndex])
 
         //expand or close sport fragment
@@ -102,6 +91,8 @@ class SportRoomExtrasFragment : Fragment() {
             toggleSportFragmentVisibility()
         }
 
+        // Include view model: listen for new fitness exercise and a new timerEndDate
+        // in the room in the database
         viewModel.startPullingExercise()
         viewModel.getTimerEndDate().observe(viewLifecycleOwner, Observer<Long?> { timerEndDate ->
             handleNewTimerEndDate(timerEndDate)
@@ -109,9 +100,36 @@ class SportRoomExtrasFragment : Fragment() {
         })
     }
 
+    /**
+     * Prepares the number pickers in order to make them suitable for a timer.
+     * Minute picker: Numbers from 0 to 20
+     * Seconds picker: Numbers from 0 to 50 in steps of ten
+     */
+    private fun prepareMinAndSecPickerOfTimer() {
+        min_picker.maxValue = 20 // Timer can run for a maximum of 20 minutes (+ 50 seconds)
+        val secPicker = sec_picker
+        secPicker.maxValue = 5  // 50 seconds is highest value
+        // Formatter to make steps of 10 seconds
+        val secFormatter = NumberPicker.Formatter { value ->
+            var tmp = (value * 10).toString()
+            if (tmp == "0") tmp = "00"
+            tmp
+        }
+        secPicker.setFormatter(secFormatter)
+        // Following code fixes bug that formatter does not format secPicker on first render
+        for(index in secPicker.minValue..secPicker.maxValue) {
+            val edit = secPicker.getChildAt(index-secPicker.minValue)
+            if (edit != null && edit is EditText) {
+                edit.filters = arrayOfNulls(0)
+            }
+        }
+    }
+
+    /**
+     * Hide and show sport fragment on click
+     */
     private fun toggleSportFragmentVisibility() {
         if (sport_content_layout.getVisibility() === View.VISIBLE) {
-
             // The transition of the hiddenView is carried out
             //  by the TransitionManager class.
             // Here we use an object of the AutoTransition

@@ -43,6 +43,9 @@ class AddFriendsFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+    /**
+     * Set on click listeners
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +56,7 @@ class AddFriendsFragment : Fragment() {
 
         binding.searchFriendBtn.setOnClickListener {
             viewModel.searchForUserWithFullEmail(binding.friendEmail.text.toString())
+            // let user know that mail is being searched
             binding.tvWasSearchSuccessful.text = getString(R.string.searching_for_friend)
             binding.tvWasSearchSuccessful.visibility = View.VISIBLE
 
@@ -66,6 +70,9 @@ class AddFriendsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Observe LiveData of ViewModel
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -96,6 +103,9 @@ class AddFriendsFragment : Fragment() {
         })
     }
 
+    /**
+     * Load profile picture of found user
+     */
     private fun loadProfilePicture(imageView: ImageView, userId: String) {
         val mStorageRef = FirebaseStorage.getInstance().getReference()
         mStorageRef.child("img/profilePics/$userId").downloadUrl
@@ -113,11 +123,10 @@ class AddFriendsFragment : Fragment() {
         imm?.hideSoftInputFromWindow(editText.getWindowToken(), 0)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
+    /**
+     * Call when 'send friend request'-button is clicked. Checks whether user is allowed to do so.
+     * @param user The user that would be the receiver of the friend request
+     */
     private fun sendFriendRequestToUser(user: User?) {
         val currentUser = viewModel.getCurrentUser().value
         var snackbarText = ""
@@ -155,7 +164,6 @@ class AddFriendsFragment : Fragment() {
                 }
             }
         }
-
         if (isValidFriendRequest) {
             PushData.sendFriendRequest(user!!.uid)
             // Send notification to user
@@ -193,6 +201,11 @@ class AddFriendsFragment : Fragment() {
         }
 
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

@@ -129,24 +129,10 @@ class SportRoomExtrasFragment : Fragment() {
      * Hide and show sport fragment on click
      */
     private fun toggleSportFragmentVisibility() {
-        if (sport_content_layout.getVisibility() === View.VISIBLE) {
-            // The transition of the hiddenView is carried out
-            //  by the TransitionManager class.
-            // Here we use an object of the AutoTransition
-            // Class to create a default transition.
-            TransitionManager.beginDelayedTransition(
-                sport_base_view,
-                AutoTransition()
-            )
-            sport_content_layout.visibility = View.GONE
-            expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        if (sport_content_layout.isShown) {
+            collapseSportFragment()
         } else {
-            TransitionManager.beginDelayedTransition(
-                sport_base_view,
-                AutoTransition()
-            )
-            sport_content_layout.visibility = View.VISIBLE
-            expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            expandSportFragment()
         }
         sendFragmentResultClick()
     }
@@ -254,25 +240,39 @@ class SportRoomExtrasFragment : Fragment() {
     private fun handleKeyboardFromChat(focus: Boolean) {
         if (focus) {
             // when edit text is clicked, hide game fragment
-            if (sport_content_layout.visibility === View.VISIBLE) {
-                TransitionManager.beginDelayedTransition(
-                    sport_base_view,
-                    AutoTransition()
-                )
-                sport_content_layout.visibility = View.GONE
-                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            if (sport_content_layout.isShown) { //.visibility === View.VISIBLE
+                collapseSportFragment()
             }
         } else {
-            if (sport_content_layout.visibility === View.GONE) {
-                TransitionManager.beginDelayedTransition(
-                    sport_base_view,
-                    AutoTransition()
-                )
-                sport_content_layout.visibility = View.VISIBLE
-                expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
-            }
+           if (!sport_content_layout.isShown) {
+                expandSportFragment()
+           }
         }
     }
+
+    private fun expandSportFragment() {
+        TransitionManager.beginDelayedTransition(
+            sport_base_view,
+            AutoTransition()
+        )
+        sport_content_layout.visibility = View.VISIBLE
+        expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+    }
+
+
+    private fun collapseSportFragment() {
+        // The transition of the hiddenView is carried out
+        //  by the TransitionManager class.
+        // Here we use an object of the AutoTransition
+        // Class to create a default transition.
+        TransitionManager.beginDelayedTransition(
+            sport_base_view,
+            AutoTransition()
+        )
+        sport_content_layout.visibility = View.GONE
+        expand_sport_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+    }
+
 
     /**
      * Set click value to fragment result

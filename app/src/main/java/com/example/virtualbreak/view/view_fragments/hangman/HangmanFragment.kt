@@ -37,6 +37,8 @@ class HangmanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "onViewCreated")
+
         // when receiving focus of edittext in chat fragment do something
         parentFragmentManager.setFragmentResultListener(
             Constants.REQUEST_KEY_GAME_FRAGMENT,
@@ -366,23 +368,9 @@ class HangmanFragment : Fragment() {
     private fun toggleGameFragmentVisibility(){
         if (hangman_content.getVisibility() === View.VISIBLE) {
 
-            // The transition of the hiddenView is carried out
-            //  by the TransitionManager class.
-            // Here we use an object of the AutoTransition
-            // Class to create a default transition.
-            TransitionManager.beginDelayedTransition(
-                game_base_cardview,
-                AutoTransition()
-            )
-            hangman_content.setVisibility(View.GONE)
-            expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            collapseGameFragment()
         } else {
-            TransitionManager.beginDelayedTransition(
-                game_base_cardview,
-                AutoTransition()
-            )
-            hangman_content.setVisibility(View.VISIBLE)
-            expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            expandGameFragment()
         }
         sendFragmentResultClick()
     }
@@ -617,23 +605,37 @@ class HangmanFragment : Fragment() {
     private fun handleKeyboardFromChat(focus: Boolean) {
         if (focus) {
             // when edit text is clicked, hide game fragment
-            if (hangman_content.visibility === View.VISIBLE) {
-                TransitionManager.beginDelayedTransition(
-                    game_base_cardview,
-                    AutoTransition()
-                )
-                hangman_content.setVisibility(View.GONE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            if (hangman_content.isShown) {
+                collapseGameFragment()
             }
         } else {
-            if (hangman_content.visibility === View.GONE) {
-                TransitionManager.beginDelayedTransition(
-                    game_base_cardview,
-                    AutoTransition()
-                )
-                hangman_content.setVisibility(View.VISIBLE)
-                expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+            if (!hangman_content.isShown) {// visibility === View.GONE
+                expandGameFragment()
             }
         }
+
+    }
+
+
+    private fun expandGameFragment() {
+        TransitionManager.beginDelayedTransition(
+            game_base_cardview,
+            AutoTransition()
+        )
+        hangman_content.setVisibility(View.VISIBLE)
+        expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+    }
+
+    private fun collapseGameFragment() {
+        // The transition of the hiddenView is carried out
+        //  by the TransitionManager class.
+        // Here we use an object of the AutoTransition
+        // Class to create a default transition.
+        TransitionManager.beginDelayedTransition(
+            game_base_cardview,
+            AutoTransition()
+        )
+        hangman_content.setVisibility(View.GONE)
+        expand_game_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
     }
 }

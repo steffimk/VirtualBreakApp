@@ -80,21 +80,29 @@ class QuestionFragment : Fragment() {
      * Hide and show question fragment on click
      */
     private fun toggleQuestionFragmentVisibility(){
-        if (question_content.getVisibility() === View.VISIBLE) {
-            TransitionManager.beginDelayedTransition(
-                question_base_view,
-                AutoTransition()
-            )
-            question_content.visibility = View.GONE
-            expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
+        if (question_content.isShown) {
+            collapseQuestionFragment()
         } else {
-            TransitionManager.beginDelayedTransition(
-                question_base_view,
-                AutoTransition()
-            )
-            question_content.visibility = View.VISIBLE
-            expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+            expandQuestionFragment()
         }
+    }
+
+    private fun expandQuestionFragment() {
+        TransitionManager.beginDelayedTransition(
+            question_base_view,
+            AutoTransition()
+        )
+        question_content.visibility = View.VISIBLE
+        expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_less_24)
+    }
+
+    private fun collapseQuestionFragment() {
+        TransitionManager.beginDelayedTransition(
+            question_base_view,
+            AutoTransition()
+        )
+        question_content.visibility = View.GONE
+        expand_question_btn.setImageResource(R.drawable.ic_baseline_expand_more_24)
     }
 
     /**

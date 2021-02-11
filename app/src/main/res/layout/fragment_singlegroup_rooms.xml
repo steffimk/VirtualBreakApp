@@ -93,7 +93,7 @@
             android:layout_gravity="center"
             app:fab_color="@color/mandarin"
             app:fab_icon="@drawable/ic_cup_white"
-            app:label_text="Coffee" />
+            app:label_text="Kaffee" />
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fab_singlegroup_option2"

@@ -40,7 +40,8 @@ class PushData {
          */
         fun saveUser(user: FirebaseUser, name: String) {
             if (user?.email != null) {
-                  val userData = User(user.uid, name, user.email!!, Status.AVAILABLE)
+                  val mailInLowerCase = user.email!!.toLowerCase()
+                  val userData = User(user.uid, name, mailInLowerCase, Status.AVAILABLE)
                   database.child(Constants.DATABASE_CHILD_USERS).child(user.uid).setValue(userData)
                 Log.d(TAG, "Saved user $userData to realtime database")
             } else {

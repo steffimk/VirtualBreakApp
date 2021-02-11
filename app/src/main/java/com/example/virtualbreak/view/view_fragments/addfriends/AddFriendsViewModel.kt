@@ -72,9 +72,10 @@ class AddFriendsViewModel : ViewModel() {
             }
         }
 
+        val mailInLowerCase = email.toLowerCase()
         searchedUser.value = null
         PullData.database.child(Constants.DATABASE_CHILD_USERS).orderByChild(Constants.DATABASE_CHILD_EMAIL)
-            .equalTo(email).limitToFirst(1).addListenerForSingleValueEvent(valueEventListener)
+            .equalTo(mailInLowerCase).limitToFirst(1).addListenerForSingleValueEvent(valueEventListener)
     }
 
     /**

@@ -91,9 +91,12 @@ class SingleGroupRoomsFragment : Fragment() {
             singleGroupViewModel.getRooms().observe(viewLifecycleOwner,
                 { roomsMap ->
                     Log.d(TAG, "Observed rooms: $roomsMap")
-                    if(roomsMap.isEmpty() || roomsMap == null){
+                    if(roomsMap.isEmpty() || roomsMap.size == 0){
                         no_breakrooms_yet.visibility = View.VISIBLE
-                    } else{
+                        customAdapter = null
+                        grid_view.adapter = customAdapter
+                    }
+                    else {
                         no_breakrooms_yet.visibility = View.GONE
                         customAdapter =
                             context?.let {
@@ -111,6 +114,16 @@ class SingleGroupRoomsFragment : Fragment() {
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, {
                 groupUsers = it
             })
+
+            SharedPrefManager.instance.getPreferences()?.let { it1 ->
+                singleGroupViewModel.getStringLiveData(it1, "roomId", "room")
+                    .observe(viewLifecycleOwner, {
+                        //look if Roomid changed if yes update the rooms
+                        grid_view.adapter = customAdapter
+                        Log.d("CHECK", "observer roomid changes, $customAdapter")
+                    })
+            }
+
 
             fabButton = root.findViewById(R.id.fab_singlegroup)
 

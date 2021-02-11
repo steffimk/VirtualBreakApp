@@ -274,4 +274,23 @@ class SingleGroupViewModel(private val groupId: String): ViewModel() {
         }
     }
 
+    class SharedPreferenceStringLiveData(
+        sharedPrefs: SharedPreferences,
+        key: String,
+        defValue: String
+    ) :
+        SharedPreferenceLiveData<String>(sharedPrefs, key, defValue) {
+        override fun getValueFromPreferences(key: String, defValue: String): String =
+            sharedPrefs.getString(key, defValue).toString()
+    }
+
+    fun getStringLiveData(
+        sharedPrefs: SharedPreferences,
+        key: String,
+        defValue: String
+    ): SharedPreferenceLiveData<String> {
+        return SharedPreferenceStringLiveData(sharedPrefs, key, defValue)
+    }
+
+
 }

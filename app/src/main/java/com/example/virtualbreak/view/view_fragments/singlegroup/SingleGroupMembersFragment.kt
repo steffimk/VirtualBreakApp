@@ -75,7 +75,9 @@ class SingleGroupMembersFragment : Fragment() {
                     singlegroup_members_recyclerlistview.adapter = memberListAdapter
 
                     //set text how many users are members of this group
-                    singelgroup_members_header.text = ""+members.size+" Mitglieder:"
+                    if(members.size > 1){
+                        singelgroup_members_header.text = ""+members.size+" Mitglieder:"
+                    }
                 }
             })
 

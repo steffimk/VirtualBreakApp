@@ -112,17 +112,6 @@ class SingleGroupRoomsFragment : Fragment() {
                 groupUsers = it
             })
 
-            SharedPrefManager.instance.getPreferences()?.let { it1 ->
-                singleGroupViewModel.getStringLiveData(it1, "roomId", "room")
-                    .observe(viewLifecycleOwner, {
-                        //look if Roomid changed if yes update the rooms
-                        grid_view.adapter = customAdapter
-                        Log.d("CHECK", "observer roomid changes, $customAdapter")
-                    })
-            }
-
-
-
             fabButton = root.findViewById(R.id.fab_singlegroup)
 
             fabOptionCoffee = root.findViewById(R.id.fab_singlegroup_option1)

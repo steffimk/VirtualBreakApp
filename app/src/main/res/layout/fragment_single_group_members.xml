@@ -25,9 +25,10 @@
         android:padding="10dp"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/singelgroup_members_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gruppenmitglieder:"
+            android:text="@string/gruppenmitglieder"
             android:textColor="@color/darkblue"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
         <ImageButton
@@ -45,8 +46,7 @@
         android:id="@+id/singlegroup_members_recyclerlistview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginBottom="5dp"
         android:scrollbars="horizontal"
         android:orientation="horizontal" />
 

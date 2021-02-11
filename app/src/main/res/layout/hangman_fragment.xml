@@ -77,7 +77,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/architects_daughter"
+                            android:padding="5dp"
                             android:text="Hel__lo"
+                            android:textSize="17sp"
                             android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,7 +93,6 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_weight="1"
-                        android:layout_marginRight="2dp"
                         android:src="@drawable/hangman0" />
                 </LinearLayout>
 

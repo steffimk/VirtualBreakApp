@@ -19,13 +19,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:padding="5dp"
             android:text="@string/open_rooms"
             android:textColor="@color/darkblue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/no_breakrooms_yet"
+            android:layout_marginHorizontal="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/momentan_gibt_es_keine_pausenr_ume"/>
 
 
         <androidx.recyclerview.widget.RecyclerView

@@ -18,6 +18,7 @@ import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
 import com.example.virtualbreak.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.android.synthetic.main.fragment_add_group.select_friends_recylerlist
 
 /**
@@ -115,6 +116,7 @@ class AddGroupFragment : Fragment() {
     }
 
     private fun addTransition() {
+        //transition to animate groups list in return view before
         returnTransition = Slide().apply {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
             addTarget(R.id.groups_recyler_list_view)

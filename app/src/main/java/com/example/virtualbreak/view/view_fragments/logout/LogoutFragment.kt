@@ -14,6 +14,7 @@ import com.example.virtualbreak.model.Status
 import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.android.gms.auth.api.signin.internal.Storage
+import com.google.android.material.transition.MaterialSharedAxis
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
@@ -58,5 +59,16 @@ class LogoutFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        addTransition()
+    }
+
+    private fun addTransition() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.virtualbreak.R
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.android.synthetic.main.fragment_info.*
 
 /**
@@ -55,6 +56,14 @@ class InfoFragment : Fragment() {
 
         expand_sources_btn.setOnClickListener {
             expandSources()
+        }
+
+        addTransition()
+    }
+
+    private fun addTransition() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
     }
 

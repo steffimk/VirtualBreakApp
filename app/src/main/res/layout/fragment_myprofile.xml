@@ -20,11 +20,11 @@
             android:id="@+id/profileImg"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:src="@drawable/ic_person_24"
             android:layout_marginTop="30dp"
             android:contentDescription="profile picture"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_person_24"
-            app:riv_corner_radius="6dp" />
+            app:riv_oval="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -138,11 +138,11 @@
         android:id="@+id/fab_editPic"
         android:layout_width="212dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="140dp"
         android:contentDescription="edit picture"
         android:src="@drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

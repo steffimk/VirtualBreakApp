@@ -62,16 +62,21 @@ class SingleGroupMembersFragment : Fragment() {
 
 
             singleGroupViewModel.getGroupUsers().observe(viewLifecycleOwner, { members ->
-                singleGroupFragment?.let {
-                    memberListAdapter = SingleGroupMembersAdapter(
-                        ArrayList(
-                            members.values
-                        ), context, it
-                    )
-                }
-                singlegroup_members_recyclerlistview.adapter = memberListAdapter
 
                 Log.d(TAG, "Observed friends: $members")
+                if(!members.isEmpty() && members != null){
+                    singleGroupFragment?.let {
+                        memberListAdapter = SingleGroupMembersAdapter(
+                            ArrayList(
+                                members.values
+                            ), context, it
+                        )
+                    }
+                    singlegroup_members_recyclerlistview.adapter = memberListAdapter
+
+                    //set text how many users are members of this group
+                    singelgroup_members_header.text = ""+members.size+" Mitglieder:"
+                }
             })
 
             expand_singlegroup_members_btn.setOnClickListener {

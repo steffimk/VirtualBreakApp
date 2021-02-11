@@ -14,6 +14,7 @@ import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.adapters.FriendRequestsAdapter
 import com.example.virtualbreak.controller.adapters.FriendRequestsOutgoingAdapter
 import com.example.virtualbreak.model.User
+import com.google.android.material.transition.MaterialSharedAxis
 import kotlinx.android.synthetic.main.fragment_friend_requests.*
 
 /**
@@ -73,6 +74,14 @@ class FriendRequestsFragment() : Fragment() {
 
         friendrequests_search_friends_btn.setOnClickListener{
             view.findNavController().navigate(R.id.action_friendrequests_to_addfriends)
+        }
+
+        addTransition()
+    }
+
+    private fun addTransition() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_medium).toLong()
         }
     }
 

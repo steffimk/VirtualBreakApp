@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.transition.Slide
+import androidx.transition.TransitionManager
 import com.example.virtualbreak.R
 import com.example.virtualbreak.controller.communication.FCMService
 import com.example.virtualbreak.controller.communication.PushData
@@ -23,8 +24,10 @@ import com.example.virtualbreak.model.NotificationData
 import com.example.virtualbreak.model.PushNotification
 import com.example.virtualbreak.model.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialSharedAxis
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_add_friends.*
 
 
 /**
@@ -72,6 +75,8 @@ class AddFriendsFragment : Fragment() {
 
         viewModel.getSearchedUser().observe(viewLifecycleOwner, Observer<User?> { searchedUser ->
             if (searchedUser != null) {
+
+                TransitionManager.beginDelayedTransition(searchfriendsresults)
                 binding.tvWasSearchSuccessful.text = getString(R.string.search_friend_successful)
                 binding.foundfriendCardview.visibility = View.VISIBLE
                 binding.foundfriendUsername.text = searchedUser.username
@@ -181,6 +186,12 @@ class AddFriendsFragment : Fragment() {
             duration = resources.getInteger(R.integer.motion_duration_small).toLong()
             addTarget(R.id.friends_recyler_list_view)
         }
+
+        //transition for when this fragment appears
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+
 
     }
 

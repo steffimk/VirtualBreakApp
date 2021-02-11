@@ -159,7 +159,7 @@
     <string name="new_name">New name</string>
     <string name="pausenraumtype">PausenraumType</string>
     <string name="pausenraum_name">Pausenraum Name</string>
-    <string name="open_rooms">Offene Pausenräume:</string>
+    <string name="open_rooms">Pausenräume:</string>
     <string name="settings_text">Viel Spaß in gemeinsamen virtuellen Pausen wünscht das VirtualBreak Team:\nManuela Eska, Miriam Halsner, Stefanie Kloß, Jenny Phu\n(MSP Gruppe 4)</string>
     <string name="general">Allgemein:</string>
     <string name="info_text">Diese App entstand im Rahmen des Praktikum Mobile und Verteilte Systeme (MSP) der LMU im WS20/21 unter der Leitung von Prof. Dr. Claudia Linnhoff-Popien, Steffen Illium &amp; Andreas Sedlmeier</string>
@@ -212,5 +212,7 @@
     <string name="noch_keine_gruppen_vorhanden">Noch keine Gruppen gefunden</string>
     <string name="no_friends_yet">Noch keine Freunde gefunden</string>
     <string name="neuer_name">Neuer Name</string>
+    <string name="momentan_gibt_es_keine_pausenr_ume">Momentan gibt es keine Pausenräume</string>
+    <string name="gruppenmitglieder">Mitglieder:</string>
 
 </resources>

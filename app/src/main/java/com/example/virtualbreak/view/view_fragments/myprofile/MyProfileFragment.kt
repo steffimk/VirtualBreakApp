@@ -30,6 +30,7 @@ import com.example.virtualbreak.view.view_activitys.MainActivity
 import com.example.virtualbreak.view.view_activitys.breakroom.BreakroomWidgetService
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.material.transition.MaterialSharedAxis
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
@@ -124,6 +125,15 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
         profile_logout_btn.setOnClickListener {
             logout()
         }
+
+        addTransition()
+
+    }
+
+    private fun addTransition() {
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
     }
 
     /**
@@ -175,10 +185,12 @@ class MyProfileFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val mStorageRef = FirebaseStorage.getInstance().getReference()
             mStorageRef.child("img/profilePics/$currentUserID").downloadUrl
                 .addOnSuccessListener { result ->
-                    Picasso.get()
-                        .load(result)
-                        .fit()
-                        .centerCrop().into(profileImg)
+                    profileImg?.let{ // Target null exception prevention
+                        Picasso.get()
+                            .load(result)
+                            .fit()
+                            .centerCrop().into(profileImg)
+                    }
                 }
                 .addOnFailureListener {
                     //Log.w(TAG, it) // exception is already printed in StorageException class

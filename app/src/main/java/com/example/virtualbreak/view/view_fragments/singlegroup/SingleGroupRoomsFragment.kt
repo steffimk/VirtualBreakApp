@@ -91,16 +91,20 @@ class SingleGroupRoomsFragment : Fragment() {
             singleGroupViewModel.getRooms().observe(viewLifecycleOwner,
                 { roomsMap ->
                     Log.d(TAG, "Observed rooms: $roomsMap")
-                    customAdapter =
-                        context?.let {
-                            SingleGroupRoomsAdapter(
-                                it,
-                                ArrayList(roomsMap.values),
-                                userName
-                            )
-                        }
-                    grid_view.adapter = customAdapter
-
+                    if(roomsMap.isEmpty() || roomsMap == null){
+                        no_breakrooms_yet.visibility = View.VISIBLE
+                    } else{
+                        no_breakrooms_yet.visibility = View.GONE
+                        customAdapter =
+                            context?.let {
+                                SingleGroupRoomsAdapter(
+                                    it,
+                                    ArrayList(roomsMap.values),
+                                    userName
+                                )
+                            }
+                        grid_view.adapter = customAdapter
+                    }
                 })
 
             // Observe if group users have changed

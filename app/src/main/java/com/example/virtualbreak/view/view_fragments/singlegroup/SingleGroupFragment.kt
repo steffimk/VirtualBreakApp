@@ -104,8 +104,6 @@ class SingleGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        addTransition()
     }
 
 
@@ -277,17 +275,6 @@ class SingleGroupFragment : Fragment() {
                     imgView.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.ic_person_24))
                 }
             }
-    }
-
-    /**
-     * adds return transition when return to groupslist fragment to animate group list items
-     */
-    private fun addTransition() {
-        returnTransition = Slide().apply {
-            duration = resources.getInteger(R.integer.motion_duration_small).toLong()
-            addTarget(R.id.groups_recyler_list_view)
-        }
-
     }
 
     /**

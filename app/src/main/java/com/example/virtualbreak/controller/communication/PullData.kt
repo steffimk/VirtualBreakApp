@@ -19,12 +19,21 @@ import com.google.firebase.ktx.Firebase
  */
 class PullData {
 
+    /**
+     * Companion object to make PullData-methods statically available
+     */
     companion object {
 
         private const val TAG: String = "PullData"
 
+        /**
+         * Reference to the Firebase realtime database
+         */
         val database: DatabaseReference = Firebase.database.reference
 
+        /**
+         * Current status of the logged in user. Always up to date.
+         */
         var currentStatus: Status? = null
         var currentRoom: Room? = null
 

@@ -1,5 +1,9 @@
 package com.example.virtualbreak.model
 
+/**
+ * An object representing a room.
+ * Gets saved in the database with route: rooms - {roomId} - {room}
+ */
 data class Room(var uid: String = "",
                 var groupId: String = "",
                 var description: String = "",

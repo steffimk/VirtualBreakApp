@@ -9,6 +9,9 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
+/**
+ * API of firebase cloud messaging (https://fcm.googleapis.com)
+ */
 interface NotificationAPI {
 
     /**

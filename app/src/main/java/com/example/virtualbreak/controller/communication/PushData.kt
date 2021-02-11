@@ -19,8 +19,14 @@ import kotlin.collections.HashMap
  */
 class PushData {
 
+    /**
+     * Companion object to make PushData.methods statically available
+     */
     companion object {
 
+        /**
+         * Reference to the Firebase realtime database
+         */
         private val database : DatabaseReference = Firebase.database.reference
         private const val TAG: String = "PushData"
 

@@ -102,7 +102,7 @@ class Constants {
             "Renaturierung"
         )
 
-        val HANGMAN_MAX_ERRORS = 7
+        const val HANGMAN_MAX_ERRORS = 7
 
         //--------------- Constants concerning Sports Room ---------------
         val FITNESS_IDEAS = arrayOf(
